@@ -1,0 +1,14 @@
+<!-- Beluga general config -->
+<install path="src/beluga"> <!-- Relative to this file -->
+	<templo bin="temploc2.exe" output="bin/views/" />
+</install>
+
+<!-- List of active modules -->
+<module name="account" config="account.xml" />
+
+<!-- List of custom triggers and routes -->
+<trigger name="index">
+	<route class="Main" method="index" access="static">
+		<param name="isLogged" type="Bool" value="${account.isLogged}" />
+	</route>
+</trigger>
