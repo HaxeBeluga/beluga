@@ -1,0 +1,7 @@
+<!-- List of account module triggers and routes -->
+<trigger name="login">
+	<route class="beluga.module.account.Account" method="login" access="static">
+	</route>
+</trigger>
+
+<template name="login" path="${beluga.installPath}/module/account/src/tpl/login.mtt" />
