@@ -38,10 +38,11 @@ class MacroHelper
 			if (module.nodeName == "module") {
 				var name : String = module.get("name");
 				var modulePath = fast.node.install.att.path + "/module/" + name.toLowerCase();
-				var module = "beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
+				var module = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 				// Huge constraint :
 				// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
-				Compiler.addClassPath(module);
+//				Compiler.addClassPath(module);
+				Compiler.include(module); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
 
 				//Build a list of modules config files
 				modulesFile.push( { field: name.toLowerCase(), expr: Context.makeExpr(File.getContent(fast.node.install.att.path + "/module/" + name.toLowerCase() + "/config.xml"), Context.currentPos()) } );
