@@ -1,5 +1,6 @@
-<project name="Beluga" url="http://myproject.org" license="GPL">
-    <user name="beluga"/>
+<project name="beluga" url="http://myproject.org" license="GPL">
+    <user name="masadow"/>
+
     <tag v="php"/>
     <tag v="neko"/>
     <tag v="framework"/>
