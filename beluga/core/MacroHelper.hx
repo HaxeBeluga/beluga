@@ -23,35 +23,39 @@ class MacroHelper
 			throw "Module not found " + name;
 		return Reflect.callMethod(realClass, "getInstance", []);
 	}
+	
+	private static function loopFiles(filename : String, output : String) {
 
-	macro public static function importConfig()
-	{
 		//Load configuration
-		var file = File.getContent("beluga.xml"); //Problem, where should we put this configuration file ?
+		var file = File.getContent(filename); //Problem, where should we put this configuration file ?
 		var xml = Xml.parse(file);                    //Is it necessary to let user edit it without recompile its project ?
 		var fast = new Fast(xml);
 //		var moduleList = "";
-		var modulesFile = new Array<{ field : String, expr : Expr }>();
+		var modulesFile = new Array<{ field : String, expr : String }>();
+		var modules = new Array<String>();
 
 		// Look for active modules
 		for (module in xml.elements()) {
-			if (module.nodeName == "module") {
+			if (module.nodeName == "include") {
+				var path : String = module.get("path");
+				var vars = loopFiles(path, output);
+				modulesFile.concat(vars.modulesFile);
+				modules.concat(vars.modules);
+				file += vars.file;
+			}
+			else if (module.nodeName == "module") {
 				var name : String = module.get("name");
 				var modulePath = fast.node.install.att.path + "/module/" + name.toLowerCase();
 				var module = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
-				// Huge constraint :
-				// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
-//				Compiler.addClassPath(module);
-				Compiler.include(module); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
 
 				//Build a list of modules config files
-				modulesFile.push( { field: name.toLowerCase(), expr: Context.makeExpr(File.getContent(fast.node.install.att.path + "/module/" + name.toLowerCase() + "/config.xml"), Context.currentPos()) } );
+				modulesFile.push( { field: name.toLowerCase(), expr: File.getContent(fast.node.install.att.path + "/module/" + name.toLowerCase() + "/config.xml") } );
 				
 				//For each module, compile all assets
 				var templates = FileSystem.readDirectory(modulePath + "/src/tpl");
 
-				if (!FileSystem.exists(Compiler.getOutput() + "/tpl")) //If output does not exist, create directory
-					FileSystem.createDirectory(Compiler.getOutput() + "/tpl");
+				if (!FileSystem.exists(output + "/tpl")) //If output does not exist, create directory
+					FileSystem.createDirectory(output + "/tpl");
 				for (template in templates) {
 					
 					//Switch to Sys.command ?
@@ -60,7 +64,7 @@ class MacroHelper
 						"-php", modulePath + "/src/tpl/" + template,
 						//"-cp", modulePath + "/src/tpl/" + template,
 						//Output is assumed, maybe it should be in config ?
-						"-output", Compiler.getOutput() + "/tpl"
+						"-output", output + "/tpl"
 					]);
 					try {
 						//while (true) //Will fail when buffer will be empty
@@ -77,15 +81,33 @@ class MacroHelper
 			}
 		}
 
+		return {
+			file : file,
+			modules : modules,
+			modulesFile : modulesFile
+		}
+	}
+
+	macro public static function importConfig()
+	{
 		var pos = Context.currentPos();
 
-		var configExpr = Context.makeExpr(file, pos);
-//		var modulesFileExpr = Context.makeExpr(modulesFile, pos);
+		var modulesInfo = loopFiles("beluga.xml", Compiler.getOutput());
 
-//		var complexString : ComplexType = macro : String;
-//		var complexListOfString : ComplexType = macro : Array<String>;
-
-//		trace(moduleList);
+		for (module in modulesInfo.modules) {
+			
+			// Huge constraint :
+			// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
+//			Compiler.addClassPath(module);
+			Compiler.include(module); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
+		}
+		
+		var configExpr = Context.makeExpr(modulesInfo.file, pos);
+		var modulesFile = new Array<{ field : String, expr : Expr }>();
+		
+		for (file in modulesInfo.modulesFile) {
+			modulesFile.push( { field : file.field, expr : Context.makeExpr(file.expr, Context.currentPos()) } );
+		}
 
 		var e : Expr =  {
 			expr : EObjectDecl([
