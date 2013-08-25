@@ -21,7 +21,7 @@ class MacroHelper
 		var realClass = Type.resolveClass(name + "Impl");
 		if (realClass == null)
 			throw "Module not found " + name;
-		return Reflect.callMethod(realClass, "getInstance", []);
+		return Reflect.callMethod(realClass, "getInstance", [key]);
 	}
 	
 	private static function loopFiles(filename : String, output : String) {
@@ -48,6 +48,8 @@ class MacroHelper
 				var modulePath = fast.node.install.att.path + "/module/" + name.toLowerCase();
 				var module = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 
+				modules.push(module);
+				
 				//Build a list of modules config files
 				modulesFile.push( { field: name.toLowerCase(), expr: File.getContent(fast.node.install.att.path + "/module/" + name.toLowerCase() + "/config.xml") } );
 				
@@ -58,6 +60,7 @@ class MacroHelper
 					FileSystem.createDirectory(output + "/tpl");
 				for (template in templates) {
 					
+					//Does it works since haxelib ???
 					//Switch to Sys.command ?
 					var process = new Process(fast.node.install.node.templo.att.bin, [
 						//Check target here (neko/php)
@@ -98,8 +101,8 @@ class MacroHelper
 			
 			// Huge constraint :
 			// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
-//			Compiler.addClassPath(module);
 			Compiler.include(module); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
+			Compiler.addClassPath(module);
 		}
 		
 		var configExpr = Context.makeExpr(modulesInfo.file, pos);
