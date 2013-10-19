@@ -1,22 +1,6 @@
-<h1>Connectez vous</h1>
+<div class="login" id="beluga_::_id::">
+	<h1>Connectez vous</h1>
 
-<form>
-	<label for="name">Login</label>
-	<input id="name" type="text" name="name" />
-
-	<label for="password">Mot de passe</label>
-	<input id="password" type="password" name="password" />
-</form>
-
--------------
-
-<body>
-	
-	::raw account_login::
-	
-	---------------------
-
-	
 	<form>
 		<label for="name">Login</label>
 		<input id="name" type="text" name="name" />
@@ -24,6 +8,4 @@
 		<label for="password">Mot de passe</label>
 		<input id="password" type="password" name="password" />
 	</form>
-	
-	
-</body>
+</div>

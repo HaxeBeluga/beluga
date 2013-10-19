@@ -30,4 +30,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	public static function checkPassword(password : String) : Bool {
 		return false;
 	}
+
+	public function isLogged() : Bool {
+		return false;
+	}
 }

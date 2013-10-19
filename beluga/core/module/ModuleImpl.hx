@@ -1,4 +1,6 @@
 package beluga.core.module;
+import beluga.core.Widget;
+import haxe.Resource;
 import haxe.xml.Fast;
 import sys.io.File;
 
@@ -25,5 +27,12 @@ class ModuleImpl implements ModuleInternal
 	//The method below should always be defined in ModuleImpl children and has nothing to do here :(
 	public function loadConfig(data : Fast) {
 	
+	}
+	
+	
+	public function getWidget(name : String) : Widget {
+		//First retrieve the class path
+		var module = Type.getClassName(Type.getClass(this)).split(".")[2];
+		return new Widget(module + "_" + name);
 	}
 }

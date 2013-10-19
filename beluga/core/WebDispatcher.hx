@@ -29,7 +29,7 @@ class WebDispatcher
 	
 	public function redirect(target : String, forceHeader : Bool = true) {
 		if (forceHeader) {			
-			Web.redirect(target);
+			Web.redirect("index.php?trigger=" + target);
 		}
 		else {
 			dispatch(target);

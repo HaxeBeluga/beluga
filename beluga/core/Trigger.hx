@@ -43,7 +43,12 @@ private class CallbackTrigger {
 		this.isStatic = isStatic;
 	}
 	
+	//Support static call only
 	public function call() {
-		trace("test");
+		if (isStatic) {
+			var classType = Type.resolveClass(clazz);
+			Reflect.callMethod(classType, method, []);
+		}
+//		trace(clazz);
 	}
 }

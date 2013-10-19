@@ -3,6 +3,7 @@ package beluga.core;
 import beluga.core.module.Module;
 import beluga.core.module.ModuleInternal;
 import haxe.xml.Fast;
+import php.Web;
 import sys.io.File;
 
 //Enable or disable this line to check module compilations
@@ -43,23 +44,26 @@ class Beluga
 
 		for (module in fast.nodes.module) {
 			var name : String = module.att.name;
-			var module : ModuleInternal = MacroHelper.getModuleInstanceByName("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase());
+			var module : ModuleInternal = cast MacroHelper.getModuleInstanceByName("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase());
 			if (Reflect.hasField(config.module, name.toLowerCase()))
 				module._loadConfig(Reflect.field(config.module, name.toLowerCase()));
 			else //Should handle exceptions
 				trace("Warning: Missing configuration file for module " + name);
 		}
 
-		webDispatcher.dispatch("index");
-		
 		//Validate modules
 		//Register modules
 //		importModule("beluga.module.account.AccountImpl");
 	}
 	
-	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "")
+	public function run(defaultTrigger : String = "index") {
+		var trigger = Web.getParams().get("trigger");
+		webDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
+	}
+	
+	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T
 	{
-		return MacroHelper.getModuleInstanceByName(Type.getClassName(clazz), key);
+		return cast MacroHelper.getModuleInstanceByName(Type.getClassName(clazz), key);
 //		return T.getInstance();
 	}
 	

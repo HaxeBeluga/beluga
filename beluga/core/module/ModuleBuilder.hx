@@ -2,7 +2,10 @@ package beluga.core.module;
 
 import haxe.macro.Context;
 import haxe.macro.Expr;
-import haxe.macro.Type;
+import haxe.Resource;
+import sys.FileSystem;
+import sys.io.File;
+//import haxe.macro.Type;
 
 /**
  * ...
@@ -10,6 +13,17 @@ import haxe.macro.Type;
  */
 class ModuleBuilder
 {
+	//Load assets and src files
+	private static function loadResources(module : String) : Void {
+		var installPath : String = Resource.getString("beluga_installPath");
+		
+		for (file in FileSystem.readDirectory(installPath + "/module/" + module + "/src/tpl")) {
+			var filepath = installPath + "/module/" + module + "/src/tpl/" + file;
+			if (FileSystem.exists(filepath) && !FileSystem.isDirectory(filepath))
+				Context.addResource("beluga_" + module + "_" + file.split(".")[0], File.getBytes(filepath));
+		}
+	}
+
 	macro public static function build() : Array<Field>
 	{
 		var pos = haxe.macro.Context.currentPos();
@@ -61,6 +75,9 @@ class ModuleBuilder
 		};
 		fields.push( { name : "getInstance", doc : null, meta : [], access : [APublic, AStatic], kind : FFun(fun), pos : pos } );
 
+		//Unsafe
+		loadResources(clazz.module.split(".")[2]);
+		
         return fields;
 	}
 }
