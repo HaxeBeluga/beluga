@@ -7,5 +7,5 @@ import beluga.core.module.Module;
  */
 interface Account extends Module
 {
-
+	public function isLogged() : Bool;
 }
