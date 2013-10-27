@@ -54,11 +54,25 @@ class Beluga
 		//Validate modules
 		//Register modules
 //		importModule("beluga.module.account.AccountImpl");
+
+		//Connect to database
+		if (fast.hasNode.database) {
+			sys.db.Manager.initialize();
+			var dbInfo = { host: "", user: "", pass: "", database: ""};
+			for (elem in fast.node.database.elements) {
+				Reflect.setField(dbInfo, elem.name, elem.innerHTML);
+			}
+			sys.db.Manager.cnx = sys.db.Mysql.connect(dbInfo);
+		}
 	}
 	
 	public function run(defaultTrigger : String = "index") {
 		var trigger = Web.getParams().get("trigger");
 		webDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
+	}
+	
+	public function cleanup() {
+		sys.db.Manager.cleanup();
 	}
 	
 	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T

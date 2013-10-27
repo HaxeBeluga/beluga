@@ -9,6 +9,7 @@ import sys.io.File;
 class Widget
 {
 	private static var last_id : Int;
+	private static var available_resources = Resource.listNames();
 
 	public var context : Dynamic;
 	private var filecontent : String;
@@ -17,8 +18,12 @@ class Widget
 	
 	public function new(resource : Null<String>)
 	{
-		if (resource != null)
-			filecontent = Resource.getString("beluga_" + resource);
+		if (resource != null) {
+			if (Lambda.has(available_resources, "beluga_" + resource))
+				filecontent = Resource.getString("beluga_" + resource);
+			else
+				throw new BelugaException("The widget " + resource + " does not exists");
+		}
 		context = { };
 		id = 0;
 		html = "";
