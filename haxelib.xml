@@ -6,10 +6,10 @@
     <tag v="framework"/>
     <tag v="game"/>
 	
-	<depends name="templo" version="3.0" />
+	<!-- <depends name="templo" version="3.0" /> Not anymore -->
 	
     <description>
 		Beluga is a video game framework.
 	</description>
-    <version name="0.1">Initial version, not released yet</version>
+    <version name="0.1.0">Initial version, not released yet</version>
 </project>
