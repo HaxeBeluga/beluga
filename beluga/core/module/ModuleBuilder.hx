@@ -33,7 +33,7 @@ class ModuleBuilder
 
 		var clazzTypePath = { sub: null, params: [], pack : [] , name : clazz.name };
 		var clazzComplexType = TPath( clazzTypePath );
-		var arrayType = macro : Hash<$clazzComplexType>;
+		var arrayType = macro : Map<String, $clazzComplexType>;
 
 		//Generate instance static field
 		fields.push( { name : "instance", doc : null, meta : [], access : [APrivate, AStatic], kind : FVar(arrayType, null), pos : pos } );
@@ -58,7 +58,7 @@ class ModuleBuilder
 		var classname : String = clazz.name;
 		var bodyFunc = macro {
 			if (instance == null) {
-				instance = new Hash<$clazzComplexType>();
+				instance = new Map<String, $clazzComplexType>();
 			}
 			if (!instance.exists(key)) {
 				instance.set(key, new $classname()); 
