@@ -3,7 +3,7 @@
 
 	<form>
 		<label for="name">Login</label>
-		<input id="name" type="text" name="name" />
+		<input id="name" type="text" name="name" value="::login::" />
 
 		<label for="password">Mot de passe</label>
 		<input id="password" type="password" name="password" />
