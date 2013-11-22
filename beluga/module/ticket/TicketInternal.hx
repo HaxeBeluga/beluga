@@ -1,7 +1,6 @@
 package beluga.module.ticket;
 import beluga.core.module.ModuleInternal;
 
-
 /**
  * Internal implementation of the ticket system.
  * 
