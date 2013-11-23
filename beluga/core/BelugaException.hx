@@ -1,4 +1,5 @@
 package beluga.core;
+import haxe.CallStack;
 
 /**
  * ...
@@ -18,5 +19,15 @@ class BelugaException
 	public function new(msg : String, error_level : Null<ErrorLevel> = null) {
 		this.message = msg;
 		this.errorLevel = error_level != null ? error_level : NORMAL;
+	}
+	
+	public function toString() : String {
+		for (it in CallStack.callStack()) {
+			switch (it) {
+				case FilePos(s, file, line): return file + " l." + line +": " + this.message;
+				default:
+			}
+		}
+		return this.message;
 	}
 }

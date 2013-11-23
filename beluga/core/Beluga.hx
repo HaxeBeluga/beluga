@@ -2,9 +2,11 @@ package beluga.core;
 
 import beluga.core.module.Module;
 import beluga.core.module.ModuleInternal;
+import haxe.Resource;
 import haxe.xml.Fast;
 import php.Web;
 import sys.io.File;
+import sys.db.Manager;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/
@@ -16,6 +18,7 @@ import sys.io.File;
 class Beluga
 {
 
+	//No singleton pattern allows multiple instance of Beluga
 	public var webDispatcher(default, null) : WebDispatcher;
 	private var installPath : String;
 
@@ -34,7 +37,8 @@ class Beluga
 		var fast = new Fast(xml);
 
 		// Load beluga general configuration
-		installPath = fast.node.install.att.path;
+		installPath = Resource.getString("beluga_installPath");
+//		installPath = fast.node.install.att.path;
 
 		// Look for triggers
 		for (trigger in fast.nodes.trigger) {
@@ -57,12 +61,12 @@ class Beluga
 
 		//Connect to database
 		if (fast.hasNode.database) {
-			sys.db.Manager.initialize();
+			Manager.initialize();
 			var dbInfo = { host: "", user: "", pass: "", database: ""};
 			for (elem in fast.node.database.elements) {
 				Reflect.setField(dbInfo, elem.name, elem.innerHTML);
 			}
-			sys.db.Manager.cnx = sys.db.Mysql.connect(dbInfo);
+			Manager.cnx = sys.db.Mysql.connect(dbInfo);
 		}
 	}
 	

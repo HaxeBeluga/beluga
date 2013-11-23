@@ -25,6 +25,12 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 //		beluga.view();
 	}
 	
+	public static function subscribe() {
+		
+	}
+	
+	/** ENDOF Actions trigger **/
+	
 	@:option(password)
 	@:return(true)
 	public static function checkPassword(password : String) : Bool {
