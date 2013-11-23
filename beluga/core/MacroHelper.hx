@@ -28,7 +28,7 @@ class MacroHelper
 			throw "Module not found " + name;
 		return Reflect.callMethod(realClass, "getInstance", [key]);
 	}
-	
+
 	private static function loopFiles(filename : String, output : String) {
 
 		//Load configuration
@@ -38,7 +38,7 @@ class MacroHelper
 //		var moduleList = "";
 		var modulesFile = new Array<{ field : String, expr : String }>();
 		var modules = new Array<String>();
-		var installPath = fast.hasNode.install ? fast.node.install.att.path : "";
+//		var installPath = fast.hasNode.install ? fast.node.install.att.path : "";
 
 		// Look for active modules
 		for (module in xml.elements()) {
@@ -51,13 +51,13 @@ class MacroHelper
 			}
 			else if (module.nodeName == "module") {
 				var name : String = module.get("name");
-				var modulePath = installPath + "/module/" + name.toLowerCase();
+				var modulePath = MacroHelper.installPath + "/module/" + name.toLowerCase();
 				var module = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 
 				modules.push(module);
 				
 				//Build a list of modules config files
-				modulesFile.push( { field: name.toLowerCase(), expr: File.getContent(installPath + "/module/" + name.toLowerCase() + "/config.xml") } );
+				modulesFile.push( { field: name.toLowerCase(), expr: File.getContent(MacroHelper.installPath + "/module/" + name.toLowerCase() + "/config.xml") } );
 
 				
 				//OLD STUFF
@@ -98,11 +98,32 @@ class MacroHelper
 			modulesFile : modulesFile
 		}
 	}
+	
+	private static function findBelugaPath() {
+		//If the following doesn't work, we will need a lookup inside PATH variable which seems quite heavy, it's macro anyway
+		var path = Sys.getEnv("HAXE_HOME");
+		if (path == null)
+			path = Sys.getEnv("HAXEPATH");
+		if (path == null)
+			return "";
+		path += "/lib/beluga/";
+		
+		//Retrieve the current version
+		var current = File.getContent(path + ".current");
+		
+		return path + StringTools.replace(current, ".", ",") + "/beluga";
+	}
 
 	macro public static function importConfig()
 	{
 		var filename = "beluga.xml";
 		var pos = Context.currentPos();
+		
+		//Find the installPath of beluga
+		MacroHelper.installPath = findBelugaPath();
+		if (MacroHelper.installPath == "") {
+			throw new BelugaException("Can't locate haxe installation folder. Make sure HAXE_HOME is set in your env");
+		}
 
 		var modulesInfo = loopFiles(filename, Compiler.getOutput());
 
@@ -115,8 +136,8 @@ class MacroHelper
 		//Add the install path of Beluga to the haxe.Resource to make it globally accessible through macros
 		//Not true anymore, it is not accessible through macros, need to be deleted but actually used somewhere else
 		//Should add the config file itself instead
-		Context.addResource("beluga_installPath", Bytes.ofString(installPath));
-		MacroHelper.installPath = installPath;
+		Context.addResource("beluga_config.xml", Bytes.ofString(file)); //Configuration remains accessible and editable
+//		MacroHelper.installPath = installPath;
 
 		
 		// Add the installation path of Beluga to haxe.Resource to make it globally accessible through macros

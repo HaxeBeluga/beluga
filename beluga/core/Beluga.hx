@@ -20,7 +20,7 @@ class Beluga
 
 	//No singleton pattern allows multiple instance of Beluga
 	public var webDispatcher(default, null) : WebDispatcher;
-	private var installPath : String;
+//	private var installPath : String;
 
 	public function new()
 	{
@@ -37,7 +37,8 @@ class Beluga
 		var fast = new Fast(xml);
 
 		// Load beluga general configuration
-		installPath = Resource.getString("beluga_installPath");
+		// Not used anymore => It has no sense if you move the bin folder whereas it should not be dependant of haxe installation after compilation
+//		installPath = Resource.getString("beluga_installPath");
 //		installPath = fast.node.install.att.path;
 
 		// Look for triggers
