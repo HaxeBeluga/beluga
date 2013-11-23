@@ -38,10 +38,6 @@ It must contains (at least) the following
 
 
 	<!-- Beluga general config -->
-	<install path="../../../lib/beluga/0,1/beluga">
-	<!-- Relative to this file -->
-		<templo bin="temploc2.exe" output="bin/views/" />
-	</install>
 
 	<!-- List of active modules -->
 	<module name="account"/>
