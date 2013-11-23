@@ -28,7 +28,7 @@ class MacroHelper
 			throw "Module not found " + name;
 		return Reflect.callMethod(realClass, "getInstance", [key]);
 	}
-	
+
 	private static function loopFiles(filename : String, output : String) {
 
 		//Load configuration
@@ -115,7 +115,7 @@ class MacroHelper
 		//Add the install path of Beluga to the haxe.Resource to make it globally accessible through macros
 		//Not true anymore, it is not accessible through macros, need to be deleted but actually used somewhere else
 		//Should add the config file itself instead
-		Context.addResource("beluga_installPath", Bytes.ofString(installPath));
+		Context.addResource("beluga_config.xml", Bytes.ofString(file)); //Configuration remains accessible and editable
 		MacroHelper.installPath = installPath;
 
 		
