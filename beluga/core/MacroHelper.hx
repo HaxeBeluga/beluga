@@ -6,6 +6,7 @@ import haxe.Log;
 import haxe.macro.Compiler;
 import haxe.macro.Context;
 import haxe.macro.Expr;
+import haxe.Resource;
 import haxe.xml.Fast;
 import sys.FileSystem;
 import sys.io.File;
@@ -17,6 +18,8 @@ import sys.io.Process;
  */
 class MacroHelper
 {
+	//Macro context only
+	public static var installPath;
 
 	//Need to be there since all loaded modules are referred here
 	public static function getModuleInstanceByName(name : String, key : String = "") : Module{
@@ -30,7 +33,7 @@ class MacroHelper
 
 		//Load configuration
 		var file = File.getContent(filename); //Problem, where should we put this configuration file ?
-		var xml = Xml.parse(file);                    //Is it necessary to let user edit it without recompile its project ?
+		var xml = Xml.parse(file);                    //Is it necessary to let user edit it without recompile its project ? Solution => haxe.Resource
 		var fast = new Fast(xml);
 //		var moduleList = "";
 		var modulesFile = new Array<{ field : String, expr : String }>();
@@ -110,8 +113,12 @@ class MacroHelper
 		var installPath = fast.hasNode.install ? fast.node.install.att.path : "";
 		
 		//Add the install path of Beluga to the haxe.Resource to make it globally accessible through macros
+		//Not true anymore, it is not accessible through macros, need to be deleted but actually used somewhere else
+		//Should add the config file itself instead
 		Context.addResource("beluga_installPath", Bytes.ofString(installPath));
+		MacroHelper.installPath = installPath;
 
+		
 		// Add the installation path of Beluga to haxe.Resource to make it globally accessible through macros
 //		Context.addResource("beluga_installPath", Bytes.ofString(modulesInfo.installPath));
 		
@@ -122,7 +129,7 @@ class MacroHelper
 			Compiler.include(module); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
 			Compiler.addClassPath(module);
 		}
-		
+
 		var configExpr = Context.makeExpr(modulesInfo.file, pos);
 		var modulesFile = new Array<{ field : String, expr : Expr }>();
 		
