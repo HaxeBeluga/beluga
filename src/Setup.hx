@@ -1,4 +1,7 @@
 package ;
+import neko.zip.Uncompress;
+import sys.FileSystem;
+import sys.io.File;
 
 /**
  * ...
@@ -47,8 +50,10 @@ class Setup
 				Sys.println("The following modules will be configured:\n" + modules);
 			}
 			
-			
-			
+			//Copy the entire template folder
+			var arcData = File.getBytes("myfile");
+			var unzipData = Uncompress.run(arcData, arcData.length);
+
 			Sys.println("\nDone");
 			return null;
 		}

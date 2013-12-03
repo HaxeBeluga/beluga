@@ -46,7 +46,7 @@ class Main
 		}
 		else
 			displayUsage();
-		
+			
 		if (errorMessage != null)
 			Sys.println(errorMessage);
 	}
