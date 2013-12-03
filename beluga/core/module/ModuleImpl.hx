@@ -1,4 +1,5 @@
 package beluga.core.module;
+import beluga.core.BelugaException;
 import beluga.core.Widget;
 import haxe.Resource;
 import haxe.xml.Fast;
@@ -15,18 +16,18 @@ class ModuleImpl implements ModuleInternal
 	public function new() : Void
 	{
 	}
-	
-	public function _loadConfig(path : String) : Void {
+
+	public function _loadConfig(config : String) : Void {
 //		var file = File.getContent(path);
-		var xml = Xml.parse(path);
+		var xml = Xml.parse(config);
 		var fast = new Fast(xml);
 		loadConfig(fast);
 	}
-	
+
 	//Would be better if ModuleImpl was declared abstract or equivalent
 	//The method below should always be defined in ModuleImpl children and has nothing to do here :(
 	public function loadConfig(data : Fast) {
-	
+		throw new BelugaException("Missing implementation of loadConfig in module " + Type.getClassName(Type.getClass(this)));
 	}
 	
 	

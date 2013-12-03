@@ -6,7 +6,7 @@ import haxe.Resource;
 import haxe.xml.Fast;
 import php.Web;
 import sys.io.File;
-import sys.db.Manager;
+import core.Database;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/
@@ -20,7 +20,8 @@ class Beluga
 
 	//No singleton pattern allows multiple instance of Beluga
 	public var webDispatcher(default, null) : WebDispatcher;
-//	private var installPath : String;
+	// Keep an instance of beluga's database.
+	public var db(default, null) : Database;
 
 	public function new()
 	{
@@ -33,7 +34,7 @@ class Beluga
 
 		// Look for active modules
 		var config = MacroHelper.importConfig();
-		var xml = Xml.parse(config.mainFile);
+		var xml = Xml.parse(Resource.getString("beluga_config.xml"));
 		var fast = new Fast(xml);
 
 		// Load beluga general configuration
@@ -47,27 +48,34 @@ class Beluga
 			webDispatcher.register(trig);
 		}
 
-		for (module in fast.nodes.module) {
-			var name : String = module.att.name;
-			var module : ModuleInternal = cast MacroHelper.getModuleInstanceByName("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase());
-			if (Reflect.hasField(config.module, name.toLowerCase()))
-				module._loadConfig(Reflect.field(config.module, name.toLowerCase()));
-			else //Should handle exceptions
-				trace("Warning: Missing configuration file for module " + name);
+		//Init every modules
+		for (moduleName in Reflect.fields(config.modules)) {
+			var module = Reflect.field(config.modules, moduleName);
+			var moduleInstance : ModuleInternal = cast MacroHelper.getModuleInstanceByName("beluga.module." + moduleName.toLowerCase() + "." + moduleName.substr(0, 1).toUpperCase() + moduleName.substr(1).toLowerCase());
+			if (moduleInstance != null) {
+				moduleInstance._loadConfig(module.config);
+			}
 		}
-
+		//for (module in fast.nodes.module) {
+			//var name : String = module.att.name;
+			//var module : ModuleInternal = cast MacroHelper.getModuleInstanceByName("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase());
+			//if (Reflect.hasField(config.modules, name.toLowerCase())) {
+				//var moduleContent : Fast = Reflect.field(config.modules, name.toLowerCase());
+				//if (Refl
+				//module._loadConfig();
+			//}
+			//else //Should handle exceptions
+				//throw new BelugaException("Missing configuration file for module " + name);
+		//}
+//
 		//Validate modules
 		//Register modules
 //		importModule("beluga.module.account.AccountImpl");
 
+		db = null;
 		//Connect to database
 		if (fast.hasNode.database) {
-			Manager.initialize();
-			var dbInfo = { host: "", user: "", pass: "", database: ""};
-			for (elem in fast.node.database.elements) {
-				Reflect.setField(dbInfo, elem.name, elem.innerHTML);
-			}
-			Manager.cnx = sys.db.Mysql.connect(dbInfo);
+			new Database(fast.node.database.elements);
 		}
 	}
 	
@@ -77,7 +85,7 @@ class Beluga
 	}
 	
 	public function cleanup() {
-		sys.db.Manager.cleanup();
+		db.close();
 	}
 	
 	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T

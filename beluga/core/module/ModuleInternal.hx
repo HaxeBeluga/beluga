@@ -7,6 +7,6 @@ import haxe.xml.Fast;
  */
 interface ModuleInternal extends Module
 {
-	public function _loadConfig(path : String) : Void;
+	public function _loadConfig(config : String) : Void;
 	public function loadConfig(data : Fast) : Void;
 }
