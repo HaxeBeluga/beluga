@@ -24,16 +24,18 @@ class MacroHelper
 	public static var installPath;
 
 	//Need to be there since all loaded modules are referred here
+	//Resolve both simple and full path
 	public static function getModuleInstanceByName(name : String, key : String = "") : Module {
-		
-		var realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
+		var realClass = Type.resolveClass(name + "Impl");
+		if (realClass == null)
+			realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
 		if (realClass == null)
 			throw new BelugaException("Module not found " + name);
 		return Reflect.callMethod(realClass, "getInstance", [key]);
 	}
 	
 	public static function resolveModel(module : String, name : String) : Class<Dynamic> {
-		var realClass = Type.resolveClass("core.module." + module + ".model." + name);
+		var realClass = Type.resolveClass("beluga.module." + module + ".model." + name);
 		if (realClass == null) {
 			throw new BelugaException("Model not found " + name);
 		}
