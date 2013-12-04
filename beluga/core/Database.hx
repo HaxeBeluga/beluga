@@ -1,6 +1,9 @@
 package core;
+import beluga.core.BelugaException;
 import haxe.xml.Fast;
 import sys.db.Manager;
+import beluga.core.MacroHelper;
+import sys.db.TableCreate;
 
 /**
  * Contains
@@ -16,7 +19,18 @@ class Database
 			Reflect.setField(dbInfo, elem.name, elem.innerHTML);
 		}
 		Manager.cnx = sys.db.Mysql.connect(dbInfo);
-		//Create every modules table if they do not exists
+	}
+	
+	public function initTable(module : String, table : String) {
+		var tableClass = MacroHelper.resolveModel(module, table);
+
+		if (Reflect.hasField(tableClass, "manager")) {
+			var manager = Reflect.field(tableClass, "manager");
+			if (!TableCreate.exists(manager))
+				TableCreate.create(manager);
+		}
+		else
+			throw new BelugaException(table + " is not a valid database object");
 	}
 	
 	public function close() {

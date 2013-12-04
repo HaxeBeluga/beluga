@@ -42,6 +42,12 @@ class Beluga
 //		installPath = Resource.getString("beluga_installPath");
 //		installPath = fast.node.install.att.path;
 
+		db = null;
+		//Connect to database
+		if (fast.hasNode.database) {
+			db = new Database(fast.node.database.elements);
+		}
+
 		// Look for triggers
 		for (trigger in fast.nodes.trigger) {
 			var trig = new Trigger(trigger);
@@ -51,9 +57,9 @@ class Beluga
 		//Init every modules
 		for (moduleName in Reflect.fields(config.modules)) {
 			var module = Reflect.field(config.modules, moduleName);
-			var moduleInstance : ModuleInternal = cast MacroHelper.getModuleInstanceByName("beluga.module." + moduleName.toLowerCase() + "." + moduleName.substr(0, 1).toUpperCase() + moduleName.substr(1).toLowerCase());
+			var moduleInstance : ModuleInternal = cast MacroHelper.getModuleInstanceByName(moduleName);
 			if (moduleInstance != null) {
-				moduleInstance._loadConfig(module.config);
+				moduleInstance._loadConfig(this, module);
 			}
 		}
 		//for (module in fast.nodes.module) {
@@ -71,12 +77,6 @@ class Beluga
 		//Validate modules
 		//Register modules
 //		importModule("beluga.module.account.AccountImpl");
-
-		db = null;
-		//Connect to database
-		if (fast.hasNode.database) {
-			new Database(fast.node.database.elements);
-		}
 	}
 	
 	public function run(defaultTrigger : String = "index") {

@@ -1,5 +1,7 @@
 package beluga.core.module;
+import beluga.core.Beluga;
 import beluga.core.BelugaException;
+import beluga.core.MacroHelper;
 import beluga.core.Widget;
 import haxe.Resource;
 import haxe.xml.Fast;
@@ -12,14 +14,22 @@ import sys.io.File;
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class ModuleImpl implements ModuleInternal
 {
-	
+	//Hold the instance of the Beluga object that created this module
+	private var beluga : Beluga;
+
 	public function new() : Void
 	{
 	}
 
-	public function _loadConfig(config : String) : Void {
-//		var file = File.getContent(path);
-		var xml = Xml.parse(config);
+	public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
+		this.beluga = beluga;
+		
+		for (table in module.tables) {
+			//Initialize all module tables
+			beluga.db.initTable(module.name, table);
+		}
+
+		var xml = Xml.parse(module.config);
 		var fast = new Fast(xml);
 		loadConfig(fast);
 	}

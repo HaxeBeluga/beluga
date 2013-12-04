@@ -12,6 +12,8 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 
+typedef ModuleConfig = { name : String, path : String, config : String, tables : Array<String> };
+
 /**
  * ...
  * @author Masadow
@@ -23,14 +25,15 @@ class MacroHelper
 
 	//Need to be there since all loaded modules are referred here
 	public static function getModuleInstanceByName(name : String, key : String = "") : Module {
-		var realClass = Type.resolveClass(name + "Impl");
+		
+		var realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
 		if (realClass == null)
 			throw new BelugaException("Module not found " + name);
 		return Reflect.callMethod(realClass, "getInstance", [key]);
 	}
 	
-	public static function resolveModel(name : String) : Class<Dynamic> {
-		var realClass = Type.resolveClass("model." + name);
+	public static function resolveModel(module : String, name : String) : Class<Dynamic> {
+		var realClass = Type.resolveClass("core.module." + module + ".model." + name);
 		if (realClass == null) {
 			throw new BelugaException("Model not found " + name);
 		}
@@ -45,7 +48,7 @@ class MacroHelper
 		var xml = Xml.parse(file);            //Is it necessary to let user edit it without recompile its project ? Solution => haxe.Resource
 		var fast = new Fast(xml);
 		var config : String;
-		var modules = new Array<{ name : String, path : String, config : String, tables : Array<String>}>();
+		var modules = new Array<ModuleConfig>();
 		var tables = new Array<String>();
 
 		// Look for active modules
