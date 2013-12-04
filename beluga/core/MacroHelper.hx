@@ -12,6 +12,8 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 
+typedef ModuleConfig = { name : String, path : String, config : String, tables : Array<String> };
+
 /**
  * ...
  * @author Masadow
@@ -22,80 +24,74 @@ class MacroHelper
 	public static var installPath;
 
 	//Need to be there since all loaded modules are referred here
-	public static function getModuleInstanceByName(name : String, key : String = "") : Module{
+	//Resolve both simple and full path
+	public static function getModuleInstanceByName(name : String, key : String = "") : Module {
 		var realClass = Type.resolveClass(name + "Impl");
 		if (realClass == null)
-			throw "Module not found " + name;
+			realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
+		if (realClass == null)
+			throw new BelugaException("Module not found " + name);
 		return Reflect.callMethod(realClass, "getInstance", [key]);
+	}
+	
+	public static function resolveModel(module : String, name : String) : Class<Dynamic> {
+		var realClass = Type.resolveClass("beluga.module." + module + ".model." + name);
+		if (realClass == null) {
+			throw new BelugaException("Model not found " + name);
+		}
+		return realClass;
 	}
 
 	private static function loopFiles(filename : String, output : String) {
 
+
 		//Load configuration
 		var file = File.getContent(filename); //Problem, where should we put this configuration file ?
-		var xml = Xml.parse(file);                    //Is it necessary to let user edit it without recompile its project ? Solution => haxe.Resource
+		var xml = Xml.parse(file);            //Is it necessary to let user edit it without recompile its project ? Solution => haxe.Resource
 		var fast = new Fast(xml);
-//		var moduleList = "";
-		var modulesFile = new Array<{ field : String, expr : String }>();
-		var modules = new Array<String>();
-//		var installPath = fast.hasNode.install ? fast.node.install.att.path : "";
+		var config : String;
+		var modules = new Array<ModuleConfig>();
+		var tables = new Array<String>();
 
 		// Look for active modules
 		for (module in xml.elements()) {
-			if (module.nodeName == "include") {
-				var path : String = module.get("path");
-				var vars = loopFiles(path, output);
-				modulesFile.concat(vars.modulesFile);
-				modules.concat(vars.modules);
-				file += vars.file;
-			}
-			else if (module.nodeName == "module") {
+			//Not fully supported, it can leads to mistakes
+			//if (module.nodeName == "include") {
+				//var path : String = module.get("path");
+				//var vars = loopFiles(path, output);
+				//modulesFile.concat(vars.modulesFile);
+				//modules.concat(vars.modules);
+				//file += vars.file;
+			//}
+			//else 
+			if (module.nodeName == "module") {
 				var name : String = module.get("name");
 				var modulePath = MacroHelper.installPath + "/module/" + name.toLowerCase();
-				var module = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
+				var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 
-				modules.push(module);
-				
+
 				//Build a list of modules config files
-				modulesFile.push( { field: name.toLowerCase(), expr: File.getContent(MacroHelper.installPath + "/module/" + name.toLowerCase() + "/config.xml") } );
+				config = File.getContent(MacroHelper.installPath + "/module/" + name.toLowerCase() + "/config.xml");
 
-				
-				//OLD STUFF
-				//For each module, compile all assets
-				//var templates = FileSystem.readDirectory(modulePath + "/src/tpl");
-//
-				//if (!FileSystem.exists(output + "/tpl")) //If output does not exist, create directory
-					//FileSystem.createDirectory(output + "/tpl");
-				//for (template in templates) {
-					//
-					//Does it works since haxelib ???
-					//Switch to Sys.command ?
-					//var process = new Process(fast.node.install.node.templo.att.bin, [
-						//Check target here (neko/php)
-						//"-php", modulePath + "/src/tpl/" + template,
-						//"-cp", modulePath + "/src/tpl/" + template,
-						//Output is assumed, maybe it should be in config ?
-						//"-output", output + "/tpl"
-					//]);
-					//try {
-						//while (true) //Will fail when buffer will be empty
-//							Log.setColor(0xFF0000);
-							//Sys.stderr().writeString(process.stderr.readLine());
-//						Compiler.
-						//
-					//}
-					//catch (e : Dynamic) {
-						//
-					//}
-					//process.close();
-				//}
+				//Get every single models from the current module
+				tables = new Array<String>();
+				if (!FileSystem.isDirectory(modulePath + "/model")) {
+					throw new BelugaException("Missing model directory from the module " + name);
+				}
+				else {
+					for (model in FileSystem.readDirectory(modulePath + "/model")) {
+						//Do not forget to remove the .hx extension to get the model name
+						tables.push(model.substr(0, model.length - 3));
+					}
+				}
+
+				modules.push({name: name, path: module, config: config, tables: tables});
 			}
 		}
 
 		return {
 			file : file,
-			modules : modules,
-			modulesFile : modulesFile
+			modules : modules
 		}
 	}
 	
@@ -137,35 +133,37 @@ class MacroHelper
 		//Not true anymore, it is not accessible through macros, need to be deleted but actually used somewhere else
 		//Should add the config file itself instead
 		Context.addResource("beluga_config.xml", Bytes.ofString(file)); //Configuration remains accessible and editable
-//		MacroHelper.installPath = installPath;
-
-		
-		// Add the installation path of Beluga to haxe.Resource to make it globally accessible through macros
-//		Context.addResource("beluga_installPath", Bytes.ofString(modulesInfo.installPath));
 		
 		for (module in modulesInfo.modules) {
 			
 			// Huge constraint :
 			// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
-			Compiler.include(module); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
-			Compiler.addClassPath(module);
+			// Only the package is added to the compile unit
+			Compiler.include(module.path); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
+			Compiler.addClassPath(module.path);
 		}
 
 		var configExpr = Context.makeExpr(modulesInfo.file, pos);
 		var modulesFile = new Array<{ field : String, expr : Expr }>();
 		
-		for (file in modulesInfo.modulesFile) {
-			modulesFile.push( { field : file.field, expr : Context.makeExpr(file.expr, Context.currentPos()) } );
+		for (module in modulesInfo.modules) {
+			var fields = new Array<{field: String, expr: Expr}>();
+			for (fieldName in Reflect.fields(module)) {
+				fields.push( {
+					field: fieldName,
+					expr: Context.makeExpr(Reflect.field(module, fieldName), pos)
+				});
+			}
+			modulesFile.push({
+				field : module.name,
+				expr : { pos: pos, expr: EObjectDecl(fields)}
+			});
 		}
 
 		var e : Expr =  {
 			expr : EObjectDecl([
 				{
-					field: "mainFile",
-					expr: configExpr
-				},
-				{
-					field: "module",
+					field: "modules",
 					expr: { expr: EObjectDecl(modulesFile), pos:pos}
 				}
 			]),
@@ -185,16 +183,6 @@ class MacroHelper
 //			return macro {};
 //		}
 //		return Context.parse(moduleList, Context.currentPos());
-	}
-
-	//obsolete
-	//Not working, should generate import statement in order to be able to resolve class module in getModuleInstance
-	macro public static function importModule(module : String)
-	{
-//		Compiler.addClassPath(module);
-//		Context.resolvePath(module);
-		return Context.parse(module, Context.currentPos());
-//		return haxe.macro.Context.makeExpr(null, Context.currentPos());
 	}
 	
 }
