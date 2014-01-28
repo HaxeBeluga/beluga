@@ -6,7 +6,7 @@ import haxe.Resource;
 import haxe.xml.Fast;
 import php.Web;
 import sys.io.File;
-import core.Database;
+import beluga.core.Database;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/

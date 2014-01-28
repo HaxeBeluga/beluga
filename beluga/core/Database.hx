@@ -1,4 +1,4 @@
-package core;
+package beluga.core;
 import beluga.core.BelugaException;
 import haxe.xml.Fast;
 import sys.db.Manager;
