@@ -5,7 +5,7 @@ import php.Web;
  * ...
  * @author Masadow
  */
-class WebDispatcher
+class TriggerDispatcher
 {
 
 	private var triggers : Array<Trigger>;

@@ -19,13 +19,13 @@ class Beluga
 {
 
 	//No singleton pattern allows multiple instance of Beluga
-	public var webDispatcher(default, null) : WebDispatcher;
+	public var triggerDispatcher(default, null) : TriggerDispatcher;
 	// Keep an instance of beluga's database.
 	public var db(default, null) : Database;
 
 	public function new()
 	{
-		webDispatcher = new WebDispatcher();
+		triggerDispatcher = new TriggerDispatcher();
 
 		//Load configuration
 //		var file = File.getContent("beluga.xml"); //Problem, where should we put this configuration file ?
@@ -51,7 +51,7 @@ class Beluga
 		// Look for triggers
 		for (trigger in fast.nodes.trigger) {
 			var trig = new Trigger(trigger);
-			webDispatcher.register(trig);
+			triggerDispatcher.register(trig);
 		}
 
 		//Init every modules
@@ -81,7 +81,7 @@ class Beluga
 	
 	public function run(defaultTrigger : String = "index") {
 		var trigger = Web.getParams().get("trigger");
-		webDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
+		triggerDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
 	}
 	
 	public function cleanup() {
