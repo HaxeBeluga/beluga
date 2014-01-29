@@ -7,6 +7,7 @@ import haxe.xml.Fast;
 import php.Web;
 import sys.io.File;
 import beluga.core.Database;
+import beluga.core.BelugaApi;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/
@@ -79,7 +80,7 @@ class Beluga
 //		importModule("beluga.module.account.AccountImpl");
 	}
 	
-	public function run(defaultTrigger : String = "index") {
+	public function dispatch(defaultTrigger : String = "index") {
 		var trigger = Web.getParams().get("trigger");
 		triggerDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
 	}
@@ -87,7 +88,7 @@ class Beluga
 	public function cleanup() {
 		db.close();
 	}
-	
+
 	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T
 	{
 		return cast MacroHelper.getModuleInstanceByName(Type.getClassName(clazz), key);

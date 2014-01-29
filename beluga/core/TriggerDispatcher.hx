@@ -35,5 +35,4 @@ class TriggerDispatcher
 			dispatch(target);
 		}
 	}
-
 }
