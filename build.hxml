@@ -1,0 +1,5 @@
+-resource src/tpl/create.mtt@_create
+-resource src/tpl/print_survey.mtt@_print_survey
+-resource src/tpl/vote.mtt@_vote
+-php www
+-main Index

@@ -1,0 +1,19 @@
+<!-- List of account module triggers and routes -->
+<trigger name="get_request">
+	<route class="beluga.module.survey.Survey" method="get" access="static">
+	</route>
+</trigger>
+
+<trigger name="create_request">
+	<route class="beluga.module.survey.Survey" method="create" access="static">
+	</route>
+</trigger>
+
+<trigger name="vote_request">
+	<route class="beluga.module.survey.Survey" method="vote" access="static">
+	</route>
+</trigger>
+
+<template name="get" path="${beluga.installPath}/module/survey/src/tpl/print_survey.mtt" />
+<template name="create" path="${beluga.installPath}/module/survey/src/tpl/create.mtt" />
+<template name="vote" path="${beluga.installPath}/module/survey/src/tpl/vote.mtt" />

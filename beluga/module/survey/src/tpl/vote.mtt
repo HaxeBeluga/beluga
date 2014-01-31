@@ -1,0 +1,10 @@
+<!-- <hr style="width: 100%;margin-top: 60px;"/> -->
+<div>
+	<h1>::title::</h1>
+	<form id="add_vote" action="index.php" method="POST">
+		::foreach choices::
+		<input type="radio" value="::name::" name="::title::" />::name::<br>
+		::end::
+		<button class="btn" style="margin-top: 15px;">Vote !</a>
+	</form>
+</div>
