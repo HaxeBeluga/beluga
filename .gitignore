@@ -4,3 +4,8 @@
 #munit files
 build/
 report/
+beluga.zip 
+haxelib.json 
+Beluga.hxproj
+compile.bat
+build.hxml

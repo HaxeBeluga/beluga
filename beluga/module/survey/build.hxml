@@ -1,5 +1,0 @@
--resource create.mtt@my_create
--resource print_survey.mtt@my_print_survey
--resource vote.mtt@my_vote
--php www
--main Index
