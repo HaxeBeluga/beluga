@@ -1,3 +1,6 @@
+git:
+  - git clone git://github.com/HaxeBeluga/BelugaDemo.git BelugaDemo	
+
 language: java
 
 before_script:
@@ -8,9 +11,6 @@ before_script:
   - mkdir ~/haxelib
   - haxelib setup ~/haxelib
   - haxelib dev beluga .
-  - git config --global user.email "beluga@epitech.eu"
-  - git config --global user.name "Beluga"
-  - git pull https://github.com/HaxeBeluga/BelugaDemo
 
 script:
   - haxe BelugaDemo belugademo.hxml
