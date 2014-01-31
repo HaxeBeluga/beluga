@@ -8,7 +8,7 @@ before_script:
   - mkdir ~/haxelib
   - haxelib setup ~/haxelib
   - haxelib dev beluga .
-  - git pull https://github.com/HaxeBeluga/BelugaDemo testdir
+  - git pull https://github.com/HaxeBeluga/BelugaDemo
 
 script:
-  - haxe testdir belugademo.hxml
+  - haxe BelugaDemo belugademo.hxml
