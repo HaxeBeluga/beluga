@@ -13,7 +13,7 @@ class Main
 	static function main()
 	{
 		beluga = new Beluga();
-		
+
 		beluga.run();
 	}
 	
