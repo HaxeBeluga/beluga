@@ -96,15 +96,12 @@ class MacroHelper
 	}
 	
 	private static function findBelugaPath() {
-		//Call "haxelib config" to get the install path
-		var bytepath = new sys.io.Process("haxelib", ["config"]).stdout.readAll();
+		//Call "haxelib path beluga" to get the install path of beluga
+		var bytepath = new sys.io.Process("haxelib", ["path", "beluga"]).stdout.readAll();
 
-		var path = StringTools.trim(bytepath.readString(0, bytepath.length)) + "/beluga/";
+		var path = StringTools.trim(bytepath.readString(0, bytepath.length).split("\n")[0]);
 
-		//Retrieve the current version
-		var current = File.getContent(path + ".current");
-
-		return path + StringTools.replace(current, ".", ",") + "/beluga";
+		return path + "/beluga";
 	}
 
 	macro public static function importConfig()
