@@ -4,15 +4,12 @@ before_script:
   - sudo add-apt-repository ppa:eyecreate/haxe -y
   - sudo apt-get update
   - sudo apt-get install haxe -y
-  - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch
   - mkdir ~/haxelib
   - haxelib setup ~/haxelib
   - haxelib dev beluga .
   - git clone git://github.com/HaxeBeluga/BelugaDemo.git BelugaDemo
   - haxelib run beluga setup templateTest
+  - cd ../templateTest
 
 script:
-  - cd BelugaDemo
-  - haxe BelugaDemo.hxml
-  - cd ../templateTest
   - haxe templateTest.hxml
