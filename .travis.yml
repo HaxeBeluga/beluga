@@ -9,7 +9,7 @@ before_script:
   - haxelib dev beluga .
   - git clone git://github.com/HaxeBeluga/BelugaDemo.git BelugaDemo
   - haxelib run beluga setup templateTest
-  - cd ../templateTest
+  - cd templateTest
 
 script:
   - haxe templateTest.hxml
