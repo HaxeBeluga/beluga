@@ -103,7 +103,7 @@ class MacroHelper
 
 		//Retrieve the current version
 		var current = File.getContent(path + ".current");
-		
+
 		return path + StringTools.replace(current, ".", ",") + "/beluga";
 	}
 

@@ -9,6 +9,11 @@ Beluga will be part of haxelib, for that reason, please consider [this link](htt
 
 ## Installation ##
 
+To install this library from github, you just need to run `haxelib git https://github.com/HaxeBeluga/Beluga`
+
+> Note: If you are to use Beluga as a contributor, you need to `haxelib dev beluga $HAXE_HOME/lib/beluga/git`
+> Haxelib can complain that beluga dev version is not install. If so, you must edit the `.dev` file under `$HAME_HOME/lib/beluga` and remove the trailing slash
+
 To install this library from source, take the following steps :
 
 1. Clone or download this repository
