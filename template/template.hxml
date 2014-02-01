@@ -1,3 +1,4 @@
 -main Main
 -cp src
+-lib beluga
 -php bin

@@ -1,12 +1,14 @@
 package ;
 
+import beluga.core.Beluga;
+
 /**
  * ...
  * @author Masadow
  */
 class Main
 {
-	public static var beluga;
+	public static var beluga : Beluga;
 
 	static function main()
 	{
