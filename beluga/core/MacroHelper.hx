@@ -96,18 +96,12 @@ class MacroHelper
 	}
 	
 	private static function findBelugaPath() {
-		//If the following doesn't work, we will need a lookup inside PATH variable which seems quite heavy, it's macro anyway
-		var path = Sys.getEnv("HAXE_HOME");
-		if (path == null)
-			path = Sys.getEnv("HAXEPATH");
-		if (path == null)
-			return "";
-		path += "/lib/beluga/";
-		
-		//Retrieve the current version
-		var current = File.getContent(path + ".current");
-		
-		return path + StringTools.replace(current, ".", ",") + "/beluga";
+		//Call "haxelib path beluga" to get the install path of beluga
+		var bytepath = new sys.io.Process("haxelib", ["path", "beluga"]).stdout.readAll();
+
+		var path = StringTools.trim(bytepath.readString(0, bytepath.length).split("\n")[0]);
+
+		return path + "/beluga";
 	}
 
 	macro public static function importConfig()
