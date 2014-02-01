@@ -17,6 +17,7 @@ class AccountApi
 	}
 
 	public function doLogin() {
+		//The function should look like something like this:
 		//try {			
 		//	beluga.triggerDispatcher.dispatch("login")
 		//} catch (err : WrongLoginException) {
