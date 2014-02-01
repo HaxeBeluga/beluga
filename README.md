@@ -3,6 +3,12 @@ Beluga
 
 Main repository of the Haxe Beluga framework.
 
+### [Beluga demo](https://github.com/HaxeBeluga/BelugaDemo "belugademo") ###
+
+## Travis status ##
+
+[![Build Status](https://travis-ci.org/HaxeBeluga/Beluga.png?branch=master)](https://travis-ci.org/HaxeBeluga/Beluga)
+
 ## Haxelib ##
 
 Beluga will be part of haxelib, for that reason, please consider [this link](http://haxe.org/doc/haxelib/using_haxelib#creating-a-haxelib-package "haxelib") before any structure edition.
