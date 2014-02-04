@@ -5,9 +5,16 @@ import sys.db.Types;
 
 @:table("beluga_acc_user")
 @:id(id)
-@:index(username, unique)
+@:index(login, unique)
 class User extends Object {
 	public var id : SId;
-	public var username : SString<32>;
-	public var hashPassword : SString<42>;
+	public var login : SString<32>;
+	public var hashPassword : SString<32>;
+	public var subscribeDateTime : SDateTime;
+	public var emailVerified : SBool;
+
+	public function setPassword(password : String) {
+		hashPassword = haxe.crypto.Md5.encode(password);
+	}
+
 }

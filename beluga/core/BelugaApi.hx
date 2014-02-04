@@ -4,7 +4,7 @@ import haxe.web.Dispatch;
 import beluga.module.account.Account;
 import beluga.module.account.api.AccountApi;
 
-class BelugaApi 
+class BelugaApi
 {
 	private var beluga : Beluga;
 	private var acc : Account;
@@ -14,7 +14,6 @@ class BelugaApi
 		this.acc = beluga.getModuleInstance(Account);
 	}
 
-	//Handle url like www.beluga.fr?trigger=login
 	public function doDefault() {
 		Sys.print("Vous etes sur la page d'accueil !");
 	}

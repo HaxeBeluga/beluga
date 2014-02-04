@@ -5,6 +5,8 @@ import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
+import beluga.module.account.model.User;
+import beluga.module.account.exception.LoginAlreadyExistException;
 
 class AccountApi 
 {
@@ -15,6 +17,10 @@ class AccountApi
 		this.beluga = beluga;
 		this.account = account;
 	}
+
+	//
+	//Login
+	//
 
 	public function doLogin() {
 		//The function should look like something like this:
@@ -28,7 +34,7 @@ class AccountApi
 		//doDisplayLoginSuccessPage();
 	}
 
-	public function doDisplayLoginPage() {
+	public function doLoginPage() {
 		var acc = beluga.getModuleInstance(Account);
         var loginBox : Widget = acc.getWidget("login"); //Generic method for all modules
         loginBox.context.login = "Toto"; // For instance, it would fill the username field with Toto
@@ -37,10 +43,27 @@ class AccountApi
         Sys.print(html);
 	}
 
-	public function doDisplayLoginSuccessPage() {
+	public function doLoginSuccessPage() {
 	}
 
-	public function doDisplayLoginFailPage() {
+	public function doLoginFailPage() {
+	}
+
+
+
+	//
+	//Subscription
+	//
+
+	public function doSubcribe() {
+		var user = new User();
+		user.login = "user" + Std.random(9999);
+		user.setPassword("password");
+		try {
+			account.subscribe(user);			
+		} catch (err : LoginAlreadyExistException) {
+			trace("Error when subcrive the login is already used !");
+		}
 	}
 
 }

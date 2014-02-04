@@ -20,7 +20,7 @@ class Database
 		}
 		Manager.cnx = sys.db.Mysql.connect(dbInfo);
 	}
-	
+
 	public function initTable(module : String, table : String) {
 		var tableClass = MacroHelper.resolveModel(module, table);
 

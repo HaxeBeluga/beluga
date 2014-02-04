@@ -1,5 +1,7 @@
 package beluga.module.account;
+
 import beluga.core.module.Module;
+import beluga.module.account.model.User;
 
 /**
  * ...
@@ -9,5 +11,14 @@ interface Account extends Module
 {
 
 	public function isLogged() : Bool;
+
+	//
+	// Mandatory field:
+	// 	User.hashPassword
+	// 	User.login
+	//
+	// Return updated user
+	//
+	public function subscribe(user : User) : User;
 
 }
