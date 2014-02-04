@@ -1,6 +1,9 @@
 package ;
 
 import beluga.core.Beluga;
+import beluga.core.BelugaApi;
+import haxe.web.Dispatch;
+import php.Web;
 
 /**
  * ...
@@ -13,8 +16,7 @@ class Main
 	static function main()
 	{
 		beluga = new Beluga();
-
-		beluga.run();
+		Dispatch.run(Web.getURI(), Web.getParams(), new BelugaApi(beluga));
 	}
 	
 }

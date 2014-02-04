@@ -7,6 +7,7 @@ import haxe.xml.Fast;
 import php.Web;
 import sys.io.File;
 import beluga.core.Database;
+import beluga.core.BelugaApi;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/
@@ -19,13 +20,13 @@ class Beluga
 {
 
 	//No singleton pattern allows multiple instance of Beluga
-	public var webDispatcher(default, null) : WebDispatcher;
+	public var triggerDispatcher(default, null) : TriggerDispatcher;
 	// Keep an instance of beluga's database.
 	public var db(default, null) : Database;
 
 	public function new()
 	{
-		webDispatcher = new WebDispatcher();
+		triggerDispatcher = new TriggerDispatcher();
 
 		//Load configuration
 //		var file = File.getContent("beluga.xml"); //Problem, where should we put this configuration file ?
@@ -51,7 +52,7 @@ class Beluga
 		// Look for triggers
 		for (trigger in fast.nodes.trigger) {
 			var trig = new Trigger(trigger);
-			webDispatcher.register(trig);
+			triggerDispatcher.register(trig);
 		}
 
 		//Init every modules
@@ -79,15 +80,15 @@ class Beluga
 //		importModule("beluga.module.account.AccountImpl");
 	}
 	
-	public function run(defaultTrigger : String = "index") {
+	public function dispatch(defaultTrigger : String = "index") {
 		var trigger = Web.getParams().get("trigger");
-		webDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
+		triggerDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
 	}
 	
 	public function cleanup() {
 		db.close();
 	}
-	
+
 	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T
 	{
 		return cast MacroHelper.getModuleInstanceByName(Type.getClassName(clazz), key);

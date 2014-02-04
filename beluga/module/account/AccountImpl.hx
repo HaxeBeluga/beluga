@@ -1,6 +1,7 @@
 package beluga.module.account;
 import beluga.core.module.ModuleImpl;
 import haxe.xml.Fast;
+import beluga.module.account.api.AccountApi;
 
 /**
  * ...
@@ -18,18 +19,13 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 	
-	
-	/** Actions trigger **/
-
 	public static function login() {
-//		beluga.view();
+
 	}
 	
 	public static function subscribe() {
 		
 	}
-	
-	/** ENDOF Actions trigger **/
 	
 	@:option(password)
 	@:return(true)
@@ -40,4 +36,5 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	public function isLogged() : Bool {
 		return false;
 	}
+
 }

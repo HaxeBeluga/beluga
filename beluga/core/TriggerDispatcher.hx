@@ -5,7 +5,7 @@ import php.Web;
  * ...
  * @author Masadow
  */
-class WebDispatcher
+class TriggerDispatcher
 {
 
 	private var triggers : Array<Trigger>;
@@ -35,5 +35,4 @@ class WebDispatcher
 			dispatch(target);
 		}
 	}
-
 }
