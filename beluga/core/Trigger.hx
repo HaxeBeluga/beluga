@@ -44,11 +44,11 @@ private class CallbackTrigger {
 	}
 	
 	//Support static call only
-	public function call() {
+	public function call(params : Dynamic = {}) {
 		if (isStatic) {
 			var classType = Type.resolveClass(clazz);
-			Reflect.callMethod(classType, method, []);
+
+			Reflect.callMethod(classType, method, [params]);
 		}
-//		trace(clazz);
 	}
 }
