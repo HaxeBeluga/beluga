@@ -9,5 +9,5 @@ import sys.db.Types;
 class User extends Object {
 	public var id : SId;
 	public var username : SString<32>;
-//	public var password : 
+	public var hashPassword : SString<42>;
 }

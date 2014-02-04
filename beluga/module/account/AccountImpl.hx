@@ -19,17 +19,13 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 	
-	
-	/** Actions trigger **/
 	public static function login() {
-//		beluga.view();
+
 	}
 	
 	public static function subscribe() {
 		
 	}
-	
-	/** ENDOF Actions trigger **/
 	
 	@:option(password)
 	@:return(true)
