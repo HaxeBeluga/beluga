@@ -9,4 +9,4 @@
 	</route>
 </trigger>
 
-<template name="login" path="${beluga.installPath}/module/account/src/tpl/login.mtt" />
+<template name="login" path="${beluga.installPath}/module/account/view/tpl/login.mtt" />

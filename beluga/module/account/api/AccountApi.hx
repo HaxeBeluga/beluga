@@ -40,7 +40,7 @@ class AccountApi
         loginBox.context.login = "Toto"; // For instance, it would fill the username field with Toto
         var subscribeBox : Widget = acc.getWidget("subscribe");
         var html : String = loginBox.render() + subscribeBox.render();
-        Sys.print(html);
+        Sys.print(html); 
 	}
 
 	public function doLoginSuccessPage() {
