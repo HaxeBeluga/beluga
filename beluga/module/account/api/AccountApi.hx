@@ -57,10 +57,11 @@ class AccountApi
 
 	public function doSubcribe() {
 		var user = new User();
-		user.login = "user" + Std.random(9999);
+		user.login = "user" + Std.random(10);
 		user.setPassword("password");
 		try {
-			account.subscribe(user);			
+			account.subscribe(user);
+			trace("success !");
 		} catch (err : LoginAlreadyExistException) {
 			trace("Error when subcrive the login is already used !");
 		}
