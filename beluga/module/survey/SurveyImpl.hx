@@ -15,11 +15,26 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	var survey : beluga.module.account.model.Survey;
 	var m_choices : Array<Choice>;
 	var m_results : Array<Result>;
+	var title : String;
 	
+	/*
+	 * contructor takes Survey's name (if exists)
+	 */
+	public function new(title : String) {
+		survey = null;
+		m_choices = new Array<Choice>;
+		m_results = new Array<Result>;
+		this.title = title;
+	}
+	
+	/*
+	 * default constructor, in case you want to create a new Survey
+	 */
 	public function new() {
 		survey = null;
 		m_choices = new Array<Choice>;
 		m_results = new Array<Result>;
+		this.title = "";
 	}
 	
 	/*
