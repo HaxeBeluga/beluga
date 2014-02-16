@@ -11,30 +11,37 @@ import php.Web;
 import php.Session;
 import beluga.core.module.ModuleImpl;
 
-class SurveyImpl extends ModuleImpl implements SurveyInternal {
-	var survey : beluga.module.account.model.Survey;
+class SurveyData
+{
+	var m_survey : beluga.module.account.model.Survey;
 	var m_choices : Array<Choice>;
 	var m_results : Array<Result>;
+	
+	public function new() {
+		m_choices = new Array<Choice>;
+		m_results = new Array<Result>;
+		m_survey = null;
+	}
+}
+
+class SurveyImpl extends ModuleImpl implements SurveyInternal {
+	var m_surveys : Array<SurveyData>;
 	var title : String;
 	
 	/*
 	 * contructor takes Survey's name (if exists)
 	 */
 	public function new(title : String) {
-		survey = null;
-		m_choices = new Array<Choice>;
-		m_results = new Array<Result>;
 		this.title = title;
+		m_surveys = new Array<SurveyData>;
 	}
 	
 	/*
 	 * default constructor, in case you want to create a new Survey
 	 */
 	public function new() {
-		survey = null;
-		m_choices = new Array<Choice>;
-		m_results = new Array<Result>;
 		this.title = "";
+		m_surveys = new Array<SurveyData>;
 	}
 	
 	/*
@@ -43,14 +50,21 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 */
 	public function get() {
 		var user = Beluga.getModuleInstance(Account);
-		for (tmp in Survey.manager.search( { name : title, author : user } ))
-			survey = tmp;
-		if (survey == null)
-			return;
-		for (tmp in Choice.manager.search( { survey : survey } ))
-			m_choices.push(tmp);
-		for (tmp in Result.manager.search( { survey : survey, user : user } ))
-			m_results.push(tmp);
+		
+		m_surveys = new Array<SurveyData>;
+		
+		for (tmp in Survey.manager.search( { name : title, author : user } )) {
+			var tmp_v = new SurveyData();
+			
+			tmp_v.survey = tmp;
+			
+			for (tmp in Choice.manager.search( { survey : survey } ))
+				tmp_v.m_choices.push(tmp);
+			for (tmp in Result.manager.search( { survey : survey, user : user } ))
+				tmp_v.m_results.push(tmp);
+				
+			m_surveys.push(tmp_v);
+		}
 	}
 	
 	/*
@@ -82,8 +96,19 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * param : title (String), status (Int), description (String), choices (Array<String>)
 	 */
 	public function create(title : String, status : Int, description : String, choices : Array<String>) {
-		if (user == null || choices.length == 0)
+		if (user == null || choices.length < 2)
 			return;
+		
+		var tmp_choices = new Array<String>;
+		
+		// this loop delete duplicate data
+		for (tmp in choices) {
+			tmp_choices.push(tmp);
+			choices.remove(tmp);
+		}
+		if (tmp_choices.length < 2)
+			return;
+		
 		m_user = user;
 		
 		var survey = new Survey;
@@ -95,7 +120,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		survey.multiple_choice = choices.length;
 		
 		survey.insert();
-		for (tmp in choices) {
+		for (tmp in tmp_choices) {
 			var c = new Choice;
 			
 			c.label = tmp;
@@ -106,14 +131,14 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	
 	/*
 	 * called when a User add a vote for a Survey
-	 * param : String (choice's title)
+	 * params : String (choice's name), Survey (to know in which survey you add the vote)
 	 */
-	public function vote(choice : String) {
+	public function vote(choice : String, survey : beluga.module.account.model.Survey) {
 		var user = Beluga.getModuleInstance(Account);
-		if (survey == null)
-			return;
-		if (m_results.length == 0 || m_choices.length == 0)
+
+		if (m_surveys == null)
 			this.get();
+
 		var tmp_choice = null;
 		for (tmp in Result.manager.search( { survey : survey, user : user } ))
 			return;
@@ -123,7 +148,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		if (tmp_choice == null)
 			return;
 		var res = new Result;
-		
+
 		res.survey_id = survey.id;
 		res.user_id = user.id;
 		res.choice_id = tmp_choice.id;
@@ -135,9 +160,10 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * param : User
 	 */
 	public function canVote(user : User) : Bool {
-		for (tmp in m_results)
-			if (tmp.user == user)
-				return false;
+		for (tmp in m_surveys)
+			for (tmp_tmp in tmp.m_results)
+				if (tmp_tmp.user == user)
+					return false;
 		return true;
 	}
 	
@@ -146,9 +172,10 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * param : User
 	 */
 	public function getVote(user : User) : beluga.module.survey.model.Choice {
-		for (tmp in m_results)
-			if (tmp.user == user)
-				return tmp.choice;
+		for (tmp in m_surveys)
+			for (tmp_tmp in tmp.m_results)
+				if (tmp_tmp.user == user)
+					return tmp.choice;
 		return null;
 	}
 	
@@ -157,114 +184,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * param : none
 	 */
 	public function exists() : Bool {
-		return survey != null;
+		return m_surveys.length > 0;
 	}
 }
-
-/*class Index
-{
-	static function main() {
-		Session.start();
-		var session = Lib.hashOfAssociativeArray(untyped __var__('_SESSION'));
-
-		if (session.get("survey") != null) {
-			printSurvey(Web.getParams());
-		}
-		else {
-			var form = new Form();
-			if (form.check(Web.getParams()) == "1") {
-				printSurveyVote(new Form());
-			}
-			else {
-				printSurveyBuilder();
-			}
-		}
-	}
-	
-	static function printSurveyVote(form : Form) {
-		var s = new Survey(form.title);
-		var t = form.values.length;
-		
-		// all this part is for demonstration while waiting for database
-		for (tmp in form.values) {
-			s.addChoice(tmp);
-		}
-		
-		Session.set("survey", s);
-		Session.set("answer", false);
-		
-		var str = haxe.Resource.getString("_vote");
-		var t = new haxe.Template(str);
-		var output = t.execute(s);
-		
-		#if neko
-        neko.Lib.print(output);
-        #else
-        php.Lib.print(output);
-        #end
-	}
-	
-	static function printSurvey(params : Map<String, String>) {
-		var s = Session.get("survey");
-
-		if (params.exists(s.title)) {
-			s.addVote(params.get(s.title));
-		
-			var str = haxe.Resource.getString("_print_survey");
-			var t = new haxe.Template(str);
-			var output = t.execute(s);
-			
-			trace(params);
-			#if neko
-			neko.Lib.print(output);
-			#else
-			php.Lib.print(output);
-			#end
-		}
-		else {
-			var form = new Form();
-
-			form.check(Web.getParams());
-			printSurveyVote(form);
-		}
-	}
-	
-	static function printSurveyBuilder() {
-		var output = haxe.Resource.getString("_create");
-		
-		#if neko
-        neko.Lib.print(output);
-        #else
-        php.Lib.print(output);
-        #end
-	}
-}
-
-class Form
-{
-	public var title : String;
-	public var values : Array<String>;
-	
-	public function new() {
-		values = new Array();
-    }
-	
-    public function check(params : Map<String, String>){
-        var ret = '';
-        
-		if (params.exists('name')){
-            this.title = params.get('name');
-			
-			for (tmp in params) {
-				if (tmp != "")
-					this.values.push(tmp);
-			}
-			this.values.remove(title);
-			
-			if (this.title == "" || this.values.length < 2)
-				return "0";
-			return "1";
-        }
-		return "0";
-    }
-}*/
