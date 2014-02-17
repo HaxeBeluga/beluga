@@ -19,7 +19,7 @@ class TriggerDispatcher
 		triggers.push(trigger);
 	}
 	
-	public function dispatch(event : String, params : Dynamic = { }) {
+	public function dispatch(event : String, params : Dynamic = null) {
 		for (trigger in triggers) {
 			if (trigger.action == event) {
 				trigger.trigger(params);

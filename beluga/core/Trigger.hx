@@ -23,7 +23,7 @@ class Trigger
 		}
 	}
 
-	public function trigger(params : Dynamic = {}) {
+	public function trigger(params : Dynamic = null) {
 		for (route in routes) {
 			route.call(params);
 		}
@@ -44,9 +44,12 @@ private class CallbackTrigger {
 	}
 	
 	//Support static call only
-	public function call(params : Dynamic = {}) {
+	public function call(params : Dynamic = null) {
 		if (isStatic) {
 			var classType = Type.resolveClass(clazz);
+
+			if (params == null)
+				params = { };
 
 			Reflect.callMethod(classType, method, [params]);
 		}
