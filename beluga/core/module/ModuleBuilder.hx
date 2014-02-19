@@ -82,7 +82,7 @@ class ModuleBuilder
 					]
 		};
 		fields.push( { name : "getInstance", doc : null, meta : [], access : [APublic, AStatic], kind : FFun(fun), pos : pos } );
-
+		
 		//Unsafe argument
 		var err = loadResources(clazz.module.split(".")[2]);
 		
