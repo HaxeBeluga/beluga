@@ -2,64 +2,68 @@ class RuleChecker
 {
   public static function checkRequired(form_value : String) : Bool
   {
-    return (form_value.length() > 0);
+    return (form_value.length > 0);
   }
 
-  public static function checkMinValue(form_value : String, min_value) : Bool
+  @generic
+  public static function checkMinValue<FormDataType>(form_value : FormDataType, min_value : FormDataType) : Bool
   {
     return (form_value < min_value);
   }
 
-  public static function checkMaxValue(form_value : String, max_value) : Bool
+  @generic
+  public static function checkMaxValue<FormDataType>(form_value : FormDataType, max_value : FormDataType) : Bool
   {
     return (form_value > max_value);
   }
 
-  public static function checkRangeValue(form_value : String, min_value, max_value) : Bool
+  @generic
+  public static function checkRangeValue<FormDataType>(form_value : FormDataType, min_value : FormDataType, max_value : FormDataType) : Bool
   {
     return (checkMinValue(form_value, min_value) == true && checkMaxValue(form_value, max_value) == true);
   }
 
-  public static function checkEqualValue(form_value : String, value) : Bool
+  @generic 
+  public static function checkEqualValue<FormDataType>(form_value : FormDataType, value : FormDataType) : Bool
   {
     return (form_value == value);
   }
 
-  public static function checkMinLength(x) : Bool
+  public static function checkMinLength(form_value : String, min_length : Int) : Bool
   {
-    return (true);
+    return (form_value.length >= min_length);
   }
 
-  public static function checkMaxLength(x) : Bool
+  public static function checkMaxLength(form_value : String, max_length : Int) : Bool
   {
-    return (true);
+    return (form_value.length <= max_length);
   }
 
-  public static function checkRangeLength(x, y) : Bool
+  public static function checkRangeLength(form_value : String, min_length : Int, max_length : Int) : Bool
   {
-    return (true);
+    return (checkMinLength(form_value, min_length) == true && checkMaxLength(form_value, max_length) == true);
   }
 
-  public static function checkEqualLength(x) : Bool
+  public static function checkEqualLength(form_value : String, length : Int) : Bool
   {
-    return (true);
+    return (form_value.length == length);
   }
 
-  public static function checkMatch(pattern) : Bool
+  public static function checkMatch(form_value : String, pattern : EReg) : Bool
   {
-    return (true);
+    return (pattern.match(form_value));
   }
 
   //Equal(field); //The field must be equal to another field
 
-  public static function checkDatabase(table, field) : Bool
-  {
-    return (true);
-  }
+  // public static function checkDatabase(table, field) : Bool
+  // {
+  //   return (true);
+  // }
 
-  public static function checkAlter(func) : Bool
-  {
-    return (true);
-  }
+  // public static function checkAlter(func) : Bool
+  // {
+  //   return (true);
+  // }
 
 }
