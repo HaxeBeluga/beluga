@@ -25,9 +25,9 @@ class ValidateMacro
 
       // Resolve the "if" statement
       var new_condition = macro {
-        if (RuleChecker.$func_name($a{func_arg}) == false)
+        if (form.RuleChecker.$func_name($a{func_arg}) == false)
         {
-          this.error[$v{form_variable.name}].push("insert error message here!");
+          this.error[$v{form_variable.name}].push($v{rule.name});
         }
       }
 

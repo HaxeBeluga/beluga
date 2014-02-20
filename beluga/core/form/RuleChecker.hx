@@ -1,3 +1,5 @@
+package form;
+
 class RuleChecker
 {
   public static function checkRequired(form_value : String) : Bool
@@ -54,16 +56,21 @@ class RuleChecker
     return (pattern.match(form_value));
   }
 
-  //Equal(field); //The field must be equal to another field
+  @generic
+  public static function checkEqualTo<FormDataType>(field : FormDataType, field_bis : FormDataType) : Bool
+  {
+    return (field == field_bis);
+  }
 
   // public static function checkDatabase(table, field) : Bool
   // {
   //   return (true);
   // }
 
-  // public static function checkAlter(func) : Bool
-  // {
-  //   return (true);
-  // }
+  @generic
+  public static function checkAlter<FormDataType>(field : FormDataType, alter_func : FormDataType -> Bool) : Bool
+  {
+    return (alter_func(field));
+  }
 
 }
