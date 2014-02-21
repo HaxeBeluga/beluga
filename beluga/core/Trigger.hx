@@ -22,10 +22,10 @@ class Trigger
 			routes.push(new CallbackTrigger(route.att.resolve("class"), route.att.method, route.att.access == "static"));
 		}
 	}
-	
-	public function trigger() {
+
+	public function trigger(params : Dynamic = null) {
 		for (route in routes) {
-			route.call();
+			route.call(params);
 		}
 	}
 
@@ -44,11 +44,14 @@ private class CallbackTrigger {
 	}
 	
 	//Support static call only
-	public function call() {
+	public function call(params : Dynamic = null) {
 		if (isStatic) {
 			var classType = Type.resolveClass(clazz);
-			Reflect.callMethod(classType, method, []);
+
+			if (params == null)
+				params = { };
+
+			Reflect.callMethod(classType, method, [params]);
 		}
-//		trace(clazz);
 	}
 }

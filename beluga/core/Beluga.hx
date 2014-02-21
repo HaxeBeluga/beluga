@@ -7,7 +7,7 @@ import haxe.xml.Fast;
 import php.Web;
 import sys.io.File;
 import beluga.core.Database;
-import beluga.core.BelugaApi;
+import beluga.core.api.BelugaApi;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/
@@ -21,8 +21,10 @@ class Beluga
 
 	//No singleton pattern allows multiple instance of Beluga
 	public var triggerDispatcher(default, null) : TriggerDispatcher;
-	// Keep an instance of beluga's database.
+	// Keep an instance of beluga's database, read only
 	public var db(default, null) : Database;
+	//Instance of beluga API, read only
+	public var api : BelugaApi;
 
 	public function new()
 	{
@@ -63,21 +65,9 @@ class Beluga
 				moduleInstance._loadConfig(this, module);
 			}
 		}
-		//for (module in fast.nodes.module) {
-			//var name : String = module.att.name;
-			//var module : ModuleInternal = cast MacroHelper.getModuleInstanceByName("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase());
-			//if (Reflect.hasField(config.modules, name.toLowerCase())) {
-				//var moduleContent : Fast = Reflect.field(config.modules, name.toLowerCase());
-				//if (Refl
-				//module._loadConfig();
-			//}
-			//else //Should handle exceptions
-				//throw new BelugaException("Missing configuration file for module " + name);
-		//}
-//
-		//Validate modules
-		//Register modules
-//		importModule("beluga.module.account.AccountImpl");
+		
+		//Create beluga API
+		api = new BelugaApi(this);
 	}
 	
 	public function dispatch(defaultTrigger : String = "index") {
