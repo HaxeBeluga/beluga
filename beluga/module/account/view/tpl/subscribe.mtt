@@ -1,0 +1,11 @@
+<div class="beluga account subscribe" id="::_id::">
+	<h1>Inscrivez vous</h1>
+	
+	<form action="/beluga/account/subscribe" method="POST">
+		Email <input name="login" name="username" />
+		Mot de passe <input type="password" name="password" />
+		Confirmer mot de passe <input type="password" name="passwordbis" />
+		<br />
+		<input type="submit" value="S'inscrire" />
+	</form>
+</div>

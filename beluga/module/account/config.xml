@@ -10,3 +10,4 @@
 </trigger>
 
 <template name="login" path="${beluga.installPath}/module/account/view/tpl/login.mtt" />
+<template name="subscribe" path="${beluga.installPath}/module/account/view/tpl/subscribe.mtt" />

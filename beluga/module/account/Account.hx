@@ -19,6 +19,6 @@ interface Account extends Module
 	//
 	// Return updated user
 	//
-	public function subscribe(user : User) : User;
+	public function subscribe(login : String, password : String) : User;
 
 }

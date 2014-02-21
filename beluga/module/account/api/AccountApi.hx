@@ -6,7 +6,6 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
-import beluga.module.account.exception.LoginAlreadyExistException;
 
 class AccountApi 
 {
@@ -35,36 +34,28 @@ class AccountApi
 	}
 
 	public function doLoginPage() {
-		var acc = beluga.getModuleInstance(Account);
-        var loginBox : Widget = acc.getWidget("login"); //Generic method for all modules
+        var loginBox : Widget = account.getWidget("login"); //Generic method for all modules
         loginBox.context.login = "Toto"; // For instance, it would fill the username field with Toto
-        var subscribeBox : Widget = acc.getWidget("subscribe");
+        var subscribeBox : Widget = account.getWidget("subscribe");
         var html : String = loginBox.render() + subscribeBox.render();
         Sys.print(html); 
 	}
 
-	public function doLoginSuccessPage() {
-	}
-
-	public function doLoginFailPage() {
-	}
-
-
-
 	//
 	//Subscription
 	//
+	public function doSubscribe(args : { login : String, password : String }) {
+		beluga.triggerDispatcher.dispatch("Subscribe");
+	}
 
-	public function doSubcribe() {
-		var user = new User();
-		user.login = "user" + Std.random(10);
-		user.setPassword("password");
-		try {
-			account.subscribe(user);
-			trace("success !");
-		} catch (err : LoginAlreadyExistException) {
-			trace("Error when subcrive the login is already used !");
-		}
+	public function doSubscribePage() {
+        var subscribeBox : Widget = account.getWidget("subscribe");
+        var html : String = subscribeBox.render();
+        Sys.print(html);
+	}
+
+	public function doDefault() {
+        trace("Account default page");
 	}
 
 }

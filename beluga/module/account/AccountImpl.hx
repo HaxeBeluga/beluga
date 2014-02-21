@@ -43,8 +43,12 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	//
 	// Return updated user
 	//
-	public function subscribe(user : User) : User {
+	public function subscribe(login : String, password : String) : User {
 		//Check args
+		var user = new User();
+		user.login = login;
+		user.setPassword(password);
+
 		var userCheck = User.manager.dynamicSearch({login : user.login, hashPassword: user.hashPassword}).first();
 		if (userCheck == null) {
 			//Save user in db
@@ -52,8 +56,9 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 			user.subscribeDateTime = Date.now();
 			user.insert();
 			//TODO AB Send activation mail
+			beluga.triggerDispatcher.dispatch("SubscribeSuccess");
 		} else {
-			throw new LoginAlreadyExistException(user.login);
+			beluga.triggerDispatcher.dispatch("SubscribeFail");
 		}
 		return user;
 	}
