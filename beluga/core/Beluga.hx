@@ -26,7 +26,16 @@ class Beluga
 	//Instance of beluga API, read only
 	public var api : BelugaApi;
 
-	public function new()
+	private static var instance = null;
+
+	public static function getInstance() : Beluga {
+		if (instance == null) {
+			instance = new Beluga();
+		}
+		return instance;
+	}
+
+	private function new()
 	{
 		triggerDispatcher = new TriggerDispatcher();
 

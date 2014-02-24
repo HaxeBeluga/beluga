@@ -7,6 +7,7 @@ import beluga.core.module.ModuleImpl;
 import beluga.module.account.model.User;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import sys.db.Types;
+import beluga.module.account.SubscribeFailCause;
 
 /**
  * ...
@@ -24,7 +25,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 
-	public function login(login : String, password : String) {
+	public static function login(login : String, password : String) {
 		var user = User.manager.dynamicSearch({
 			login : login,
 			hashPassword: haxe.crypto.Md5.encode(password)
@@ -43,12 +44,13 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	//
 	// Return updated user
 	//
-	public function subscribe(login : String, password : String) : User {
+	public static function subscribe(login : String, password : String) : User {
 		//Check args
+		trace("AccountImpl.subscribe");
+		var beluga = Beluga.getInstance();
 		var user = new User();
 		user.login = login;
 		user.setPassword(password);
-
 		var userCheck = User.manager.dynamicSearch({login : user.login, hashPassword: user.hashPassword}).first();
 		if (userCheck == null) {
 			//Save user in db
@@ -56,9 +58,15 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 			user.subscribeDateTime = Date.now();
 			user.insert();
 			//TODO AB Send activation mail
-			beluga.triggerDispatcher.dispatch("SubscribeSuccess");
+			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_success", {
+				user: user
+			});
 		} else {
-			beluga.triggerDispatcher.dispatch("SubscribeFail");
+			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", {
+				cause: LoginAlReadyExist,
+				login: login,
+				password: password
+			});
 		}
 		return user;
 	}

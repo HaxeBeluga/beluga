@@ -16,11 +16,15 @@ class BelugaApi implements IAPI
 	public function doDefault(d : Dispatch) {
 		Sys.print("Vous etes sur la page d'accueil !");
 	}
-	
+
+	public function doAccount(d : Dispatch) {
+			d.dispatch(new AccountApi(beluga));		
+	}
+
 	/*
 	 * Modules API are generated like:
 		 * public function doModule(d : Dispatch) {
-			* d.dispatch(new ModuleAPI(beluga));
+			* d.dispatch(new ModuleApi(beluga));
 		 * }
 	 */
 

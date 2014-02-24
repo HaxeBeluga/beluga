@@ -12,15 +12,14 @@ class AccountApi
 	var beluga : Beluga;
 	var account : Account;
 
-	public function new(beluga : Beluga, account : Account) {
+	public function new(beluga : Beluga) {
 		this.beluga = beluga;
-		this.account = account;
+		this.account = beluga.getModuleInstance(Account);
 	}
 
 	//
 	//Login
 	//
-
 	public function doLogin() {
 		//The function should look like something like this:
 		//try {			
@@ -36,7 +35,7 @@ class AccountApi
 	public function doLoginPage() {
         var loginBox : Widget = account.getWidget("login"); //Generic method for all modules
         loginBox.context.login = "Toto"; // For instance, it would fill the username field with Toto
-        var subscribeBox : Widget = account.getWidget("subscribe");
+        var subscribeBox : Widget = account.getWidget("subcribe");
         var html : String = loginBox.render() + subscribeBox.render();
         Sys.print(html); 
 	}
@@ -45,13 +44,7 @@ class AccountApi
 	//Subscription
 	//
 	public function doSubscribe(args : { login : String, password : String }) {
-		beluga.triggerDispatcher.dispatch("Subscribe");
-	}
-
-	public function doSubscribePage() {
-        var subscribeBox : Widget = account.getWidget("subscribe");
-        var html : String = subscribeBox.render();
-        Sys.print(html);
+		beluga.triggerDispatcher.dispatch("beluga_account_subscribe");
 	}
 
 	public function doDefault() {

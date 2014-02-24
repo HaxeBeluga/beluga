@@ -70,8 +70,7 @@ class MacroHelper
 				var name : String = module.get("name");
 				var modulePath = MacroHelper.installPath + "/module/" + name.toLowerCase();
 				var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
-
-
+				Sys.println("Module " + name + " loaded");
 				//Build a list of modules config files
 				config = File.getContent(MacroHelper.installPath + "/module/" + name.toLowerCase() + "/config.xml");
 

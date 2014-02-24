@@ -12,13 +12,4 @@ interface Account extends Module
 
 	public function isLogged() : Bool;
 
-	//
-	// Mandatory field:
-	// 	User.hashPassword
-	// 	User.login
-	//
-	// Return updated user
-	//
-	public function subscribe(login : String, password : String) : User;
-
 }
