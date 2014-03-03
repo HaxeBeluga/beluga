@@ -23,7 +23,20 @@ class MacroHelper
 	//Macro context only
 	public static var installPath;
 	// Keep a list of modules to use it in other macros context
-	public static var modulesArray : Array<String> = new Array<String>();
+	// Need two vars because modulesArray getter would be call in loopFile which result in a compilation error
+	// (Since loop file is also available outside of the macro context)
+	private static var _modulesArray : Array<String> = null;
+	public static var modulesArray(get, null) : Array<String>;
+
+	public static function get_modulesArray() : Array<String>
+	{
+		if (_modulesArray == null)
+		{
+			_modulesArray = new Array<String>();
+			importConfig();
+		}
+		return _modulesArray;
+	}
 
 	//Need to be there since all loaded modules are referred here
 	//Resolve both simple and full path
@@ -86,7 +99,7 @@ class MacroHelper
 					}
 				}
 
-				modulesArray.push(name);
+				_modulesArray.push(name);
 				modules.push({name: name, path: module, config: config, tables: tables});
 			}
 		}
@@ -106,8 +119,16 @@ class MacroHelper
 		return path + "/beluga";
 	}
 
+	private static var cached : Expr = null; //Cache the result
 	macro public static function importConfig()
 	{
+		//Avoid compile error, useless otherwise
+		if (_modulesArray == null)
+			_modulesArray = new Array<String>();
+
+		if (cached != null)
+			return cached; //Make sure the method is processed once
+
 		var filename = "beluga.xml";
 		var pos = Context.currentPos();
 
@@ -156,7 +177,7 @@ class MacroHelper
 			});
 		}
 
-		var e : Expr =  {
+		cached =  {
 			expr : EObjectDecl([
 				{
 					field: "modules",
@@ -166,18 +187,6 @@ class MacroHelper
 			pos: pos
 		}
 
-		return e;
-
-		//Wait for a haxe compiler fix before using one of the line below
-//		var anon = { config: file, modules: modulesFile };
-//		return macro $e{anon};
-//		return macro $e(anon);
-		
-		//Dead code ???
-//		if (moduleList == "") {
-//			Sys.stderr().writeString("Warning: You have not enable any module");
-//			return macro {};
-//		}
-//		return Context.parse(moduleList, Context.currentPos());
+		return cached;
 	}	
 }
