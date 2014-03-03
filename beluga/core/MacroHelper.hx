@@ -46,7 +46,6 @@ class MacroHelper
 
 	private static function loopFiles(filename : String, output : String) {
 
-
 		//Load configuration
 		var file = File.getContent(filename); //Problem, where should we put this configuration file ?
 		var xml = Xml.parse(file);            //Is it necessary to let user edit it without recompile its project ? Solution => haxe.Resource

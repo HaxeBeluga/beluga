@@ -1,6 +1,12 @@
 package beluga.core;
 import haxe.xml.Fast;
 
+enum TriggerAccess
+{
+	INSTANCE;
+	STATIC;
+}
+
 /**
  * ...
  * @author Masadow
@@ -11,15 +17,35 @@ class Trigger
 	
 	private var routes : Array<CallbackTrigger>;
 
-	public function new(trigger : Fast)
+	public function new(trigger : Dynamic)
 	{
-		//Retrieve trigger event
-		action = trigger.att.name;
-		
-		//Get all callback
 		routes = new Array<CallbackTrigger>();
-		for (route in trigger.nodes.route) {
-			routes.push(new CallbackTrigger(route.att.resolve("class"), route.att.method, route.att.access == "static"));
+
+		if (Std.is(trigger, Fast))
+		{
+			var fastTrigger : Fast = cast trigger;
+
+			//Retrieve trigger event
+			action = fastTrigger.att.name;
+			
+			//Get all callback
+			for (route in fastTrigger.nodes.route) {
+				routes.push(new CallbackTrigger(route.att.resolve("class"), route.att.method, route.att.access == "static"));
+			}
+		}
+		else
+		{
+			//Retrieve trigger event
+			action = trigger.action;
+			
+			//Get all callback
+			for (route in cast(trigger.route, Array<Dynamic>))
+			{
+				if (route.access == STATIC)
+					routes.push(new CallbackTrigger(Type.getClassName(route.object), route.method, true));
+				else
+					routes.push(new CallbackTrigger(route.object, route.method, true));
+			}
 		}
 	}
 
@@ -33,25 +59,23 @@ class Trigger
 
 private class CallbackTrigger {
 
-	private var clazz : String;
+	private var clazz : Dynamic;
 	private var method : String;
 	private var isStatic : Bool;
 
-	public function new(clazz : String, method : String, isStatic : Bool) {
+	public function new(clazz : Dynamic, method : String, isStatic : Bool) {
 		this.clazz = clazz;
 		this.method = method;
 		this.isStatic = isStatic;
 	}
 	
-	//Support static call only
 	public function call(params : Dynamic = null) {
-		if (isStatic) {
-			var classType = Type.resolveClass(clazz);
+		if (params == null)
+			params = { };
 
-			if (params == null)
-				params = { };
+		if (Std.is(clazz, String))
+			clazz = Type.resolveClass(clazz);
 
-			Reflect.callMethod(classType, method, [params]);
-		}
+		Reflect.callMethod(clazz, method, [params]);
 	}
 }
