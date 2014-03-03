@@ -1,11 +1,11 @@
 <!-- List of account module triggers and routes -->
 <trigger name="login_request">
-	<route class="beluga.module.account.AccountImpl" method="login" access="static">
+	<route class="beluga.module.account.AccountImpl" method="login">
 	</route>
 </trigger>
 
 <trigger name="subscribe_request">
-	<route class="beluga.module.account.AccountImpl" method="subscribe" access="static">
+	<route class="beluga.module.account.AccountImpl" method="subscribe">
 	</route>
 </trigger>
 

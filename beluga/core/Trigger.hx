@@ -30,7 +30,7 @@ class Trigger
 			
 			//Get all callback
 			for (route in fastTrigger.nodes.route) {
-				routes.push(new CallbackTrigger(route.att.resolve("class"), route.att.method, route.att.access == "static"));
+				routes.push(new CallbackTrigger(route.att.resolve("class"), route.att.method, true));
 			}
 		}
 		else
