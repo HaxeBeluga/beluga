@@ -27,6 +27,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 	
+	// ???
 	@:option(password)
 	@:return(true)
 	public static function checkPassword(password : String) : Bool {
