@@ -13,6 +13,7 @@ class APIBuilder
 {
 	macro public static function build() : Array<Field>
 	{
+		Sys.println("Generating Beluga web dispatcher API");
 		var fields : Array<Field> = Context.getBuildFields();
 		var pos = Context.currentPos();
 
