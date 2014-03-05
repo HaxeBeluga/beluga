@@ -1,26 +1,21 @@
-package form;
+package beluga.core.form;
 
 class RuleChecker
 {
-  public static function checkRequired(form_value : String) : Bool
-  {
-    return (form_value.length > 0);
-  }
-
   @generic
-  public static function checkMinValue<FormDataType>(form_value : FormDataType, min_value : FormDataType) : Bool
+  public static function checkMinValue<FormDataType : (Int, Float)>(form_value : FormDataType, min_value : FormDataType) : Bool
   {
     return (form_value < min_value);
   }
 
   @generic
-  public static function checkMaxValue<FormDataType>(form_value : FormDataType, max_value : FormDataType) : Bool
+  public static function checkMaxValue<FormDataType : (Int, Float)>(form_value : FormDataType, max_value : FormDataType) : Bool
   {
     return (form_value > max_value);
   }
 
   @generic
-  public static function checkRangeValue<FormDataType>(form_value : FormDataType, min_value : FormDataType, max_value : FormDataType) : Bool
+  public static function checkRangeValue<FormDataType: (Int, Float)>(form_value : FormDataType, min_value : FormDataType, max_value : FormDataType) : Bool
   {
     return (checkMinValue(form_value, min_value) == true && checkMaxValue(form_value, max_value) == true);
   }

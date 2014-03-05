@@ -1,4 +1,4 @@
-package form;
+package beluga.core.form;
 
 @:autoBuild(form.ValidateMacro.build())
 class Form
@@ -14,4 +14,5 @@ class Form
   {
     return (!this.error.iterator().hasNext());
   }
+
 }
