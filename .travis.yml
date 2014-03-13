@@ -1,14 +1,25 @@
 language: java
 
+matrix:
+  - MODE='check'
+  - BROWSER=Chrome-stable ARGS='-x -b Chrome -u'
+
 before_script:
   - sudo add-apt-repository ppa:eyecreate/haxe -y
   - sudo apt-get update
   - sudo apt-get install haxe -y
+  - sudo apt-get install gcc-multilib g++-multilib
+  - sudo bash ./travis-setup.sh
+  - sudo $CHROME_SANDBOX &
   - mkdir ~/haxelib
   - haxelib setup ~/haxelib
+  - haxelib install hxcpp
+  - haxelib install munit
   - haxelib dev beluga .
   - haxelib run beluga setup templateTest
   - cd templateTest
 
 script:
   - haxe templateTest.hxml
+  - cd .. && bash ./testsrc/test.sh
+
