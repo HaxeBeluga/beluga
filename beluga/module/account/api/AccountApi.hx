@@ -44,7 +44,7 @@ class AccountApi
 	//Subscription
 	//
 	public function doSubscribe(args : { login : String, password : String }) {
-		beluga.triggerDispatcher.dispatch("beluga_account_subscribe");
+		beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args.login, args.password]);
 	}
 
 	public function doDefault() {

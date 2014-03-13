@@ -46,7 +46,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	//
 	public static function subscribe(login : String, password : String) : User {
 		//Check args
-		trace("AccountImpl.subscribe");
+		//trace("AccountImpl.subscribe");
 		var beluga = Beluga.getInstance();
 		var user = new User();
 		user.login = login;
@@ -58,15 +58,15 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 			user.subscribeDateTime = Date.now();
 			user.insert();
 			//TODO AB Send activation mail
-			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_success", {
-				user: user
-			});
+			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_success", [
+				user
+			]);
 		} else {
-			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", {
-				cause: LoginAlReadyExist,
-				login: login,
-				password: password
-			});
+			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", [
+				LoginAlReadyExist,
+				login,
+				password
+			]);
 		}
 		return user;
 	}
