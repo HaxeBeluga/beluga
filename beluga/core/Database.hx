@@ -2,8 +2,8 @@ package beluga.core;
 import beluga.core.BelugaException;
 import haxe.xml.Fast;
 import sys.db.Manager;
-import beluga.core.MacroHelper;
 import sys.db.TableCreate;
+import beluga.core.macro.ModuleLoader;
 
 /**
  * Contains
@@ -22,7 +22,7 @@ class Database
 	}
 	
 	public function initTable(module : String, table : String) {
-		var tableClass = MacroHelper.resolveModel(module, table);
+		var tableClass = ModuleLoader.resolveModel(module, table);
 
 		if (Reflect.hasField(tableClass, "manager")) {
 			var manager = Reflect.field(tableClass, "manager");

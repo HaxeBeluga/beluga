@@ -3,7 +3,8 @@ package beluga.core.api;
 import haxe.macro.Expr.Field;
 import haxe.macro.Context;
 import haxe.macro.Expr;
-import beluga.core.MacroHelper;
+import haxe.macro.Compiler;
+import beluga.core.macro.ConfigLoader;
 
 /**
  * ...
@@ -12,35 +13,49 @@ import beluga.core.MacroHelper;
 class APIBuilder
 {
 	macro public static function build() : Array<Field>
-	{
+	{	
 		var fields : Array<Field> = Context.getBuildFields();
 		var pos = Context.currentPos();
 
-		//for (module in MacroHelper.modulesArray)
-		//{
-			//var api : String = "beluga.module." + module.toLowerCase() + ".api." + module.charAt(0).toUpperCase() + module.substr(1) + "Api";
-			//fields.push({
-				//pos: pos,
-				//name: "do" + module.charAt(0).toUpperCase() + module.substr(1).toLowerCase(),
-				//meta: null,
-				//kind: FFun( {
-					//ret: null,
-					//params: [],
-					//expr: macro {
-						//d.dispatch(new $api(beluga));
-					//},
-					//args: [ {
-						//value: null,
-						//type: macro : Dispatch,
-						//opt: false,
-						//name: "d"
-					//}]
-				//}),
-				//doc: null,
-				//access: [APublic, AStatic]
-			//});
-		//}
-//
+		if (!ConfigLoader.isReady)
+			ConfigLoader.forceBuild();
+		
+		for (module in ConfigLoader.modules)
+		{
+			//var api : String = "beluga.module." + module.name.toLowerCase() + ".api." + module.name.charAt(0).toUpperCase() + module.name.substr(1) + "Api";
+			//new $api(beluga, cast MacroHelper.getModuleInstanceByName($v { module.name } )
+			var apiDecl = {
+				pos: Context.currentPos(),
+				expr: ENew( {
+					sub: null,
+					params: [],
+					pack: ["beluga", "module", module.name.toLowerCase(), "api"],
+					name: module.name.charAt(0).toUpperCase() + module.name.substr(1) + "Api"
+				},
+				[macro beluga, macro cast ModuleLoader.getModuleInstanceByName($v{module.name})])
+			};
+			fields.push({
+				pos: pos,
+				name: "do" + module.name.charAt(0).toUpperCase() + module.name.substr(1).toLowerCase(),
+				meta: null,
+				kind: FFun( {
+					ret: null,
+					params: [],
+					expr: macro {
+						d.dispatch(${apiDecl});
+					},
+					args: [ {
+						value: null,
+						type: macro : Dispatch,
+						opt: false,
+						name: "d"
+					}]
+				}),
+				doc: null,
+				access: [APublic]
+			});
+		}
+
 		return fields;
 	}	
 }
