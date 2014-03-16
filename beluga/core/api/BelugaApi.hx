@@ -1,8 +1,7 @@
 package beluga.core.api;
 
 import haxe.web.Dispatch;
-import beluga.module.account.Account;
-import beluga.module.account.api.AccountApi;
+import beluga.core.macro.ModuleLoader;
 
 class BelugaApi implements IAPI
 {
@@ -14,7 +13,7 @@ class BelugaApi implements IAPI
 
 	//Handle url like www.beluga.fr?trigger=login
 	public function doDefault(d : Dispatch) {
-		Sys.print("Vous etes sur la page d'accueil !");
+		Sys.print("Welcome !");
 	}
 	
 	/*
@@ -23,5 +22,4 @@ class BelugaApi implements IAPI
 			* d.dispatch(new ModuleAPI(beluga));
 		 * }
 	 */
-
 }

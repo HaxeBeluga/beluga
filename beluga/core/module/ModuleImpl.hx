@@ -1,11 +1,11 @@
 package beluga.core.module;
 import beluga.core.Beluga;
 import beluga.core.BelugaException;
-import beluga.core.MacroHelper;
 import beluga.core.Widget;
 import haxe.Resource;
 import haxe.xml.Fast;
 import sys.io.File;
+import beluga.core.macro.ConfigLoader.ModuleConfig;
 
 /**
  * ...

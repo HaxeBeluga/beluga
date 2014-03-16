@@ -1,4 +1,3 @@
-
 package beluga.module.account.api;
 
 import beluga.core.Beluga;
@@ -18,12 +17,12 @@ class AccountApi
 
 	public function doLogin() {
 		//The function should look like something like this:
-		//try {			
+		//try {
 		//	beluga.triggerDispatcher.dispatch("login")
 		//} catch (err : WrongLoginException) {
 		//	doDisplayLoginFailPage();
 		//} catch (err : WrongPasswordException) {
-		//	doDisplayLoginFailPage();		
+		//	doDisplayLoginFailPage();
 		//}
 		//doDisplayLoginSuccessPage();
 	}
