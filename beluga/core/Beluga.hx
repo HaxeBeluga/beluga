@@ -8,6 +8,8 @@ import php.Web;
 import sys.io.File;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
+import beluga.core.macro.ConfigLoader;
+import beluga.core.macro.ModuleLoader;
 
 //Enable or disable this line to check module compilations
 /**import beluga.core.module.ManualBuildModule;/**/
@@ -37,39 +39,25 @@ class Beluga
 
 	private function new()
 	{
+		ModuleLoader.init();
+		
 		triggerDispatcher = new TriggerDispatcher();
-
-		//Load configuration
-//		var file = File.getContent("beluga.xml"); //Problem, where should we put this configuration file ?
-//		var xml = Xml.parse(file);                //Is it necessary to let user edit it without recompile its project ?
-//		var fast = new Fast(xml);
-
-		// Look for active modules
-		var config = MacroHelper.importConfig();
-		var xml = Xml.parse(Resource.getString("beluga_config.xml"));
-		var fast = new Fast(xml);
-
-		// Load beluga general configuration
-		// Not used anymore => It has no sense if you move the bin folder whereas it should not be dependant of haxe installation after compilation
-//		installPath = Resource.getString("beluga_installPath");
-//		installPath = fast.node.install.att.path;
 
 		db = null;
 		//Connect to database
-		if (fast.hasNode.database) {
-			db = new Database(fast.node.database.elements);
+		if (ConfigLoader.config.hasNode.database) {
+			db = new Database(ConfigLoader.config.node.database.elements);
 		}
 
 		// Look for triggers
-		for (trigger in fast.nodes.trigger) {
+		for (trigger in ConfigLoader.config.nodes.trigger) {
 			var trig = new Trigger(trigger);
 			triggerDispatcher.register(trig);
 		}
 
 		//Init every modules
-		for (moduleName in Reflect.fields(config.modules)) {
-			var module = Reflect.field(config.modules, moduleName);
-			var moduleInstance : ModuleInternal = cast MacroHelper.getModuleInstanceByName(moduleName);
+		for (module in ConfigLoader.modules) {
+			var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
 			if (moduleInstance != null) {
 				moduleInstance._loadConfig(this, module);
 			}
@@ -90,7 +78,7 @@ class Beluga
 
 	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T
 	{
-		return cast MacroHelper.getModuleInstanceByName(Type.getClassName(clazz), key);
+		return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz), key);
 //		return T.getInstance();
 	}
 	
