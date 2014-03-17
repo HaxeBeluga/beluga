@@ -63,7 +63,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 			]);
 		} else {
 			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", [
-				LoginAlReadyExist,
+				LoginAlreadyExist,
 				login,
 				password
 			]);

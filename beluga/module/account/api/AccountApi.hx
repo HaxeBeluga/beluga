@@ -11,9 +11,9 @@ class AccountApi
 	var beluga : Beluga;
 	var account : Account;
 
-	public function new(beluga : Beluga) {
+	public function new(beluga : Beluga, account : Account) {
 		this.beluga = beluga;
-		this.account = beluga.getModuleInstance(Account);
+		this.account = account;
 	}
 
 	//
