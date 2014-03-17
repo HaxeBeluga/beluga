@@ -15,10 +15,6 @@ class BelugaApi implements IAPI
 	public function doDefault(d : Dispatch) {
 		Sys.print("Welcome !");
 	}
-
-	public function doAccount(d : Dispatch) {
-		d.dispatch(new AccountApi(beluga));
-	}
 	
 	/*
 	 * Modules API are generated like:
