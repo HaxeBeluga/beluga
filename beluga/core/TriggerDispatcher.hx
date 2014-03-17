@@ -20,7 +20,6 @@ class TriggerDispatcher
 	}
 
 	public function dispatch(event : String, params : Array<Dynamic> = null) {
-		//trace(event + " triggered");
 		for (trigger in triggers) {
 			if (trigger.action == event) {
 				trigger.trigger(params);

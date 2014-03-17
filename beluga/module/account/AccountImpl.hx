@@ -45,8 +45,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	// Return updated user
 	//
 	public static function subscribe(login : String, password : String) : User {
-		//Check args
-		//trace("AccountImpl.subscribe");
+		//TODO AB Check args
 		var beluga = Beluga.getInstance();
 		var user = new User();
 		user.login = login;
@@ -72,9 +71,9 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	}
 
 	public function activate(userId : SId) {
-		//var user = User.manager.get(userId);
-		//user.emailVerified = true;
-		//user.update();
+		var user = User.manager.get(userId);
+		user.emailVerified = true;
+		user.update();
 	}
 
 	@:option(password)
