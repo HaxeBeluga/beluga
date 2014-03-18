@@ -8,6 +8,7 @@ import beluga.module.account.model.User;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import sys.db.Types;
 import beluga.module.account.SubscribeFailCause;
+import haxe.Session;
 
 /**
  * ...
@@ -16,6 +17,10 @@ import beluga.module.account.SubscribeFailCause;
 class AccountImpl extends ModuleImpl implements AccountInternal
 {
 
+	private static inline var SESSION_USER = "session_user";
+	
+	public static var loggedUser(get, set) : User;
+	
 	public function new()
 	{
 		super();
@@ -25,33 +30,56 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 
-	public static function login(login : String, password : String) {
-		var user = User.manager.dynamicSearch({
-			login : login,
-			hashPassword: haxe.crypto.Md5.encode(password)
+	public static function login(args : {
+		login : String,
+		password : String
+	}) {
+		var user : List<User> = User.manager.dynamicSearch({
+			login : args.login,
+			hashPassword: haxe.crypto.Md5.encode(args.password)
 		});
 
-		if (user == null) {
-			//throw
+		if (user.length > 1) {
+			//Somethings wrong in database
+		} else if (user.length == 0) {
+			//login or password wrong
+		} else {
+			set_loggedUser(user.first());
 		}
-		//TODO AB mettre utilissateur en session
 	}
 
+	private static function subscribeCheckArgs(args : {
+		login : String,
+		password : String,
+		password_conf : String
+	}) : Map < String, List<String> > {
+		
+		//TODO place user form validation here
+		//Also validate that the user is unique with something like this
+		//User.manager.dynamicSearch({login : args.login, hashPassword: ahaxe.crypto.Md5.encode(args.password).first() != null;
+	
+		return new Map < String, List<String> > ();
+	}
+	
 	//
 	// Mandatory field:
-	// 	User.hashPassword
-	// 	User.login
+	// 	params.password
+	// 	params.password_conf
+	//  params.
 	//
 	// Return updated user
 	//
-	public static function subscribe(login : String, password : String) : User {
-		//TODO AB Check args
+	public static function subscribe(args : {
+		login : String,
+		password : String,
+		password_conf : String
+	}) {
 		var beluga = Beluga.getInstance();
-		var user = new User();
-		user.login = login;
-		user.setPassword(password);
-		var userCheck = User.manager.dynamicSearch({login : user.login, hashPassword: user.hashPassword}).first();
-		if (userCheck == null) {
+		var errorMap = subscribeCheckArgs(args);
+		if (errorMap.lenght == 0) {
+			var user = new User();
+			user.login = args.login;
+			user.setPassword(args.password);		
 			//Save user in db
 			user.emailVerified = true;//TODO AB Change when activation mail sended.
 			user.subscribeDateTime = Date.now();
@@ -62,12 +90,11 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 			]);
 		} else {
 			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", [
-				LoginAlreadyExist,
-				login,
-				password
+				errorMap,
+				args.login,
+				args.password
 			]);
 		}
-		return user;
 	}
 
 	public function activate(userId : SId) {
@@ -76,20 +103,17 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		user.update();
 	}
 
-	@:option(password)
-	@:return(true)
-	public static function checkPassword(password : String) : Bool {
-		return false;
+	public static function set_loggedUser(user : User) : User {
+		Session.set(SESSION_USER, user);
+		return user;
 	}
 
-	public function getLoggedUser() : User {
-		//TODO AB return user in session
-		return null;
+	public static function get_loggedUser() : User {
+		return Session.get(SESSION_USER);
 	}
 
 	public function isLogged() : Bool {
-		//TODO AB return si l'utilisateur est en session
-		return false;
+		return Session.get(SESSION_USER) != null;
 	}
 
 }

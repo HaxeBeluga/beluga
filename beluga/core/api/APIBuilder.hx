@@ -44,7 +44,9 @@ class APIBuilder
 					ret: null,
 					params: [],
 					expr: macro {
-						d.dispatch(${apiDecl});
+						Session.start();
+						d.dispatch($ { apiDecl } );
+						Session.close();
 					},
 					args: [ {
 						value: null,

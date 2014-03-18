@@ -2,8 +2,22 @@
 	<h1>Inscrivez vous</h1>
 
 	<form action="/beluga/account/subscribe" method="POST">
-		Email <input name="login" name="username" />
-		Mot de passe <input type="password" name="password" />
+		
+		<div class="field login">
+			<label class="label login" for="login">Identifiant </label>
+			<input class="input login" type="text" name="login" />
+		</div>
+		
+		<div class="field password">
+			<label class="label password" for="password">Mot de passe</label>
+			<input class="input password" type="password" name="password" />
+		</div>
+		
+		<div class="field password conf">
+			<label class="label password conf" for="password_conf">Mot de passe</label>
+			<input class="input password conf" type="password" name="password_conf" />
+		</div>
+
 		<input type="submit" value="S'inscrire" />
 	</form>
 </div>

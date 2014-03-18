@@ -19,22 +19,22 @@ class AccountApi
 	//
 	//Login
 	//
-	public function doLogin() {
-	}
-
-	public function doLoginPage() {
-        var loginBox : Widget = account.getWidget("login"); //Generic method for all modules
-        loginBox.context.login = "Toto"; // For instance, it would fill the username field with Toto
-        var subscribeBox : Widget = account.getWidget("subcribe");
-        var html : String = loginBox.render() + subscribeBox.render();
-        Sys.print(html); 
+	public function doLogin(args : {
+		login : String,
+		password : String,
+	}) {
+		beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
 	}
 
 	//
 	//Subscription
 	//
-	public function doSubscribe(args : { login : String, password : String }) {
-		beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args.login, args.password]);
+	public function doSubscribe(args : {
+		login : String,
+		password : String,
+		password_conf : String
+	}) {
+		beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args]);
 	}
 
 	public function doDefault() {

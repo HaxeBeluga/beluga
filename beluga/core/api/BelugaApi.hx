@@ -2,6 +2,7 @@ package beluga.core.api;
 
 import haxe.web.Dispatch;
 import beluga.core.macro.ModuleLoader;
+import haxe.Session;
 
 class BelugaApi implements IAPI
 {
