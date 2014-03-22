@@ -4,13 +4,13 @@
 	<form action="/beluga/account/login" method="POST">
 		
 		<div class="field login">
-			<label class="label login" for="login">Identifiant </label>
-			<input class="input login" type="text" name="login" />
+			<label class="login" for="login">Identifiant </label>
+			<input class="login" type="text" name="login" />
 		</div>
 		
 		<div class="field password">
-			<label class="label password" for="password">Mot de passe</label>
-			<input class="input password" type="password" name="password" />
+			<label class="password" for="password">Mot de passe</label>
+			<input class="password" type="password" name="password" />
 		</div>
 		<input type="submit" value="Se connecter" />
 	</form>

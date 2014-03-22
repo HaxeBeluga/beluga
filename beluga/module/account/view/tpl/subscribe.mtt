@@ -4,18 +4,18 @@
 	<form action="/beluga/account/subscribe" method="POST">
 		
 		<div class="field login">
-			<label class="label login" for="login">Identifiant </label>
-			<input class="input login" type="text" name="login" />
+			<label class="login" for="login">Identifiant </label>
+			<input class="login" type="text" name="login" />
 		</div>
 		
 		<div class="field password">
-			<label class="label password" for="password">Mot de passe</label>
-			<input class="input password" type="password" name="password" />
+			<label class="password" for="password">Mot de passe</label>
+			<input class="password" type="password" name="password" />
 		</div>
 		
 		<div class="field password conf">
-			<label class="label password conf" for="password_conf">Mot de passe</label>
-			<input class="input password conf" type="password" name="password_conf" />
+			<label class="password conf" for="password_conf">Mot de passe</label>
+			<input class="password conf" type="password" name="password_conf" />
 		</div>
 
 		<input type="submit" value="S'inscrire" />

@@ -18,9 +18,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 {
 
 	private static inline var SESSION_USER = "session_user";
-	
-	public static var loggedUser(get, set) : User;
-	
+
 	public function new()
 	{
 		super();
@@ -30,7 +28,14 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 
-	public static function login(args : {
+	public static function _login(args : {
+		login : String,
+		password : String
+	}) {
+		Beluga.getInstance().getModuleInstance(Account).login(args);
+	}
+
+	public function login(args : {
 		login : String,
 		password : String
 	}) {
@@ -41,14 +46,19 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 
 		if (user.length > 1) {
 			//Somethings wrong in database
+			beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
 		} else if (user.length == 0) {
 			//login or password wrong
+			beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
 		} else {
-			set_loggedUser(user.first());
+			setLoggedUser(user.first());
+			beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
+				user
+			]);
 		}
 	}
 
-	private static function subscribeCheckArgs(args : {
+	private function subscribeCheckArgs(args : {
 		login : String,
 		password : String,
 		password_conf : String
@@ -60,23 +70,22 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	
 		return new Map < String, List<String> > ();
 	}
-	
-	//
-	// Mandatory field:
-	// 	params.password
-	// 	params.password_conf
-	//  params.
-	//
-	// Return updated user
-	//
-	public static function subscribe(args : {
+
+	public static function _subscribe(args : {
 		login : String,
 		password : String,
 		password_conf : String
 	}) {
-		var beluga = Beluga.getInstance();
+		Beluga.getInstance().getModuleInstance(Account).subscribe(args);
+	}
+
+	public function subscribe(args : {
+		login : String,
+		password : String,
+		password_conf : String
+	}) {
 		var errorMap = subscribeCheckArgs(args);
-		if (errorMap.lenght == 0) {
+		if (Lambda.empty(errorMap)) {
 			var user = new User();
 			user.login = args.login;
 			user.setPassword(args.password);		
@@ -91,24 +100,23 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		} else {
 			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", [
 				errorMap,
-				args.login,
-				args.password
+				args
 			]);
 		}
 	}
 
-	public function activate(userId : SId) {
+	public function activateUser(userId : SId) {
 		var user = User.manager.get(userId);
 		user.emailVerified = true;
 		user.update();
 	}
 
-	public static function set_loggedUser(user : User) : User {
+	public function setLoggedUser(user : User) : User {
 		Session.set(SESSION_USER, user);
 		return user;
 	}
 
-	public static function get_loggedUser() : User {
+	public function getLoggedUser() : User {
 		return Session.get(SESSION_USER);
 	}
 
