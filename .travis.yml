@@ -22,4 +22,7 @@ before_script:
 script:
   - haxe templateTest.hxml
   - cd .. && bash ./testsrc/test.sh
+  
+notifications:
+  slack: beluga:TnSEYGr5VTjnqJkbFKMhJorQ
 
