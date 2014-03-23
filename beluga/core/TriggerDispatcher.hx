@@ -14,21 +14,21 @@ class TriggerDispatcher
 	{
 		triggers = new Array<Trigger>();
 	}
-	
+
 	public function register(trigger : Trigger) {
 		triggers.push(trigger);
 	}
-	
-	public function dispatch(event : String) {
+
+	public function dispatch(event : String, params : Array<Dynamic> = null) {
 		for (trigger in triggers) {
 			if (trigger.action == event) {
-				trigger.trigger();
+				trigger.trigger(params);
 			}
 		}
 	}
-	
+
 	public function redirect(target : String, forceHeader : Bool = true) {
-		if (forceHeader) {			
+		if (forceHeader) {
 			Web.redirect("index.php?trigger=" + target);
 		}
 		else {

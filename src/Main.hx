@@ -18,7 +18,7 @@ class Main
 		var args = Sys.args();
 		return args[args.length-1];
 	}
-	
+
 	public static function displayUsage() {
 		Sys.println("Usage:");
 		Sys.println("\t* help");
@@ -28,7 +28,7 @@ class Main
 		Sys.println("\t* add module_name");
 		Sys.println("\t\t* Must be run inside a beluga's project folder");
 	}
-	
+
 	static function main() {
 		var args = Sys.args();
 		var errorMessage : String = null;
@@ -46,7 +46,7 @@ class Main
 		}
 		else
 			displayUsage();
-			
+
 		if (errorMessage != null)
 			Sys.println(errorMessage);
 	}

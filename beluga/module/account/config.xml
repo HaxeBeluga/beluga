@@ -1,12 +1,13 @@
 <!-- List of account module triggers and routes -->
-<trigger name="login_request">
-	<route class="beluga.module.account.Account" method="login" access="static">
+<trigger name="beluga_account_login">
+	<route class="beluga.module.account.AccountImpl" method="_login" >
 	</route>
 </trigger>
 
-<trigger name="subscribe_request">
-	<route class="beluga.module.account.Account" method="subscribe" access="static">
+<trigger name="beluga_account_subscribe">
+	<route class="beluga.module.account.AccountImpl" method="_subscribe" >
 	</route>
 </trigger>
 
-<template name="login" path="${beluga.installPath}/module/account/src/tpl/login.mtt" />
+<template name="login" path="${beluga.installPath}/module/account/view/tpl/login.mtt" />
+<template name="subscribe" path="${beluga.installPath}/module/account/view/tpl/subscribe.mtt" />

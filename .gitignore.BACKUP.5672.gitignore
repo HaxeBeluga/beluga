@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+haxelib.json 
+=======
+#FlashDeveloppFiles
+*.hxproj
+
+#munit files
+build/
+report/
+>>>>>>> upstream/master

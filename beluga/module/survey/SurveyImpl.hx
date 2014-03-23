@@ -49,7 +49,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * param : none
 	 */
 	public function get() {
-		var user = Beluga.getModuleInstance(Account);
+		var user = Beluga.getModuleInstance(Account).getLoggedUser();
 		
 		m_surveys = new Array<SurveyData>;
 		
@@ -74,7 +74,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	static public function print(survey : Survey) : String
 	{
 		var res = "";
-		var user = Beluga.getModuleInstance(Account);
+		var user = Beluga.getModuleInstance(Account).getLoggedUser();
 
 		survey.get();
 
@@ -92,10 +92,12 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	}
 	
 	/*
-	 * called to create a nwew Survey (if doesn't exist)
+	 * called to create a new Survey (if doesn't exist)
 	 * param : title (String), status (Int), description (String), choices (Array<String>)
 	 */
 	public function create(title : String, status : Int, description : String, choices : Array<String>) {
+		var user = Beluga.getModuleInstance(Account).getLoggedUser();
+		
 		if (user == null || choices.length < 2)
 			return;
 		
@@ -108,8 +110,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		}
 		if (tmp_choices.length < 2)
 			return;
-		
-		m_user = user;
 		
 		var survey = new Survey;
 		survey.name = title;
@@ -134,7 +134,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * params : String (choice's name), Survey (to know in which survey you add the vote)
 	 */
 	public function vote(choice : String, survey : beluga.module.account.model.Survey) {
-		var user = Beluga.getModuleInstance(Account);
+		var user = Beluga.getModuleInstance(Account).getLoggedUser();
 
 		if (m_surveys == null)
 			this.get();
@@ -157,6 +157,13 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	
 	/*
 	 * return true if the User hasn't vote yet in this Survey
+	 */
+	public function canVote(user : User) : Bool {
+		return canVote(Beluga.getModuleInstance(Account).getLoggedUser());
+	}
+	
+	/*
+	 * return true if the User hasn't vote yet in this Survey
 	 * param : User
 	 */
 	public function canVote(user : User) : Bool {
@@ -167,6 +174,13 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		return true;
 	}
 	
+	/*
+	 * return the User choice (if exists) in this Survey
+	 */
+	public function getVote() : beluga.module.survey.model.Choice {
+		return getVote(Beluga.getModuleInstance(Account).getLoggedUser());
+	}
+	 
 	/*
 	 * return the User choice (if exists) in this Survey
 	 * param : User
