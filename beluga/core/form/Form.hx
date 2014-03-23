@@ -1,5 +1,6 @@
-package beluga.core.form;
+package form;
 
+@:autoBuild(form.TranslateMacro.build())
 @:autoBuild(form.ValidateMacro.build())
 class Form
 {

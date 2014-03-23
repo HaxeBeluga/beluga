@@ -1,23 +1,21 @@
-package beluga.core.form;
+package form;
 
 import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.macro.ComplexTypeTools;
 
+// TODO Remove when PUSH
+// import haxe.macro.ExprTools;
+
 class ValidateMacro
 {
-  private static function concatExpr(beg_expr : Expr, end_expr : Expr) : Expr
-  {
-    return ((beg_expr != null) ? macro {${beg_expr} ${end_expr}} : macro $end_expr);
-  }
-
-  private static function generateCondition(form_variable : Field, rule : MetadataEntry) : Expr
+  private static function generateCondition(field_name : String, rule : MetadataEntry) : Expr
   {
     var condition_name = "check" + rule.name;
-    var condition_arg = [macro $i{form_variable.name}].concat(rule.params);
+    var condition_arg = [macro $i{field_name}].concat(rule.params);
 
     // Verify the existence of the rule
-    if (Reflect.isFunction(Reflect.field(beluga.core.form.RuleChecker,condition_name)) == false)
+    if (Reflect.isFunction(Reflect.field(form.RuleChecker,condition_name)) == false)
     {
       Context.error("The rule '" + rule.name + "' is invalid in '"
                     + Context.getLocalClass() + "' object. Stop.",
@@ -27,26 +25,26 @@ class ValidateMacro
     // Resolve the "if" statement
     var condition_expr = macro
     {
-      if (beluga.core.form.RuleChecker.$condition_name($a{condition_arg}) == false)
+      if (form.RuleChecker.$condition_name($a{condition_arg}) == false)
       {
-        this.error[$v{form_variable.name}].push($v{rule.name});
+        this.error[$v{field_name}].push($v{rule.name});
       }
     }
 
     return (condition_expr);
   }
 
-  private static function generateDataChecker(form_variable : Field) : Expr
+  private static function generateDataChecker(field : Field) : Expr
   {
     var checker_expr = null;
 
     // Concat all conditions
-    for (rule in form_variable.meta)
+    for (rule in field.meta)
     {
-      var condition = generateCondition(form_variable, rule);
+      var condition = generateCondition(field.name, rule);
       if (condition != null)
       {
-        checker_expr = concatExpr(checker_expr, condition);
+        checker_expr = MacroTools.concatExpr(checker_expr, condition);
       }
     }
     return (checker_expr);
@@ -62,12 +60,15 @@ class ValidateMacro
       var data_checker = generateDataChecker(field);
       if (data_checker != null)
       {
-        body_proto = concatExpr(body_proto, data_checker);
+        body_proto = MacroTools.concatExpr(body_proto, data_checker);
       }
     }
 
     // Add the return statement. False if there are errors, true otherwise.
-    body_proto = concatExpr(body_proto, macro return (!this.error.iterator().hasNext()));
+    body_proto = MacroTools.concatExpr(body_proto, macro return (!this.error.iterator().hasNext()));
+
+    // TODO Remove when PUSH
+    // trace(ExprTools.toString(body_proto));
 
     return (body_proto);
   }

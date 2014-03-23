@@ -1,4 +1,6 @@
-package beluga.core.form;
+package form;
+
+
 
 class RuleChecker
 {
