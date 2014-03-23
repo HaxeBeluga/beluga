@@ -13,7 +13,9 @@ import beluga.core.macro.ConfigLoader;
 class APIBuilder
 {
 	macro public static function build() : Array<Field>
-	{	
+	{
+		Sys.println("Generating Beluga web dispatcher API");
+
 		var fields : Array<Field> = Context.getBuildFields();
 		var pos = Context.currentPos();
 
@@ -42,7 +44,9 @@ class APIBuilder
 					ret: null,
 					params: [],
 					expr: macro {
-						d.dispatch(${apiDecl});
+						Session.start();
+						d.dispatch($ { apiDecl } );
+						Session.close();
 					},
 					args: [ {
 						value: null,

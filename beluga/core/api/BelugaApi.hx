@@ -2,6 +2,7 @@ package beluga.core.api;
 
 import haxe.web.Dispatch;
 import beluga.core.macro.ModuleLoader;
+import haxe.Session;
 
 class BelugaApi implements IAPI
 {
@@ -19,7 +20,7 @@ class BelugaApi implements IAPI
 	/*
 	 * Modules API are generated like:
 		 * public function doModule(d : Dispatch) {
-			* d.dispatch(new ModuleAPI(beluga));
+			* d.dispatch(new ModuleApi(beluga));
 		 * }
 	 */
 }

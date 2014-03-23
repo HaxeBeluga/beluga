@@ -4,6 +4,7 @@ import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
+import beluga.module.account.model.User;
 
 class AccountApi 
 {
@@ -15,31 +16,29 @@ class AccountApi
 		this.account = account;
 	}
 
-	public function doLogin() {
-		//The function should look like something like this:
-		//try {
-		//	beluga.triggerDispatcher.dispatch("login")
-		//} catch (err : WrongLoginException) {
-		//	doDisplayLoginFailPage();
-		//} catch (err : WrongPasswordException) {
-		//	doDisplayLoginFailPage();
-		//}
-		//doDisplayLoginSuccessPage();
+	//
+	//Login
+	//
+	public function doLogin(args : {
+		login : String,
+		password : String,
+	}) {
+		beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
 	}
 
-	public function doDisplayLoginPage() {
-		var acc = beluga.getModuleInstance(Account);
-        var loginBox : Widget = acc.getWidget("login"); //Generic method for all modules
-        loginBox.context.login = "Toto"; // For instance, it would fill the username field with Toto
-        var subscribeBox : Widget = acc.getWidget("subscribe");
-        var html : String = loginBox.render() + subscribeBox.render();
-        Sys.print(html);
+	//
+	//Subscription
+	//
+	public function doSubscribe(args : {
+		login : String,
+		password : String,
+		password_conf : String
+	}) {
+		beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args]);
 	}
 
-	public function doDisplayLoginSuccessPage() {
-	}
-
-	public function doDisplayLoginFailPage() {
+	public function doDefault() {
+        trace("Account default page");
 	}
 
 }

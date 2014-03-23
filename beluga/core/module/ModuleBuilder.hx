@@ -17,7 +17,7 @@ class ModuleBuilder
 	//Load assets and src files
 	private static function loadResources(module : String) : Null<String> {
 		//Check if folder exists first, if not, compile error
-		var tplFolder = ConfigLoader.installPath + "/module/" + module + "/src/tpl/";
+		var tplFolder = ConfigLoader.installPath + "/module/" + module + "/view/tpl/";
 		if (!FileSystem.exists(tplFolder)) {
 			return "The module " + module + " does not exists or is bad formatted";
 		}

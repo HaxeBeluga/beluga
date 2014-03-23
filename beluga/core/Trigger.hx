@@ -69,13 +69,13 @@ private class CallbackTrigger {
 		this.isStatic = isStatic;
 	}
 	
-	public function call(params : Dynamic = null) {
+	public function call(params : Array<Dynamic> = null) {
 		if (params == null)
-			params = { };
+			params = new Array<Dynamic>();
 
 		if (Std.is(clazz, String))
 			clazz = Type.resolveClass(clazz);
 
-		Reflect.callMethod(clazz, method, [params]);
+		Reflect.callMethod(clazz, method, params);
 	}
 }

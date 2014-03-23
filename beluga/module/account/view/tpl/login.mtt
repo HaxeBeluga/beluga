@@ -1,0 +1,17 @@
+<div class="beluga account login" id="beluga_::_id::">
+	<h1>Connectez vous</h1>
+
+	<form action="/beluga/account/login" method="POST">
+		
+		<div class="field login">
+			<label class="login" for="login">Identifiant </label>
+			<input class="login" type="text" name="login" />
+		</div>
+		
+		<div class="field password">
+			<label class="password" for="password">Mot de passe</label>
+			<input class="password" type="password" name="password" />
+		</div>
+		<input type="submit" value="Se connecter" />
+	</form>
+</div>
