@@ -6,9 +6,9 @@ before_script:
   - sudo apt-get install haxe -y
   - mkdir ~/haxelib
   - haxelib setup ~/haxelib
-  - haxelib install session
   - haxelib dev beluga .
   - haxelib run beluga setup templateTest
+  - haxelib install session
   - cd templateTest
 
 script:
