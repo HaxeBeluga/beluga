@@ -51,6 +51,7 @@ class ModuleImpl implements ModuleInternal
 	public function getWidget(name : String) : Widget {
 		//First retrieve the class path
 		var module = Type.getClassName(Type.getClass(this)).split(".")[2];
-		return new Widget(module + "_" + name);
+		return new Widget(module, name);
 	}
+
 }

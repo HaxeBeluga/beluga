@@ -5,6 +5,7 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
+import haxe.web.Dispatch;
 
 class AccountApi 
 {
@@ -39,6 +40,10 @@ class AccountApi
 
 	public function doDefault() {
         trace("Account default page");
+	}
+	
+	public function doCss(d : Dispatch) {
+		d.dispatch(new CssApi() );
 	}
 
 }

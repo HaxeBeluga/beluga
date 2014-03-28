@@ -16,13 +16,25 @@ class Widget
 	private var id : Int;
 	private var html : String;
 	
-	public function new(resource : Null<String>)
+	private var css : String;
+
+	public function new(module : Null<String>, name : Null<String>)
 	{
-		if (resource != null) {
-			if (Lambda.has(available_resources, "beluga_" + resource))
-				filecontent = Resource.getString("beluga_" + resource);
-			else
-				throw new BelugaException("The widget " + resource + " does not exists");
+		if (module != null && name != null) {
+
+			//Load template
+			if (Lambda.has(available_resources, "beluga_" + module + "_" + name)) {
+				filecontent = Resource.getString("beluga_" + module + "_" + name);
+			} else {
+				throw new BelugaException("The widget " + name + " does not exists");
+			}
+			
+			if (Lambda.has(available_resources, "beluga_" + module + "_css_" + name)) {
+				css = Resource.getString("beluga_" + module + "_css_" + name);
+			} else {
+				//No Css file provide put log warning
+			}
+				
 		}
 		context = { };
 		id = 0;
@@ -36,6 +48,7 @@ class Widget
 			var t = new haxe.Template(filecontent);
 			context._id = ++last_id;
 			id = context.id;
+			context.cssurl = 
 			html = t.execute(context);
 		}
 		return html;
@@ -46,9 +59,13 @@ class Widget
 	}
 
 	public function clone() : Widget {
-		var ret = new Widget("");
+		var ret = new Widget(null, null);
 		ret.filecontent = filecontent;
 		ret.context = context;
 		return ret;
+	}
+	
+	public function getCss() : String {
+		return css;
 	}
 }
