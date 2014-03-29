@@ -45,6 +45,15 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	}
 	
 	/*
+	 * before calling this method, you have to instantiate the class with the get method
+	 * param : none
+	 * returns the SurveyData list of the current user
+	 */
+	public function getSurveysList() : Array<SurveyData> {
+		return m_surveys;
+	}
+	
+	/*
 	 * called to "instantiate" this class, based on the current User
 	 * param : none
 	 */
