@@ -9,6 +9,7 @@ before_script:
   - haxelib dev beluga .
   - haxelib run beluga setup templateTest
   - haxelib install session
+  - haxelib list
   - cd templateTest
 
 script:
