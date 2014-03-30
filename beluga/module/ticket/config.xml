@@ -1,7 +1,16 @@
-<!-- List of account module triggers and routes -->
-<trigger name="login">
-	<route class="beluga.module.ticket.Ticket" method="login" access="static">
-	</route>
+<!-- List of ticket module triggers and routes -->
+<trigger name="beluga_ticket_list">
+	<route class="beluga.module.ticket.TicketImpl" method="_list" ></route>
 </trigger>
-
-<template name="login" path="${beluga.installPath}/module/ticket/src/tpl/ticket.mtt" />
+<trigger name="beluga_ticket_create">
+	<route class="beluga.module.ticket.TicketImpl" method="_create" ></route>
+</trigger>
+<trigger name="beluga_ticket_update">
+	<route class="beluga.module.ticket.TicketImpl" method="_update" ></route>
+</trigger>
+<trigger name="beluga_ticket_set_status">
+	<route class="beluga.module.ticket.TicketImpl" method="_setStatus" ></route>
+</trigger>
+<trigger name="beluga_ticket_assign">
+	<route class="beluga.module.ticket.TicketImpl" method="_assign" ></route>
+</trigger>
