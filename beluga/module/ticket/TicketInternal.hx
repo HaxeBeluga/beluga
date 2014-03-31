@@ -6,12 +6,4 @@ import beluga.core.module.ModuleInternal;
  * 
  * @author Valentin & Jeremy
  */
-class  TicketInternal extends ModuleInternal extends Ticket
-{
-
-	public function new() 
-	{
-		
-	}
-	
-}
+interface TicketInternal extends ModuleInternal extends Ticket {}

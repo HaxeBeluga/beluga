@@ -1,4 +1,5 @@
 package beluga.module.ticket;
+
 import beluga.core.module.Module;
 
 /**
@@ -6,7 +7,10 @@ import beluga.core.module.Module;
  * 
  * @author Valentin & Jeremy
  */
-class Ticket extends Module
-{
-	
+interface Ticket extends Module {
+	public function browse(): Void;
+	public function create(): Void;
+	public function getBrowseContext(): Dynamic;
+	public function getBrowseCreate(): Dynamic;
+	public function getBrowseShow(): Dynamic;
 }

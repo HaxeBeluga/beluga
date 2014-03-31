@@ -1,0 +1,29 @@
+<div id="container">
+    <div id="ticket" class="container-fluid">
+        <div class="col-md12 ticket-button-nav">
+            <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
+            <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button disabled">New ticket</a>
+        </div>
+        <hr class="hr-ticket" />
+        <div class="col-md-10">
+            <input type="text" class="ticket-area form-control" placeholder="Title">
+            <p class="ticket-labels-list">Labels: </p>
+            <textarea class="ticket-area form-control"  rows="6" placeholder="Leave a comment"></textarea>
+            <span class="help-block">
+                Your text will be renderer using markdown, see <a href="">here</a> for a full
+                list of markdown commands.
+            </span>
+            <button type="button" class="btn btn-success btn-sm ticket-button-submit">Submit new ticket</button>
+        </div>
+        <div class="col-md-2">
+            <h4>Add Labels</h4>
+            <ul>
+                <li class="ticket-label"><span>Bug</span></li>
+                <li class="ticket-label"><span>Enhancement</span></li>
+                <li class="ticket-label"><span>Question</span></li>
+                <li class="ticket-label"><span>Tests</span></li>
+                <li class="ticket-label"><span>Feature</span></li>
+            </ul>
+        </div>
+    </div>
+</div>

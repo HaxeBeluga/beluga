@@ -1,11 +1,17 @@
 <!-- List of ticket module triggers and routes -->
-<trigger name="beluga_ticket_list">
-	<route class="beluga.module.ticket.TicketImpl" method="_list" ></route>
+<trigger name="beluga_ticket_browse">
+	<route class="beluga.module.ticket.TicketImpl" method="_browse" ></route>
 </trigger>
+<!-- <trigger name="beluga_ticket_show_browse">
+	<route class="beluga.module.ticket.TicketImpl" method="_showBrowse" ></route>
+</trigger> -->
 <trigger name="beluga_ticket_create">
 	<route class="beluga.module.ticket.TicketImpl" method="_create" ></route>
 </trigger>
-<trigger name="beluga_ticket_update">
+<!-- <trigger name="beluga_ticket_show_create">
+	<route class="beluga.module.ticket.TicketImpl" method="_showCreate" ></route>
+</trigger> -->
+<!-- <trigger name="beluga_ticket_update">
 	<route class="beluga.module.ticket.TicketImpl" method="_update" ></route>
 </trigger>
 <trigger name="beluga_ticket_set_status">
@@ -14,3 +20,4 @@
 <trigger name="beluga_ticket_assign">
 	<route class="beluga.module.ticket.TicketImpl" method="_assign" ></route>
 </trigger>
+ -->
