@@ -1,7 +1,7 @@
 <div class="beluga account login" id="beluga_::_id::">
 	<h1>Connectez vous</h1>
 
-	<form action="/beluga/account/login" method="POST">
+	<form action="::base_url::/beluga/account/login" method="POST">
 		
 		<div class="field login">
 			<label class="login" for="login">Identifiant </label>

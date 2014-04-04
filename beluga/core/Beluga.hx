@@ -27,6 +27,8 @@ class Beluga
 	public var db(default, null) : Database;
 	//Instance of beluga API, read only
 	public var api : BelugaApi;
+	//Keep track of some urls from the config
+	public var url(default, null) : Dynamic;
 
 	private static var instance = null;
 
@@ -40,6 +42,15 @@ class Beluga
 	private function new()
 	{
 		ModuleLoader.init();
+
+		//Load urls from config
+		url = {base: ""};
+		if (ConfigLoader.config.hasNode.url) {
+			for (urldef in ConfigLoader.config.node.url.elements)
+			{
+				Reflect.setField(url, urldef.name, urldef.innerData);
+			}
+		}
 		
 		triggerDispatcher = new TriggerDispatcher();
 

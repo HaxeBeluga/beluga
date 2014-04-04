@@ -1,7 +1,7 @@
 <div class="beluga account subscribe" id="::_id::">
 	<h1>Inscrivez vous</h1>
 
-	<form action="/beluga/account/subscribe" method="POST">
+	<form action="::base_url::/beluga/account/subscribe" method="POST">
 		
 		<div class="field login">
 			<label class="login" for="login">Identifiant </label>

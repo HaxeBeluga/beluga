@@ -36,7 +36,7 @@ class Widget
 			}
 				
 		}
-		context = { };
+		context = { base_url: Beluga.getInstance().url.base};
 		id = 0;
 		html = "";
 	}
