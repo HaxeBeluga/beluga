@@ -1,0 +1,29 @@
+<!-- List of ticket module triggers and routes -->
+<trigger name="beluga_ticket_browse">
+    <route class="beluga.module.ticket.TicketImpl" method="_browse" ></route>
+</trigger>
+<trigger name="beluga_ticket_create">
+    <route class="beluga.module.ticket.TicketImpl" method="_create" ></route>
+</trigger>
+<trigger name="beluga_ticket_show">
+    <route class="beluga.module.ticket.TicketImpl" method="_show" ></route>
+</trigger>
+<trigger name="beluga_ticket_reopen">
+    <route class="beluga.module.ticket.TicketImpl" method="_reopen" ></route>
+</trigger>
+<trigger name="beluga_ticket_close">
+    <route class="beluga.module.ticket.TicketImpl" method="_close" ></route>
+</trigger>
+<trigger name="beluga_ticket_comment">
+    <route class="beluga.module.ticket.TicketImpl" method="_comment" ></route>
+</trigger>
+<trigger name="beluga_ticket_submit">
+    <route class="beluga.module.ticket.TicketImpl" method="_submit" ></route>
+</trigger>
+<!-- <trigger name="beluga_ticket_update">
+    <route class="beluga.module.ticket.TicketImpl" method="_update" ></route>
+</trigger>
+<trigger name="beluga_ticket_assign">
+    <route class="beluga.module.ticket.TicketImpl" method="_assign" ></route>
+</trigger>
+ -->
