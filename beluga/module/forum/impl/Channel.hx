@@ -1,6 +1,9 @@
 package beluga.module.forum.impl;
 
 import beluga.tool.IDGenerator;
+import beluga.module.forum.model.Channel;
+import beluga.module.forum.model.Group;
+import beluga.module.forum.model.GroupPermission;
 
 class Channel
 {
@@ -20,7 +23,7 @@ class Channel
     channel.key = IDGenerator.generate();
     channel.parent = parent_chan;
 
-    Channel.manager.save(channel);
+    channel.insert();
   }
 
   public static function modify(args : {
@@ -34,16 +37,48 @@ class Channel
     channel.label = args.label;
     channel.parent_key = parent_key;
 
-    Channel.manager.save(channel);
+    channel.update();
   }
 
-  public function delete(args : {
+  public static function delete(args : {
     channel_key : String
   }) : Void
   {
     var channel = Channel.manager.select($key == args.channel_key);
 
-    Channel.manager.delete(channel);
+    channel.delete();
+  }
+
+  public static function addGroup(args : {
+    group_key : String,
+    channel_key : String,
+  }) : Void
+  {
+    
+  }
+
+  public static function removeGroup(args : {
+    group_key : String,
+    channel_key: String,
+  }) : Void
+  {
+    
+  }
+
+  public static function addUser(args : {
+    user_key : String,
+    channel_key : String,
+  }) : Void
+  {
+    
+  }
+
+  public static function removeUser(args : {
+    user_key : String,
+    channel_key: String,
+  }) : Void
+  {
+    
   }
 }
 

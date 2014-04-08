@@ -1,0 +1,13 @@
+<div class="beluga forum remove_channel" id="beluga_::_id::"> 
+  <h1>Remove a channel</h1>
+
+  <form action="/beluga/forum/remove_channel" method="POST">
+    
+    <div class="field remove_channel">
+      <label class="remove_channel" for="remove_channel">Label </label>
+      <input class="remove_channel" type="text" name="remove_channel" />
+    </div>
+
+    <input type="submit" value="Remove" />
+  </form>
+</div>

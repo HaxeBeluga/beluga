@@ -1,0 +1,13 @@
+<div class="beluga forum add_channel" id="beluga_::_id::"> 
+  <h1>Add a channel</h1>
+
+  <form action="/beluga/forum/add_channel" method="POST">
+    
+    <div class="field add_channel">
+      <label class="add_channel" for="add_channel">Label </label>
+      <input class="add_channel" type="text" name="add_channel" />
+    </div>
+
+    <input type="submit" value="Save" />
+  </form>
+</div>

@@ -1,0 +1,13 @@
+<div class="beluga forum modify_channel" id="beluga_::_id::"> 
+  <h1>Modify a channel</h1>
+
+  <form action="/beluga/forum/modify_channel" method="POST">
+    
+    <div class="field modify_channel">
+      <label class="modify_channel" for="modify_channel">Label </label>
+      <input class="modify_channel" type="text" name="modify_channel" />
+    </div>
+
+    <input type="submit" value="Modify" />
+  </form>
+</div>

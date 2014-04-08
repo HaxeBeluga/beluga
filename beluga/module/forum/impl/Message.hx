@@ -32,7 +32,7 @@ class Message
     mess.parent = null;
     mess.channel = channel;
 
-    Message.manager.save(mess);
+    mess.insert();
   }
 
   public static function modify(args : {
@@ -44,17 +44,14 @@ class Message
   }) : Void
   {
     var mess = Message.manager.select($key == args.message_key);
-    var status = Status.manager.select($key == args.status_key);
     var tag = Tag.manager.select($key == args.tag_key);
 
     mess.title = args.title;
     mess.content = args.content;
     mess.user = Beluga.getInstance().getModuleInstance(User).getLoggedUser();
-    mess.status = status;
-    mess.tag = tag;
     mess.edition_time = Date.now();
 
-    Message.manager.save(mess);
+    mess.update();
   }
 
   public static function delete(args : {
@@ -63,6 +60,45 @@ class Message
   {
     var mess = Message.manager.select($key == args.message_key);
 
-    Message.manager.delete(mess);
+    mess.delete();
+  }
+
+  public static function move(args : {
+    channel_key : String,
+    message_key : String
+  }) : Void
+  {
+    var channel = Channel.select($key == args.channel_key);
+    var mess = Message.manager.select($key == args.message_key);
+
+    mess.channel = channel;
+
+    mess.update();
+  }
+
+  public static function changeStatus(args : {
+    status_key : String,
+    message_key : String
+  }) : Void
+  {
+    var status = Status.manager.select($key == args.status_key);
+    var mess = Message.manager.select($key == args.message_key);
+
+    mess.status = status;
+
+    mess.update(); 
+  }
+
+  public static function changeTag(args : {
+    tag_key : String,
+    message_key : String
+  }) : Void
+  {
+    var tag = Tag.manager.select($key == args.tag_key);
+    var mess = Message.manager.select($key == args.message_key);
+
+    mess.tag = tag;
+
+    mess.update(); 
   }
 }
