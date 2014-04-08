@@ -10,6 +10,7 @@ import beluga.module.ticket.model.TicketModel;
 import beluga.module.ticket.model.Label;
 import beluga.module.ticket.model.Message;
 import beluga.module.ticket.model.TicketLabel;
+import beluga.module.account.Account;
 
 // Haxe
 import haxe.xml.Fast;
@@ -21,6 +22,8 @@ import haxe.xml.Fast;
  */
 class TicketImpl extends ModuleImpl implements TicketInternal {
     private var show_id: Int = 0;
+    // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
+    private var id_error: Int = 0;
 
     public function new() {
         super();
@@ -147,7 +150,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             ticket_message_count: message_count,
             messages_list: messages,
             labels_list: labels,
-            ticket_status: ticket.ti_status
+            ticket_status: ticket.ti_status,
+            error: this.id_error
         };
     }
 
@@ -155,11 +159,20 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         Beluga.getInstance().getModuleInstance(Ticket).reopen(args);
     }
 
+    /// Just get the id of the ticket, then reopen it
+    /// FIXME: Check if the user is logged then reopen else error message
     public function reopen(args: { id: Int }): Void {
         this.show_id = args.id;
-        var ticket = TicketModel.manager.get(args.id);
-        ticket.ti_status = 1;
-        ticket.update();
+ 
+         // first check if the user is logged
+        var account = Beluga.getInstance().getModuleInstance(Account);
+        if (!account.isLogged()) {
+            this.id_error = 4;
+        } else {
+            var ticket = TicketModel.manager.get(args.id);
+            ticket.ti_status = 1;
+            ticket.update();
+        }
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
     }
 
@@ -167,12 +180,51 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         Beluga.getInstance().getModuleInstance(Ticket).close(args);
     }
 
+    /// Just get the id of the ticket, then close it
+    /// FIXME: Check if the user is logged then closes else error message
     public function close(args: { id: Int }): Void {
         this.show_id = args.id;
-        var ticket = TicketModel.manager.get(args.id);
-        ticket.ti_status = 0;
-        ticket.update();
+        
+        // first check if the user is logged
+        var account = Beluga.getInstance().getModuleInstance(Account);
+        if (!account.isLogged()) {
+            this.id_error = 3;
+        } else {
+            var ticket = TicketModel.manager.get(args.id);
+            ticket.ti_status = 0;
+            ticket.update();
+        }
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
+    }
+
+    public static function _comment(args: { 
+        id: Int,
+        message: String 
+    }): Void  {
+        Beluga.getInstance().getModuleInstance(Ticket).comment(args);
+    }
+
+    public function comment(args: { 
+        id: Int,
+        message: String 
+    }): Void  {
+        this.show_id = args.id;
+        
+        // first check if the user is logged
+        var account = Beluga.getInstance().getModuleInstance(Account);
+        if (!account.isLogged()) {
+            this.id_error = 1;
+        } else if (args.message.length == 0) {
+            this.id_error = 2;
+        } else {
+            var message: Message = new Message();
+            message.me_content = args.message;
+            message.me_us_id_author = account.getLoggedUser().id;
+            message.me_date_creation = Date.now();
+            message.me_ti_id = args.id;
+            message.insert();
+        }
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
     }
 
 }

@@ -1,5 +1,15 @@
 <div id="container">
     <div id="ticket" class="container-fluid">
+        ::if (error != 0)::
+        <div class="alert alert-danger alert-dismissable">
+          <strong>Error!</strong> 
+            ::if (error == 1):: You must be logged to comment !
+            ::elseif (error == 2):: Your message cannot be empty !
+            ::elseif (error == 3):: You must be logged to close a ticket !
+            ::elseif (error == 4):: You must be logged to reopen a ticket !
+            ::end::
+        </div>
+        ::end::
         <div class="col-md12 ticket-button-nav">
             <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
             <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">New ticket</a>
@@ -26,17 +36,20 @@
                 </span>
             </div>
             ::end::
-            <textarea class="ticket-area form-control"  rows="6" placeholder="Leave a comment"></textarea>
+            <form action="/beluga/ticket/comment" method="POST">
+            <input type="hidden" name="id" value="::ticket_id::" />
+            <textarea class="ticket-area form-control" rows="6" placeholder="Leave a comment" name="message"></textarea>
             <span class="help-block">
-                Your text will be renderer using markdown, see <a href="">here</a> for a full
+                Your text will be renderer using markdown, see <a href="https://daringfireball.net/projects/markdown/">here</a> for a full
                 list of markdown commands.
             </span>
-            <button type="button" class="btn btn-info btn-sm ticket-button-submit">Comment</button>
+            <input type="submit" class="btn btn-info btn-sm ticket-button-submit" value="Comment"/>
             ::if (ticket_status == 1):: 
             <a href="/beluga/ticket/close?id=::ticket_id::" type="button" class="btn btn-danger btn-sm ticket-button-submit">Close</a>
             ::else::
             <a href="/beluga/ticket/reopen?id=::ticket_id::" type="button" class="btn btn-success btn-sm ticket-button-submit">Reopen</a>
             ::end::
+            </form>
         </div>
         <div class="col-md-2">
             <h4>Labels</h4>

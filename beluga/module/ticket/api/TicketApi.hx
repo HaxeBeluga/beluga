@@ -37,6 +37,10 @@ class TicketApi
         beluga.triggerDispatcher.dispatch("beluga_ticket_reopen", [args]);   
     }
 
+    public function doComment(args: { id: Int, message: String }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_comment", [args]);
+    }
+
     public function doCreate(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_create");
     }
