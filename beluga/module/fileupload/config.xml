@@ -1,0 +1,3 @@
+<trigger name="beluga_fileupload_browse">
+    <route class="beluga.module.fileupload.FileuploadImpl" method="_browse" ></route>
+</trigger>
