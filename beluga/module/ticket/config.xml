@@ -8,6 +8,12 @@
 <trigger name="beluga_ticket_show">
 	<route class="beluga.module.ticket.TicketImpl" method="_show" ></route>
 </trigger>
+<trigger name="beluga_ticket_reopen">
+	<route class="beluga.module.ticket.TicketImpl" method="_reopen" ></route>
+</trigger>
+<trigger name="beluga_ticket_close">
+	<route class="beluga.module.ticket.TicketImpl" method="_close" ></route>
+</trigger>
 <!-- <trigger name="beluga_ticket_update">
 	<route class="beluga.module.ticket.TicketImpl" method="_update" ></route>
 </trigger>

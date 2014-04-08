@@ -29,6 +29,14 @@ class TicketApi
         beluga.triggerDispatcher.dispatch("beluga_ticket_show", [args]);   
     }
 
+    public function doClose(args: { id: Int }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_close", [args]);   
+    }
+
+    public function doReopen(args: { id: Int }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_reopen", [args]);   
+    }
+
     public function doCreate(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_create");
     }

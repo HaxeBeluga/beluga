@@ -8,42 +8,42 @@
         <div class="col-md12 ticket-button-nav">
             <h3 class="list-group-item-heading">::ticket_subject::<span class="badge pull-right">#::ticket_id::</span></h3></a>
         </div>
-        <span class="label label-success">Open<small></span> <a href="">Paul Atreides</a> opened this issue 7 days ago - 3 comments</small>
+        ::if (ticket_status == 1):: <span class="label label-success">Open<small></span>
+        ::else:: <span class="label label-danger">Closed<small></span> 
+        ::end::
+        
+        <a href="">::ticket_owner::</a> opened this issue ::ticket_create_date:: days ago - ::ticket_message_count:: comments</small>
         <hr class="hr-ticket" />
         <div class="col-md-10">
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="">Paul Atreides</a></strong> commented 7 days ago</span>
-                <span class="list-group-item ticket-comment">It's seems to be a windows problem, i've just try last rsfml + last Rust master on OSX + linux and there is no problem ( sorry i have no windows ).
-                I think you should open a issue on the Rust repository because this seems to be a Rust compiler error.
-                Have you try to build rsfml with rustc src/lib.rs and the examples separately rustc -L [path_to_rsfml] src/example/pong/main.rs, just to see if it's the lib compilation who broke rustc or the examples.
-                </span>
+                <span class="list-group-item ticket-comment-head"><strong><a href="">::ticket_owner::</a></strong> commented ::ticket_create_date:: days ago</span>
+                <span class="list-group-item ticket-comment">::ticket_message::</span>
             </div>
+            ::foreach messages_list::
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="">Jeremy Letang</a></strong> commented 7 days ago</span>
-                <span class="list-group-item ticket-comment">lalalalalalalalai blah blah blah
+                <span class="list-group-item ticket-comment-head"><strong><a href="">::message_author::</a></strong> commented ::message_creation_date:: days ago</span>
+                <span class="list-group-item ticket-comment">::message_content::
                 </span>
             </div>
-            <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="">Pauline Portier</a></strong> commented 1 hour ago</span>
-                <span class="list-group-item ticket-comment">blah blah blah blah blah
-                </span>
-            </div>
+            ::end::
             <textarea class="ticket-area form-control"  rows="6" placeholder="Leave a comment"></textarea>
             <span class="help-block">
                 Your text will be renderer using markdown, see <a href="">here</a> for a full
                 list of markdown commands.
             </span>
-            <button type="button" class="btn btn-success btn-sm ticket-button-submit">Comment</button>
-            <button type="button" class="btn btn-danger btn-sm ticket-button-submit">Close</button>
+            <button type="button" class="btn btn-info btn-sm ticket-button-submit">Comment</button>
+            ::if (ticket_status == 1):: 
+            <a href="/beluga/ticket/close?id=::ticket_id::" type="button" class="btn btn-danger btn-sm ticket-button-submit">Close</a>
+            ::else::
+            <a href="/beluga/ticket/reopen?id=::ticket_id::" type="button" class="btn btn-success btn-sm ticket-button-submit">Reopen</a>
+            ::end::
         </div>
         <div class="col-md-2">
             <h4>Labels</h4>
             <ul>
-                <li class="ticket-label"><span>Bug</span></li>
-                <li class="ticket-label"><span>Enhancement</span></li>
-                <li class="ticket-label"><span>Question</span></li>
-                <li class="ticket-label"><span>Tests</span></li>
-                <li class="ticket-label"><span>Feature</span></li>
+                ::foreach labels_list::
+                <li class="ticket-label"><span>::label_name::</span></li>
+                ::end::
             </ul>
             <h4>Assignee</h4>
             <ul>

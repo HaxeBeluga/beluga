@@ -9,6 +9,7 @@ import beluga.module.account.model.User;
 import beluga.module.ticket.model.TicketModel;
 import beluga.module.ticket.model.Label;
 import beluga.module.ticket.model.Message;
+import beluga.module.ticket.model.TicketLabel;
 
 // Haxe
 import haxe.xml.Fast;
@@ -112,7 +113,66 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
     }
 
+    /// Create the context for the Show view:
+    /// * retrieve all the tickets data +
+    /// * all the comments associated to the ticket
+    /// * then all the labels associated to the tickets
     public function getShowContext(): Dynamic {
-        return {};
+        var ticket = TicketModel.manager.get(this.show_id);
+        var message_count = 0;
+        var messages: List<Dynamic> = new List<Dynamic>();
+        var labels: List<Dynamic> = new List<Dynamic>();
+
+        // retrieve messages informations
+        for( m in Message.manager.search($me_ti_id == ticket.ti_id) ) {
+            message_count += 1;
+            messages.push({
+                message_content: m.me_content,
+                message_creation_date: m.me_date_creation,
+                message_author: User.manager.get(m.me_us_id_author).login,
+            });
+        }
+
+        // retrieve associated labels
+        for( tl in TicketLabel.manager.search($tl_ticket_id == ticket.ti_id) ) {
+            labels.push( { label_name: Label.manager.get(tl.tl_label_id).la_name } );
+        }
+
+        return { 
+            ticket_subject: ticket.ti_title,
+            ticket_id: ticket.ti_id,
+            ticket_message: ticket.ti_content,
+            ticket_create_date: ticket.ti_date,
+            ticket_owner: User.manager.get(ticket.ti_us_id).login,
+            ticket_message_count: message_count,
+            messages_list: messages,
+            labels_list: labels,
+            ticket_status: ticket.ti_status
+        };
     }
+
+    public static function _reopen(args: { id: Int }): Void  {
+        Beluga.getInstance().getModuleInstance(Ticket).reopen(args);
+    }
+
+    public function reopen(args: { id: Int }): Void {
+        this.show_id = args.id;
+        var ticket = TicketModel.manager.get(args.id);
+        ticket.ti_status = 1;
+        ticket.update();
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
+    }
+
+    public static function _close(args: { id: Int }): Void  {
+        Beluga.getInstance().getModuleInstance(Ticket).close(args);
+    }
+
+    public function close(args: { id: Int }): Void {
+        this.show_id = args.id;
+        var ticket = TicketModel.manager.get(args.id);
+        ticket.ti_status = 0;
+        ticket.update();
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
+    }
+
 }
