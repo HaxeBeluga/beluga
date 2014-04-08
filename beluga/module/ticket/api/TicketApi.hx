@@ -44,6 +44,10 @@ class TicketApi
     public function doCreate(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_create");
     }
+
+    public function doValidate(args: { title: String, message: String }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_validate");
+    }
     
     public function doDefault(): Void {
         trace("Ticket default page");

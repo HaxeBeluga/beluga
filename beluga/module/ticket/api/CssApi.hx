@@ -17,4 +17,9 @@ class CssApi {
         Web.setHeader("Content-type", "text/css");
         Sys.print(Beluga.getInstance().getModuleInstance(Ticket).getWidget("create").getCss());
     }
+
+    public function doShow() {
+        Web.setHeader("Content-type", "text/css");
+        Sys.print(Beluga.getInstance().getModuleInstance(Ticket).getWidget("show").getCss());
+    }
 }

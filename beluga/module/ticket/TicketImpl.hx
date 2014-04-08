@@ -227,4 +227,17 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
     }
 
+    public static function _validate(args: { 
+        title: String, 
+        message: String 
+    }): Void {
+        Beluga.getInstance().getModuleInstance(Ticket).create();
+    }
+  
+    public function validate(args: { 
+        title: String, 
+        message: String 
+    }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
+    }
 }

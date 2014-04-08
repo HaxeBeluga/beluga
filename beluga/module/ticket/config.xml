@@ -17,6 +17,9 @@
 <trigger name="beluga_ticket_comment">
     <route class="beluga.module.ticket.TicketImpl" method="_comment" ></route>
 </trigger>
+<trigger name="beluga_ticket_validate">
+    <route class="beluga.module.ticket.TicketImpl" method="_validate" ></route>
+</trigger>
 <!-- <trigger name="beluga_ticket_update">
     <route class="beluga.module.ticket.TicketImpl" method="_update" ></route>
 </trigger>
