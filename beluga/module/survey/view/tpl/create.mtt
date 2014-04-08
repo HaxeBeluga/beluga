@@ -1,0 +1,73 @@
+<div id="mainDiv">
+	<h1>Title of Survey</h1>
+	<h2>Creation of new survey</h2>
+	<form action="::path::create" method="POST">
+		<div class="field title">
+			<label class="title" for="title">Title</label>
+			<input class="title" type="text" name="title" />
+		</div>
+		<!-- <div id="divChoices">
+			<div class="bottom"> -->
+				<div class="field choices">
+					<label class="choices" for="choices">Choice</label>
+					<input class="choices" type="text" name="choices" />
+				</div>
+				<div class="field choices2">
+					<label class="choices2" for="choices2">Choice</label>
+					<input class="choices2" type="text" name="choices2" />
+				</div>
+				<!-- <div id="1" class="bottom">
+					<label>Survey choice name</label>
+					<input name="surveyOption" type="text" name="survey_name" class="entry" value=""/>
+					<br/>
+				</div> -->
+			<!-- </div> -->
+			<!-- <a id="addEntry" type="button" class="btn btn-primary" onclick="addEntry();">Add entry</a> -->
+			<a id="addEntry" type="button" class="btn btn-primary">Add entry</a>
+		<!--</div>-->
+		<p id="error"></p>
+		<input type="submit" class="btn btn-primary" value="Create"/>
+	</form>
+</div>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+function addEntry(){
+	var tmp = $("#choices").children().size();
+	
+	<!-- I put a limit of suggestions -->
+	if (tmp > 20)
+		return;
+	tmp = $("#1").html();
+	
+	tmp = "<div id=\"1\" class=\"field choice\">" + tmp + "</div>";
+	$("#choices").append(tmp);
+}
+function sendSurvey(){
+	var arr = new Array();
+	var dataToSend = document.getElementsByName('title').item(0).value;
+	var done = 0;
+	if (dataToSend == ""){
+		$("#error").text("Missing survey's title");
+		return;
+	}
+	dataToSend = "name=" + dataToSend;
+	$("#error").text("");
+		
+	arr = document.getElementsByName('choices');
+	for (var i = 0; i < arr.length; i++){
+		var obj1 = arr.item(i);
+		
+		if (obj1.value != ""){
+			dataToSend = dataToSend + "&option " + i + "=" + obj1.value;
+			done = done + 1;
+		}
+	}
+	if (done < 2){
+		$("#error").text("Please enter at least two options");
+		return;
+	}
+	dataToSend = $("#survey_form").attr('action') + "?" + dataToSend;
+	window.location = dataToSend;
+}
+//addEntry();
+</script>
