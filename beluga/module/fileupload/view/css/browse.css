@@ -1,0 +1,11 @@
+.fileupload-uploaded-files {
+    margin-top: 50px;
+    width: 800px;
+    padding-right: 10px;
+    border-radius: 2px;
+    margin-bottom: 50px;
+}
+
+.fileupload-btn-download {
+    margin-right: 20px;
+}

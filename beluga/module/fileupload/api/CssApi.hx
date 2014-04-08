@@ -12,4 +12,9 @@ class CssApi {
         Web.setHeader("Content-type", "text/css");
         Sys.print(Beluga.getInstance().getModuleInstance(Fileupload).getWidget("browse").getCss());
     }
+
+    public function doSend() {
+        Web.setHeader("Content-type", "text/css");
+        Sys.print(Beluga.getInstance().getModuleInstance(Fileupload).getWidget("send").getCss());
+    }
 }

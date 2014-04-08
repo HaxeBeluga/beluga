@@ -1,3 +1,11 @@
 <trigger name="beluga_fileupload_browse">
     <route class="beluga.module.fileupload.FileuploadImpl" method="_browse" ></route>
 </trigger>
+
+<trigger name="beluga_fileupload_send">
+    <route class="beluga.module.fileupload.FileuploadImpl" method="_send" ></route>
+</trigger>
+
+<trigger name="beluga_fileupload_delete">
+	<route class="beluga.module.fileupload.FileuploadImpl" method="_delete" > </route>
+</trigger>

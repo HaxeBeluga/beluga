@@ -22,14 +22,22 @@ class FileuploadApi
     }
 
     public function doBrowse(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_file_upload_browse");   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_browse");   
+    }
+
+    public function doSend(): Void {
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_send");   
     }
 
     public function doDefault(): Void {
         trace("FileUpload default page");
     }
 
-    // public function doCss(d: Dispatch): Void {
-    //     d.dispatch(new CssApi());
-    // }
+    public function doDelete(args: { id: Int }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_delete", [args]);   
+    }
+
+    public function doCss(d: Dispatch): Void {
+        d.dispatch(new CssApi());
+    }
 }
