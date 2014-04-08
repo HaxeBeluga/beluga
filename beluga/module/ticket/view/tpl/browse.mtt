@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/beluga/ticket/css/browse"/>
-<div id="container">
-    <div id="ticket" class="container-fluid">
+    <div class="beluga ticket browse">
+    <div id="ticket" class="container-fluid container-fluid-ticket">
         <div class="col-md12 ticket-button-nav">
             <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm disabled">Browse tickets</a>
             <div class="btn-group" data-toggle="buttons">
@@ -14,7 +14,7 @@
             <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">New ticket</a>
         </div>
         <hr class="hr-ticket" />
-        <div class="col-md-3">
+        <div class="col-md-3 col-md-3-ticket">
             <ul>
                 <li class="who-ticket-browse"><span>Everyone's ticket</span></li>
                 <li class="who-ticket-browse"><span>Assigned to you</span></li>
@@ -27,7 +27,7 @@
                 ::end::
             </ul>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 col-md-9-ticket">
             <ul class="list-group ticket-list-browse">
                 ::foreach tickets_list::
                 <li class="list-group-item ::ticket_status::">
@@ -64,4 +64,4 @@
             }
         }
     </script>
-</div>
+    </div>

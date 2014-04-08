@@ -23,7 +23,7 @@ import haxe.xml.Fast;
 class TicketImpl extends ModuleImpl implements TicketInternal {
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
-    private var id_error: Int = 0;
+    private var error: String = "";
 
     public function new() {
         super();
@@ -83,6 +83,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         
             message_count = 0;
         }
+
         // Store all labels names in a dynamic
         for (l in Label.manager.search($la_id < 100)) {
             labels.push({ label: l.la_name });
@@ -104,7 +105,17 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     }
 
     public function getCreateContext(): Dynamic {
-        return {};
+        var labels: List<Dynamic> = new List<Dynamic>();
+
+        // Store all labels names in a dynamic
+        for (l in Label.manager.search($la_id < 100)) {
+            labels.push({ label_name: l.la_name });
+        }
+
+        return {
+            labels_list: labels,
+            ticket_error: this.error
+        };
     }
 
     public static function _show(args: { id: Int }): Void  {
@@ -151,7 +162,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             messages_list: messages,
             labels_list: labels,
             ticket_status: ticket.ti_status,
-            error: this.id_error
+            ticket_error: this.error
         };
     }
 
@@ -167,7 +178,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
          // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
-            this.id_error = 4;
+            this.error = "You must be logged to reopen a ticket !";
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.ti_status = 1;
@@ -188,7 +199,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
-            this.id_error = 3;
+            this.error = "You must be logged to close a ticket !";
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.ti_status = 0;
@@ -213,9 +224,9 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
-            this.id_error = 1;
+            this.error = "You must be logged to create a ticket !";
         } else if (args.message.length == 0) {
-            this.id_error = 2;
+            this.error = "Your message cannot be empty !";
         } else {
             var message: Message = new Message();
             message.me_content = args.message;
@@ -227,17 +238,37 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
     }
 
-    public static function _validate(args: { 
+    public static function _submit(args: { 
         title: String, 
         message: String 
     }): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).create();
+        Beluga.getInstance().getModuleInstance(Ticket).submit(args);
     }
   
-    public function validate(args: { 
+    public function submit(args: { 
         title: String, 
         message: String 
     }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
+        // first check if the user is logged
+        var account = Beluga.getInstance().getModuleInstance(Account);
+        var ticket = new TicketModel();
+        if (!account.isLogged()) {
+            this.error = "You must be logged to create a ticket !";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
+        } else if (args.title.length == 0) {
+            this.error = "Your title cannot be empty !";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
+        } else {
+            var date = Date.now();
+            ticket.ti_us_id = account.getLoggedUser().id;
+            ticket.ti_date = date;
+            ticket.ti_title = args.title;
+            ticket.ti_content = args.message;
+            ticket.ti_status = 1;
+            ticket.insert();
+            var ticket_id: Int = ticket.ti_id;
+            this.show_id = ticket_id;
+            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
+        }
     }
 }

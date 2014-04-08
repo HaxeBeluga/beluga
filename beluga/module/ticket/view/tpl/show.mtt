@@ -1,14 +1,8 @@
 <link rel="stylesheet" href="/beluga/ticket/css/show"/>
-<div id="container">
-    <div id="ticket" class="container-fluid">
-        ::if (error != 0)::
-        <div class="alert alert-danger alert-dismissable">
-          <strong>Error!</strong> 
-            ::if (error == 1):: You must be logged to comment !
-            ::elseif (error == 2):: Your message cannot be empty !
-            ::elseif (error == 3):: You must be logged to close a ticket !
-            ::elseif (error == 4):: You must be logged to reopen a ticket !
-            ::end::
+    <div id="ticket" class="container-fluid  container-fluid-ticket">
+        ::if (ticket_error != "")::
+        <div class="alert alert-danger alert-dismissable ticket-alert-error">
+          <strong>Error!</strong> ::ticket_error::
         </div>
         ::end::
         <div class="col-md12 ticket-button-nav">
@@ -65,4 +59,3 @@
             </ul>
         </div>
     </div>
-</div>

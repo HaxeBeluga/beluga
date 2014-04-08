@@ -14,7 +14,7 @@ interface Ticket extends Module {
 	public function reopen(args: { id: Int }): Void;
 	public function close(args: { id: Int }): Void;
 	public function comment(args: { id: Int, message: String }): Void;
-	public function validate(args: { title: String, message: String }): Void;
+	public function submit(args: { title: String, message: String }): Void;
 	public function getBrowseContext(): Dynamic;
 	public function getCreateContext(): Dynamic;
 	public function getShowContext(): Dynamic;

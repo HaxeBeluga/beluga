@@ -17,14 +17,11 @@
 <trigger name="beluga_ticket_comment">
     <route class="beluga.module.ticket.TicketImpl" method="_comment" ></route>
 </trigger>
-<trigger name="beluga_ticket_validate">
-    <route class="beluga.module.ticket.TicketImpl" method="_validate" ></route>
+<trigger name="beluga_ticket_submit">
+    <route class="beluga.module.ticket.TicketImpl" method="_submit" ></route>
 </trigger>
 <!-- <trigger name="beluga_ticket_update">
     <route class="beluga.module.ticket.TicketImpl" method="_update" ></route>
-</trigger>
-<trigger name="beluga_ticket_set_status">
-    <route class="beluga.module.ticket.TicketImpl" method="_setStatus" ></route>
 </trigger>
 <trigger name="beluga_ticket_assign">
     <route class="beluga.module.ticket.TicketImpl" method="_assign" ></route>

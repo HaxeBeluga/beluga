@@ -1,19 +1,13 @@
 /* override some bootstrap styles */
-.row,
-.container-fluid,
-.container,
-.col-md-9,
-.col-md-3,
-.col-md-2,
-.col-md-10 {
+.row-ticket,
+.container-fluid-ticket,
+.container-ticket,
+.col-md-9-ticket,
+.col-md-3-ticket,
+.col-md-2-ticket,
+.col-md-10-ticket {
     padding-left: 0px;
     padding-right: 0px;
-}
-
-ul,
-li {
-    list-style: none;
-    margin-left: -20px;
 }
 
 .help-block {
@@ -102,6 +96,8 @@ a:hover {
     padding-bottom: 2px;
     padding-left: 10px;
     margin-right: 10px;
+    list-style: none;
+    margin-left: -20px;
 }
 
 .ticket-label:hover {
@@ -116,6 +112,8 @@ a:hover {
     padding-bottom: 2px;
     padding-left: 10px;
     margin-right: 50px;
+    list-style: none;
+    margin-left: -20px;
 }
 
 .ticket-label-browse:hover {
@@ -131,6 +129,8 @@ a:hover {
     padding-bottom: 2px;
     padding-left: 10px;
     margin-right: 50px;
+    list-style: none;
+    margin-left: -20px;
 }
 .list-group-item:hover {
     background-color: whitesmoke;
@@ -146,3 +146,6 @@ a:hover {
     background-color: white;
 }
 
+.alert-danger {
+    margin-top: 10px;
+}
