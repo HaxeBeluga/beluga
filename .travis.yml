@@ -16,6 +16,3 @@ before_script:
 script:
   - haxe templateTest.hxml
   
-notifications:
-  slack: beluga:TnSEYGr5VTjnqJkbFKMhJorQ
-  
