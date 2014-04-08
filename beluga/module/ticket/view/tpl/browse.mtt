@@ -31,10 +31,10 @@
                 ::foreach tickets_list::
                 <li class="list-group-item ::ticket_status::">
                     <span class="badge">#::ticket_id::</span>
-                    <a href="ticket_show.html">
+                    <a href="/beluga/ticket/show?id=::ticket_id::">
                     <h4 class="list-group-item-heading">::ticket_subject::</h4></a>
                     <p class="list-group-item-text">
-                        <small>Opened by <a href="#">::ticket_owner::</a> -::ticket_date:: - 6 comments</small>
+                        <small>Opened by <a href="#">::ticket_owner::</a> -::ticket_date:: - ::ticket_comments_count:: comments</small>
                     </p>
                 </li>
                 ::end::

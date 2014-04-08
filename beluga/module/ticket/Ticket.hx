@@ -10,7 +10,8 @@ import beluga.core.module.Module;
 interface Ticket extends Module {
 	public function browse(): Void;
 	public function create(): Void;
+	public function show(args: { id: Int }): Void;
 	public function getBrowseContext(): Dynamic;
-	public function getBrowseCreate(): Dynamic;
-	public function getBrowseShow(): Dynamic;
+	public function getCreateContext(): Dynamic;
+	public function getShowContext(): Dynamic;
 }

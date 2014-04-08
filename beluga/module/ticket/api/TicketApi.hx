@@ -21,20 +21,23 @@ class TicketApi
         this.ticket = ticket;
     }
 
-    public function doBrowse() {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_browse");
-        
+    public function doBrowse(): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_browse");   
     }
 
-    public function doCreate() {
+    public function doShow(args: { id: Int }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show", [args]);   
+    }
+
+    public function doCreate(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_create");
     }
     
-    public function doDefault() {
+    public function doDefault(): Void {
         trace("Ticket default page");
     }
 
-    public function doCss(d: Dispatch) {
+    public function doCss(d: Dispatch): Void {
         d.dispatch(new CssApi());
     }
 
