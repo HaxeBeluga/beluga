@@ -1,5 +1,5 @@
 <!-- List of forum module triggers and routes -->
-<trigger name="beluga_forum_channel_add">
+<trigger name="beluga_forum_add_channel">
   <route class="beluga.module.forum.ForumImpl" method="_addChannel">
   </route>
 </trigger>

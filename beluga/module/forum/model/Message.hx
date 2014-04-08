@@ -10,10 +10,11 @@ import beluga.module.account.model.User;
 @:index(user, status, tag, parent, channel)
 class Message extends Object {
   public var id : SId;
-  public var key : SString<a12>
+  public var key : SString<12>
   public var title : SString<255>;
   public var content : SText;
   public var creation_time : STimeStamp;
+  public var edition_time : Null<STimeStamp> = null;
   public var user : User;
   public var status : Status;
   public var tag : Tag;
