@@ -3,31 +3,33 @@ package;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
 import massive.munit.async.AsyncFactory;
-import beluga.module.survey.Survey;
+#if php
 import beluga.core.Beluga;
+import beluga.module.survey.Survey;
+#end
 
 class SurveyTest
 {
 	private var timer:Timer;
+	#if php
+	private var survey : Survey;
+	private var beluga : Beluga;
+	#end
+	private var TEST_ID: Int = 1;
+
 
 	public function new()
 	{
 
 	}
 
-	@BeforeClass
-	public function beforeClass():Void
-	{
-	}
-
-	@AfterClass
-	public function afterClass():Void
-	{
-	}
-
 	@Before
 	public function setup():Void
 	{
+		#if php
+		this.beluga = Beluga.getInstance();
+		this.survey = this.beluga.getModuleInstance(Survey);
+		#end
 	}
 
 	@After
@@ -38,40 +40,23 @@ class SurveyTest
 	@Test
 	public function testGetSurveysList():Void
 	{
+		#if php
 		var sur = Beluga.getInstance().getModuleInstance(Survey);
 		sur.get();
 		var list = sur.getSurveysList();
 
 		Assert.isTrue(list != null);
+		#end
 	}
 
 	@Test
 	public function testGetVote():Void
 	{
+		#if php
 		var sur = Beluga.getInstance().getModuleInstance(Survey);
 
 		Assert.isTrue(sur.getVote() != null);
+		#end
 	}
 
-	@AsyncTest
-	public function testAsyncExample(factory:AsyncFactory):Void
-	{
-		var handler:Dynamic = factory.createHandler(this, onTestAsyncExampleComplete, 300);
-		timer = Timer.delay(handler, 200);
-	}
-
-	private function onTestAsyncExampleComplete():Void
-	{
-		Assert.isFalse(false);
-	}
-
-
-	/**
-	* test that only runs when compiled with the -D testDebug flag
-	*/
-	@TestDebug
-	public function testExampleThatOnlyRunsWithDebugFlag():Void
-	{
-		Assert.isTrue(true);
-	}
 }

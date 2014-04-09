@@ -193,4 +193,12 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         }
         beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension_success", []);
     }
+
+    public function extensionIsValid(name: String): Bool {
+        if (Extension.manager.search($ex_name == name).length != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

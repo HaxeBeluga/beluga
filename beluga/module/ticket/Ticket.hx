@@ -22,4 +22,12 @@ interface Ticket extends Module {
 	public function getCreateContext(): Dynamic;
 	public function getShowContext(): Dynamic;
 	public function getAdminContext(): Dynamic;
+
+	public function getLabelsList(): List<Dynamic>;
+	public function getTicketMessageCount(ticket_id: Int): Int;
+	public function labelExist(label_name: String): Bool;
+	public function labelExistFromID(label_id: Int): Bool;
+	public function createNewLabel(label_name: String): Void;
+	public function getTicketLabels(ticket_id: Int): List<Dynamic>;
+	public function getTicketMessages(ticket_id: Int): List<Dynamic>;
 }

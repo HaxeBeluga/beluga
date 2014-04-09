@@ -1,8 +1,11 @@
 import massive.munit.TestSuite;
 
-import ExampleTest;
-import NotificationTest;
 import SurveyTest;
+import TicketTest;
+import NotificationTest;
+import DataCheckerTest;
+import ExampleTest;
+import FileUploadTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -16,8 +19,11 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
-		add(ExampleTest);
-		add(NotificationTest);
 		add(SurveyTest);
+		add(TicketTest);
+		add(NotificationTest);
+		add(DataCheckerTest);
+		add(ExampleTest);
+		add(FileUploadTest);
 	}
 }

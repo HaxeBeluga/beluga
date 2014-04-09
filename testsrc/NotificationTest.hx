@@ -3,31 +3,32 @@ package;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
 import massive.munit.async.AsyncFactory;
-import beluga.module.notification.Notification;
+#if php
 import beluga.core.Beluga;
+import beluga.module.notification.Notification;
+#end
 
 class NotificationTest
 {
 	private var timer:Timer;
+	#if php
+	private var notif : Notification;
+	private var beluga : Beluga;
+	#end
+	private var TEST_ID: Int = 1;
 
 	public function new()
 	{
-
-	}
-
-	@BeforeClass
-	public function beforeClass():Void
-	{
-	}
-
-	@AfterClass
-	public function afterClass():Void
-	{
+		
 	}
 
 	@Before
 	public function setup():Void
 	{
+		#if php
+		this.beluga = Beluga.getInstance();
+		this.notif = this.beluga.getModuleInstance(Notification);
+		#end
 	}
 
 	@After
@@ -38,32 +39,24 @@ class NotificationTest
 	@Test
 	public function testGetNotifications():Void
 	{
+		#if php
 		var sur = Beluga.getInstance().getModuleInstance(Notification);
 		sur.get();
 		var list = sur.getNotifications();
-
 		Assert.isTrue(list != null);
+		#end
 	}
 
-	@AsyncTest
-	public function testAsyncExample(factory:AsyncFactory):Void
+	@Test
+	public function createNewNotification():Void
 	{
-		var handler:Dynamic = factory.createHandler(this, onTestAsyncExampleComplete, 300);
-		timer = Timer.delay(handler, 200);
-	}
-
-	private function onTestAsyncExampleComplete():Void
-	{
-		Assert.isFalse(false);
-	}
-
-
-	/**
-	* test that only runs when compiled with the -D testDebug flag
-	*/
-	@TestDebug
-	public function testExampleThatOnlyRunsWithDebugFlag():Void
-	{
-		Assert.isTrue(true);
+		#if php
+		notif.create({
+			title: "Test",
+			text: "Test",
+			user_id: TEST_ID
+		})
+		Assert.isTrue(notif.exist(TEST_ID));
+		#end
 	}
 }
