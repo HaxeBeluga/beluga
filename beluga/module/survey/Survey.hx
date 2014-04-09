@@ -12,10 +12,8 @@ interface Survey extends Module
 	public function print(args : {id : Int}) : Void;
 	public function create(args : {
 		title : String,
-		//status : Int,
-		//description : String,
-		choices : String,
-		choices2 : String
+		description : String,
+		choices : Array<String>
 	}) : Void;
 	public function vote(args : {
 		id : Int,

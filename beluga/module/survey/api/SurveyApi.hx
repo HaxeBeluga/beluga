@@ -5,6 +5,7 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.survey.Survey;
 import haxe.web.Dispatch;
+import php.Web;
 
 class SurveyApi 
 {
@@ -18,12 +19,19 @@ class SurveyApi
 
 	public function doCreate(args : {
 		title : String,
-		//status : Int,
-		//description : String,
-		choices : String,
-		choices2 : String
+		description : String,
+		choices : String
 	}) {
-		beluga.triggerDispatcher.dispatch("beluga_survey_create", [args]);
+		var tmp = new Array<String>();
+		var x = Web.getParams();
+		x.remove("description");
+		x.remove("title");
+
+		for (t in x)
+			tmp.push(t);
+
+		beluga.triggerDispatcher.dispatch("beluga_survey_create", 
+			[{title : args.title, description : args.description, choices : tmp}]);
 	}
 
 	public function doVote(args : {id : Int, option : Int}) {

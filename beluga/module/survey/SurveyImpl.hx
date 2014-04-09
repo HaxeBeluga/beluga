@@ -127,10 +127,8 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 
 	public static function _create(args : {
 		title : String,
-		//status : Int,
-		//description : String,
-		choices : String,
-		choices2 : String
+		description : String,
+		choices : Array<String>
 	}) {
 		Beluga.getInstance().getModuleInstance(Survey).create(args);
 	}
@@ -141,15 +139,15 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 */
 	public function create(args : {
 		title : String,
-		//status : Int,
-		//description : String,
-		choices : String,
-		choices2 : String
+		description : String,
+		choices : Array<String>
 	}) {
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 		
-		if (user == null || args.choices.length < 2)
+		if (user == null || args.choices == null || args.choices.length < 2) {
 			beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
+			return;
+		}
 		
 		var tmp_choices = new Array<String>();
 		
@@ -158,11 +156,19 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 			tmp_choices.push(tmp);
 			args.choices.remove(tmp);
 		}*/
-		tmp_choices.push(args.choices);
-		tmp_choices.push(args.choices2);
+		
+		/*tmp_choices.push(args.choices);
+		tmp_choices.push(args.choices2);*/
+		if (args.choices != null)
+			for (t in args.choices)
+				if (t != null && t != "")
+					tmp_choices.push(t);
+		//tmp_choices.push(args.choices);
 
-		if (tmp_choices.length < 2)
+		if (tmp_choices.length < 2 || args.title == "") {
 			beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
+			return;
+		}
 
 		var survey = new SurveyModel();
 
@@ -170,8 +176,8 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		//survey.status = args.status;
 		//survey.dateEnd = ;
 		survey.author_id = user.id;
-		//survey.description = args.description;
-		survey.multiple_choice = args.choices.length;
+		survey.description = args.description;
+		survey.multiple_choice = args.choices != null ? args.choices.length : 0;
 		
 		survey.insert();
 		for (tmp in tmp_choices) {
@@ -199,7 +205,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	 * called when a User add a vote for a Survey
 	 * params : String (choice's name), Survey (to know in which survey you add the vote)
 	 */
-
 	public function vote(args : {
 		id : Int,
 		option : Int
