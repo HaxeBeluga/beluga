@@ -68,6 +68,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             // insert tickets data
             tickets.push({
                 ticket_owner: User.manager.get(t.ti_us_id).login,
+                ticket_owner_id: User.manager.get(t.ti_us_id).id,
                 ticket_subject: t.ti_title,
                 ticket_date: t.ti_date,
                 ticket_id: t.ti_id,
@@ -167,7 +168,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             labels_list: labels,
             ticket_status: ticket.ti_status,
             ticket_error: this.error,
-            ticket_assignee: assignee
+            ticket_assignee: assignee,
+            ticket_owner_id: User.manager.get(ticket.ti_us_id).id
         };
     }
 
@@ -239,8 +241,20 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             message.me_date_creation = Date.now();
             message.me_ti_id = args.id;
             message.insert();
+            this.notifyTicketComment(args.id);
         }
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
+    }
+
+    public function notifyTicketComment(ticket_id: Int) {
+        var ticket = TicketModel.manager.search($ti_id == ticket_id).first();
+        var notify = {
+            title: "New comment !",
+            text: "Someone post a new comment to your ticket: " + ticket.ti_title +
+            " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" +  ".",
+            user_id: ticket.ti_us_id
+        };
+        beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [notify]); 
     }
 
     public static function _submit(args: { 
@@ -283,7 +297,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
                 var args = {
                     title: "Ticket assignnment: " + args.title + " !",
                     text: "You've been assigned to the ticket number " + ticket_id + ", " +
-                    args.title + " by " + account.getLoggedUser().login + ".",
+                    args.title + " by " + account.getLoggedUser().login + 
+                    " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" + ".",
                     user_id: assignement.as_us_id
                 };
                 beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [args]); 
@@ -434,6 +449,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
                 message_content: m.me_content,
                 message_creation_date: m.me_date_creation,
                 message_author: User.manager.get(m.me_us_id_author).login,
+                message_author_id: m.me_us_id_author
             });
         }
 

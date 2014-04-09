@@ -17,16 +17,16 @@
         ::else:: <span class="label label-danger">Closed<small></span> 
         ::end::
         
-        <a href="">::ticket_owner::</a> opened this issue ::ticket_create_date:: days ago - ::ticket_message_count:: comments</small>
+        <a href="/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> opened this issue ::ticket_create_date:: days ago - ::ticket_message_count:: comments</small>
         <hr class="hr-ticket" />
         <div class="col-md-10">
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="">::ticket_owner::</a></strong> commented ::ticket_create_date:: days ago</span>
+                <span class="list-group-item ticket-comment-head"><strong><a href="/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a></strong> commented ::ticket_create_date:: days ago</span>
                 <span class="list-group-item ticket-comment">::ticket_message::</span>
             </div>
             ::foreach messages_list::
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="">::message_author::</a></strong> commented ::message_creation_date:: days ago</span>
+                <span class="list-group-item ticket-comment-head"><strong><a href="/beluga/account/showUser?id=::message_author_id::">::message_author::</a></strong> commented ::message_creation_date:: days ago</span>
                 <span class="list-group-item ticket-comment">::message_content::
                 </span>
             </div>

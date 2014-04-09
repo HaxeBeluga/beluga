@@ -35,7 +35,7 @@
                     <a href="/beluga/ticket/show?id=::ticket_id::">
                     <h4 class="list-group-item-heading">::ticket_subject::</h4></a>
                     <p class="list-group-item-text">
-                        <small>Opened by <a href="#">::ticket_owner::</a> -::ticket_date:: - ::ticket_comments_count:: comments</small>
+                        <small>Opened by <a href="/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> -::ticket_date:: - ::ticket_comments_count:: comments</small>
                     </p>
                 </li>
                 ::end::

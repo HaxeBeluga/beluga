@@ -231,6 +231,14 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		res.choice_id = args.option;
 		res.insert();
 		
+		var notify = {
+			title: "New answer to your survey !",
+			text: user.login + " has just answer to your survey " + survey.name + 
+			" <a href=\"/beluga/survey/print?id=" + survey.id + "\">See</a>.",
+			user_id: survey.author_id
+		};
+
+		beluga.triggerDispatcher.dispatch("beluga_survey_answer_notify", [notify]); 
 		beluga.triggerDispatcher.dispatch("beluga_survey_vote_success", []);
 	}
 	

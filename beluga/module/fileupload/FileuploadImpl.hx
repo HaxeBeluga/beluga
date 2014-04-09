@@ -96,6 +96,12 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         if (up.is_valid == false) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_upload_fail", [{reason: "Invalid file extension"}]);            
         } else {
+            var notif = {
+                title: "File transfer completed !",
+                text: "Your file transfer terminate with success, you can consult your files in the file upload section !",
+                user_id: Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id
+            };
+            beluga.triggerDispatcher.dispatch("beluga_fileupload_notify_upload_success", [notif]);
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success", []);
         }
     }
