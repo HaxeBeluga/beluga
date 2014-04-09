@@ -48,7 +48,7 @@ class Widget
 			var t = new haxe.Template(filecontent);
 			context._id = ++last_id;
 			id = context.id;
-			context.cssurl = 
+			context.cssurl =
 			html = t.execute(context);
 		}
 		return html;

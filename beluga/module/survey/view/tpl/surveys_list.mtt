@@ -1,0 +1,20 @@
+<div>
+	<h1>Surveys list for <b>::user.login::</b> user</h1><br/>
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	<div>
+		<ul class="list-group">
+		::foreach surveys::
+			<li class="list-group-item">
+				<a class="btn btn-danger btn-xs pull-right" href="::path::delete?id=::m_survey.id::">Delete</a>
+				<a href="::path::print?id=::m_survey.id::" class="btn">::m_survey.name::</a>
+			</li>
+		::end::
+		</ul>
+	</div>
+	<a href="::path::redirect" class="btn btn-primary">Create new survey</a>
+</div>

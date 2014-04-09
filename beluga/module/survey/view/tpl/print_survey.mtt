@@ -1,0 +1,18 @@
+<div>
+	<h1>::survey.name::</h1>
+	::foreach choices::
+	<label>::choice.label::</label><br/>
+	::if (vote > 1)::
+	<label>votes : ::vote::</label>
+	::else::
+	<label>vote : ::vote::</label>
+	::end::
+	<div class="progress">
+  		<div class="progress-bar" role="progressbar" aria-valuenow="::pourcent::" aria-valuemin="0" aria-valuemax="100" style="width: ::pourcent::%;">
+    		::pourcent:: %
+  		</div>
+	</div>
+	::end::
+
+	<a href="::path::default" class="btn btn-primary">Back to surveys list</a>
+</div>

@@ -1,0 +1,16 @@
+<!-- <hr style="width: 100%;margin-top: 60px;"/> -->
+<div>
+	<h2>::survey.name::</h2>
+	<form id="add_vote" action="::path::vote" method="POST">
+		<input type="hidden" name="id" value="::survey.id::">
+		::foreach choices::
+		<div class="radio">
+		  	<label>
+		    	<input type="radio" name="option" id="::label::" value="::id::">
+		    	::label::
+		  	</label>
+		</div>
+		::end::
+		<input type="submit" class="btn btn-primary" value="Vote !"/>
+	</form>
+</div>
