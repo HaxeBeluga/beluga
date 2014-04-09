@@ -4,17 +4,12 @@ class IDGenerator
 {
   // TODO :  Improve me that...
   public static function generate(size : UInt) : String
-  {
-    var key = new String();
-    
-    key = Std.string(Date.now());
-    if (key.length > size)
+  {    
+    var print = new String("qwertyuiopasdfghjklzxcvbnm789456123");
+    var key : String = "0";
+    for (i in 0...size-1)
     {
-      key = key.substring(key.length - size, key.length);
-    }
-    else if (key.length < size)
-    {
-      key = StringTools.rpad(key, "0", size);    
+      key += print.charAt(Std.random(print.length));
     }
     return (key);
   }
