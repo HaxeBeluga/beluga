@@ -10,6 +10,7 @@ import beluga.module.ticket.model.TicketModel;
 import beluga.module.ticket.model.Label;
 import beluga.module.ticket.model.Message;
 import beluga.module.ticket.model.TicketLabel;
+import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
 
 // Haxe
@@ -57,15 +58,12 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
         // Store all tickets in a Dynamic
         for( t in TicketModel.manager.search($ti_id < 10000) ) {
-
             // retrieve ticket status
             if (t.ti_status == 1) { status = "open"; }
             else { status = "closed"; }
             
             // retrieve message count for this ticket
-            for( u in Message.manager.search($me_ti_id == t.ti_id) ) {
-                message_count += 1;
-            }
+            message_count = this.getTicketMessageCount(t.ti_id); 
 
             // insert tickets data
             tickets.push({
@@ -85,9 +83,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         }
 
         // Store all labels names in a dynamic
-        for (l in Label.manager.search($la_id < 100)) {
-            labels.push({ label: l.la_name });
-        }
+        labels = getLabelsList();
+        
         return { 
             tickets_list: tickets, 
             labels_list: labels, 
@@ -104,17 +101,28 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
     }
 
+    /// Return the context for the view create ticket
+    /// in the form of a List<Dynamic>
+    /// { labels_list: { label_name: String }, ticket_error: String }
     public function getCreateContext(): Dynamic {
         var labels: List<Dynamic> = new List<Dynamic>();
+        var users: List<Dynamic> = new List<Dynamic>();
 
         // Store all labels names in a dynamic
         for (l in Label.manager.search($la_id < 100)) {
             labels.push({ label_name: l.la_name });
         }
+        for (u in User.manager.search($id < 100)) {
+            users.push({
+                user_name: u.login,
+                user_id: u.id
+            });
+        }
 
         return {
             labels_list: labels,
-            ticket_error: this.error
+            ticket_error: this.error,
+            users_list: users
         };
     }
 
@@ -133,23 +141,19 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     /// * then all the labels associated to the tickets
     public function getShowContext(): Dynamic {
         var ticket = TicketModel.manager.get(this.show_id);
-        var message_count = 0;
         var messages: List<Dynamic> = new List<Dynamic>();
         var labels: List<Dynamic> = new List<Dynamic>();
+        var assignee: String = "None";
 
         // retrieve messages informations
-        for( m in Message.manager.search($me_ti_id == ticket.ti_id) ) {
-            message_count += 1;
-            messages.push({
-                message_content: m.me_content,
-                message_creation_date: m.me_date_creation,
-                message_author: User.manager.get(m.me_us_id_author).login,
-            });
-        }
+        messages = this.getTicketMessages(ticket.ti_id);
 
         // retrieve associated labels
-        for( tl in TicketLabel.manager.search($tl_ticket_id == ticket.ti_id) ) {
-            labels.push( { label_name: Label.manager.get(tl.tl_label_id).la_name } );
+        labels = this.getTicketLabels(ticket.ti_id);
+
+        var assignement = Assignement.manager.search($as_ti_id == ticket.ti_id).first();
+        if (assignement != null) {
+            assignee = User.manager.get(assignement.as_us_id).login;
         }
 
         return { 
@@ -158,11 +162,12 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             ticket_message: ticket.ti_content,
             ticket_create_date: ticket.ti_date,
             ticket_owner: User.manager.get(ticket.ti_us_id).login,
-            ticket_message_count: message_count,
+            ticket_message_count: messages.length,
             messages_list: messages,
             labels_list: labels,
             ticket_status: ticket.ti_status,
-            ticket_error: this.error
+            ticket_error: this.error,
+            ticket_assignee: assignee
         };
     }
 
@@ -240,14 +245,16 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     public static function _submit(args: { 
         title: String, 
-        message: String 
+        message: String,
+        assignee: String
     }): Void {
         Beluga.getInstance().getModuleInstance(Ticket).submit(args);
     }
   
     public function submit(args: { 
         title: String, 
-        message: String 
+        message: String,
+        assignee: String
     }): Void {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
@@ -268,7 +275,163 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             ticket.insert();
             var ticket_id: Int = ticket.ti_id;
             this.show_id = ticket_id;
+            if (User.manager.search($login == args.assignee).first() != null) {
+                var assignement = new Assignement();
+                assignement.as_us_id =  User.manager.search($login == args.assignee).first().id;
+                assignement.as_ti_id = ticket.ti_id;
+                assignement.insert();
+            }
+           
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
         }
     }
+
+    public static function _admin(): Void {
+        Beluga.getInstance().getModuleInstance(Ticket).admin();
+    }
+
+    public function admin(): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show_admin", []);
+        // beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_success", []);
+    }
+
+    /// return the context for the admin widget in the form of a List<Dynamic>
+    /// { admin_error: String, labels_list: { label_name: String, label_id: Int } }
+    public function getAdminContext(): Dynamic {
+        return {
+            admin_error: this.error,
+            labels_list: this.getLabelsList()
+        };
+    }
+
+    public static function _deletelabel(args: { id: Int }): Void {
+        Beluga.getInstance().getModuleInstance(Ticket).deletelabel(args);
+    }
+  
+    public function deletelabel(args: { id: Int }): Void {
+        var account = Beluga.getInstance().getModuleInstance(Account);
+
+        if (!account.isLogged()) {
+            this.error = "You must be logged to delete a label !";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_fail", []);
+        } else {
+            if (this.labelExistFromID(args.id)) {
+                var label = Label.manager.get(args.id);
+                label.delete();
+                beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_success", []);
+            } else {
+                this.error = "There is no existing label with the given id !";
+                beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_fail", []);
+            }
+        }
+    }
+
+    public static function _addlabel(args: { name: String }): Void {
+        Beluga.getInstance().getModuleInstance(Ticket).addlabel(args);
+    }
+
+    public function addlabel(args: { name: String }): Void {
+        var account = Beluga.getInstance().getModuleInstance(Account);
+        
+        if (!account.isLogged()) {
+            this.error = "You must be logged to add a label !";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
+        } else if (args.name.length == 0) {
+            this.error = "Your label cannot be empty!";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
+        } else {
+            if (this.labelExist(args.name)) {
+                this.error = "This label already exist!";
+                beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
+            } else {
+                this.createNewLabel(args.name);
+                beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_success", []);
+            }
+        }
+    }
+
+
+    /* Utils functions */
+
+    /// The dynamic content is on the form :
+    /// List<{ label_name: String, label_id: Int }>
+    public function getLabelsList(): List<Dynamic> {
+        var labels: List<Dynamic> = new List<Dynamic>();
+
+        for (l in Label.manager.search($la_id < 100)) {
+            labels.push({ 
+                label_name: l.la_name,
+                label_id: l.la_id
+            });
+        }
+
+        return labels;
+    }
+
+    /// retrieve the totals count of message for a given ticket
+    public function getTicketMessageCount(ticket_id: Int): Int {
+        var message_count: Int = 0;
+
+        for( u in Message.manager.search($me_ti_id == ticket_id) ) {
+                message_count += 1;
+        }
+
+        return message_count;
+    }
+
+    /// Is the label already in the db or not
+    /// use the label name
+    public function labelExist(label_name: String): Bool {
+        var label = null;
+        for( l in Label.manager.search($la_name == label_name) ) {
+            label = l;
+        }
+        if (label == null) { return false; } 
+        else { return true; }
+    }
+
+    /// Is the label already in the db or not
+    /// use the label name
+    public function labelExistFromID(label_id: Int): Bool {
+        var label = null;
+        for( l in Label.manager.search($la_id == label_id) ) {
+            label = l;
+        }
+        if (label == null) { return false; } 
+        else { return true; }
+    }
+
+    public function createNewLabel(label_name: String): Void {
+        var label: Label = new Label();
+        label.la_name = label_name;
+        label.insert();
+    }
+
+    /// Get all the labels associated to a ticket
+    public function getTicketLabels(ticket_id: Int): List<Dynamic>{
+        var labels: List<Dynamic> = new List<Dynamic>();
+
+        for( tl in TicketLabel.manager.search($tl_ticket_id == ticket_id) ) {
+            labels.push( { label_name: Label.manager.get(tl.tl_label_id).la_name } );
+        }
+
+        return labels;
+    }
+
+    /// List of Dynamics is on the form:
+    /// { message_content: String, message_creation_date: Date, message_author: String}
+    public function getTicketMessages(ticket_id: Int): List<Dynamic> {
+        var messages: List<Dynamic> = new List<Dynamic>();
+        
+        for( m in Message.manager.search($me_ti_id == ticket_id) ) {
+            messages.push({
+                message_content: m.me_content,
+                message_creation_date: m.me_date_creation,
+                message_author: User.manager.get(m.me_us_id_author).login,
+            });
+        }
+
+        return messages;
+    }
+
 }

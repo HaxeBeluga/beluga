@@ -22,4 +22,9 @@ class CssApi {
         Web.setHeader("Content-type", "text/css");
         Sys.print(Beluga.getInstance().getModuleInstance(Ticket).getWidget("show").getCss());
     }
+
+    public function doAdmin() {
+        Web.setHeader("Content-type", "text/css");
+        Sys.print(Beluga.getInstance().getModuleInstance(Ticket).getWidget("admin").getCss());
+    }
 }

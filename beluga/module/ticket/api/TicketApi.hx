@@ -45,10 +45,22 @@ class TicketApi
         beluga.triggerDispatcher.dispatch("beluga_ticket_create");
     }
 
-    public function doSubmit(args: { title: String, message: String }): Void {
+    public function doSubmit(args: { title: String, message: String, assignee: String }): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_submit", [args]);
     }
     
+    public function doAdmin(): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_admin");
+    }
+
+    public function doDeletelabel(args: { id: Int }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel", [args]);   
+    }
+
+    public function doAddlabel(args: { name: String }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel", [args]);   
+    }
+
     public function doDefault(): Void {
         trace("Ticket default page");
     }

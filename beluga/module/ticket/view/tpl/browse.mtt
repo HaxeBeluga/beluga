@@ -23,7 +23,7 @@
             <h4>Labels</h4>
             <ul>
                 ::foreach labels_list::
-                <li class="ticket-label-browse"><span>::label::</span></li>
+                <li class="ticket-label-browse"><span>::label_name::</span></li>
                 ::end::
             </ul>
         </div>
