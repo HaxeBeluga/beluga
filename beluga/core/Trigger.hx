@@ -20,7 +20,6 @@ class Trigger
 	public function new(trigger : Dynamic)
 	{
 		routes = new Array<CallbackTrigger>();
-
 		if (Std.is(trigger, Fast))
 		{
 			var fastTrigger : Fast = cast trigger;
@@ -73,9 +72,14 @@ private class CallbackTrigger {
 		if (params == null)
 			params = new Array<Dynamic>();
 
-		if (Std.is(clazz, String))
+		if (Std.is(clazz, String)) {
+			trace(clazz);
 			clazz = Type.resolveClass(clazz);
-
-		Reflect.callMethod(clazz, method, params);
+		}
+		if (clazz == null) {
+			trace("Classe can't be resolved");
+		} else {
+			Reflect.callMethod(clazz, method, params);
+		}
 	}
 }

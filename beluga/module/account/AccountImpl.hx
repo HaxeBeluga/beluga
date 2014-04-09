@@ -7,7 +7,7 @@ import beluga.core.module.ModuleImpl;
 import beluga.module.account.model.User;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import sys.db.Types;
-import beluga.module.account.SubscribeFailCause;
+import beluga.module.account.ESubscribeFailCause;
 import haxe.Session;
 
 /**

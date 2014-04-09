@@ -1,7 +1,7 @@
 
 package beluga.module.account;
 
-enum SubscribeFailCause 
+enum ESubscribeFailCause 
 {
 	LoginAlreadyExist;
 }
