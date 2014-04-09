@@ -8,6 +8,3 @@
 	<route class="beluga.module.account.AccountImpl" method="_subscribe" >
 	</route>
 </trigger>
-
-<template name="login" path="${beluga.installPath}/module/account/view/tpl/login.mtt" />
-<template name="subscribe" path="${beluga.installPath}/module/account/view/tpl/subscribe.mtt" />

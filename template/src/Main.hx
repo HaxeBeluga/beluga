@@ -14,7 +14,7 @@ class Main
 
 	static function main()
 	{
-		beluga = new Beluga();
+		beluga = Beluga.getInstance();
 		Dispatch.run(Web.getParamsString(), Web.getParams(), beluga.api);
 	}
 	
