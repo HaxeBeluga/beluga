@@ -25,7 +25,7 @@ class NotificationApi
 		notif.print(args);
 	}
 
-	public function doCreate(args : {title : String, text : String}) {
+	public function doCreate(args : {title : String, text : String, user_id: Int}) {
 		notif.create(args);
 	}
 

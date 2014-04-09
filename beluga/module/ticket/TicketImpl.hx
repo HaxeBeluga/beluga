@@ -280,8 +280,14 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
                 assignement.as_us_id =  User.manager.search($login == args.assignee).first().id;
                 assignement.as_ti_id = ticket.ti_id;
                 assignement.insert();
-            }
-           
+                var args = {
+                    title: "Ticket assignnment: " + args.title + " !",
+                    text: "You've been assigned to the ticket number " + ticket_id + ", " +
+                    args.title + " by " + account.getLoggedUser().login + ".",
+                    user_id: assignement.as_us_id
+                };
+                beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [args]); 
+            }            
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
         }
     }

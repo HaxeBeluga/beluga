@@ -68,14 +68,12 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 		beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
 	}
 
-	public static function _create(args : {title : String, text : String}) {
+	public static function _create(args : {title : String, text : String, user_id: Int}) {
 		Beluga.getInstance().getModuleInstance(Notification).create(args);
 	}
 
-	public function create(args : {title : String, text : String}) {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-		if (user == null || args.title == "" || args.text == "") {
+	public function create(args : {title : String, text : String, user_id: Int}) {
+		if (args.title == "" || args.text == "") {
 			beluga.triggerDispatcher.dispatch("beluga_notif_create_fail", []);
 			return;
 		}
@@ -83,7 +81,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 
 		notif.title = args.title;
 		notif.text = args.text;
-		notif.user_id = user.id;
+		notif.user_id = args.user_id;
 		notif.hasBeenRead = false;
 		notif.insert();
 		beluga.triggerDispatcher.dispatch("beluga_notif_create_success", []);
