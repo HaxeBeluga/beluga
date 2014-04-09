@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="/beluga/ticket/css/admin"/>
+::if (admin_error != "")::
+  <div class="alert alert-danger alert-dismissable ticket-alert-error">
+    <strong>Error!</strong> ::admin_error::
+  </div>
+::end::
+<div class="container ticket-label-widget">
+    <div class="container-fluid">
+        <h4>Add a new Label</h4>
+        <form action="/beluga/ticket/addlabel" method="post"><br>
+            <input type="text" name="name" class=" form-control">
+            <input type="submit" value="Submit new label" class="btn btn-warning pull-right ticket-label-submit">
+        </form>
+    </div>
+    <div class="container-fluid">
+        <h4>Here is a list of all labels</h4>
+        <ul class="list-group">
+          ::foreach labels_list::
+          <li class="list-group-item">::label_name::
+          <a href="/beluga/ticket/deletelabel?id=::label_id::" class="btn btn-danger btn-xs pull-right">Delete</a>
+          ::end::
+        </ul>
+    </div>
+</div>
