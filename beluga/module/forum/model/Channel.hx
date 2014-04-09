@@ -5,10 +5,12 @@ import sys.db.Types;
 
 @:table("beluga_frm_channel")
 @:id(id)
-@:index(parent)
+@:index(parent_id)
 class Channel extends Object {
   public var id : SId;
   public var label : SString<255>;
   public var key : SString<255>;
-  public var parent : Null<Channel> = null;
+
+  @:relation(parent_id)
+  public var parent : SNull<Channel> = null;
 }

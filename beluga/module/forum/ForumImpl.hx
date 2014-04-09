@@ -1,13 +1,19 @@
 package beluga.module.forum;
 
+import haxe.xml.Fast;
 import beluga.core.Beluga;
 import beluga.core.module.ModuleImpl;
-import beluga.module.forum.model.Channel;
+
+import beluga.module.forum.impl.channel.Display;
+import beluga.module.forum.impl.channel.Logic;
 
 // TODO: create a system of action depending on right / user level. add channel == admin || post message == user, admin
 
 class ForumImpl extends ModuleImpl implements ForumInternal
 {
+
+  private var key : Null<String> = null;
+
   public function new()
   {
     super();
@@ -17,6 +23,107 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   {
 
   }
+
+  //////////////////////////////////////////////////////
+  // DISPLAY ACTION
+  //////////////////////////////////////////////////////
+
+  /**
+  * CHANNEL
+  */
+  public static function _displayChannel(args : {
+    channel_key : String
+  }) : Void
+  {
+    Beluga.getInstance().getModuleInstance(Forum).displayChannel(args);
+  }
+
+  public function displayChannel(args : {
+    channel_key : String
+  }) : Void
+  {
+    this.key = (args.channel_key.length > 0 ? args.channel_key : null);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_channel", [args]);
+  }
+
+  public function getChannelContext() : Dynamic
+  {
+    return (Display.getChannelContext(this.key));
+  }
+
+  /**
+  * ADD CHANNEL
+  */
+  public static function _displayAddChannel(args : {
+    parent_key : String
+  }) : Void
+  {
+    Beluga.getInstance().getModuleInstance(Forum).displayAddChannel(args);
+  }
+
+  public function displayAddChannel(args : {
+    parent_key : String
+  }) : Void
+  {
+    this.key = (args.parent_key.length > 0 ? args.parent_key : null);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_add_channel", [args]);
+  }
+
+  public function getAddChannelContext() : Dynamic
+  {
+    return (Display.getAddChannelContext(this.key));
+  }
+
+  /**
+  * MODIFY CHANNEL
+  */
+  public static function _displayModifyChannel(args : {
+    channel_key : String
+  }) : Void
+  {
+    Beluga.getInstance().getModuleInstance(Forum).displayModifyChannel(args);
+  }
+
+  public function displayModifyChannel(args : {
+    channel_key : String
+  }) : Void
+  {
+    this.key = (args.channel_key.length > 0 ? args.channel_key : null);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_modify_channel", [args]);
+  }
+
+  public function getModifyChannelContext() : Dynamic
+  {
+    return (Display.getModifyChannelContext(this.key));
+  }
+
+  /**
+  * DELETE CHANNEL
+  */
+  public static function _displayDeleteChannel(args : {
+    channel_key : String
+  }) : Void
+  {
+    Beluga.getInstance().getModuleInstance(Forum).displayDeleteChannel(args);
+  }
+
+  public function displayDeleteChannel(args : {
+    channel_key : String
+  }) : Void
+  {
+    this.key = (args.channel_key.length > 0 ? args.channel_key : null);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_delete_channel", [args]);
+  }
+
+  public function getDeleteChannelContext() : Dynamic
+  {
+    return (Display.getDeleteChannelContext(this.key));
+  }
+
+
+  //////////////////////////////////////////////////////
+  // LOGIC ACTION
+  //////////////////////////////////////////////////////
 
   /**
   * CHANNEL
@@ -35,28 +142,26 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     parent_key : String 
   }) : Void
   {
-
+    Logic.add(args);
   }
 
   public static function _modifyChannel(args : {
     label : String,
-    channel_key : String,
-    parent_key : String 
-  }) : Void;
+    channel_key : String
+  }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).modifyChannel(args);
   }
 
   public function modifyChannel(args : {
     label : String,
-    channel_key : String,
-    parent_key : String 
-  }) : Void;
+    channel_key : String
+  }) : Void
   {
-
+    Logic.modify(args);
   }
 
-  public static function deleteChannel(args : {
+  public static function _deleteChannel(args : {
     channel_key : String
   }) : Void
   {
@@ -67,7 +172,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     channel_key : String
   }) : Void
   {
-
+    Logic.delete(args);
   }
 
   /**
@@ -79,8 +184,8 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     content : String,
     channel_key : String
   }) : Void
-  {
-    
+  { 
+    Beluga.getInstance().getModuleInstance(Forum).addMessage(args);
   }
 
   public function addMessage(args : {
@@ -89,13 +194,13 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     channel_key : String
   }) : Void
   {
-    Beluga.getInstance().getModuleInstance(Forum).addMessage(args);
+    
   }
 
   public static function _modifyMessage(args : {
     title : String,
     content : String,
-    message_key : String,
+    message_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).modifyMessage(args);
@@ -104,7 +209,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   public function modifyMessage(args : {
     title : String,
     content : String,
-    message_key : String,
+    message_key : String
   }) : Void
   {
     
@@ -126,7 +231,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public static function _moveMessage(args : {
     message_key : String,
-    channel_key : String,
+    channel_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).moveMessage(args);
@@ -134,7 +239,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public function moveMessage(args : {
     message_key : String,
-    channel_key : String,
+    channel_key : String
   }) : Void
   {
     
@@ -146,7 +251,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public static function _addUserToGroup(args : {
     login : String,
-    group_key : String,
+    group_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).addUserToGroup(args);
@@ -154,7 +259,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public function addUserToGroup(args : {
     login : String,
-    group_key : String,
+    group_key : String
   }) : Void
   {
     
@@ -162,7 +267,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public static function _removeUserFromGroup(args : {
     login : String,
-    group_key : String,
+    group_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).removeUserFromGroup(args);
@@ -170,7 +275,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public function removeUserFromGroup(args : {
     login : String,
-    group_key : String,
+    group_key : String
   }) : Void
   {
     
@@ -178,7 +283,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public static function _addGroupToChannel(args : {
     group_key : String,
-    channel_key : String,
+    channel_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).addGroupToChannel(args);
@@ -186,7 +291,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public function addGroupToChannel(args : {
     group_key : String,
-    channel_key : String,
+    channel_key : String
   }) : Void
   {
     
@@ -194,7 +299,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public static function _removeGroupFromChannel(args : {
     group_key : String,
-    channel_key: String,
+    channel_key: String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).removeGroupFromChannel(args);
@@ -202,7 +307,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   
   public function removeGroupFromChannel(args : {
     group_key : String,
-    channel_key: String,
+    channel_key: String
   }) : Void
   {
     

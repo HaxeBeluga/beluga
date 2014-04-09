@@ -5,9 +5,13 @@ import sys.db.Types;
 
 @:table("beluga_frm_perm_group")
 @:id(id)
-@:index(group, channel)
+@:index(user_group_id, channel_id)
 class GroupPermission extends Object {
   public var id : SId;
+
+  @:relation(channel_id)
   public var channel : Channel;
-  public var group : UserGroup;
+
+  @:relation(user_group_id)
+  public var user_group : UserGroup;
 }

@@ -7,9 +7,13 @@ import beluga.module.account.model.User;
 
 @:table("beluga_frm_fav_chan")
 @:id(id)
-@:index(user, channel)
+@:index(user_id, channel_id)
 class FavoriteChannel extends Object {
   public var id : SId;
-  public var channel : Channel;
+
+  @:relation(user_id)
   public var user : User;
+
+  @:relation(channel_id)
+  public var channel : Channel;
 }

@@ -1,13 +1,12 @@
+<link rel="stylesheet" href="/beluga/forum/css/modify_channel"/>
 <div class="beluga forum modify_channel" id="beluga_::_id::"> 
   <h1>Modify a channel</h1>
-
-  <form action="/beluga/forum/modify_channel" method="POST">
-    
-    <div class="field modify_channel">
-      <label class="modify_channel" for="modify_channel">Label </label>
-      <input class="modify_channel" type="text" name="modify_channel" />
+  <form role="form" action="/beluga/forum/modifyChannel" method="POST">
+    <div class="form-group modify_channel">
+      <label class="modify_channel" for="modify_channel">Label</label>
+      <input type="text" class="form-control modify_channel" id="modify_channel" name="label" placeholder="Enter channel name" value="::channel_label::">
     </div>
-
-    <input type="submit" value="Modify" />
+    <input type="hidden" name="channel_key" value="::channel_key::"/>
+    <button type="submit" class="btn btn-default">Submit</button>
   </form>
 </div>

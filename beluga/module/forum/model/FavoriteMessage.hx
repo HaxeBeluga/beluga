@@ -7,9 +7,13 @@ import beluga.module.account.model.User;
 
 @:table("beluga_frm_fav_mess")
 @:id(id)
-@:index(user, message)
+@:index(user_id, message_id)
 class FavoriteMessage extends Object {
   public var id : SId;
+
+  @:relation(message_id)
   public var message : Message;
+
+  @:relation(user_id)
   public var user : User;
 }
