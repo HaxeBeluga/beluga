@@ -73,7 +73,6 @@ private class CallbackTrigger {
 			params = new Array<Dynamic>();
 
 		if (Std.is(clazz, String)) {
-			trace(clazz);
 			clazz = Type.resolveClass(clazz);
 		}
 		if (clazz == null) {
