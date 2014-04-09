@@ -37,6 +37,18 @@ class FileuploadApi
         beluga.triggerDispatcher.dispatch("beluga_fileupload_delete", [args]);   
     }
 
+    public function doAddextension(args: { name: String }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension", [args]);   
+    }
+
+    public function doDeleteextension(args: { id: Int }): Void {
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension", [args]);   
+    }
+
+    public function doAdmin(): Void {
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_admin");   
+    }
+
     public function doCss(d: Dispatch): Void {
         d.dispatch(new CssApi());
     }

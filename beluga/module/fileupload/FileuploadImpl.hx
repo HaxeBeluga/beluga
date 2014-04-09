@@ -13,7 +13,7 @@ import beluga.module.fileupload.model.Extension;
 import haxe.xml.Fast;
 
 class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
-    private var error: String = "";
+    public var error: String = "";
 
 	public function new() {
         super();
@@ -64,6 +64,20 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         return files;
     }
 
+    /// Return: {extension_name: String, extension_id: Int}
+    public function getExtensionsList(): List<Dynamic> {
+        var extensions: List<Dynamic> = new List<Dynamic>();
+        
+        for (e in Extension.manager.search($ex_id < 100)) {
+            extensions.push({ 
+                extension_name: e.ex_name,
+                extension_id: e.ex_id,
+            });
+        }
+
+        return extensions;
+    }
+
     public static function _send(): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).send();
     }
@@ -98,5 +112,65 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         }
    }
 
+    public static function _admin(): Void {
+        Beluga.getInstance().getModuleInstance(Fileupload).admin();
+    }
 
+    public function admin(): Void {
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_admin", []);
+    }
+
+    public function getAdminContext(): Dynamic {
+        var extensions = this.getExtensionsList(); 
+        return {
+            extensions_list: extensions,
+            admin_error: this.error
+        };
+    }
+
+    public static function _addextension(args: { name: String }): Void {
+        Beluga.getInstance().getModuleInstance(Fileupload).addextension(args);
+    }
+
+    public function addextension(args: { name: String }): Void {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+            this.error = "You must be logged to access this section";
+        } else if (args.name == "") {
+            this.error = "The field is empty";
+        } else {
+            var ext = null;
+            for( u in Extension.manager.search($ex_name == args.name) ) {
+                ext = u;
+            }
+            if (ext == null) {
+                var extension = new Extension();
+                extension.ex_name = args.name;
+                extension.insert();
+            } else {
+                this.error = "This extension already exist !";
+            }
+        }
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension_success", []);
+    }
+
+    public static function _deleteextension(args: { id: Int }): Void {
+        Beluga.getInstance().getModuleInstance(Fileupload).deleteextension(args);
+    }
+
+    public function deleteextension(args: { id: Int }): Void {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+            this.error = "You must be logged to access this section";
+        } else {
+            var ext = null;
+            for( u in Extension.manager.search($ex_id == args.id) ) {
+                ext = u;
+            }
+            if (ext == null) {
+                this.error = "This extension doesn't exist!";
+            } else {
+                ext.delete();
+            }
+        }
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension_success", []);
+    }
 }

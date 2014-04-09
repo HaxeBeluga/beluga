@@ -7,5 +7,17 @@
 </trigger>
 
 <trigger name="beluga_fileupload_delete">
-	<route class="beluga.module.fileupload.FileuploadImpl" method="_delete" > </route>
+	<route class="beluga.module.fileupload.FileuploadImpl" method="_delete" ></route>
+</trigger>
+
+<trigger name="beluga_fileupload_admin">
+	<route class="beluga.module.fileupload.FileuploadImpl" method="_admin" ></route>
+</trigger>
+
+<trigger name="beluga_fileupload_addextension">
+	<route class="beluga.module.fileupload.FileuploadImpl" method="_addextension" ></route>
+</trigger>
+
+<trigger name="beluga_fileupload_deleteextension">
+	<route class="beluga.module.fileupload.FileuploadImpl" method="_deleteextension" ></route>
 </trigger>
