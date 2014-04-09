@@ -16,7 +16,7 @@
                 <input type="text" class="ticket-area form-control" placeholder="Title" name="title">
                 <label for="ticket-assignee" class="col-md-4 control-label">Assign someone to the ticket</label>
                 <div class="col-md-4">
-                    <select id="ticket-assignee" class="form-control">
+                    <select id="ticket-assignee" class="form-control" name="assignee">
                         <option>None</option>
                         ::foreach users_list::
                         <option>::user_name::</option>

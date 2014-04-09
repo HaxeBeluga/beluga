@@ -8,5 +8,5 @@ import sys.db.Types;
 class Assignement extends Object {
 	public var as_id: SId;
 	public var as_us_id: SInt;
-	public var as_status: SInt;
+	public var as_ti_id: SInt;
 }

@@ -10,6 +10,7 @@ import beluga.module.ticket.model.TicketModel;
 import beluga.module.ticket.model.Label;
 import beluga.module.ticket.model.Message;
 import beluga.module.ticket.model.TicketLabel;
+import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
 
 // Haxe
@@ -142,12 +143,18 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var ticket = TicketModel.manager.get(this.show_id);
         var messages: List<Dynamic> = new List<Dynamic>();
         var labels: List<Dynamic> = new List<Dynamic>();
+        var assignee: String = "None";
 
         // retrieve messages informations
         messages = this.getTicketMessages(ticket.ti_id);
 
         // retrieve associated labels
         labels = this.getTicketLabels(ticket.ti_id);
+
+        var assignement = Assignement.manager.search($as_ti_id == ticket.ti_id).first();
+        if (assignement != null) {
+            assignee = User.manager.get(assignement.as_us_id).login;
+        }
 
         return { 
             ticket_subject: ticket.ti_title,
@@ -159,7 +166,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             messages_list: messages,
             labels_list: labels,
             ticket_status: ticket.ti_status,
-            ticket_error: this.error
+            ticket_error: this.error,
+            ticket_assignee: assignee
         };
     }
 
@@ -237,14 +245,16 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     public static function _submit(args: { 
         title: String, 
-        message: String 
+        message: String,
+        assignee: String
     }): Void {
         Beluga.getInstance().getModuleInstance(Ticket).submit(args);
     }
   
     public function submit(args: { 
         title: String, 
-        message: String 
+        message: String,
+        assignee: String
     }): Void {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
@@ -265,6 +275,13 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             ticket.insert();
             var ticket_id: Int = ticket.ti_id;
             this.show_id = ticket_id;
+            if (User.manager.search($login == args.assignee).first() != null) {
+                var assignement = new Assignement();
+                assignement.as_us_id =  User.manager.search($login == args.assignee).first().id;
+                assignement.as_ti_id = ticket.ti_id;
+                assignement.insert();
+            }
+           
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
         }
     }

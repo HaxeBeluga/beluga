@@ -45,7 +45,7 @@ class TicketApi
         beluga.triggerDispatcher.dispatch("beluga_ticket_create");
     }
 
-    public function doSubmit(args: { title: String, message: String }): Void {
+    public function doSubmit(args: { title: String, message: String, assignee: String }): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_submit", [args]);
     }
     

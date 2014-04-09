@@ -55,7 +55,7 @@
             </ul>
             <h4>Assignee</h4>
             <ul>
-                <li class="ticket-label"><span>Paul Atreides</span></li>
+                <li class="ticket-label"><span>::ticket_assignee::</span></li>
             </ul>
         </div>
     </div>
