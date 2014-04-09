@@ -105,15 +105,23 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     /// { labels_list: { label_name: String }, ticket_error: String }
     public function getCreateContext(): Dynamic {
         var labels: List<Dynamic> = new List<Dynamic>();
+        var users: List<Dynamic> = new List<Dynamic>();
 
         // Store all labels names in a dynamic
         for (l in Label.manager.search($la_id < 100)) {
             labels.push({ label_name: l.la_name });
         }
+        for (u in User.manager.search($id < 100)) {
+            users.push({
+                user_name: u.login,
+                user_id: u.id
+            });
+        }
 
         return {
             labels_list: labels,
-            ticket_error: this.error
+            ticket_error: this.error,
+            users_list: users
         };
     }
 
