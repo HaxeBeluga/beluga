@@ -13,4 +13,5 @@ interface Fileupload extends Module {
     public function getBrowseContext(): Dynamic;
     public function getSendContext(): Dynamic;
     public function getUserFileList(user_id: Int): List<Dynamic>;
+    public function extensionIsValid(name: String): Bool;
 }

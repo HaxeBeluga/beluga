@@ -429,7 +429,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     }
 
     /// Get all the labels associated to a ticket
-    public function getTicketLabels(ticket_id: Int): List<Dynamic>{
+    public function getTicketLabels(ticket_id: Int): List<Dynamic> {
         var labels: List<Dynamic> = new List<Dynamic>();
 
         for( tl in TicketLabel.manager.search($tl_ticket_id == ticket_id) ) {
