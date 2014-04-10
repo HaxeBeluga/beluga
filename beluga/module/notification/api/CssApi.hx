@@ -14,7 +14,12 @@ class CssApi
 
 	public function doPrint() {
 		Web.setHeader("Content-type", "text/css");
-		Sys.print(Beluga.getInstance().getModuleInstance(Notification).getWidget("print").getCss());
+		Sys.print(Beluga.getInstance().getModuleInstance(Notification).getWidget("print_notif").getCss());
+	}
+
+	public function doDefault() {
+		Web.setHeader("Content-type", "text/css");
+		Sys.print(Beluga.getInstance().getModuleInstance(Notification).getWidget("notification").getCss());
 	}
 
 }
