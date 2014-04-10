@@ -2,7 +2,7 @@
     margin-right: 20px;
 }
 
-.wallet-display-widget {
+.wallet-add-currency-widget {
     border-radius: 3px;
     border: 1px solid #ddd;
     margin-top: 50px;
@@ -11,16 +11,15 @@
     padding-right: 10px;
     border-radius: 2px;
     margin-bottom: 50px;
-    padding-bottom: 10px;
 }
 
 .wallet-field-extension {
     margin-bottom:50px;
 }
 
-.wallet-create-submit {
+.wallet-add-currency-submit {
     margin-top: 10px;
-    /*margin-bottom: 100px;*/
+    margin-bottom: 10px;
 }
 
 .wallet-form-sep {

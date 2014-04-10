@@ -7,6 +7,6 @@ import sys.db.Types;
 @:id(wa_id)
 class WalletModel extends Object {
     public var wa_id: SId;
-    public var wa_user_id: SString<32>;
+    public var wa_user_id: SInt;
     public var wa_fund: SFloat;
 }

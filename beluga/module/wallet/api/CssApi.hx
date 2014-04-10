@@ -13,8 +13,8 @@ class CssApi {
         Sys.print(Beluga.getInstance().getModuleInstance(Wallet).getWidget("display").getCss());
     }
 
-    public function doDisplayAdmin() {
+    public function doAdmin() {
         Web.setHeader("Content-type", "text/css");
-        Sys.print(Beluga.getInstance().getModuleInstance(Wallet).getWidget("display_admin").getCss());
+        Sys.print(Beluga.getInstance().getModuleInstance(Wallet).getWidget("admin").getCss());
     }
 }

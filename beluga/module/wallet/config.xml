@@ -1,0 +1,37 @@
+<trigger name="beluga_wallet_display">
+    <route class="beluga.module.wallet.WalletImpl" method="_display" ></route>
+</trigger>
+<trigger name="beluga_wallet_display_admin">
+    <route class="beluga.module.wallet.WalletImpl" method="_displayAdmin" ></route>
+</trigger>
+<trigger name="beluga_wallet_create">
+    <route class="beluga.module.wallet.WalletImpl" method="_create" ></route>
+</trigger>
+<trigger name="beluga_wallet_create_currency">
+    <route class="beluga.module.wallet.WalletImpl" method="_createCurrency" ></route>
+</trigger>
+<trigger name="beluga_wallet_remove_currency">
+    <route class="beluga.module.wallet.WalletImpl" method="_removeCurrency" ></route>
+</trigger>
+<trigger name="beluga_wallet_set_site_currency">
+    <route class="beluga.module.wallet.WalletImpl" method="_setSiteCurrency" ></route>
+</trigger>
+
+<!--
+    can send:
+        user:
+            beluga_wallet_create_success
+            beluga_wallet_create_fail
+            beluga_wallet_add_fund_success
+            beluga_wallet_add_fund_fail
+            beluga_wallet_consume_fund_success
+            beluga_wallet_consume_fund_fail
+        admin:
+            beluga_wallet_create_currency_success
+            beluga_wallet_create_currency_fail
+            beluga_wallet_remove_currency_success
+            beluga_wallet_remove_currency_fail
+            beluga_wallet_set_site_currency_success
+            beluga_wallet_set_site_currency_fail
+            beluga_wallet_admin_not_logged
+-->
