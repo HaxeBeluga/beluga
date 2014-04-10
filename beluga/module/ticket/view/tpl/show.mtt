@@ -14,9 +14,9 @@
             <h3 class="list-group-item-heading">::ticket_subject::<span class="badge pull-right">#::ticket_id::</span></h3></a>
         </div>
         ::if (ticket_status == 1):: <span class="label label-success">Open<small></span>
-        ::else:: <span class="label label-danger">Closed<small></span> 
+        ::else:: <span class="label label-danger">Closed<small></span>
         ::end::
-        
+
         <a href="/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> opened this issue ::ticket_create_date:: days ago - ::ticket_message_count:: comments</small>
         <hr class="hr-ticket" />
         <div class="col-md-10">
@@ -39,7 +39,7 @@
                 list of markdown commands.
             </span>
             <input type="submit" class="btn btn-info btn-sm ticket-button-submit" value="Comment"/>
-            ::if (ticket_status == 1):: 
+            ::if (ticket_status == 1)::
             <a href="/beluga/ticket/close?id=::ticket_id::" type="button" class="btn btn-danger btn-sm ticket-button-submit">Close</a>
             ::else::
             <a href="/beluga/ticket/reopen?id=::ticket_id::" type="button" class="btn btn-success btn-sm ticket-button-submit">Reopen</a>

@@ -18,7 +18,7 @@ import haxe.xml.Fast;
 
 /**
  * Implementation of the ticket system.
- * 
+ *
  * @author Valentin & Jeremy
  */
 class TicketImpl extends ModuleImpl implements TicketInternal {
@@ -29,17 +29,17 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public function new() {
         super();
     }
-    
+
     override public function loadConfig(data : Fast): Void {
-        
+
     }
-    
+
     /** Actions trigger **/
 
     public static function _browse(): Void {
         Beluga.getInstance().getModuleInstance(Ticket).browse();
     }
- 
+
     public function browse(): Void{
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_browse", []);
     }
@@ -61,9 +61,9 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             // retrieve ticket status
             if (t.ti_status == 1) { status = "open"; }
             else { status = "closed"; }
-            
+
             // retrieve message count for this ticket
-            message_count = this.getTicketMessageCount(t.ti_id); 
+            message_count = this.getTicketMessageCount(t.ti_id);
 
             // insert tickets data
             tickets.push({
@@ -77,18 +77,18 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             });
 
             // count closed / open tickets
-            if (t.ti_status == 1) { open += 1; } 
+            if (t.ti_status == 1) { open += 1; }
             else { closed += 1; }
-        
+
             message_count = 0;
         }
 
         // Store all labels names in a dynamic
         labels = getLabelsList();
-        
-        return { 
-            tickets_list: tickets, 
-            labels_list: labels, 
+
+        return {
+            tickets_list: tickets,
+            labels_list: labels,
             open_tickets: open,
             closed_tickets: closed
         };
@@ -97,7 +97,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public static function _create(): Void {
         Beluga.getInstance().getModuleInstance(Ticket).create();
     }
-  
+
     public function create(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
     }
@@ -157,7 +157,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             assignee = User.manager.get(assignement.as_us_id).login;
         }
 
-        return { 
+        return {
             ticket_subject: ticket.ti_title,
             ticket_id: ticket.ti_id,
             ticket_message: ticket.ti_content,
@@ -181,7 +181,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     /// FIXME: Check if the user is logged then reopen else error message
     public function reopen(args: { id: Int }): Void {
         this.show_id = args.id;
- 
+
          // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
@@ -202,7 +202,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     /// FIXME: Check if the user is logged then closes else error message
     public function close(args: { id: Int }): Void {
         this.show_id = args.id;
-        
+
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
@@ -215,19 +215,19 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
     }
 
-    public static function _comment(args: { 
+    public static function _comment(args: {
         id: Int,
-        message: String 
+        message: String
     }): Void  {
         Beluga.getInstance().getModuleInstance(Ticket).comment(args);
     }
 
-    public function comment(args: { 
+    public function comment(args: {
         id: Int,
-        message: String 
+        message: String
     }): Void  {
         this.show_id = args.id;
-        
+
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
@@ -254,19 +254,19 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" +  ".",
             user_id: ticket.ti_us_id
         };
-        beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [notify]); 
+        beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [notify]);
     }
 
-    public static function _submit(args: { 
-        title: String, 
+    public static function _submit(args: {
+        title: String,
         message: String,
         assignee: String
     }): Void {
         Beluga.getInstance().getModuleInstance(Ticket).submit(args);
     }
-  
-    public function submit(args: { 
-        title: String, 
+
+    public function submit(args: {
+        title: String,
         message: String,
         assignee: String
     }): Void {
@@ -297,12 +297,12 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
                 var args = {
                     title: "Ticket assignnment: " + args.title + " !",
                     text: "You've been assigned to the ticket number " + ticket_id + ", " +
-                    args.title + " by " + account.getLoggedUser().login + 
+                    args.title + " by " + account.getLoggedUser().login +
                     " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" + ".",
                     user_id: assignement.as_us_id
                 };
-                beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [args]); 
-            }            
+                beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [args]);
+            }
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
         }
     }
@@ -328,7 +328,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public static function _deletelabel(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Ticket).deletelabel(args);
     }
-  
+
     public function deletelabel(args: { id: Int }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
@@ -353,7 +353,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     public function addlabel(args: { name: String }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
-        
+
         if (!account.isLogged()) {
             this.error = "You must be logged to add a label !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
@@ -380,7 +380,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var labels: List<Dynamic> = new List<Dynamic>();
 
         for (l in Label.manager.search($la_id < 100)) {
-            labels.push({ 
+            labels.push({
                 label_name: l.la_name,
                 label_id: l.la_id
             });
@@ -407,7 +407,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         for( l in Label.manager.search($la_name == label_name) ) {
             label = l;
         }
-        if (label == null) { return false; } 
+        if (label == null) { return false; }
         else { return true; }
     }
 
@@ -418,7 +418,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         for( l in Label.manager.search($la_id == label_id) ) {
             label = l;
         }
-        if (label == null) { return false; } 
+        if (label == null) { return false; }
         else { return true; }
     }
 
@@ -443,7 +443,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     /// { message_content: String, message_creation_date: Date, message_author: String}
     public function getTicketMessages(ticket_id: Int): List<Dynamic> {
         var messages: List<Dynamic> = new List<Dynamic>();
-        
+
         for( m in Message.manager.search($me_ti_id == ticket_id) ) {
             messages.push({
                 message_content: m.me_content,
