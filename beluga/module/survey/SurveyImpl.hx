@@ -16,31 +16,13 @@ import beluga.core.Beluga;
 import haxe.xml.Fast;
 
 class SurveyImpl extends ModuleImpl implements SurveyInternal {
-	var m_surveys : Array<SurveyData>;
-	var title : String;
-	
-	/*
-	 * contructor takes Survey's name (if exists)
-	 */
+
 	public function new() {
 		super();
-		this.title = "";
-		m_surveys = new Array<SurveyData>();
-		//this.get();
 	}
 	
 	override public function loadConfig(data : Fast) {
 		
-	}
-
-	/*
-	 * before calling this method, you have to instantiate the class with the get method
-	 * param : none
-	 * returns the SurveyData list of the current user
-	 */
-	public function getSurveysList() : Array<SurveyData> {
-		//this.get();
-		return m_surveys;
 	}
 	
 	public static function _redirect() {
@@ -73,22 +55,14 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		}
 	}
 
-	public static function _get() {
-		Beluga.getInstance().getModuleInstance(Survey).get();
-	}
-
-	/*
-	 * called to "instantiate" this class, based on the current User
-	 * param : none
-	 */
-	public function get() {
+	public function getSurveysList() : Array<SurveyData> {
 
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-		if (user == null)
-			return;
+		var m_surveys = new Array<SurveyData>();
 
-		m_surveys = new Array<SurveyData>();
+		if (user == null)
+			return m_surveys;
 
 		for (tmp in SurveyModel.manager.dynamicSearch( { author_id : user.id } )) {
 			var tmp_v = new SurveyData();
@@ -102,6 +76,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 
 			m_surveys.push(tmp_v);
 		}
+		return m_surveys;
 	}
 
 	public static function _print(args : {id : Int}) {
@@ -133,10 +108,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		Beluga.getInstance().getModuleInstance(Survey).create(args);
 	}
 	
-	/*
-	 * called to create a nwew Survey (if doesn't exist)
-	 * param : title (String), status (Int), description (String), choices (Array<String>)
-	 */
 	public function create(args : {
 		title : String,
 		description : String,
@@ -150,20 +121,11 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		}
 		
 		var tmp_choices = new Array<String>();
-		
-		// this loop delete duplicate data
-		/*for (tmp in args.choices) {
-			tmp_choices.push(tmp);
-			args.choices.remove(tmp);
-		}*/
-		
-		/*tmp_choices.push(args.choices);
-		tmp_choices.push(args.choices2);*/
+
 		if (args.choices != null)
 			for (t in args.choices)
 				if (t != null && t != "")
 					tmp_choices.push(t);
-		//tmp_choices.push(args.choices);
 
 		if (tmp_choices.length < 2) {
 			beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
@@ -173,8 +135,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		var survey = new SurveyModel();
 
 		survey.name = args.title;
-		//survey.status = args.status;
-		//survey.dateEnd = ;
 		survey.author_id = user.id;
 		survey.description = args.description;
 		survey.multiple_choice = args.choices != null ? args.choices.length : 0;
@@ -188,9 +148,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 			c.insert();
 		}
 		
-		/*var str = haxe.Resource.getString(res);
-		var t = new haxe.Template(str);*/
-		
 		beluga.triggerDispatcher.dispatch("beluga_survey_create_success", []);
 	}
 	
@@ -201,10 +158,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		Beluga.getInstance().getModuleInstance(Survey).vote(args);
 	}
 	
-	/*
-	 * called when a User add a vote for a Survey
-	 * params : String (choice's name), Survey (to know in which survey you add the vote)
-	 */
 	public function vote(args : {
 		id : Int,
 		option : Int
@@ -246,6 +199,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	public function canVote(?user : User) : Bool {
 		if (user == null)
 			user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var m_surveys = this.getSurveysList();
 		for (tmp in m_surveys)
 			for (tmp_tmp in tmp.m_results)
 				if (tmp_tmp.user == user)
@@ -256,6 +210,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	public function getVote(?user : User) : Array<beluga.module.survey.model.Choice> {
 		if (user == null)
 			user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var m_surveys = this.getSurveysList();
 		for (tmp in m_surveys)
 			for (tmp_tmp in tmp.m_results)
 				if (tmp_tmp.user == user)
