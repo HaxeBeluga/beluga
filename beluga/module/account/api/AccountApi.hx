@@ -35,6 +35,10 @@ class AccountApi
 		beluga.triggerDispatcher.dispatch("beluga_account_printInfo", []);
 	}
 
+	public function doShowUser(args: { id: Int }) {
+		beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+	}
+
 	//
 	//Subscription
 	//

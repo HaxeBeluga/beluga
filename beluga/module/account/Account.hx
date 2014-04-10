@@ -21,6 +21,8 @@ interface Account extends Module
 		password : String
 	}) : Void;
 
+	public function showUser(args: { id: Int}): Void;
+
 	public function logout() : Void;
 
 	public function setLoggedUser(user : User) : User;

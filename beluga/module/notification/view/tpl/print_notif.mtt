@@ -1,6 +1,6 @@
-<div>
+<div style="margin-top:50px;margin-left:auto;margin-right:auto;width:800px;">
 	<h1>::notif.title::</h1><br/>
-	<textarea class="form-control">::notif.text::</textarea>
+	<span class="form-control">::notif.text::</span>
 	<br/>
 	<a href="::path::default" class="btn btn-primary">Back to notifications list</a>
 </div>

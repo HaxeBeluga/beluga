@@ -149,4 +149,12 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		return Session.get(SESSION_USER) != null;
 	}
 
+	public function _showUser(args: { id: Int}): Void {
+		Beluga.getInstance().getModuleInstance(Account).showUser(args);
+	}
+
+	public function showUser(args: { id: Int}): Void {
+		beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+	}
+
 }
