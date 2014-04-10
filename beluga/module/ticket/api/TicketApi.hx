@@ -11,8 +11,7 @@ import beluga.module.ticket.Ticket;
 // Haxe
 import haxe.web.Dispatch;
 
-class TicketApi
-{
+class TicketApi {
     var beluga : Beluga;
     var ticket : Ticket;
 
