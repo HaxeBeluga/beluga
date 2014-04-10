@@ -1,0 +1,29 @@
+<div>
+	<div class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="login">Identifiant</label>
+			<div class="col-sm-6" name="login">
+				::user.login::
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="email">email</label>
+			<div class="col-sm-6" name="email">
+				::user.email::
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="time">Date d'inscription</label>
+			<div class="col-sm-6" name="time">
+				::user.subscribeDateTime::
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<a href="/" class="btn btn-primary form-control">Back to welcome page</a>
+			</div>
+		</div>
+	</div>
+</div>

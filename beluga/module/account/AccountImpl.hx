@@ -28,6 +28,15 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		
 	}
 
+	public static function _logout() {
+		Beluga.getInstance().getModuleInstance(Account).logout();
+	}
+
+	public function logout() {
+		Session.set(SESSION_USER, null);
+		beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
+	}
+
 	public static function _login(args : {
 		login : String,
 		password : String
@@ -61,20 +70,35 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	private function subscribeCheckArgs(args : {
 		login : String,
 		password : String,
-		password_conf : String
-	}) : Map < String, List<String> > {
+		password_conf : String,
+		email : String
+	}) : String {
 		
+		if (args.login == "") {
+			return "invalid login";
+		}
+		if (args.password == "" || args.password_conf == "") {
+			return "missing password";
+		}
+		if (args.password != args.password_conf) {
+			return "passwords don't match";
+		}
+		
+		for (tmp in User.manager.dynamicSearch( {login : args.login} )) {
+			return "login already used";
+		}
 		//TODO place user form validation here
 		//Also validate that the user is unique with something like this
 		//User.manager.dynamicSearch({login : args.login, hashPassword: ahaxe.crypto.Md5.encode(args.password).first() != null;
 	
-		return new Map < String, List<String> > ();
+		return "";
 	}
 
 	public static function _subscribe(args : {
 		login : String,
 		password : String,
-		password_conf : String
+		password_conf : String,
+		email : String
 	}) {
 		Beluga.getInstance().getModuleInstance(Account).subscribe(args);
 	}
@@ -82,16 +106,18 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	public function subscribe(args : {
 		login : String,
 		password : String,
-		password_conf : String
+		password_conf : String,
+		email : String
 	}) {
-		var errorMap = subscribeCheckArgs(args);
-		if (Lambda.empty(errorMap)) {
+		var error = subscribeCheckArgs(args);
+		if (error == "") {
 			var user = new User();
 			user.login = args.login;
 			user.setPassword(args.password);		
 			//Save user in db
 			user.emailVerified = true;//TODO AB Change when activation mail sended.
 			user.subscribeDateTime = Date.now();
+			user.email = args.email;
 			user.insert();
 			//TODO AB Send activation mail
 			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_success", [
@@ -99,8 +125,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 			]);
 		} else {
 			beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", [
-				errorMap,
-				args
+				error
 			]);
 		}
 	}
