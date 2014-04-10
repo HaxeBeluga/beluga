@@ -43,7 +43,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   }) : Void
   {
     this.key = (args.channel_key.length > 0 ? args.channel_key : null);
-    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_channel", [args]);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_channel_display", [args]);
   }
 
   public function getChannelContext() : Dynamic
@@ -66,7 +66,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   }) : Void
   {
     this.key = (args.parent_key.length > 0 ? args.parent_key : null);
-    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_add_channel", [args]);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_add_channel_display", [args]);
   }
 
   public function getAddChannelContext() : Dynamic
@@ -89,7 +89,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   }) : Void
   {
     this.key = (args.channel_key.length > 0 ? args.channel_key : null);
-    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_modify_channel", [args]);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_modify_channel_display", [args]);
   }
 
   public function getModifyChannelContext() : Dynamic
@@ -112,7 +112,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   }) : Void
   {
     this.key = (args.channel_key.length > 0 ? args.channel_key : null);
-    beluga.triggerDispatcher.dispatch("request_beluga_forum_display_delete_channel", [args]);
+    beluga.triggerDispatcher.dispatch("request_beluga_forum_delete_channel_display", [args]);
   }
 
   public function getDeleteChannelContext() : Dynamic
@@ -143,11 +143,13 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   }) : Void
   {
     Logic.add(args);
+    beluga.triggerDispatcher.dispatch("beluga_forum_channel_display", [{channel_key : args.parent_key}]);
   }
 
   public static function _modifyChannel(args : {
     label : String,
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).modifyChannel(args);
@@ -155,24 +157,29 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public function modifyChannel(args : {
     label : String,
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void
   {
     Logic.modify(args);
+    beluga.triggerDispatcher.dispatch("beluga_forum_channel_display", [{channel_key : args.parent_key}]);
   }
 
   public static function _deleteChannel(args : {
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).deleteChannel(args);
   }
 
   public function deleteChannel(args : {
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void
   {
     Logic.delete(args);
+    beluga.triggerDispatcher.dispatch("beluga_forum_channel_display", [{channel_key : args.parent_key}]);
   }
 
   /**

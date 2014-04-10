@@ -26,10 +26,14 @@ class Logic
 
   public static function modify(args : {
     label : String,
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void
   {
     var channel = Channel.manager.select($key == args.channel_key);
+
+    if (channel == null)
+      return;
 
     channel.label = args.label;
 
@@ -37,10 +41,16 @@ class Logic
   }
 
   public static function delete(args : {
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void
   {
     var channel = Channel.manager.select($key == args.channel_key);
+
+    // TODO Recursive deletion for channel
+
+    if (channel == null)
+      return;
 
     channel.delete();
   }

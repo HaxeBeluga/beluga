@@ -1,17 +1,17 @@
 <!-- List of forum module triggers and routes -->
-<trigger name="beluga_forum_display_channel">
+<trigger name="beluga_forum_channel_display">
     <route class="beluga.module.forum.ForumImpl" method="_displayChannel" ></route>
 </trigger>
 
-<trigger name="beluga_forum_display_channel_add">
+<trigger name="beluga_forum_channel_add_display">
   <route class="beluga.module.forum.ForumImpl" method="_displayAddChannel"></route>
 </trigger>
 
-<trigger name="beluga_forum_display_channel_modify">
+<trigger name="beluga_forum_channel_modify_display">
   <route class="beluga.module.forum.ForumImpl" method="_displayModifyChannel"></route>
 </trigger>
 
-<trigger name="beluga_forum_display_channel_delete">
+<trigger name="beluga_forum_channel_delete_display">
   <route class="beluga.module.forum.ForumImpl" method="_displayDeleteChannel"></route>
 </trigger>
 

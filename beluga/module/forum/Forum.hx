@@ -61,11 +61,13 @@ interface Forum extends Module
 
   public function modifyChannel(args : {
     label : String,
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void;
 
   public function deleteChannel(args : {
-    channel_key : String
+    channel_key : String,
+    parent_key : String
   }) : Void;
 
   /**

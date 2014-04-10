@@ -50,9 +50,19 @@ class Display
 
     // TODO Load tag and status
 
+    if (chan == null) 
+    {
+      return ({
+        channel_label : "",
+        channel_key : "",
+        parent_channel_key : ""
+      });
+    }
+
     return ({
       channel_label : chan.label,
-      channel_key : chan.key
+      channel_key : chan.key,
+      parent_channel_key : (chan.parent == null ? "" : chan.parent.key)
     });
   }
 
@@ -62,9 +72,19 @@ class Display
 
     // TODO Get all info (number of deleted message, etc, etc...)
 
+    if (chan == null) 
+    {
+      return ({
+        channel_label : "",
+        channel_key : "",
+        parent_channel_key : ""
+      });
+    }
+
     return ({
       channel_label : chan.label,
-      channel_key : chan.key
+      channel_key : chan.key,
+      parent_channel_key : (chan.parent == null ? "" : chan.parent.key)
     });
   }
 }
