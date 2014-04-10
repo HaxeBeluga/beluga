@@ -5,7 +5,6 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.notification.Notification;
 import haxe.web.Dispatch;
-import php.Web;
 
 class NotificationApi
 {
