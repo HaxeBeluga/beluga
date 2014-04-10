@@ -11,6 +11,8 @@ import beluga.module.fileupload.model.Extension;
 
 // Haxe
 import haxe.xml.Fast;
+import php.Web;
+import sys.io.FileOutput;
 
 class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public var error: String = "";
@@ -45,7 +47,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         }
         return {
             file_error: this.error,
-            files_list: files
+            files_list: files,
         };
     }
 
@@ -57,7 +59,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
             files.push({ 
                 file_name: f.fi_name,
                 file_path: f.fi_path,
-                file_size: f.fi_size,
+                file_size: sys.FileSystem.stat(f.fi_path).size,
                 file_id: f.fi_id 
             });
         }
@@ -83,7 +85,19 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     }
  
     public function send(): Void{
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_send", []);
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+            beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
+            return;
+        }
+
+        var id = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
+        var login = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().login;
+        var up = new Uploader(login, id);
+        if (up.is_valid == false) {
+            beluga.triggerDispatcher.dispatch("beluga_fileupload_upload_fail", [{reason: "Invalid file extension"}]);            
+        } else {
+            beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success", []);
+        }
     }
 
 

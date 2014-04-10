@@ -2,9 +2,9 @@
 <div class="container fileupload-upload-widget">
     <div class="container-fluid">
         <h4>Select a new file to upload !</h4>
-        <form action="getfile.php" method="post"><br>
-            <input type="file" name="upload_file" class="btn btn-default">
-            <input type="submit" value="Upload file" class="btn btn-warning pull-right fileupload-upload-submit">
+        <form action="/beluga/fileupload/send" method="POST" enctype="multipart/form-data"><br>
+            <input type="file" name="fileupload_filename" id="fileupload_filename" class="btn btn-default">
+            <input type="submit" name="submit" class="btn btn-warning pull-right fileupload-upload-submit">
         </form>
     </div>
 </div>

@@ -17,5 +17,4 @@ class CssApi
 		Web.setHeader("Content-type", "text/css");
 		Sys.print(Beluga.getInstance().getModuleInstance(Survey).getWidget("print").getCss());
 	}
-
 }
