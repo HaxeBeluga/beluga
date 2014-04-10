@@ -52,7 +52,7 @@ public function create(args : {
 	}) : Void
 ```
 
-This method creates a new survey by taking its title and its choices (two for the moment, it will be updated later). Depending on its success, it will thow the `beluga_survey_create_fail` trigger or `beluga_survey_create_success`.
+This method creates a new survey by taking its title and its choices. Depending on its success, it will thow the `beluga_survey_create_fail` trigger or `beluga_survey_create_success`.
 
 ```Haxe
 public function vote(args : {
