@@ -36,7 +36,7 @@ These functions are handle by the Beluga webdispatcher, and throw respectively t
 
 which suggest to the developer what widget to display.
 
-For example, the vote method sends back the `beluga_survey_vote_success` trigger or the `beluga_survey_vote_fail` trigger. Then you just have to handles them and displays according to the one you will receive.
+For example, the vote method sends back the `beluga_survey_vote_success` trigger or the `beluga_survey_vote_fail` trigger. Then you just have to handle them and display according to the one you will receive.
 
 ```Haxe
 public function print(args : {id : Int}) : Void
