@@ -1,0 +1,10 @@
+<!-- List of notification module triggers and routes -->
+<trigger name="beluga_notification_create">
+	<route class="beluga.module.notification.NotificationImpl" method="_create">
+	</route>
+</trigger>
+
+<trigger name="beluga_notification_delete">
+	<route class="beluga.module.notification.NotificationImpl" method="_delete">
+	</route>
+</trigger>

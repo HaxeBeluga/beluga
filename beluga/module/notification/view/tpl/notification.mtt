@@ -1,0 +1,19 @@
+<div>
+	<h1>Notifications list for <b>::user.login::</b> user</h1><br/>
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	<div>
+		<ul class="list-group">
+		::foreach notifs::
+			<li class="list-group-item">
+				<a class="btn btn-danger btn-xs pull-right" href="::path::delete?id=::id::">Delete</a>
+				<a href="::path::print?id=::id::" class="btn">::title::</a>
+			</li>
+		::end::
+		</ul>
+	</div>
+</div>

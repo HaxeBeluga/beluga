@@ -144,7 +144,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	}) {
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 		
-		if (user == null || args.choices == null || args.choices.length < 2) {
+		if (user == null || args.choices == null || args.choices.length < 2 || args.title == "") {
 			beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
 			return;
 		}
@@ -165,7 +165,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 					tmp_choices.push(t);
 		//tmp_choices.push(args.choices);
 
-		if (tmp_choices.length < 2 || args.title == "") {
+		if (tmp_choices.length < 2) {
 			beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
 			return;
 		}

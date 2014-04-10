@@ -3,14 +3,22 @@
 	<h2>::survey.name::</h2>
 	<form id="add_vote" action="::path::vote" method="POST">
 		<input type="hidden" name="id" value="::survey.id::">
-		::foreach choices::
-		<div class="radio">
-		  	<label>
-		    	<input type="radio" name="option" id="::label::" value="::id::">
-		    	::label::
-		  	</label>
-		</div>
-		::end::
+			::foreach first::
+			<div class="radio">
+				<label>
+				   	<input type="radio" name="option" id="::label::" value="::id::" checked>
+				   	::label::
+				</label>
+			</div>
+			::end::
+			::foreach choices::
+			<div class="radio">
+				<label>
+				   	<input type="radio" name="option" id="::label::" value="::id::">
+				   	::label::
+				</label>
+			</div>
+			::end::
 		<input type="submit" class="btn btn-primary" value="Vote !"/>
 	</form>
 </div>
