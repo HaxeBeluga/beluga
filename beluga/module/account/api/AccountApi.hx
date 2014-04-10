@@ -27,13 +27,22 @@ class AccountApi
 		beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
 	}
 
+	public function doLogout() {
+		this.account.logout();
+	}
+
+	public function doPrintInfo() {
+		beluga.triggerDispatcher.dispatch("beluga_account_printInfo", []);
+	}
+
 	//
 	//Subscription
 	//
 	public function doSubscribe(args : {
 		login : String,
 		password : String,
-		password_conf : String
+		password_conf : String,
+		email : String
 	}) {
 		beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args]);
 	}
