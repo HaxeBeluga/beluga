@@ -1,9 +1,6 @@
 package beluga.module.notification;
 
 import beluga.module.account.Account;
-import php.Lib;
-import php.Web;
-import php.Session;
 import beluga.core.module.ModuleImpl;
 import beluga.module.notification.model.NotificationModel;
 import beluga.core.Beluga;
@@ -11,6 +8,7 @@ import beluga.core.Beluga;
 import haxe.xml.Fast;
 
 class NotificationImpl extends ModuleImpl implements NotificationInternal {
+
 	public function new() {
 		super();
 	}
@@ -83,6 +81,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 		notif.text = args.text;
 		notif.user_id = args.user_id;
 		notif.hasBeenRead = false;
+		notif.creationDate = Date.now();
 		notif.insert();
 		beluga.triggerDispatcher.dispatch("beluga_notif_create_success", []);
 	}

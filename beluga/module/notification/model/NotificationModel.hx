@@ -17,5 +17,6 @@ class NotificationModel extends Object {
 	public var text : STinyText;
 	public var user_id : SInt;
 	public var hasBeenRead : SBool;
+	public var creationDate : SDateTime;
 	@:relation(user_id) public var user : User;
 }
