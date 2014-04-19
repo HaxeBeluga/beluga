@@ -47,7 +47,7 @@ class Trigger
 			}
 		}
 	}
-
+	
 	public function trigger(params : Dynamic = null) {
 		for (route in routes) {
 			route.call(params);
