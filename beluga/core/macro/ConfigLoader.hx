@@ -150,7 +150,7 @@ class ConfigLoader
 		var modulesInfo = loopFiles(config);
 		
 		return macro "DONE!";
-	}	
+	}
 
 	macro private static function getInstallPath() : Expr {
 		//Call "haxelib path beluga" to get the install path of beluga
