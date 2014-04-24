@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="/beluga/ticket/css/browse"/>
+    <div class="beluga ticket browse">
+    <div id="ticket" class="container-fluid container-fluid-ticket">
+        <div class="col-md12 ticket-button-nav">
+            <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm disabled">Browse tickets</a>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default btn-sm" onclick="showOpenTickets()">
+                    <input type="radio" name="options" id="option1">Open ::open_tickets::
+                </label>
+                <label class="btn btn-default btn-sm" onclick="showClosedTickets()">
+                    <input type="radio" name="options" id="option2">Closed ::closed_tickets::
+                </label>
+            </div>
+            <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">New ticket</a>
+        </div>
+        <hr class="hr-ticket" />
+        <div class="col-md-3 col-md-3-ticket">
+            <ul>
+                <li class="who-ticket-browse"><span>Everyone's ticket</span></li>
+                <li class="who-ticket-browse"><span>Assigned to you</span></li>
+                <li class="who-ticket-browse"><span>Created by you</span></li>
+            </ul>
+            <h4>Labels</h4>
+            <ul>
+                ::foreach labels_list::
+                <li class="ticket-label-browse"><span>::label_name::</span></li>
+                ::end::
+            </ul>
+        </div>
+        <div class="col-md-9 col-md-9-ticket">
+            <ul class="list-group ticket-list-browse">
+                ::foreach tickets_list::
+                <li class="list-group-item ::ticket_status::">
+                    <span class="badge">#::ticket_id::</span>
+                    <a href="/beluga/ticket/show?id=::ticket_id::">
+                    <h4 class="list-group-item-heading">::ticket_subject::</h4></a>
+                    <p class="list-group-item-text">
+                        <small>Opened by <a href="/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> -::ticket_date:: - ::ticket_comments_count:: comments</small>
+                    </p>
+                </li>
+                ::end::
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function showClosedTickets() {
+            var l1 = document.getElementsByClassName("open");
+            for (var i = 0; i < l1.length; i++) {
+                (l1[i]).style.display="none";
+            }
+            var l2 = document.getElementsByClassName("closed");
+            for (var i = 0; i < l2.length; i++) {
+                (l2[i]).style.display="block";
+            }
+        }
+        function showOpenTickets() {
+           var l1 = document.getElementsByClassName("closed");
+            for (var i = 0; i < l1.length; i++) {
+                (l1[i]).style.display="none";
+            }
+            var l2 = document.getElementsByClassName("open");
+            for (var i = 0; i < l2.length; i++) {
+                (l2[i]).style.display="block";
+            }
+        }
+    </script>
+    </div>

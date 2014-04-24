@@ -1,0 +1,147 @@
+/* override some bootstrap styles */
+.row-ticket,
+.container-fluid-ticket,
+.container-ticket,
+.col-md-9-ticket,
+.col-md-3-ticket,
+.col-md-2-ticket,
+.col-md-10-ticket {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.help-block {
+    font-size: 13px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* ticket custom styles */
+
+#container {
+    margin-top: 50px;
+}
+
+#ticket {
+    width: 900px;
+    margin-bottom: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
+    -moz-box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
+    box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
+}
+
+.ticket-new-button {
+    float: right;
+}
+
+.ticket-area {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    max-width: 713px;
+    background-color: whitesmoke;
+}
+
+.ticket-comment {
+    max-width: 713px;
+    background-color: white;
+}
+
+.list-group-ticket-comment:hover {
+    background-color: white;
+}
+
+.ticket-comment-head {
+    max-width: 713px;
+    background-color: whitesmoke;
+}
+
+.ticket-labels-list {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    max-width: 530px;
+}
+
+.ticket-button-submit {
+    margin-bottom: 10px;
+    margin-right: 17px;
+    max-width: 530px;
+    text-align: right;
+    position: relative;
+    float:right;
+}
+
+.ticket-area:focus {
+    background-color: white;
+}
+
+.hr-ticket {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.ticket-button-nav {
+    margin-top: 10px;
+    right: 0px;
+}
+
+.ticket-label {
+    font-size: 13px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    margin-right: 10px;
+    list-style: none;
+    margin-left: -20px;
+}
+
+.ticket-label:hover {
+    background-color: whitesmoke;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.ticket-label-browse {
+    font-size: 13px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    margin-right: 50px;
+    list-style: none;
+    margin-left: -20px;
+}
+
+.ticket-label-browse:hover {
+    background-color: whitesmoke;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+
+.who-ticket-browse {
+    font-size: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    margin-right: 50px;
+    list-style: none;
+    margin-left: -20px;
+}
+.list-group-item:hover {
+    background-color: whitesmoke;
+}
+
+.who-ticket-browse:hover {
+    background-color: whitesmoke;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.ticket-comment:hover {
+    background-color: white;
+}

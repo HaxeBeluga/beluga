@@ -1,4 +1,4 @@
-## Flash 9+
+# Flash 9+
 -main TestMain
 -lib munit
 -lib hamcrest
@@ -8,21 +8,21 @@
 -swf-version 11
 -swf build/as3_test.swf
 
---next
+# --next
 
 ## Flash 8
--main TestMain
--lib munit
--lib hamcrest
--cp src
+# -main TestMain
+# -lib munit
+# -lib hamcrest
+# -cp src
 
--cp testsrc
--swf-version 8
--swf build/as2_test.swf
+# -cp testsrc
+# -swf-version 8
+# -swf build/as2_test.swf
 
 --next
 
-## JavaScript
+# JavaScript
 -main TestMain
 -lib munit
 -lib hamcrest
@@ -43,15 +43,4 @@
 -neko build/neko_test.n
 
 --next
-
-## CPP
--main TestMain
--lib munit
--lib hamcrest
--cp src
-
--cp testsrc
-#-D HXCPP_M64
--cpp build/cpp_test
-
 

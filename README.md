@@ -52,3 +52,7 @@ It must contains (at least) the following
 
 	<!-- List of active modules -->
 	<module name="account"/>
+
+
+### Credits ###
+Thanks to Jonathan Pellet for our wonderful logo.

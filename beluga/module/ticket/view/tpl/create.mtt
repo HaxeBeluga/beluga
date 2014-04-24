@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="/beluga/ticket/css/create"/>
+<div id="container">
+    <div id="ticket" class="container-fluid container-fluid-ticket">
+        ::if (ticket_error != "")::
+        <div class="alert alert-danger alert-dismissable ticket-alert-error">
+          <strong>Error!</strong> ::ticket_error::
+        </div>
+        ::end::
+        <div class="col-md12 ticket-button-nav">
+            <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
+            <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button disabled">New ticket</a>
+        </div>
+        <hr class="hr-ticket" />
+        <div class="col-md-10 col-md-10-ticket">
+            <form action="/beluga/ticket/submit" method="POST">
+                <input type="text" class="ticket-area form-control" placeholder="Title" name="title">
+                <label for="ticket-assignee" class="col-md-4 control-label">Assign someone to the ticket</label>
+                <div class="col-md-4">
+                    <select id="ticket-assignee" class="form-control" name="assignee">
+                        <option>None</option>
+                        ::foreach users_list::
+                        <option>::user_name::</option>
+                        ::end::
+                    </select>
+                    </div>
+                <div class="col-md-12"><p class="ticket-labels-list">Labels: </p></div>
+                <textarea class="ticket-area form-control" rows="6" placeholder="Leave a comment" name="message"></textarea>
+                <span class="help-block">
+                    Your text will be renderer using markdown, see <a href="https://daringfireball.net/projects/markdown/">here</a> for a full
+                    list of markdown commands.
+                </span>
+                <input type="submit" class="btn btn-success btn-sm ticket-button-submit" value="Submit new ticket"/>
+            </form>
+        </div>
+        <div class="col-md-2 col-md-2-ticket">
+            <h4>Add Labels</h4>
+            <ul>
+                ::foreach labels_list::
+                <li class="ticket-label"><span>::label_name::</span></li>
+                ::end::
+            </ul>
+        </div>
+    </div>
+</div>

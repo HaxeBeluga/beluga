@@ -12,6 +12,7 @@ class User extends Object {
 	public var hashPassword : SString<32>;
 	public var subscribeDateTime : SDateTime;
 	public var emailVerified : SBool;
+	public var email : SString<128>;
 
 	public function setPassword(password : String) {
 		hashPassword = haxe.crypto.Md5.encode(password);
