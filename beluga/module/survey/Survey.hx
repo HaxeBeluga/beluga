@@ -8,6 +8,7 @@ import beluga.core.module.Module;
 
 interface Survey extends Module
 {
+	public function canVote(args : {id : Int}) : Bool;
 	public function print(args : {id : Int}) : Void;
 	public function create(args : {
 		title : String,
