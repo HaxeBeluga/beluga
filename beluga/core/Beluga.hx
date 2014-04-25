@@ -51,8 +51,7 @@ class Beluga
 
 		// Look for triggers
 		for (trigger in ConfigLoader.config.nodes.trigger) {
-			var trig = new Trigger(trigger);
-			triggerDispatcher.register(trig);
+			triggerDispatcher.addRoutesFromFast(trigger);
 		}
 
 		//Init every modules
