@@ -80,21 +80,25 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		Beluga.getInstance().getModuleInstance(Survey).print(args);
 	}
 	
-	public function print(args : {id : Int})
-	{
+	public function print(args : {id : Int}) {
+		for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+			beluga.triggerDispatcher.dispatch("beluga_survey_printx", [{survey : tmp}]);
+			return;
+		}
+	}
+
+	public function getChoices(args : {id : Int}) {
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var arr = new Array<Choice>();
 
 		if (user != null) {
 			for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
-				for (tmp_c in Result.manager.dynamicSearch( { survey_id : tmp.id, user_id : user.id } )) {
-					beluga.triggerDispatcher.dispatch("beluga_survey_printx", [{survey : tmp}]);
-					return;
+				for (tmp_c in Choice.manager.dynamicSearch( { survey_id : tmp.id, user_id : user.id } )) {
+					arr.push(tmp_c);
 				}
-				beluga.triggerDispatcher.dispatch("beluga_survey_votex", [{survey : tmp}]);
-				return;
 			}
 		}
-		this.redirect();
+		return arr;
 	}
 
 	public static function _create(args : {
@@ -193,25 +197,17 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 	}
 	
 
-	public function canVote(?user : User) : Bool {
-		if (user == null)
-			user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-		var m_surveys = this.getSurveysList();
-		for (tmp in m_surveys)
-			for (tmp_tmp in tmp.m_results)
-				if (tmp_tmp.user == user)
-					return false;
-		return true;
-	}
+	public function canVote(args : {id : Int}) : Bool {
+		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-	public function getVote(?user : User) : Array<beluga.module.survey.model.Choice> {
-		if (user == null)
-			user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-		var m_surveys = this.getSurveysList();
-		for (tmp in m_surveys)
-			for (tmp_tmp in tmp.m_results)
-				if (tmp_tmp.user == user)
-					return tmp.m_choices;
-		return null;
+		if (user != null) {
+			for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+				for (tmp_c in Result.manager.dynamicSearch( { survey_id : tmp.id, user_id : user.id } )) {
+					return false;
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 }
