@@ -1,4 +1,5 @@
 package beluga.core.module;
+
 import beluga.core.Beluga;
 import beluga.core.BelugaException;
 import beluga.core.Widget;
@@ -34,8 +35,7 @@ class ModuleImpl implements ModuleInternal
 
 		// Look for triggers
 		for (trigger in fast.nodes.trigger) {
-			var trig = new Trigger(trigger);
-			beluga.triggerDispatcher.register(trig);
+			beluga.triggerDispatcher.addRoutesFromFast(trigger);
 		}
 
 		loadConfig(fast);
