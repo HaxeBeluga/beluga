@@ -40,9 +40,8 @@ class Beluga
 	private function new()
 	{
 		ModuleLoader.init();
-		
 		triggerDispatcher = new TriggerDispatcher();
-
+		
 		db = null;
 		//Connect to database
 		if (ConfigLoader.config.hasNode.database) {
@@ -53,7 +52,7 @@ class Beluga
 		for (trigger in ConfigLoader.config.nodes.trigger) {
 			triggerDispatcher.addRoutesFromFast(trigger);
 		}
-
+		
 		//Init every modules
 		for (module in ConfigLoader.modules) {
 			var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);

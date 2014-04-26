@@ -1,4 +1,5 @@
 <!-- List of account module triggers and routes -->
+
 <trigger name="beluga_account_login">
 	<route class="beluga.module.account.AccountImpl" method="_login" >
 	</route>
