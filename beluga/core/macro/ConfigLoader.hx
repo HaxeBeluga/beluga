@@ -109,7 +109,6 @@ class ConfigLoader
 				var modulePath = installPath + "/module/" + name.toLowerCase();
 				var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 
-
 				//Build a list of modules config files
 				config = File.getContent(installPath + "/module/" + name.toLowerCase() + "/config.xml");
 

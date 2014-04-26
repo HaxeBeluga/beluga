@@ -21,7 +21,7 @@ class APIBuilder
 
 		if (!ConfigLoader.isReady)
 			ConfigLoader.forceBuild();
-		
+
 		for (module in ConfigLoader.modules)
 		{
 			//var api : String = "beluga.module." + module.name.toLowerCase() + ".api." + module.name.charAt(0).toUpperCase() + module.name.substr(1) + "Api";

@@ -37,6 +37,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
 	}
 
+	@trigger("beluga_account_login")
 	public static function _login(args : {
 		login : String,
 		password : String
