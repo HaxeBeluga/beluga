@@ -1,0 +1,22 @@
+<div style="margin-top:50px;margin-left:auto;margin-right:auto;width:800px;">
+	<h1>News list</h1><br/>
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	<div>
+		<ul class="list-group">
+		::foreach news::
+			<li class="list-group-item">
+				::if (user)::
+				<a class="btn btn-danger btn-xs pull-right" href="::path::delete?news_id=::id::">Delete</a>
+				::end::
+				<a href="::path::print?news_id=::id::" class="btn">::title::</a>
+			</li>
+		::end::
+		</ul>
+	</div>
+	<a href="::path::redirect" class="btn btn-primary">Create new news</a>
+</div>
