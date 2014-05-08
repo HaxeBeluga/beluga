@@ -1,0 +1,25 @@
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+	<h2>Creation of news</h2>
+	<form action="::path::create" class="form-horizontal" role="form" method="POST">
+		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
+		<div class="form-group">
+			<label for="title">Title</label>
+			::if (title)::
+    		::if (title != "")::
+			<input class="form-control" id="title" name="title" placeholder="Enter title" value="::title::">
+			::else::
+			<input class="form-control" id="title" name="title" placeholder="Enter title">
+			::end::
+			::else::
+			<input class="form-control" id="title" name="title" placeholder="Enter title">
+			::end::
+		</div>
+		<div class="form-group">
+			<label for="text">News</label>
+			<textarea class="form-control" id="text" name="text" placeholder="Enter news">::if (data)::::if (data != "")::::data::::end::::end::</textarea>
+		</div>
+		<input type="submit" class="btn btn-primary" value="Create"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::path::">Go back to news list</a>
+</div>

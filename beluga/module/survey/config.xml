@@ -18,13 +18,3 @@
 	<route class="beluga.module.survey.SurveyImpl" method="_delete">
 	</route>
 </trigger>
-
-<!-- <trigger name="beluga_survey_redirect">
-	<route class="beluga.module.survey.SurveyImpl" method="_redirect">
-	</route>
-</trigger> -->
-
-<!--
-<template name="get" path="${beluga.installPath}/module/survey/src/tpl/print_survey.mtt" />
-<template name="create" path="${beluga.installPath}/module/survey/src/tpl/create.mtt" />
-<template name="vote" path="${beluga.installPath}/module/survey/src/tpl/vote.mtt" /> -->
