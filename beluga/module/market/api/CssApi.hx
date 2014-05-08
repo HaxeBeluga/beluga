@@ -17,4 +17,9 @@ class CssApi {
         Web.setHeader("Content-type", "text/css");
         Sys.print(Beluga.getInstance().getModuleInstance(Market).getWidget("admin").getCss());
     }
+
+    public function doCart() {
+        Web.setHeader("Content-type", "text/css");
+        Sys.print(Beluga.getInstance().getModuleInstance(Market).getWidget("cart").getCss());
+    }
 }
