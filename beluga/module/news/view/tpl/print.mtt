@@ -4,6 +4,11 @@
         <div class="alert alert-success">::success::</div>
     ::end::
     ::end::
+	::if (error)::
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
 	<div>
 		::if (user)::
 		::if (news.user_id == user.id)::
@@ -41,7 +46,6 @@
 		::if (user)::
 		<form action="::path::createComment" class="form-horizontal" role="form" method="POST">
 			<input name="news_id" value="::news.id::" type="hidden"/>
-			::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 			<div class="form-group">
 				<label for="text">Comment this news :</label>
 				<textarea class="form-control" id="text" name="text" placeholder="Enter comment">::if (data)::::if (data != "")::::data::::end::::end::</textarea>
