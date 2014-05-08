@@ -7,7 +7,7 @@ import beluga.module.fileupload.model.Extension;
 
 class Uploader {
     public var user: String = "";
-    public var filename: String = ""; 
+    public var filename: String = "";
     public var is_valid: Bool;
     public var file_path: String = "";
     public var id: Int = 0;
@@ -34,7 +34,7 @@ class Uploader {
     }
 
     public function new(user: String, id: Int)
-    { 
+    {
         var output = null;
         var filename = "";
         this.id = id;
@@ -45,7 +45,7 @@ class Uploader {
                 filename = fileName;
                 this.filename = filename;
             },
-            function (data:Bytes, pos:Int, len:Int) { 
+            function (data:Bytes, pos:Int, len:Int) {
                 if (filename != "") {
                     if (this.isValidFileExtension(filename)) {
                         if (!sys.FileSystem.exists("upload/" + user + "/")) {
@@ -53,12 +53,12 @@ class Uploader {
                             this.file_path = "upload/" + user + "/" + filename;
                         }
                         output = File.write ("upload/" + user + "/" + filename, true);
-                        output.write (data); 
+                        output.write (data);
                         this.insertDataInDb();
                     }
                 }
             }
         );
-        
-    } 
+
+    }
 }

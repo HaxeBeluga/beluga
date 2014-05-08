@@ -1,0 +1,27 @@
+.wallet-btn-download {
+    margin-right: 20px;
+}
+
+.wallet-add-currency-widget {
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    margin-top: 50px;
+    width: 600px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 2px;
+    margin-bottom: 50px;
+}
+
+.wallet-field-extension {
+    margin-bottom:50px;
+}
+
+.wallet-add-currency-submit {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.wallet-form-sep {
+    margin-top:10px;
+}

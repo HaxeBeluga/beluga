@@ -11,7 +11,7 @@ import beluga.module.fileupload.Fileupload;
 // Haxe
 import haxe.web.Dispatch;
 
-class FileuploadApi 
+class FileuploadApi
 {
     var beluga : Beluga;
     var file_upload : Fileupload;
@@ -22,11 +22,11 @@ class FileuploadApi
     }
 
     public function doBrowse(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_browse");   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_browse");
     }
 
     public function doSend(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_send");   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_send");
     }
 
     public function doDefault(): Void {
@@ -34,19 +34,19 @@ class FileuploadApi
     }
 
     public function doDelete(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_delete", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_delete", [args]);
     }
 
     public function doAddextension(args: { name: String }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension", [args]);
     }
 
     public function doDeleteextension(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension", [args]);
     }
 
     public function doAdmin(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_admin");   
+        beluga.triggerDispatcher.dispatch("beluga_fileupload_admin");
     }
 
     public function doCss(d: Dispatch): Void {

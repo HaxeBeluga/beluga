@@ -4,7 +4,7 @@ import beluga.core.module.Module;
 
 /**
  * Description of the ticket system.
- * 
+ *
  * @author Valentin & Jeremy
  */
 interface Ticket extends Module {

@@ -20,17 +20,17 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
 	public function new() {
         super();
     }
-    
+
     override public function loadConfig(data : Fast): Void {
-        
+
     }
-    
+
     /** Actions trigger **/
 
     public static function _browse(): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).browse();
     }
- 
+
     public function browse(): Void{
         beluga.triggerDispatcher.dispatch("beluga_fileupload_browse", []);
     }
@@ -38,7 +38,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public function getBrowseContext(): Dynamic {
         var files: List<Dynamic> = new List<Dynamic>();
         var user_id: Int = 0;
-        
+
         if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
             user_id = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
             files = this.getUserFileList(user_id);
@@ -54,13 +54,13 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     /// Return: {file_name: String, file_path: String, file_size: Int, file_id: Int}
     public function getUserFileList(user_id: Int): List<Dynamic> {
         var files: List<Dynamic> = new List<Dynamic>();
-        
+
         for (f in File.manager.search($fi_id_owner == user_id)) {
-            files.push({ 
+            files.push({
                 file_name: f.fi_name,
                 file_path: f.fi_path,
                 file_size: sys.FileSystem.stat(f.fi_path).size,
-                file_id: f.fi_id 
+                file_id: f.fi_id
             });
         }
         return files;
@@ -69,9 +69,9 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     /// Return: {extension_name: String, extension_id: Int}
     public function getExtensionsList(): List<Dynamic> {
         var extensions: List<Dynamic> = new List<Dynamic>();
-        
+
         for (e in Extension.manager.search($ex_id < 100)) {
-            extensions.push({ 
+            extensions.push({
                 extension_name: e.ex_name,
                 extension_id: e.ex_id,
             });
@@ -83,7 +83,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public static function _send(): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).send();
     }
- 
+
     public function send(): Void{
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
@@ -94,7 +94,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         var login = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().login;
         var up = new Uploader(login, id);
         if (up.is_valid == false) {
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_upload_fail", [{reason: "Invalid file extension"}]);            
+            beluga.triggerDispatcher.dispatch("beluga_fileupload_upload_fail", [{reason: "Invalid file extension"}]);
         } else {
             var notif = {
                 title: "File transfer completed !",
@@ -114,7 +114,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public static function _delete(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).delete(args);
     }
-    
+
     public function delete(args: { id: Int }): Void {
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
@@ -128,7 +128,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
             } else {
                 file.delete();
                 beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success");
-            }   
+            }
         }
    }
 
@@ -141,7 +141,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     }
 
     public function getAdminContext(): Dynamic {
-        var extensions = this.getExtensionsList(); 
+        var extensions = this.getExtensionsList();
         return {
             extensions_list: extensions,
             admin_error: this.error

@@ -11,8 +11,7 @@ import beluga.module.ticket.Ticket;
 // Haxe
 import haxe.web.Dispatch;
 
-class TicketApi 
-{
+class TicketApi {
     var beluga : Beluga;
     var ticket : Ticket;
 
@@ -22,19 +21,19 @@ class TicketApi
     }
 
     public function doBrowse(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_browse");   
+        beluga.triggerDispatcher.dispatch("beluga_ticket_browse");
     }
 
     public function doShow(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_ticket_show", [args]);
     }
 
     public function doClose(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_close", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_ticket_close", [args]);
     }
 
     public function doReopen(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_reopen", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_ticket_reopen", [args]);
     }
 
     public function doComment(args: { id: Int, message: String }): Void {
@@ -48,17 +47,17 @@ class TicketApi
     public function doSubmit(args: { title: String, message: String, assignee: String }): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_submit", [args]);
     }
-    
+
     public function doAdmin(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_admin");
     }
 
     public function doDeletelabel(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel", [args]);
     }
 
     public function doAddlabel(args: { name: String }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel", [args]);   
+        beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel", [args]);
     }
 
     public function doDefault(): Void {
