@@ -21,7 +21,7 @@ class TicketTest
 	}
 
 	@Before
-	public function setup(): Void { 
+	public function setup(): Void {
 		#if php
 		this.beluga = Beluga.getInstance();
 		this.ticket = this.beluga.getModuleInstance(Ticket);
@@ -30,7 +30,7 @@ class TicketTest
 
 	@After
 	public function tearDown():Void {
-	
+
 	}
 
 	@Test
@@ -88,7 +88,7 @@ class TicketTest
 		Assert.isFalse(ticket.labelExist("Test"));
 		#end
 	}
-	
+
 	@Test
 	public function createComment():Void {
 		#if php
@@ -99,7 +99,7 @@ class TicketTest
 		});
 		ticket.comment({
 			id: TEST_ID,
-			message: 
+			message:
 		})
 		Assert.isTrue(ticket.getTicketMessageCount(TEST_ID) == 1);
 		#end

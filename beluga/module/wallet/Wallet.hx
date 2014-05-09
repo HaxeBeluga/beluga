@@ -11,11 +11,6 @@ import beluga.module.wallet.model.WalletModel;
 // haxe
 import haxe.ds.Option;
 
-/**
- * Description of the Wallet
- *
- * @author Jeremy
- */
 interface Wallet extends Module {
     // widget functions
     public function create(): Void;

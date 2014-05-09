@@ -1,0 +1,26 @@
+<trigger name="beluga_market_display">
+    <route class="beluga.module.market.MarketImpl" method="_display" ></route>
+</trigger>
+<trigger name="beluga_market_display_admin">
+    <route class="beluga.module.market.MarketImpl" method="_admin" ></route>
+</trigger>
+<trigger name="beluga_market_display_cart">
+    <route class="beluga.module.market.MarketImpl" method="_cart" ></route>
+</trigger>
+<trigger name="beluga_market_add_product_to_cart">
+    <route class="beluga.module.market.MarketImpl" method="_addProductToCart" ></route>
+</trigger>
+<trigger name="beluga_market_remove_product_in_cart">
+    <route class="beluga.module.market.MarketImpl" method="_removeProductInCart" ></route>
+</trigger>
+<trigger name="beluga_market_checkout_cart">
+    <route class="beluga.module.market.MarketImpl" method="_checkoutCart" ></route>
+</trigger>
+
+
+
+<!--
+
+    beluga_market_add_product_to_cart_success
+    beluga_market_add_product_to_cart_fail
+-->

@@ -279,21 +279,20 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     }
 
     public function userHasWallet(user: User): Bool {
+        if (user == null) { return false; }
         var wallet = WalletModel.manager.search({ wa_user_id: user.id });
 
-        if (wallet.isEmpty()) {
-            return false;
-        }
+        if (wallet.isEmpty()) { return false; }
 
         return true;
     }
 
     public function getUserWallet(user: User): Option<WalletModel> {
+        // check if the user is null
+        if (user == null) { return None; }
+        // get the user wallet
         var wallet = WalletModel.manager.search({ wa_user_id: user.id });
-
-        if (wallet.isEmpty()) {
-            return None;
-        }
+        if (wallet.isEmpty()) { return None; }
 
         return Some(wallet.first());
     }
