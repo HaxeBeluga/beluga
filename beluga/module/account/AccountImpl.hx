@@ -157,4 +157,15 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
 	}
 
+	public function edit(email : String) : Void {
+		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+		if (user != null) {
+			user.email = email;
+			user.update();
+			beluga.triggerDispatcher.dispatch("beluga_account_edit_success", []);
+			return;
+		}
+		beluga.triggerDispatcher.dispatch("beluga_account_edit_fail", []);
+	}
 }

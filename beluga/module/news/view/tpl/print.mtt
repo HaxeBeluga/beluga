@@ -12,7 +12,10 @@
 	<div>
 		::if (user)::
 		::if (news.user_id == user.id)::
-		<a href="::path::redirectEdit?news_id=::news.id::"style="float:right;cursor:pointer;">
+		<a href="::path::delete?news_id=::news.id::" style="float:right;cursor:pointer;">
+			<span class="glyphicon glyphicon-remove"></span>
+		</a>
+		<a href="::path::redirectEdit?news_id=::news.id::" style="float:right;cursor:pointer;margin-right:5px;">
 			<span class="glyphicon glyphicon-pencil"></span>
 		</a>
 		::end::

@@ -1,22 +1,60 @@
-<div style="margin-top:50px;margin-left:auto;margin-right:auto;width:800px;">
-	<h1>News list</h1><br/>
+<link rel="stylesheet" href="/beluga/news/css/news"/>
+<div class="news_div">
+	<h1 class="center">News list</h1><br/>
+	::if (error)::
 	::if (error != "")::
 	<div class="alert alert-danger">::error::</div>
 	::end::
+	::end::
+	::if (success)::
 	::if (success != "")::
 	<div class="alert alert-success">::success::</div>
 	::end::
-	<div>
-		<ul class="list-group">
-		::foreach news::
-			<li class="list-group-item">
-				::if (user)::
-				<a class="btn btn-danger btn-xs pull-right" href="::path::delete?news_id=::id::">Delete</a>
-				::end::
-				<a href="::path::print?news_id=::id::" class="btn">::title::</a>
-			</li>
-		::end::
-		</ul>
+	::end::
+	<div class="container">
+		<ul class="timeline">
+			::foreach news::
+	       	::if (pos == 0)::
+	        <li>
+	        ::else::
+	        <li class="timeline-inverted">
+	        ::end::
+	          	<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="::title::" id=""></i></a></div>
+	          	<div class="timeline-panel">
+	            	<div class="timeline-heading">
+	            		<h3 class="center">::title::</h3>
+	            	</div>
+		            <div class="timeline-body">
+		              <p>::text::</p>
+		            </div>
+		            <div class="timeline-footer">
+		                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+		                <a><i class="glyphicon glyphicon-share"></i></a>
+		                <a class="pull-right" href="::path::print?news_id=::id::">Read it !</a>
+		            </div>
+	          </div>
+	        </li>
+	    ::end::
+		    <li class="clearfix" style="float: none;"></li>
+	    </ul>
 	</div>
 	<a href="::path::redirect" class="btn btn-primary">Create new news</a>
 </div>
+<script>
+$(document).ready(function(){
+	var my_posts = $("[rel=tooltip]");
+
+	var size = $(window).width();
+	for(i=0;i<my_posts.length;i++){
+		the_post = $(my_posts[i]);
+
+		if(the_post.hasClass('invert') && size >=767 ){
+			the_post.tooltip({ placement: 'left'});
+			the_post.css("cursor","pointer");
+		}else{
+			the_post.tooltip({ placement: 'rigth'});
+			the_post.css("cursor","pointer");
+		}
+	}
+});
+</script>

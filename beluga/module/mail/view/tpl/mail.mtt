@@ -1,0 +1,27 @@
+<div style="margin-top:50px;width:800px;">
+	::if (user)::
+	<h1>Mails list for <b>::user.login::</b> user</h1><br/>
+	::if (error)::
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
+	::if (success)::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	::end::
+	<div>
+		<ul class="list-group">
+		::foreach mails::
+			<li class="list-group-item">
+				<a href="::path::print?id=::id::" class="btn">::subject::</a>
+			</li>
+		::end::
+		</ul>
+	</div>
+	<a href="::path::create" class="btn btn-primary">Send new mail</a>
+	::else::
+	<div class="alert alert-danger">Please log in</div>
+	::end::
+</div>

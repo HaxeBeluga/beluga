@@ -54,6 +54,14 @@ class AccountApi
 	public function doDefault() {
         trace("Account default page");
 	}
+
+	public function doEdit() {
+        beluga.triggerDispatcher.dispatch("beluga_account_edit", []);
+	}
+
+	public function doSave(args : {email : String}) {
+        beluga.triggerDispatcher.dispatch("beluga_account_save", [args]);
+	}
 	
 	public function doCss(d : Dispatch) {
 		d.dispatch(new CssApi() );

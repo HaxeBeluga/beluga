@@ -1,0 +1,7 @@
+<div style="margin-top:50px;width:800px;">
+	<h3>To : ::receiver::</h3>
+	<h3>Subject : ::subject::</h3>
+	<h3>Sent : ::date::</h3><br/>
+	<div>::text::</div><br/>
+	<a href="::path::" class="btn btn-primary">Go back to mail list</a>
+</div>

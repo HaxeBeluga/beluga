@@ -5,21 +5,20 @@ import haxe.Resource;
 import beluga.core.Beluga;
 import beluga.module.news.News;
 
+import haxe.web.Dispatch;
+
 class CssApi
 {
-
-	public function new() 
-	{
-	}
-
-	public function doPrint() {
-		Web.setHeader("Content-type", "text/css");
-		Sys.print(Beluga.getInstance().getModuleInstance(News).getWidget("print_notif").getCss());
+	public function new() {
 	}
 
 	public function doDefault() {
 		Web.setHeader("Content-type", "text/css");
-		Sys.print(Beluga.getInstance().getModuleInstance(News).getWidget("notification").getCss());
+		Sys.print(Beluga.getInstance().getModuleInstance(News).getWidget("news").getCss());
 	}
 
+	public function doNews() {
+		Web.setHeader("Content-type", "text/css");
+		Sys.print(Beluga.getInstance().getModuleInstance(News).getWidget("news").getCss());
+	}
 }

@@ -30,4 +30,6 @@ interface Account extends Module
 	public function getLoggedUser() : User;
 
 	public function isLogged() : Bool;
+
+	public function edit(email : String) : Void;
 }
