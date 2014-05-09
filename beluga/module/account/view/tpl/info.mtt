@@ -11,6 +11,13 @@
 			<div class="col-sm-6">
 				<a href="mailto:::user.email::">::user.email::</a>
 			</div>
+			<div class="col-sm-1">
+			</div>
+			<div class="col-sm-1">
+				<a href="::path::edit" style="cursor:pointer;">
+					<span class="glyphicon glyphicon-pencil"></span>
+				</a>
+			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-4">Date d'inscription</label>
