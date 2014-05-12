@@ -2,5 +2,5 @@
 	<h1>::notif.title::</h1><br/>
 	<span class="form-control"><b>::notif.creationDate:::</b> ::notif.text::</span>
 	<br/>
-	<a href="::path::default" class="btn btn-primary">Back to notifications list</a>
+	<a href="::base_url::::path::default" class="btn btn-primary">Back to notifications list</a>
 </div>

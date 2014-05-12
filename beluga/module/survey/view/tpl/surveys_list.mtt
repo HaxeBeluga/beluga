@@ -10,11 +10,11 @@
 		<ul class="list-group">
 		::foreach surveys::
 			<li class="list-group-item">
-				<a class="btn btn-danger btn-xs pull-right" href="::path::delete?id=::m_survey.id::">Delete</a>
-				<a href="::path::print?id=::m_survey.id::" class="btn">::m_survey.name::</a>
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::delete?id=::m_survey.id::">Delete</a>
+				<a href="::base_url::::path::print?id=::m_survey.id::" class="btn">::m_survey.name::</a>
 			</li>
 		::end::
 		</ul>
 	</div>
-	<a href="::path::redirect" class="btn btn-primary">Create new survey</a>
+	<a href="::base_url::::path::redirect" class="btn btn-primary">Create new survey</a>
 </div>
