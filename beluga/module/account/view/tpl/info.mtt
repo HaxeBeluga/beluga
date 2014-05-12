@@ -14,7 +14,7 @@
 			<div class="col-sm-1">
 			</div>
 			<div class="col-sm-1">
-				<a href="::path::edit" style="cursor:pointer;">
+				<a href="::base_url::::path::edit" style="cursor:pointer;">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</a>
 			</div>
@@ -29,7 +29,7 @@
 			<div class="col-sm-2">
 			</div>
 			<div class="col-sm-6">
-				<a href="/" class="btn btn-primary form-control" style="margin-top:50px;">Back to welcome page</a>
+				<a href="::base_url::/" class="btn btn-primary form-control" style="margin-top:50px;">Back to welcome page</a>
 			</div>
 		</div>
 	</div>

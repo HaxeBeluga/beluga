@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/beluga/news/css/news"/>
+<link rel="stylesheet" href="::base_url::/beluga/news/css/news"/>
 <div class="news_div">
 	<h1 class="center">News list</h1><br/>
 	::if (error)::
@@ -30,7 +30,7 @@
 		            <div class="timeline-footer">
 		                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
 		                <a><i class="glyphicon glyphicon-share"></i></a>
-		                <a class="pull-right" href="::path::print?news_id=::id::">Read it !</a>
+		                <a class="pull-right" href="::base_url::::path::print?news_id=::id::">Read it !</a>
 		            </div>
 	          </div>
 	        </li>
@@ -38,7 +38,7 @@
 		    <li class="clearfix" style="float: none;"></li>
 	    </ul>
 	</div>
-	<a href="::path::redirect" class="btn btn-primary">Create new news</a>
+	<a href="::base_url::::path::redirect" class="btn btn-primary">Create new news</a>
 </div>
 <script>
 $(document).ready(function(){

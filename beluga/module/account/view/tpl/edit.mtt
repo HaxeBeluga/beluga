@@ -1,6 +1,6 @@
 <div>
 	<h3>Change email</h3><br/>
-	<form action="::path::save" class="form" role="form" method="POST">
+	<form action="::base_url::::path::save" class="form" role="form" method="POST">
 		<div class="form-group">
 			<label for="message">Email</label>
 			<input type="email" class="form-control" id="email" name="email" value="::if (email)::::email::::end::">

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/beluga/fileupload/css/browse"/>
+<link rel="stylesheet" href="::base_url::/beluga/fileupload/css/browse"/>
 <div class="container fileupload-uploaded-files">
     ::if (file_error != "")::
         <div class="alert alert-danger alert-dismissable ticket-alert-error">
@@ -9,8 +9,8 @@
         <ul class="list-group">
           ::foreach files_list::
           <li class="list-group-item">::file_name::
-          <a href="/beluga/fileupload/delete?id=::file_id::" class="btn btn-danger btn-xs pull-right">Delete</a>
-          <a href="/::file_path::" class="btn btn-success btn-xs pull-right fileupload-btn-download">Download</a>
+          <a href="::base_url::/beluga/fileupload/delete?id=::file_id::" class="btn btn-danger btn-xs pull-right">Delete</a>
+          <a href="::base_url::/::file_path::" class="btn btn-success btn-xs pull-right fileupload-btn-download">Download</a>
           <button class="btn btn-info btn-xs disabled pull-right fileupload-btn-download">::file_size::ko</button></li>
           ::end::
         </ul>

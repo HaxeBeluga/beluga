@@ -10,8 +10,8 @@
 		<ul class="list-group">
 		::foreach notifs::
 			<li class="list-group-item">
-				<a class="btn btn-danger btn-xs pull-right" href="::path::delete?id=::id::">Delete</a>
-				<a href="::path::print?id=::id::" class="btn">::title::</a>
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::delete?id=::id::">Delete</a>
+				<a href="::base_url::::path::print?id=::id::" class="btn">::title::</a>
 			</li>
 		::end::
 		</ul>

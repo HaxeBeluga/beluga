@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/beluga/wallet/css/display"/>
+<link rel="stylesheet" href="::base_url::/beluga/wallet/css/display"/>
 ::if (wallet_global_error != "")::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
         <strong>Error!</strong> ::wallet_global_error::
@@ -13,7 +13,7 @@
 <div class="container wallet-display-widget">
     <div class="container-fluid">
         <h4>Vous n'avez pas encore de porte-feuille !</h4>
-        <a href="/beluga/wallet/create" class="btn btn-success wallet-create-submit pull-right">Creer un porte-feuille !</a>
+        <a href="::base_url::/beluga/wallet/create" class="btn btn-success wallet-create-submit pull-right">Creer un porte-feuille !</a>
     </div>
 </div>
 ::else::
