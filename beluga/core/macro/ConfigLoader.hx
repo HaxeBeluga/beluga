@@ -89,7 +89,7 @@ class ConfigLoader
 	}
 	#end
 
-	private static function loopFiles(fast : Fast) {
+	private static function loadModuleConfigurations(fast : Fast) {
 		var config : String;
 		var tables = new Array<String>();
 
@@ -147,7 +147,7 @@ class ConfigLoader
 		modules = new Array<ModuleConfig>();
 
 		//Parse the configuration file
-		var modulesInfo = loopFiles(config);
+		loadModuleConfigurations(config);
 		
 		return macro "DONE!";
 	}	

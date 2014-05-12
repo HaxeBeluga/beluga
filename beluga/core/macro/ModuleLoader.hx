@@ -32,8 +32,7 @@ class ModuleLoader
 	
 	macro public static function init() : Expr
 	{
-		if (!ConfigLoader.isReady)
-			ConfigLoader.forceBuild();
+		ConfigLoader.forceBuild();
 		for (module in ConfigLoader.modules) {
 
 			// Huge constraint :
