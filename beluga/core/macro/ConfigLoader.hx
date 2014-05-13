@@ -136,8 +136,6 @@ class ConfigLoader
 
 	macro private static function loadConfig() : Expr
 	{
-		var pos = Context.currentPos();
-
 		//Load configuration
 		var file = File.getContent(configFilePath);
 		var xml = Xml.parse(file);
@@ -147,7 +145,6 @@ class ConfigLoader
 
 		//Parse the configuration file
 		loadModuleConfigurations(config);
-		
 		return macro "DONE!";
 	}
 
