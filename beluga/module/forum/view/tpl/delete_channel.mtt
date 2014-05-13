@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="::base_url::/beluga/forum/css/delete_channel"/>
+<link rel="stylesheet" href="/beluga/forum/css/delete_channel"/>
 <div class="beluga forum delete_channel" id="beluga_::_id::"> 
   <h1>Delete a channel</h1>
-  <form role="form" action="::base_url::/beluga/forum/deleteChannel" method="POST">
+  <form role="form" action="/beluga/forum/deleteChannel" method="POST">
     <div class="form-group delete_channel">
       <p class="delete_channel">::channel_label::</p>
     </div>

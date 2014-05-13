@@ -1,7 +1,7 @@
 <!-- <hr style="width: 100%;margin-top: 60px;"/> -->
 <div style="margin-left:auto;margin-right:auto;width:800px;">
 	<h2>::survey.name::</h2>
-	<form id="add_vote" action="::base_url::::path::vote" method="POST">
+	<form id="add_vote" action="::path::vote" method="POST">
 		<input type="hidden" name="id" value="::survey.id::">
 			::foreach first::
 			<div class="radio">

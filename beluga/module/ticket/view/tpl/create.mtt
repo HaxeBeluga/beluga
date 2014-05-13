@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="::base_url::/beluga/ticket/css/create"/>
+<link rel="stylesheet" href="/beluga/ticket/css/create"/>
 <div id="container">
     <div id="ticket" class="container-fluid container-fluid-ticket">
         ::if (ticket_error != "")::
@@ -7,12 +7,12 @@
         </div>
         ::end::
         <div class="col-md12 ticket-button-nav">
-            <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
-            <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button disabled">New ticket</a>
+            <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
+            <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button disabled">New ticket</a>
         </div>
         <hr class="hr-ticket" />
         <div class="col-md-10 col-md-10-ticket">
-            <form action="::base_url::/beluga/ticket/submit" method="POST">
+            <form action="/beluga/ticket/submit" method="POST">
                 <input type="text" class="ticket-area form-control" placeholder="Title" name="title">
                 <label for="ticket-assignee" class="col-md-4 control-label">Assign someone to the ticket</label>
                 <div class="col-md-4">

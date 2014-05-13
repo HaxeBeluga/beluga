@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="::base_url::/beluga/wallet/css/admin"/>
+<link rel="stylesheet" href="/beluga/wallet/css/admin"/>
 ::if (admin_wallet_global_error != "")::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
         <strong>Error!</strong> ::admin_wallet_global_error::
@@ -12,7 +12,7 @@
 <div class="container wallet-add-currency-widget">
     <div class="container-fluid">
         <h4>Create a new Currency</h4>
-        <form action="::base_url::/beluga/wallet/createCurrency" method="post"><br>
+        <form action="/beluga/wallet/createCurrency" method="post"><br>
             <input type="text" name="name" class=" form-control" placeholder="name">
             <input type="text" name="rate" class="wallet-form-sep form-control" placeholder="rate">
             <input type="submit" value="Submit new currency" class="btn btn-warning pull-right wallet-add-currency-submit">
@@ -30,8 +30,8 @@
         <ul class="list-group">
           ::foreach currency_list::
           <li class="list-group-item">::currency_name::
-          <a href="::base_url::/beluga/wallet/removeCurrency?id=::currency_id::" class="btn btn-danger btn-xs pull-right">Delete</a>
-          <a href="::base_url::/beluga/wallet/setSiteCurrency?id=::currency_id::" class="wallet-btn-download btn btn-success btn-xs pull-right">Set as website currency</a>
+          <a href="/beluga/wallet/removeCurrency?id=::currency_id::" class="btn btn-danger btn-xs pull-right">Delete</a>
+          <a href="/beluga/wallet/setSiteCurrency?id=::currency_id::" class="wallet-btn-download btn btn-success btn-xs pull-right">Set as website currency</a>
           <button class="btn btn-info btn-xs disabled pull-right wallet-btn-download">rate: ::currency_rate::</button></li>
           ::end::
         </ul>

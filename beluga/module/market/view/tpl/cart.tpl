@@ -39,7 +39,7 @@
                         <td class="col-sm-1 col-md-1 text-center"><strong>::currency:: ::product_price::</strong></td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>::currency:: ::product_total_price::</strong></td>
                         <td class="col-sm-1 col-md-1">
-                        <a href="::base_url::/beluga/market/removeProductInCart?id=::product_cart_id::" type="button" class="btn btn-danger">
+                        <a href="/beluga/market/removeProductInCart?id=::product_cart_id::" type="button" class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove"></span> Remove
                         </a></td>
                     </tr>
@@ -57,7 +57,7 @@
                         <td>   </td>
                         <td>   </td>
                         <td>
-                        <a href="::base_url::/beluga/market/checkoutCart" type="button" class="btn btn-success">
+                        <a href="/beluga/market/checkoutCart" type="button" class="btn btn-success">
                             Checkout <span class="glyphicon glyphicon-play"></span>
                         </a></td>
                     </tr>

@@ -5,7 +5,7 @@
     ::end::
     ::end::
 	<h2>Edit of ::news.title::</h2>
-	<form action="::base_url::::path::edit" class="form-horizontal" role="form" method="POST">
+	<form action="::path::edit" class="form-horizontal" role="form" method="POST">
 		<input name="news_id" value="::news.id::" type="hidden"/>
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group">
@@ -19,5 +19,5 @@
 		<input type="submit" class="btn btn-primary" value="Save"/>
 	</form>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::">Go back to news list</a>
+	<a class="btn btn-primary" href="::path::">Go back to news list</a>
 </div>

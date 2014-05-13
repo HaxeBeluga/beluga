@@ -1,6 +1,6 @@
 <div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
 	<h2>Creation of news</h2>
-	<form action="::base_url::::path::create" class="form-horizontal" role="form" method="POST">
+	<form action="::path::create" class="form-horizontal" role="form" method="POST">
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group">
 			<label for="title">Title</label>
@@ -21,5 +21,5 @@
 		<input type="submit" class="btn btn-primary" value="Create"/>
 	</form>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::">Go back to news list</a>
+	<a class="btn btn-primary" href="::path::">Go back to news list</a>
 </div>

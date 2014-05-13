@@ -18,7 +18,7 @@
         <h3>::product_name::</h3>
         <p>::product_price:: ::currency::</p>
         <p>::product_desc::</p>
-        <p><a href="::base_url::/beluga/market/addProductToCart?id=::product_id::" class="btn btn-info" role="button">Ajouter au panier</a></p>
+        <p><a href="/beluga/market/addProductToCart?id=::product_id::" class="btn btn-info" role="button">Ajouter au panier</a></p>
       </div>
     </div>
   </div>
