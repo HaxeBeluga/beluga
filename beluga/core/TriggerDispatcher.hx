@@ -1,5 +1,6 @@
 package beluga.core;
 
+import beluga.core.macro.MetadataLoader;
 import haxe.xml.Fast;
 import sys.FileSystem;
 import sys.io.File;
@@ -28,7 +29,7 @@ class TriggerDispatcher
 	
 	public function new()
 	{
-		var triggersRoutes = readMetadata();
+		var triggersRoutes = readTriggers();
 		addRoutesFromArray(triggersRoutes);
 	}
 	
@@ -76,7 +77,7 @@ class TriggerDispatcher
 		}
 	}
 
-	// Ppublic but should be considered private an never used
+	// Public but should be considered private an never used
 	public function realDispatch(event : String, params : Array<Dynamic> = null) {
 		if (triggers.exists(event))
 			for (trigger in triggers.get(event)) {
@@ -112,41 +113,13 @@ class TriggerDispatcher
 		}
 	}
 	
-	macro private static function readMetadata(): Expr {
-		if (!ConfigLoader.isReady)
-			ConfigLoader.forceBuild();
+	macro private static function readTriggers(): Expr {
+		ConfigLoader.forceBuild();
 
 		Context.onAfterGenerate(checkTriggers);
-			
-		for (triggerClass in ConfigLoader.config.nodes.loadmetadata) {
-			var clazz = triggerClass.att.resolve("class");
-			switch (haxe.macro.Context.getType(clazz))
-			{
-				case TInst(cl, _):
-					// for each field of the class
-					for (field in cl.get().statics.get()) {
-						switch (field.kind)
-						{
-						case FMethod(_):
-							// for each metada of the method
-							for (metadataEntry in field.meta.get()) {
-								switch (metadataEntry.name)
-								{
-									case "trigger":
-										switch (metadataEntry.params[0])
-										{
-											case {expr: EConst(CString(trigger)), pos: _}:
-												triggersRoute.push({trigger : trigger, clazz : clazz, method : field.name});
-											default:
-										}
-									default:
-								}
-							}
-						default:
-						}
-					}
-				default:
-			}
+
+		for (trigger in MetadataLoader.metadata.trigger) {
+			triggersRoute.push({trigger : trigger.params[0], clazz : trigger.clazz, method : trigger.method});
 		}
 		return Context.makeExpr(triggersRoute, Context.currentPos());
 	}	
