@@ -49,8 +49,10 @@ class Widget
 			var t = new haxe.Template(filecontent);
 			context._id = ++last_id;
 			id = context.id;
-			if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base)
-				context.base_url = ConfigLoader.config.node.url.node.base.innerData;
+			if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base && ConfigLoader.config.node.url.node.base.has.value)
+				context.base_url = ConfigLoader.config.node.url.node.base.att.value;
+			else
+				context.base_url = "";
 			html = t.execute(context);
 		}
 		return html;
