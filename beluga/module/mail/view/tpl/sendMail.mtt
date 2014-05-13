@@ -1,6 +1,6 @@
 <div style="width:800px;">
 	<h2>Send email from ::user.email::</h2><br/>
-	<form action="::base_url::::path::send" class="form" role="form" method="POST">
+	<form action="::path::send" class="form" role="form" method="POST">
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group">
 			<label for="receiver">Send to</label>
@@ -33,5 +33,5 @@
 		<button type="submit" class="btn btn-default">Send</button>
 	</form>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::">Go back to mail list</a>
+	<a class="btn btn-primary" href="::path::">Go back to mail list</a>
 </div>

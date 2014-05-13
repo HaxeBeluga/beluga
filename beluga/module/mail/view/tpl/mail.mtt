@@ -15,12 +15,12 @@
 		<ul class="list-group">
 		::foreach mails::
 			<li class="list-group-item">
-				<a href="::base_url::::path::print?id=::id::" class="btn">::subject::</a>
+				<a href="::path::print?id=::id::" class="btn">::subject::</a>
 			</li>
 		::end::
 		</ul>
 	</div>
-	<a href="::base_url::::path::create" class="btn btn-primary">Send new mail</a>
+	<a href="::path::create" class="btn btn-primary">Send new mail</a>
 	::else::
 	<div class="alert alert-danger">Please log in</div>
 	::end::

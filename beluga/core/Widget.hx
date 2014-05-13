@@ -1,5 +1,4 @@
 package beluga.core;
-import beluga.core.macro.ConfigLoader;
 import haxe.Resource;
 import sys.io.File;
 
@@ -49,8 +48,7 @@ class Widget
 			var t = new haxe.Template(filecontent);
 			context._id = ++last_id;
 			id = context.id;
-			if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base)
-				context.base_url = ConfigLoader.config.node.url.node.base.innerData;
+			context.cssurl =
 			html = t.execute(context);
 		}
 		return html;

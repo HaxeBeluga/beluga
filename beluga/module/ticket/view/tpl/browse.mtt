@@ -1,8 +1,8 @@
-<link rel="stylesheet" href="::base_url::/beluga/ticket/css/browse"/>
+<link rel="stylesheet" href="/beluga/ticket/css/browse"/>
     <div class="beluga ticket browse">
     <div id="ticket" class="container-fluid container-fluid-ticket">
         <div class="col-md12 ticket-button-nav">
-            <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm disabled">Browse tickets</a>
+            <a href="/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm disabled">Browse tickets</a>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default btn-sm" onclick="showOpenTickets()">
                     <input type="radio" name="options" id="option1">Open ::open_tickets::
@@ -11,7 +11,7 @@
                     <input type="radio" name="options" id="option2">Closed ::closed_tickets::
                 </label>
             </div>
-            <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">New ticket</a>
+            <a href="/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">New ticket</a>
         </div>
         <hr class="hr-ticket" />
         <div class="col-md-3 col-md-3-ticket">
@@ -32,10 +32,10 @@
                 ::foreach tickets_list::
                 <li class="list-group-item ::ticket_status::">
                     <span class="badge">#::ticket_id::</span>
-                    <a href="::base_url::/beluga/ticket/show?id=::ticket_id::">
+                    <a href="/beluga/ticket/show?id=::ticket_id::">
                     <h4 class="list-group-item-heading">::ticket_subject::</h4></a>
                     <p class="list-group-item-text">
-                        <small>Opened by <a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> -::ticket_date:: - ::ticket_comments_count:: comments</small>
+                        <small>Opened by <a href="/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> -::ticket_date:: - ::ticket_comments_count:: comments</small>
                     </p>
                 </li>
                 ::end::

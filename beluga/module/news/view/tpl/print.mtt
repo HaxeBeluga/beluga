@@ -12,10 +12,10 @@
 	<div>
 		::if (user)::
 		::if (news.user_id == user.id)::
-		<a href="::base_url::::path::delete?news_id=::news.id::" style="float:right;cursor:pointer;">
+		<a href="::path::delete?news_id=::news.id::" style="float:right;cursor:pointer;">
 			<span class="glyphicon glyphicon-remove"></span>
 		</a>
-		<a href="::base_url::::path::redirectEdit?news_id=::news.id::" style="float:right;cursor:pointer;margin-right:5px;">
+		<a href="::path::redirectEdit?news_id=::news.id::" style="float:right;cursor:pointer;margin-right:5px;">
 			<span class="glyphicon glyphicon-pencil"></span>
 		</a>
 		::end::
@@ -33,9 +33,9 @@
 		::foreach comments::
 		<div class="panel panel-primary">
 			::if (login == user.login)::
-			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
+			<a class="btn btn-danger btn-xs pull-right" href="::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
 			::elseif (user.id == news.user_id)::
-			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
+			<a class="btn btn-danger btn-xs pull-right" href="::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
 			::end::
 		
 			<div class="panel-heading"><h3 class="panel-title">::login::</h3></div>
@@ -47,7 +47,7 @@
 		<h4 style="text-align:center;">No comment on this news</h4>
 		::end::
 		::if (user)::
-		<form action="::base_url::::path::createComment" class="form-horizontal" role="form" method="POST">
+		<form action="::path::createComment" class="form-horizontal" role="form" method="POST">
 			<input name="news_id" value="::news.id::" type="hidden"/>
 			<div class="form-group">
 				<label for="text">Comment this news :</label>
@@ -58,5 +58,5 @@
 		::end::
 	</div>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::">Go back to news list</a>
+	<a class="btn btn-primary" href="::path::">Go back to news list</a>
 </div>
