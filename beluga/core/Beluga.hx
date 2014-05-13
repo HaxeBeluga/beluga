@@ -23,7 +23,6 @@ import neko.Web;
  */
 class Beluga
 {
-
 	//No singleton pattern allows multiple instance of Beluga
 	public var triggerDispatcher(default, null) : TriggerDispatcher;
 	// Keep an instance of beluga's database, read only

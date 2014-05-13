@@ -4,17 +4,17 @@ import beluga.core.macro.ConfigLoader;
 import haxe.macro.Expr;
 import haxe.macro.Expr.ExprOf;
 import haxe.macro.Context;
+
+typedef OldMetadataProperties = { params : Array<String>, clazz : String, method : String };
+
 /**
  * ...
  * @author regnarock
  */
 #if macro
-
-typedef MetadataProperties = {params : Array<String>, clazz : String, method : String};
-
-class MetadataLoader implements Dynamic<Array<MetadataProperties>>
+class MetadataLoader implements Dynamic<Array<OldMetadataProperties>>
 {
-	private static var metadatas : Map < String, Array<MetadataProperties> > = null;
+	private static var metadatas : Map < String, Array<OldMetadataProperties> > = null;
 	public static var metadata = new MetadataLoader();
 
 	public function new ()
@@ -31,7 +31,7 @@ class MetadataLoader implements Dynamic<Array<MetadataProperties>>
 	private static function readMetadata() {
 		if (!ConfigLoader.isReady)
 			ConfigLoader.forceBuild();
-		metadatas = new Map<String, Array<MetadataProperties> >();
+		metadatas = new Map<String, Array<OldMetadataProperties> >();
 		for (triggerClass in ConfigLoader.config.nodes.loadmetadata) {
 			var clazz = triggerClass.att.resolve("class");
 			

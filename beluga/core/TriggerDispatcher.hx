@@ -16,6 +16,8 @@ import haxe.macro.Expr.ExprOf;
 import haxe.macro.Context;
 #end
 
+typedef TriggerData = { trigger : String, clazz : Dynamic, method : String };
+
 /**
  * ...
  * @author Masadow
@@ -25,7 +27,7 @@ class TriggerDispatcher
 	private static var triggers = new Map < String, Array<CallbackTrigger> >();
 	//
 	private static var triggersList  : Array<String> = [];
-	private static var triggersRoute : Array<{trigger : String, clazz : Dynamic, method : String}> = [];
+	private static var triggersRoute : Array<TriggerData> = [];
 	
 	public function new()
 	{
@@ -57,7 +59,7 @@ class TriggerDispatcher
 		register( trigger.att.name, routes );
 	}
 
-	private function addRoutesFromArray(triggersArray : Array<{trigger: String, clazz: Dynamic, method: String}>) {
+	private function addRoutesFromArray(triggersArray : Array<TriggerData>) {
 		for (trigger in triggersArray ) {
 			addRoute(trigger.trigger, trigger.clazz, trigger.method);
 		}
@@ -121,6 +123,7 @@ class TriggerDispatcher
 		for (trigger in MetadataLoader.metadata.trigger) {
 			triggersRoute.push({trigger : trigger.params[0], clazz : trigger.clazz, method : trigger.method});
 		}
+		
 		return Context.makeExpr(triggersRoute, Context.currentPos());
 	}	
 	
