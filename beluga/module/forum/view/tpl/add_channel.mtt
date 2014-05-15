@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/forum/css/add_channel"/>
 <div class="beluga forum add_channel" id="beluga_::_id::"> 
   <h1>Add a channel</h1>
   <form role="form" action="::base_url::/beluga/forum/addChannel" method="POST">

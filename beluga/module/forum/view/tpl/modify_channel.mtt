@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/beluga/forum/css/modify_channel"/>
 <div class="beluga forum modify_channel" id="beluga_::_id::"> 
   <h1>Modify a channel</h1>
   <form role="form" action="/beluga/forum/modifyChannel" method="POST">

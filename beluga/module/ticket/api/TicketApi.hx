@@ -64,8 +64,4 @@ class TicketApi {
         trace("Ticket default page");
     }
 
-    public function doCss(d: Dispatch): Void {
-        d.dispatch(new CssApi());
-    }
-
 }

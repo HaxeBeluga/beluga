@@ -51,8 +51,4 @@ class NewsApi
 	public function doRedirectEdit(args : {news_id : Int}) {
 		beluga.triggerDispatcher.dispatch("beluga_news_redirectEdit", [args]);
 	}
-
-	public function doCss(d: Dispatch): Void {
-        d.dispatch(new CssApi());
-    }
 }

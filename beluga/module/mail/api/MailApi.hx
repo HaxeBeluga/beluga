@@ -31,8 +31,4 @@ class MailApi
 	public function doPrint(args : {id : Int}) {
 		beluga.triggerDispatcher.dispatch("beluga_mail_print", [args]);
 	}
-
-	/*public function doCss(d: Dispatch): Void {
-        d.dispatch(new CssApi());
-    }*/
 }

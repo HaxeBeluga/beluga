@@ -73,10 +73,4 @@ class ForumApi
   {
     trace("Forum default page");
   }
-  
-  public function doCss(d : Dispatch)
-  {
-    d.dispatch(new CssApi());
-  }
-
 }

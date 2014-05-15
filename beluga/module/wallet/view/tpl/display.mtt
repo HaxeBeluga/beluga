@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/wallet/css/display"/>
 ::if (wallet_global_error != "")::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
         <strong>Error!</strong> ::wallet_global_error::

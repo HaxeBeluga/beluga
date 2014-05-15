@@ -1,3 +1,4 @@
+<style >::css::</style>
 <!-- List of forum module triggers and routes -->
 <trigger name="beluga_forum_channel_display">
     <route class="beluga.module.forum.ForumImpl" method="_displayChannel" ></route>

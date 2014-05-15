@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/fileupload/css/send"/>
 <div class="container fileupload-upload-widget">
     <div class="container-fluid">
         <h4>Select a new file to upload !</h4>

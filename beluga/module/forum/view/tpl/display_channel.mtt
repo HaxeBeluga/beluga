@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="::base_url::/beluga/forum/css/display_channel"/>
-  <div class="beluga forum browse">
+<div class="beluga forum browse">
     <div id="forum" class="container-fluid container-fluid-forum">
       <div class="col-md12 forum-button-nav">
         <a href="::base_url::/beluga/forum/displayChannel?channel_key=::previous_channel_key::" type="button" class="btn btn-primary btn-sm">

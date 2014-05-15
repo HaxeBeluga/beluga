@@ -48,8 +48,4 @@ class FileuploadApi
     public function doAdmin(): Void {
         beluga.triggerDispatcher.dispatch("beluga_fileupload_admin");
     }
-
-    public function doCss(d: Dispatch): Void {
-        d.dispatch(new CssApi());
-    }
 }

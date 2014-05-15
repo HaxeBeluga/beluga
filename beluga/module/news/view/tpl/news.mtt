@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/news/css/news"/>
 <div class="news_div">
 	<h1 class="center">News list</h1><br/>
 	::if (error)::
