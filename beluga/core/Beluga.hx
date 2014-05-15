@@ -11,9 +11,6 @@ import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
 import beluga.core.macro.ModuleLoader;
 
-//Enable or disable this line to check module compilations
-/**import beluga.core.module.ManualBuildModule;/**/
-
 /**
  * ...
  * @author Masadow
