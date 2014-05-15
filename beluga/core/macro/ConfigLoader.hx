@@ -19,6 +19,7 @@ class ConfigLoader
 {
 	private static var configFilePath = "beluga.xml";
 	private static var built : Expr = null;
+	private static var builtConfigString = "";
 
 	public static var config(default, default) : Fast;
 	public static var installPath(default, null) : String = getInstallPath();
@@ -61,7 +62,7 @@ class ConfigLoader
 			pos: Context.currentPos(),
 			name: "configStr",
 			meta: [],
-			kind: FVar(macro : String, macro $v{File.getContent(configFilePath)}),
+			kind: FVar(macro : String, macro $v{builtConfigString}),
 			doc: null,
 			access: [APrivate, AStatic]
 		});
@@ -90,30 +91,30 @@ class ConfigLoader
 	#end
 
 	private static function loadModuleConfigurations(fast : Fast) {
-		var config : String;
-		var tables = new Array<String>();
-
 		// Look for active modules
 		for (module in fast.elements) {
 			//Not fully supported, it can leads to mistakes
-			//if (module.nodeName == "include") {
-				//var path : String = module.get("path");
-				//var vars = loopFiles(path, output);
-				//modulesFile.concat(vars.modulesFile);
-				//modules.concat(vars.modules);
-				//file += vars.file;
-			//}
-			//else 
+			if (module.name == "include") {
+				var path : String = module.att.path;
+				//Load subconfiguration
+				var file = File.getContent(path);
+				var xml = Xml.parse(file);
+				loadModuleConfigurations(new Fast(xml));
+				
+				//Concat the content of the xml to the main config
+				builtConfigString += xml.toString();
+			}
+			else 
 			if (module.name == "module") {
 				var name : String = module.att.name;
 				var modulePath = installPath + "/module/" + name.toLowerCase();
 				var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 
 				//Build a list of modules config files
-				config = File.getContent(installPath + "/module/" + name.toLowerCase() + "/config.xml");
+				var config = File.getContent(installPath + "/module/" + name.toLowerCase() + "/config.xml");
 
 				//Get every single models from the current module
-				tables = new Array<String>();
+				var tables = new Array<String>();
 				if (!FileSystem.isDirectory(modulePath + "/model")) {
 					throw new BelugaException("Missing model directory from the module " + name);
 				}
@@ -127,11 +128,6 @@ class ConfigLoader
 				modules.push({name: name, path: module, config: config, tables: tables});
 			}
 		}
-
-		return {
-			file : fast,
-			modules : modules
-		}
 	}
 
 	macro private static function loadConfig() : Expr
@@ -139,15 +135,16 @@ class ConfigLoader
 		var pos = Context.currentPos();
 
 		//Load configuration
-		var file = File.getContent(configFilePath);
-		var xml = Xml.parse(file);
-		config = new Fast(xml);
+		builtConfigString = File.getContent(configFilePath);
+		var xml = Xml.parse(builtConfigString);
 		
 		modules = new Array<ModuleConfig>();
 
 		//Parse the configuration file
-		loadModuleConfigurations(config);
+		loadModuleConfigurations(new Fast(xml));
 		
+		trace(builtConfigString);
+
 		return macro "DONE!";
 	}
 
