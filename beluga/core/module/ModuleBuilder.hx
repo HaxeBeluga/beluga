@@ -31,7 +31,7 @@ class ModuleBuilder
 		for (file in FileSystem.readDirectory(cssFolder)) {
 			var filepath = cssFolder + file;
 			if (FileSystem.exists(filepath) && !FileSystem.isDirectory(filepath)) {
-				Context.addResource("beluga_" + module + "_css_" + file.split(".")[0], File.getBytes(filepath));
+				Context.addResource("beluga_" + module + "_" + file, File.getBytes(filepath));
 			}
 		}
 		return null;		
