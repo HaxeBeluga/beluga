@@ -47,7 +47,7 @@ class ModuleBuilder
 		for (file in FileSystem.readDirectory(tplFolder)) {
 			var filepath = tplFolder + file;
 			if (FileSystem.exists(filepath) && !FileSystem.isDirectory(filepath)) {
-				Context.addResource("beluga_" + module + "_" + file.split(".")[0], File.getBytes(filepath));
+				Context.addResource("beluga_" + module + "_" + file, File.getBytes(filepath));
 			}
 		}
 		return null;		

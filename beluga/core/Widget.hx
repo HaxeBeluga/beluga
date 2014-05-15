@@ -24,8 +24,8 @@ class Widget
 		if (module != null && name != null) {
 
 			//Load template
-			if (Lambda.has(available_resources, "beluga_" + module + "_" + name)) {
-				filecontent = Resource.getString("beluga_" + module + "_" + name);
+			if (Lambda.has(available_resources, "beluga_" + module + "_" + name + ".mtt")) {
+				filecontent = Resource.getString("beluga_" + module + "_" + name + ".mtt");
 			} else {
 				throw new BelugaException("The widget " + name + " does not exists");
 			}
