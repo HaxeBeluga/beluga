@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/ticket/css/show"/>
     <div id="ticket" class="container-fluid  container-fluid-ticket">
         ::if (ticket_error != "")::
         <div class="alert alert-danger alert-dismissable ticket-alert-error">

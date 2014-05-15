@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/ticket/css/browse"/>
     <div class="beluga ticket browse">
     <div id="ticket" class="container-fluid container-fluid-ticket">
         <div class="col-md12 ticket-button-nav">

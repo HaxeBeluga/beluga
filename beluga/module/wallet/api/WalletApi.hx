@@ -50,8 +50,4 @@ class WalletApi {
     public function doDefault(): Void {
         trace("Wallet default page");
     }
-
-    public function doCss(d: Dispatch): Void {
-        d.dispatch(new CssApi());
-    }
 }

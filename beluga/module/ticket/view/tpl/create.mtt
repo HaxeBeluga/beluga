@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/ticket/css/create"/>
 <div id="container">
     <div id="ticket" class="container-fluid container-fluid-ticket">
         ::if (ticket_error != "")::

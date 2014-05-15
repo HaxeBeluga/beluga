@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="::base_url::/beluga/fileupload/css/browse"/>
 <div class="container fileupload-uploaded-files">
     ::if (file_error != "")::
         <div class="alert alert-danger alert-dismissable ticket-alert-error">

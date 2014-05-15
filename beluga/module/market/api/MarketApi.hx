@@ -48,8 +48,4 @@ class MarketApi {
     public function doDefault(): Void {
         trace("Market default page");
     }
-
-    public function doCss(d: Dispatch): Void {
-        d.dispatch(new CssApi());
-    }
 }

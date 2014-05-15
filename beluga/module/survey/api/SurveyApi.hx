@@ -53,9 +53,5 @@ class SurveyApi
 	public function doDelete(args : {id : Int}) {
 		beluga.triggerDispatcher.dispatch("beluga_survey_delete", [args]);
 	}
-	
-	public function doCss(d : Dispatch) {
-		d.dispatch(new CssApi() );
-	}
 
 }

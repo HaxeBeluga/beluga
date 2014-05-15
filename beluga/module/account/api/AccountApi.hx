@@ -62,9 +62,5 @@ class AccountApi
 	public function doSave(args : {email : String}) {
         beluga.triggerDispatcher.dispatch("beluga_account_save", [args]);
 	}
-	
-	public function doCss(d : Dispatch) {
-		d.dispatch(new CssApi() );
-	}
 
 }
