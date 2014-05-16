@@ -133,10 +133,15 @@ class ConfigLoader
 	
 	macro private static function getCompilationTarget()
 	{
-		if (Context.defined("php"))
+		//if (Context.defined("php"))
+			//return macro "php";
+		//else if (Context.defined("neko"))
+			//return macro "neko";
+		#if php
 			return macro "php";
-		else if (Context.defined("neko"))
+		#elseif neko
 			return macro "neko";
+		#end
 		return macro "?";
 	}
 	
@@ -145,7 +150,8 @@ class ConfigLoader
 		var delArray : Array<Xml> = new Array<Xml>();
 		for (child in xml.elements())
 		{
-			if (child.get("if") == target)
+			var desiredTarget = child.get("if");
+			if (desiredTarget != null && desiredTarget != target)
 				delArray.push(child);
 			else
 				clearForTarget(child, target);
@@ -167,7 +173,7 @@ class ConfigLoader
 
 		//Parse the configuration file
 		loadModuleConfigurations(new Fast(xml));
-		
+
 		xml = Xml.parse(builtConfigString);
 		clearForTarget(xml, getCompilationTarget());
 		config = new Fast(xml);
