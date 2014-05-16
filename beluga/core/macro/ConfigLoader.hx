@@ -104,8 +104,7 @@ class ConfigLoader
 				//Concat the content of the xml to the main config
 				builtConfigString += xml.toString();
 			}
-			else 
-			if (module.name == "module") {
+			else if (module.name == "module") {
 				var name : String = module.att.name;
 				var modulePath = installPath + "/module/" + name.toLowerCase();
 				var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
@@ -143,6 +142,8 @@ class ConfigLoader
 		//Parse the configuration file
 		loadModuleConfigurations(new Fast(xml));
 		
+		config = new Fast(Xml.parse(builtConfigString));
+
 		return macro "DONE!";
 	}
 
