@@ -1,8 +1,6 @@
 package form;
 
-
-
-class RuleChecker
+class DataChecker
 {
   @generic
   public static function checkMinValue<FormDataType : (Int, Float)>(form_value : FormDataType, min_value : FormDataType) : Bool
