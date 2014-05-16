@@ -38,7 +38,7 @@ class Beluga
 	{
 		ModuleLoader.init();
 		triggerDispatcher = new TriggerDispatcher();
-		
+
 		db = null;
 		//Connect to database
 		if (ConfigLoader.config.hasNode.database) {
@@ -74,7 +74,6 @@ class Beluga
 	public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T
 	{
 		return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz), key);
-//		return T.getInstance();
 	}
 	
 	public function getDispatchUri() : String
