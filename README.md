@@ -1,7 +1,11 @@
 Beluga
 ======
 
-Main repository of the Haxe Beluga framework.
+Beluga is a framework helping the creation of browser game websites. Based on Haxe technology, it allows any developer to define the environment of its project.
+
+Acting as a toolbox, Beluga provides different services such as account system, forum, guild, market, survey and so on. Absolutely non-intrusive, the developer is free to choose and use any of them which suits the best to her/his needs. Moreover, Beluga offers a flexible and modular API allowing the developer to add her/his own services.
+
+Beluga is also open-source and communal, contributors are encouraged to participate to its development. Then, thanks to its powerful architecture, developers have the opportunity to contributes without removing the compatibility with previous versions of the project.
 
 ### [Beluga demo](https://github.com/HaxeBeluga/BelugaDemo "belugademo") ###
 
@@ -9,50 +13,21 @@ Main repository of the Haxe Beluga framework.
 
 [![Build Status](https://travis-ci.org/HaxeBeluga/Beluga.png?branch=master)](https://travis-ci.org/HaxeBeluga/Beluga)
 
-## Haxelib ##
-
-Beluga will be part of haxelib, for that reason, please consider [this link](http://haxe.org/doc/haxelib/using_haxelib#creating-a-haxelib-package "haxelib") before any structure edition.
-
 ## Installation ##
 
 To install this library from github, you just need to run `haxelib git https://github.com/HaxeBeluga/Beluga`
 
-> Note: If you are to use Beluga as a contributor, you need to `haxelib dev beluga $HAXE_HOME/lib/beluga/git`
-> Haxelib can complain that beluga dev version is not install. If so, you must edit the `.dev` file under `$HAME_HOME/lib/beluga` and remove the trailing slash
-
-To install this library from source, take the following steps :
-
-1. Clone or download this repository
-2. Using command line, type `haxelib convertxml beluga.xml` from projet folder
-3. Create a .zip archive containing the following <br />
-	`/beluga`<br />
-	`/beluga.json`
-4. Run the command `haxelib local beluga.zip`
-
-> Note: Beluga is not an official haxelib repository yet, that's why installation is painfull. It will be part of haxelib repositories when it will be publicly released.
-
-## Dependencies ##
-
-Beluga highly depends on [templo](http://haxe.org/com/libs/mtwin/templo "templo") library (which will be automaticly installed) and [hss](http://ncannasse.fr/projects/hss "hss")
-
-It is necessary to provide both hss and templo executable to Beluga in your project folder.
+> Note: If you were to use Beluga as a contributor, you need to run the following command `haxelib dev beluga $HAXE_HOME/lib/beluga/git`
+> 
+> Haxelib can complain that beluga dev version is not installed. If so, you must edit the `.dev` file under `$HAXE_HOME/lib/beluga` and remove the trailing slash
 
 ## Project setup ##
 
-To set up a new project, you just have to include `-lib beluga` to your project compilation.
+To setup a new project, you can use the tool provided with haxelib.
 
-### Beluga.xml ###
+`haxelib run beluga setup project_name`
 
-The only requirement is a file called beluga.xml in your project's root folder.
-
-It must contains (at least) the following
-
-
-	<!-- Beluga general config -->
-
-	<!-- List of active modules -->
-	<module name="account"/>
-
+You can get more tool's commands with `haxelib run beluga help`
 
 ### Credits ###
 Thanks to Jonathan Pellet for our wonderful logo.
