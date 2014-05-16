@@ -6,10 +6,14 @@ import haxe.Session;
 
 class BelugaApi implements IAPI
 {
-	private var beluga : Beluga;
+	public var beluga : Beluga;
+	
+	private function handleSessionPath()
+	{
 
-	public function new(beluga : Beluga) {
-		this.beluga = beluga;
+	}
+
+	public function new() {
 	}
 
 	//Handle url like www.beluga.fr?trigger=login

@@ -55,6 +55,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
 			beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "You must log in to send mail", receiver : args.receiver, subject : args.subject, message : args.message}]);
 			return;
 		}
+		var receiver:String = "";
 		#if php
 		var sender:String = user.email;
 		var ret:Bool=false;
@@ -64,7 +65,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
 			beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "Error on sender email", receiver : args.receiver, subject : args.subject, message : args.message}]);
 			return;
 		}
-		var receiver:String = args.receiver;
+		receiver = args.receiver;
 		untyped __php__("$receiver = filter_var($receiver, FILTER_SANITIZE_EMAIL)");
 		ret = untyped __php__("filter_var($receiver, FILTER_VALIDATE_EMAIL)");
 		if (ret) {

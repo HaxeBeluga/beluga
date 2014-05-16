@@ -11,8 +11,11 @@ import beluga.module.fileupload.model.Extension;
 
 // Haxe
 import haxe.xml.Fast;
-import php.Web;
 import sys.io.FileOutput;
+
+#if php
+import php.Web;
+#end
 
 class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public var error: String = "";

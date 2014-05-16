@@ -4,9 +4,12 @@ import haxe.xml.Fast;
 import sys.FileSystem;
 import sys.io.File;
 import beluga.core.macro.ConfigLoader;
-#if !macro
+
+#if (!macro && php)
 import php.Web;
-#else
+#elseif (!macro && neko)
+import neko.Web;
+#elseif macro
 import haxe.macro.Expr;
 import haxe.macro.Expr.ExprOf;
 import haxe.macro.Context;

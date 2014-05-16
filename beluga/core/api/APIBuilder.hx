@@ -44,6 +44,8 @@ class APIBuilder
 					ret: null,
 					params: [],
 					expr: macro {
+						//Make sure temp/session exists if beluga handle session
+						handleSessionPath();
 						Session.start();
 						d.dispatch($ { apiDecl } );
 						Session.close();

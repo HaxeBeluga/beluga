@@ -19,7 +19,7 @@ class ModuleLoader
 			realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
 		if (realClass == null)
 			throw new BelugaException("Module not found " + name);
-		return Reflect.callMethod(realClass, "getInstance", [key]);
+		return Reflect.field(realClass, "getInstance")(key);
 	}
 
 	public static function resolveModel(module : String, name : String) : Class<Dynamic> {
@@ -34,7 +34,7 @@ class ModuleLoader
 	{
 		ConfigLoader.forceBuild();
 		for (module in ConfigLoader.modules) {
-
+			
 			// Huge constraint :
 			// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
 			// Only the package is added to the compile unit

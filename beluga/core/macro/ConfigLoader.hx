@@ -1,5 +1,6 @@
 package beluga.core.macro;
 
+import haxe.macro.Compiler;
 import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.xml.Fast;
@@ -99,6 +100,7 @@ class ConfigLoader
 				//Load subconfiguration
 				var file = File.getContent(path);
 				var xml = Xml.parse(file);
+				clearForTarget(xml, getCompilationTarget());
 				loadModuleConfigurations(new Fast(xml));
 				
 				//Concat the content of the xml to the main config
@@ -128,6 +130,29 @@ class ConfigLoader
 			}
 		}
 	}
+	
+	macro private static function getCompilationTarget()
+	{
+		if (Context.defined("php"))
+			return macro "php";
+		else if (Context.defined("neko"))
+			return macro "neko";
+		return macro "?";
+	}
+	
+	private static function clearForTarget(xml : Xml, target : String)
+	{
+		var delArray : Array<Xml> = new Array<Xml>();
+		for (child in xml.elements())
+		{
+			if (child.get("if") == target)
+				delArray.push(child);
+			else
+				clearForTarget(child, target);
+		}
+		for (child in delArray)
+			xml.removeChild(child);
+	}
 
 	macro private static function loadConfig() : Expr
 	{
@@ -136,13 +161,16 @@ class ConfigLoader
 		//Load configuration
 		builtConfigString = File.getContent(configFilePath);
 		var xml = Xml.parse(builtConfigString);
+		clearForTarget(xml, getCompilationTarget());
 		
 		modules = new Array<ModuleConfig>();
 
 		//Parse the configuration file
 		loadModuleConfigurations(new Fast(xml));
 		
-		config = new Fast(Xml.parse(builtConfigString));
+		xml = Xml.parse(builtConfigString);
+		clearForTarget(xml, getCompilationTarget());
+		config = new Fast(xml);
 
 		return macro "DONE!";
 	}

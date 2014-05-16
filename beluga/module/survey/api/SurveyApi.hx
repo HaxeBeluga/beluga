@@ -5,7 +5,12 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.survey.Survey;
 import haxe.web.Dispatch;
+
+#if php
 import php.Web;
+#elseif neko
+import neko.Web;
+#end
 
 class SurveyApi 
 {

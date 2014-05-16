@@ -1,9 +1,15 @@
 package beluga.module.fileupload;
-import php.Web;
 import sys.io.FileOutput;
 import sys.io.File;
 import haxe.io.Bytes;
 import beluga.module.fileupload.model.Extension;
+
+#if php
+import php.Web;
+#elseif neko
+import neko.Web;
+#end
+
 
 class Uploader {
     public var user: String = "";
