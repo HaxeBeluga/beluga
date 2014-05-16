@@ -51,9 +51,7 @@ class APIBuilder
 						var _api = $ { apiDecl };
 						_api.account = cast ModuleLoader.getModuleInstanceByName($v { module.name } );
 						_api.beluga = beluga;
-						trace("Hello");
 						d.dispatch( _api);
-						trace("Hello2");
 						Session.close();
 					},
 					args: [ {

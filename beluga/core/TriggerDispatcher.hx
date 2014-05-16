@@ -184,6 +184,6 @@ private class CallbackTrigger {
 			if (realClass == null)
 				throw new BelugaException("Error: class \"" + clazz + "\" can't be resolved");
 		}
-		Reflect.callMethod(realClass, method, params);
+		Reflect.callMethod(realClass, Reflect.field(realClass, method), params);
 	}
 }
