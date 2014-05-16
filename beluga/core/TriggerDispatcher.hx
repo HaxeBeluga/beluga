@@ -120,9 +120,9 @@ class TriggerDispatcher
 
 		Context.onAfterGenerate(checkTriggers);
 
-		for (trigger in MetadataLoader.metadata.trigger) {
-			triggersRoute.push({trigger : trigger.params[0], clazz : trigger.clazz, method : trigger.method});
-		}
+		//for (trigger in MetadataLoader.metadata.trigger) {
+		//	triggersRoute.push({trigger : trigger.params[0], clazz : trigger.clazz, method : trigger.method});
+		//}
 		
 		return Context.makeExpr(triggersRoute, Context.currentPos());
 	}	
