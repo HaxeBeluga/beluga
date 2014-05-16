@@ -143,8 +143,6 @@ class ConfigLoader
 		//Parse the configuration file
 		loadModuleConfigurations(new Fast(xml));
 		
-		trace(builtConfigString);
-
 		return macro "DONE!";
 	}
 
