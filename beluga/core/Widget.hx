@@ -9,7 +9,7 @@ import sys.io.File;
  */
 class Widget
 {
-	private static var last_id : Int;
+	private static var last_id : Int = 0;
 	private static var available_resources = Resource.listNames();
 
 	public var context : Dynamic;
