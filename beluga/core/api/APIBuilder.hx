@@ -34,7 +34,8 @@ class APIBuilder
 					pack: ["beluga", "module", module.name.toLowerCase(), "api"],
 					name: module.name.charAt(0).toUpperCase() + module.name.substr(1) + "Api"
 				},
-				[macro beluga, macro cast ModuleLoader.getModuleInstanceByName($v{module.name})])
+				[])
+				//[macro beluga, macro cast ModuleLoader.getModuleInstanceByName($v{module.name})])
 			};
 			fields.push({
 				pos: pos,
@@ -47,7 +48,12 @@ class APIBuilder
 						//Make sure temp/session exists if beluga handle session
 						handleSessionPath();
 						Session.start();
-						d.dispatch($ { apiDecl } );
+						var _api = $ { apiDecl };
+						_api.account = cast ModuleLoader.getModuleInstanceByName($v { module.name } );
+						_api.beluga = beluga;
+						trace("Hello");
+						d.dispatch( _api);
+						trace("Hello2");
 						Session.close();
 					},
 					args: [ {
