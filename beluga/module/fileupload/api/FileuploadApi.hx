@@ -13,12 +13,10 @@ import haxe.web.Dispatch;
 
 class FileuploadApi
 {
-    var beluga : Beluga;
-    var file_upload : Fileupload;
+    public var beluga : Beluga;
+    public var module : Fileupload;
 
-    public function new(beluga : Beluga, file_upload : Fileupload) {
-        this.beluga = beluga;
-        this.file_upload = file_upload;
+    public function new() {
     }
 
     public function doBrowse(): Void {

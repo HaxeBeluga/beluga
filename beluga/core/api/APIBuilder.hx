@@ -49,7 +49,7 @@ class APIBuilder
 						handleSessionPath();
 						Session.start();
 						var _api = $ { apiDecl };
-						_api.account = cast ModuleLoader.getModuleInstanceByName($v { module.name } );
+						_api.module = cast ModuleLoader.getModuleInstanceByName($v { module.name } );
 						_api.beluga = beluga;
 						d.dispatch( _api);
 						Session.close();

@@ -10,13 +10,11 @@ import beluga.module.account.model.User;
 
 class ForumApi 
 {
-  var beluga : Beluga;
-  var forum : Forum;
+  public var beluga : Beluga;
+  public var module : Forum;
 
-  public function new(beluga : Beluga, forum : Forum) {
-    this.beluga = beluga;
-    this.forum = forum;
-  }
+    public function new() {
+    }
 
   public function doDisplayChannel(args : {
     channel_key : String

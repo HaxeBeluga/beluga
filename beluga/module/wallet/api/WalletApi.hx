@@ -12,12 +12,10 @@ import beluga.module.wallet.Wallet;
 import haxe.web.Dispatch;
 
 class WalletApi {
-    var beluga : Beluga;
-    var wallet : Wallet;
+    public var beluga : Beluga;
+    public var module : Wallet;
 
-    public function new(beluga: Beluga, wallet: Wallet) {
-        this.beluga = beluga;
-        this.wallet = wallet;
+    public function new() {
     }
 
     public function doCreate(): Void {

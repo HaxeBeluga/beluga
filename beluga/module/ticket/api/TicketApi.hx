@@ -12,12 +12,10 @@ import beluga.module.ticket.Ticket;
 import haxe.web.Dispatch;
 
 class TicketApi {
-    var beluga : Beluga;
-    var ticket : Ticket;
+    public var beluga : Beluga;
+    public var module : Ticket;
 
-    public function new(beluga : Beluga, ticket : Ticket) {
-        this.beluga = beluga;
-        this.ticket = ticket;
+    public function new() {
     }
 
     public function doBrowse(): Void {

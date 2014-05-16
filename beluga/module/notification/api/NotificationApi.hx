@@ -8,27 +8,25 @@ import haxe.web.Dispatch;
 
 class NotificationApi
 {
-	var beluga : Beluga;
-	var notif : Notification;
+	public var beluga : Beluga;
+	public var module : Notification;
 
-	public function new(beluga : Beluga, notif : Notification) {
-		this.beluga = beluga;
-		this.notif = notif;
-	}
+    public function new() {
+    }
 
 	public function doDefault() {
 		beluga.triggerDispatcher.dispatch("beluga_notif_default", []);
 	}
 
 	public function doPrint(args : {id : Int}) {
-		notif.print(args);
+		module.print(args);
 	}
 
 	public function doCreate(args : {title : String, text : String, user_id: Int}) {
-		notif.create(args);
+		module.create(args);
 	}
 
 	public function doDelete(args : {id : Int}) {
-		notif.delete(args);
+		module.delete(args);
 	}
 }

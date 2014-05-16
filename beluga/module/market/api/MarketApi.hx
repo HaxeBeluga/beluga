@@ -12,12 +12,10 @@ import beluga.module.market.Market;
 import haxe.web.Dispatch;
 
 class MarketApi {
-    var beluga : Beluga;
-    var market : Market;
+    public var beluga : Beluga;
+    public var module : Market;
 
-    public function new(beluga: Beluga, market: Market) {
-        this.beluga = beluga;
-        this.market = market;
+    public function new() {
     }
 
     public function doDisplay(): Void {
