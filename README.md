@@ -29,5 +29,12 @@ To setup a new project, you can use the tool provided with haxelib.
 
 You can get more tool's commands with `haxelib run beluga help`
 
+## Supported platforms ##
+
+The following targets are currently supported
+
+* Php
+* Neko
+
 ### Credits ###
 Thanks to Jonathan Pellet for our wonderful logo.
