@@ -133,15 +133,12 @@ class ConfigLoader
 	
 	macro private static function getCompilationTarget()
 	{
-		//if (Context.defined("php"))
-			//return macro "php";
-		//else if (Context.defined("neko"))
-			//return macro "neko";
-		#if php
+		if (Context.defined("target"))
+			return macro $v { Context.definedValue("target") };
+		else if (Context.defined("php"))
 			return macro "php";
-		#elseif neko
+		else if (Context.defined("neko"))
 			return macro "neko";
-		#end
 		return macro "?";
 	}
 	
