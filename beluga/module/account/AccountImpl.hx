@@ -63,7 +63,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		} else {
 			setLoggedUser(user.first());
 			beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
-				user
+				user.first()
 			]);
 		}
 	}
