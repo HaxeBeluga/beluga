@@ -4,9 +4,10 @@ import haxe.web.Dispatch;
 import beluga.core.macro.ModuleLoader;
 import haxe.Session;
 
-class BelugaApi implements IAPI
+class BelugaApi implements IAPI<String>
 {
 	public var beluga : Beluga;
+	public var module : String;
 	
 	private function handleSessionPath()
 	{
