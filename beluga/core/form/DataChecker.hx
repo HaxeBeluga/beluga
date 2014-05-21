@@ -1,4 +1,9 @@
-package form;
+package beluga.core.form;
+
+// TODO Implement the checkDatabase function.
+
+// To create a new rule to check, we just have to concatenate "check" + rule name
+// For example: "MinValue" become "check" + "MinValue" == "checkMinValue"
 
 class DataChecker
 {

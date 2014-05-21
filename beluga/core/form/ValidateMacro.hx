@@ -1,11 +1,11 @@
-package form;
+package beluga.core.form;
 
 import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.macro.ComplexTypeTools;
 
-// TODO Remove when PUSH
-// import haxe.macro.ExprTools;
+import beluga.core.macro_tool.ExprUtils;
+import beluga.core.macro_tool.TypeUtils;
 
 class ValidateMacro
 {
@@ -14,18 +14,18 @@ class ValidateMacro
     var condition_name = "check" + rule.name;
     var condition_arg = [macro $i{field_name}].concat(rule.params);
 
-    // Verify the existence of the rule
-    if (Reflect.isFunction(Reflect.field(form.RuleChecker,condition_name)) == false)
+    // Verify existence of the rule
+    if (Reflect.isFunction(Reflect.field(form.DataChecker, condition_name)) == false)
     {
       Context.error("The rule '" + rule.name + "' is invalid in '"
-                    + Context.getLocalClass() + "' object. Stop.",
+                    + Context.getLocalClass() + "' object.",
                     Context.currentPos());
     }
 
-    // Resolve the "if" statement
+    // Resolve "if" statement
     var condition_expr = macro
     {
-      if (form.RuleChecker.$condition_name($a{condition_arg}) == false)
+      if (form.DataChecker.$condition_name($a{condition_arg}) == false)
       {
         this.error[$v{field_name}].push($v{rule.name});
       }
@@ -34,55 +34,189 @@ class ValidateMacro
     return (condition_expr);
   }
 
-  private static function generateDataChecker(field : Field) : Expr
+  private static function generateDataChecker(field : Field) : Array<Expr>
   {
-    var checker_expr = null;
+    var checker_expr = new Array<Expr>();
 
-    // Concat all conditions
+    // Concatenate all conditions
     for (rule in field.meta)
     {
       var condition = generateCondition(field.name, rule);
       if (condition != null)
       {
-        checker_expr = MacroTools.concatExpr(checker_expr, condition);
+        checker_expr.push(condition);
       }
     }
     return (checker_expr);
   }
 
+  private static function checkTypeParameter(type : TypePath) : Void
+  {
+    // Supported type parameter
+    var supp_type_parameter = [
+      "Null"  => ["Int","Float","String","Bool"]
+    ];
+
+    // Check type parameter
+    if (supp_type_parameter.exists(type.name) == false)
+    {
+      Context.error("Unsupported '" + type.name + "<>' type in '"
+      + Context.getLocalClass() + "' object.",
+      Context.currentPos());
+    }
+
+    // Check type inside type parameter
+    var inner_types = TypeUtils.getTypeParameter(type);
+    if (Lambda.empty(inner_types) == false)
+    {
+      for (inner_type in inner_types)
+      {
+        if (Lambda.has(supp_type_parameter.get(type.name), inner_type.name) == false)
+        {
+          Context.error("Unsupported '" + inner_type.name + "' type inside '"
+          + type.name + "<>' in '" + Context.getLocalClass() + "' object.",
+          Context.currentPos());
+        }
+      }
+    }
+  }
+
+  private static function checkBasicType(type : TypePath) : Void
+  {
+    // Supported basic type
+    var supp_raw_type = ["Int", "Float", "String", "Bool"];
+
+    // Check if supported type
+    if (Lambda.has(supp_raw_type, type.name) == false)
+    {
+      Context.error("Unsupported '" + type.name + "' type in '"
+      + Context.getLocalClass() + "' object.",
+      Context.currentPos());
+    }
+  }
+
+  private static function checkSupportedFVarType(field : Field) : Void
+  {
+    // Check if field is FVar expr and valid
+    var type = TypeUtils.getVarType(field);
+    if (type == null)
+    {
+      Context.error("Field is not 'FVar' type in '"
+      + Context.getLocalClass() + "' object.",
+      Context.currentPos());
+    }
+
+    // Check if supported type
+    if (TypeUtils.isTypeParameter(type) == true)
+    {
+      checkTypeParameter(type);
+    }
+    else
+    {
+      checkBasicType(type);
+    }    
+  }
+
+  private static function isNotRequired(field : Field) : Bool
+  {
+    // Check if it is Null<T>
+    var type = TypeUtils.getVarType(field);
+    if (TypeUtils.isTypeParameter(type) == false || type.name != "Null")
+    {
+      return false;
+    }
+    return true;
+  }
+
+  private static function generateNullConditionChecker(field : Field) : Expr
+  {
+    // Resolve "if" checking if data exists or not
+    var var_name = field.name; 
+    var null_condition_expr = macro
+    {
+      if (this.$var_name != null)
+      {
+        // Will insert generateDataChecker here!
+      }
+    }
+    return null_condition_expr;
+  }
+
+  private static function addNullCond(field : Field, data_checker : Expr) : Expr
+  {
+    var final_if : Expr;
+    var not_req_condition = generateNullConditionChecker(field);
+          
+    switch (not_req_condition.expr)
+    {
+      case EBlock(exprs):
+      {
+        switch (exprs[0].expr)
+        {
+          case EIf(if_cond, if_scope, else_scope):
+          {
+            final_if = {
+              expr : EIf(if_cond, data_checker, else_scope),
+              pos  : Context.currentPos()};
+          }
+          default:
+            // Nothing to do
+        }
+      }
+      default:
+        //Nothing to do
+    }
+    return { expr : EBlock([final_if]), pos : Context.currentPos() };
+  }
+
   private static function generateValidationBody(fields : Array<Field>) : Expr
   {
-    var body_proto : Expr;
+    var body_proto = new Array<Expr>();
    
-    // Create the condition statement which analyze the form data
+    // Create condition statement which analyze form data
     for (field in fields)
     {
-      var data_checker = generateDataChecker(field);
-      if (data_checker != null)
+      if (field.kind.getName() == "FVar")
       {
-        body_proto = MacroTools.concatExpr(body_proto, data_checker);
+        // Verify if types in form is valid and supported 
+        checkSupportedFVarType(field);
+
+        // Generate condition checking the data
+        var data_checker = generateDataChecker(field);
+        if (Lambda.empty(data_checker) == false)
+        {
+          var checker_expr = { expr : EBlock(data_checker), pos  : Context.currentPos() };
+          
+          // Determine if the field is required or not
+          if (isNotRequired(field) == true)
+          {
+            body_proto.push(addNullCond(field, checker_expr));
+          }
+          else
+          {
+            body_proto.push(checker_expr);
+          }
+        }
       }
     }
 
-    // Add the return statement. False if there are errors, true otherwise.
-    body_proto = MacroTools.concatExpr(body_proto, macro return (!this.error.iterator().hasNext()));
+    // Add return statement: false if there are errors, true otherwise.
+    var return_statement = macro return (!this.error.iterator().hasNext());
+    body_proto.push(return_statement);
 
-    // TODO Remove when PUSH
-    // trace(ExprTools.toString(body_proto));
-
-    return (body_proto);
+    return ({ expr : EBlock(body_proto), pos : Context.currentPos() });
   }
 
   private static function createValidationFunction(fields : Array<Field>) : Field
   {
-    // Define the return type of the validation function
+    // Define return type of validation function
     var ret_proto = TPath({
       name   : "Bool",
       pack   : [],
       params : []
     });
 
-    // Build the validation function
+    // Build validation function
     var funct_proto = FFun({
       ret    : ret_proto,
       params : [],
@@ -90,7 +224,7 @@ class ValidateMacro
       args   : []
     });
 
-    // Parametrization of the validation function
+    // Parametrization of validation function
     var validation_func = {
       name   : "validate",
       kind   : funct_proto,
@@ -105,13 +239,13 @@ class ValidateMacro
 
   macro public static function build() : Array<Field>
   {
-    // Get fields of the "Form" object
+    // Get fields of form object
     var fields = Context.getBuildFields();
 
     // Create the validation function
     var validation_function = createValidationFunction(fields);
 
-    // Add validation function
+    // Add validation function to form object
     fields.push(validation_function);
 
     return (fields);

@@ -1,8 +1,7 @@
-package form;
+package beluga.core.form;
 
-@:autoBuild(form.TranslateMacro.build())
 @:autoBuild(form.ValidateMacro.build())
-class Form
+class Object
 {
   public var error : Map<String, Array<String>>;
 
