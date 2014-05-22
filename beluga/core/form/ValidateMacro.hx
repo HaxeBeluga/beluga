@@ -11,11 +11,11 @@ class ValidateMacro
 {
   private static function generateCondition(field_name : String, rule : MetadataEntry) : Expr
   {
-    var condition_name = "check" + rule.name;
+    var condition_name = "check" + rule.name.substr(1);
     var condition_arg = [macro $i{field_name}].concat(rule.params);
 
     // Verify existence of the rule
-    if (Reflect.isFunction(Reflect.field(form.DataChecker, condition_name)) == false)
+    if (Reflect.isFunction(Reflect.field(beluga.core.form.DataChecker, condition_name)) == false)
     {
       Context.error("The rule '" + rule.name + "' is invalid in '"
                     + Context.getLocalClass() + "' object.",
@@ -25,9 +25,9 @@ class ValidateMacro
     // Resolve "if" statement
     var condition_expr = macro
     {
-      if (form.DataChecker.$condition_name($a{condition_arg}) == false)
+      if (beluga.core.form.DataChecker.$condition_name($a{condition_arg}) == false)
       {
-        this.error[$v{field_name}].push($v{rule.name});
+        this.error[$v{field_name}].push($v{rule.name.substr(1)});
       }
     }
 
