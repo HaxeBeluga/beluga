@@ -85,7 +85,7 @@ class ModuleBuilder
 			params : [],
 			expr : bodyFunc,
 			args : 	[
-						{name: "key", opt: false, value: macro "", type: macro : String}
+						{name: "key", opt: false, value: null, type: macro : String}
 					]
 		};
 		fields.push( { name : "getInstance", doc : null, meta : [], access : [APublic, AStatic], kind : FFun(fun), pos : pos } );

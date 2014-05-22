@@ -9,12 +9,10 @@ import haxe.web.Dispatch;
 
 class AccountApi 
 {
-	var beluga : Beluga;
-	var account : Account;
+	public var beluga : Beluga;
+	public var module : Account;
 
-	public function new(beluga : Beluga, account : Account) {
-		this.beluga = beluga;
-		this.account = account;
+	public function new() {
 	}
 
 	//
@@ -28,7 +26,7 @@ class AccountApi
 	}
 
 	public function doLogout() {
-		this.account.logout();
+		module.logout();
 	}
 
 	public function doPrintInfo() {

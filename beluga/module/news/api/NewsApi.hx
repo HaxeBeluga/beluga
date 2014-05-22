@@ -8,13 +8,11 @@ import haxe.web.Dispatch;
 
 class NewsApi
 {
-	var beluga : Beluga;
-	var news : News;
+	public var beluga : Beluga;
+	public var module : News;
 
-	public function new(beluga : Beluga, news : News) {
-		this.beluga = beluga;
-		this.news = news;
-	}
+    public function new() {
+    }
 
 	public function doDefault() {
 		beluga.triggerDispatcher.dispatch("beluga_news_default", []);

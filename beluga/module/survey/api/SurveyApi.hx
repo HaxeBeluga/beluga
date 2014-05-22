@@ -5,17 +5,20 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.survey.Survey;
 import haxe.web.Dispatch;
+
+#if php
 import php.Web;
+#elseif neko
+import neko.Web;
+#end
 
 class SurveyApi 
 {
-	var beluga : Beluga;
-	var survey : Survey;
+	public var beluga : Beluga;
+	public var module : Survey;
 
-	public function new(beluga : Beluga, survey : Survey) {
-		this.beluga = beluga;
-		this.survey = survey;
-	}
+    public function new() {
+    }
 
 	public function doCreate(args : {
 		title : String,

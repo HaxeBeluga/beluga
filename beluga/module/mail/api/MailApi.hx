@@ -8,13 +8,11 @@ import haxe.web.Dispatch;
 
 class MailApi
 {
-	var beluga : Beluga;
-	var mail : Mail;
+	public var beluga : Beluga;
+	public var module : Mail;
 
-	public function new(beluga : Beluga, mail : Mail) {
-		this.beluga = beluga;
-		this.mail = mail;
-	}
+    public function new() {
+    }
 
 	public function doDefault() {
 		beluga.triggerDispatcher.dispatch("beluga_mail_default", []);

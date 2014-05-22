@@ -4,12 +4,18 @@ import beluga.core.module.Module;
 import beluga.core.module.ModuleInternal;
 import haxe.Resource;
 import haxe.xml.Fast;
-import php.Web;
 import sys.io.File;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
 import beluga.core.macro.ModuleLoader;
+import sys.FileSystem;
+
+#if php
+import php.Web;
+#elseif neko
+import neko.Web;
+#end
 
 /**
  * ...
@@ -34,8 +40,20 @@ class Beluga
 		return instance;
 	}
 
+	#if neko
+	private function new(handleSessionPath : Bool = true)
+	#else
 	private function new()
+	#end
 	{
+		#if neko
+		if (handleSessionPath)
+		{
+			FileSystem.createDirectory(Web.getCwd() + "/temp");
+			FileSystem.createDirectory(Web.getCwd() + "/temp/sessions");
+		}
+		#end
+		
 		ModuleLoader.init();
 		triggerDispatcher = new TriggerDispatcher();
 
@@ -49,7 +67,7 @@ class Beluga
 		for (trigger in ConfigLoader.config.nodes.trigger) {
 			triggerDispatcher.addRoutesFromFast(trigger);
 		}
-		
+
 		//Init every modules
 		for (module in ConfigLoader.modules) {
 			var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
@@ -59,7 +77,8 @@ class Beluga
 		}
 		
 		//Create beluga API
-		api = new BelugaApi(this);
+		api = new BelugaApi();
+		api.beluga = this;
 	}
 	
 	public function dispatch(defaultTrigger : String = "index") {
@@ -78,9 +97,13 @@ class Beluga
 	
 	public function getDispatchUri() : String
 	{
+		#if php
 		//Get the index file location
 		var src : String = untyped __var__('_SERVER', 'SCRIPT_NAME');
 		//Remove server subfolders from URI
 		return StringTools.replace(Web.getURI(), src.substr(0, src.length - "/index.php".length), "");
+		#elseif neko
+		return Web.getURI();
+		#end
 	}
 }

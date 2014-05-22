@@ -4,12 +4,17 @@ import haxe.web.Dispatch;
 import beluga.core.macro.ModuleLoader;
 import haxe.Session;
 
-class BelugaApi implements IAPI
+class BelugaApi implements IAPI<String>
 {
-	private var beluga : Beluga;
+	public var beluga : Beluga;
+	public var module : String;
+	
+	private function handleSessionPath()
+	{
 
-	public function new(beluga : Beluga) {
-		this.beluga = beluga;
+	}
+
+	public function new() {
 	}
 
 	//Handle url like www.beluga.fr?trigger=login
