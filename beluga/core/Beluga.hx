@@ -1,6 +1,5 @@
 package beluga.core;
 
-import beluga.core.macro.Metadata;
 import beluga.core.module.Module;
 import beluga.core.module.ModuleInternal;
 import haxe.Resource;
@@ -64,12 +63,9 @@ class Beluga
 		}
 
 		// Look for triggers
-		for (trigger in ConfigLoader.config.nodes.trigger) {
-			triggerDispatcher.addRoutesFromFast(trigger);
-		}
-		for (meta in Metadata.getStaticMetadatas())
-			if (meta.name == "blg_trigger")
-				triggerDispatcher.addRoute(meta.params[0], meta.clazz, meta.method);
+		//for (trigger in ConfigLoader.config.nodes.trigger) {
+		//	triggerDispatcher.addRoutesFromFast(trigger);
+		//}
 		
 		//Init every modules
 		for (module in ConfigLoader.modules) {

@@ -1,11 +1,8 @@
 package beluga.core;
 
-import beluga.core.macro.MetadataLoader;
 import haxe.xml.Fast;
 import sys.FileSystem;
 import sys.io.File;
-import beluga.core.macro.ConfigLoader;
-
 #if (!macro && php)
 import php.Web;
 #elseif (!macro && neko)
@@ -15,6 +12,11 @@ import haxe.macro.Expr;
 import haxe.macro.Expr.ExprOf;
 import haxe.macro.Context;
 #end
+
+using tink.macro.Metadatas;
+using Lambda;
+using beluga.core.macro_tool.ExprUtils;
+using beluga.core.macro_tool.MacroTools;
 
 typedef TriggerData = { trigger : String, clazz : Dynamic, method : String };
 
@@ -27,11 +29,11 @@ class TriggerDispatcher
 	private static var triggers = new Map < String, Array<CallbackTrigger> >();
 	//
 	private static var triggersList  : Array<String> = [];
-	private static var triggersRoute : Array<TriggerData> = [];
+	private static var staticRoutes : Array< TriggerData > = [];
 	
 	public function new()
 	{
-		var triggersRoutes = readTriggers();
+		var triggersRoutes = getStaticRoutes();
 		addRoutesFromArray(triggersRoutes);
 	}
 	
@@ -100,7 +102,7 @@ class TriggerDispatcher
 	private static function checkTriggers():Void {
 		var errors : Array<String> = [];
 		
-		for (route in triggersRoute) {
+		for (route in staticRoutes) {
 			if (triggersList.indexOf(route.trigger) == -1) {
 				errors.push("Trigger \"" + route.trigger + "\" doesn't exist. Called in " + route.clazz + "." + route.method);
 			}
@@ -115,17 +117,61 @@ class TriggerDispatcher
 		}
 	}
 	
-	macro private static function readTriggers(): Expr {
-		ConfigLoader.forceBuild();
-
+	macro private static function getStaticRoutes() : Expr {
 		Context.onAfterGenerate(checkTriggers);
-
-		//for (trigger in MetadataLoader.metadata.trigger) {
-		//	triggersRoute.push({trigger : trigger.params[0], clazz : trigger.clazz, method : trigger.method});
-		//}
 		
-		return Context.makeExpr(triggersRoute, Context.currentPos());
-	}	
+		return Context.makeExpr(staticRoutes, Context.currentPos());
+	}
+	
+	macro public static function readTriggerMetadata() : Array<Field> {
+		var fields = Context.getBuildFields();
+
+		var instanceRoutes : Array< TriggerData > = [];
+
+		for (field in fields)
+		{
+			//Detect if field is static or not
+			var isStatic = field.access.exists(function(access) return access == AStatic);
+			//Get the meta params
+			for (params in field.meta.getValues("blg_trigger")) {
+				for (param in params) {
+					switch (param.expr) {
+						case EConst(CString(trigger)):
+							(if (isStatic) staticRoutes else instanceRoutes).push({ 
+								trigger: trigger,
+								clazz  : Context.getLocalClass().get().fullClassPath(),
+								method : field.name
+							});
+						case _:
+							throw new BelugaException("Error: blg_trigger takes only type String as arguments at " + param.pos);
+					}
+				}
+			}
+		}
+
+		//If there is a constructor, then we must overload it to register all instances in order to apply registered instanceRoutes calls to them
+		var constructor = fields.find(function(field) return field.name == "new");
+		if (constructor == null)
+			return fields;
+
+		//Create a field that holds instance routes
+		fields.push( {
+			access: [APrivate, AStatic],
+			doc: null,
+			kind: FVar(macro : Array<beluga.core.TriggerDispatcher.TriggerData>, macro $v{instanceRoutes}),
+			meta: [],
+			name: "blg_instanceRoutes",
+			pos: Context.currentPos()
+		});
+
+		var registerDynamicMetadatas = macro {
+			for (route in blg_instanceRoutes)
+				beluga.core.Beluga.getInstance().triggerDispatcher.addRoute(route.trigger, this, route.method);
+		};
+		//Overload constructor
+		constructor.insertInConstructor(registerDynamicMetadatas);
+		return fields;
+	}
 	
 	#if !macro
 	public function redirect(target : String, forceHeader : Bool = true) {
@@ -141,8 +187,8 @@ class TriggerDispatcher
 
 private class CallbackTrigger {
 
-	private var clazz : Dynamic;
-	private var method : String;
+	public var clazz : Dynamic;
+	public var method : String;
 
 	public function new(clazz : Dynamic, method : String) {
 		this.clazz = clazz;
