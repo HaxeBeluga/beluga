@@ -12,6 +12,7 @@ import beluga.module.ticket.model.Message;
 import beluga.module.ticket.model.TicketLabel;
 import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
+import sys.db.Manager;
 
 // Haxe
 import haxe.xml.Fast;
@@ -57,7 +58,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var message_count: Int = 0;
 
         // Store all tickets in a Dynamic
-        for( t in TicketModel.manager.search($ti_id < 10000) ) {
+        var row = Manager.cnx.request("SELECT * from beluga_tic_ticket ORDER BY ti_date DESC");
+        for (t in row) {
             // retrieve ticket status
             if (t.ti_status == 1) { status = "open"; }
             else { status = "closed"; }
@@ -443,7 +445,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     /// { message_content: String, message_creation_date: Date, message_author: String}
     public function getTicketMessages(ticket_id: Int): List<Dynamic> {
         var messages: List<Dynamic> = new List<Dynamic>();
-
+        
         for( m in Message.manager.search($me_ti_id == ticket_id) ) {
             messages.push({
                 message_content: m.me_content,
