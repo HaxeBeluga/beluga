@@ -53,6 +53,15 @@
 .center {
   text-align:center;
 }
+div.timeline-heading {
+  margin-bottom: 0px;
+}
+div.timeline-heading > p {
+  text-align: right;
+  font-size: 10px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+}
 
 .timeline > li > .timeline-panel:before {
   position: absolute;

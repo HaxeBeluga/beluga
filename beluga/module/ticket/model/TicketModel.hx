@@ -8,7 +8,7 @@ import sys.db.Types;
 class TicketModel extends Object {
 	public var ti_id: SId;
 	public var ti_us_id: SInt;
-	public var ti_date: SDate;
+	public var ti_date: SDateTime;
 	public var ti_path_attachment: STinyText;
 	public var ti_title: STinyText;
 	public var ti_content: STinyText;

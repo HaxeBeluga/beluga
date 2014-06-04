@@ -16,11 +16,11 @@
         ::else:: <span class="label label-danger">Closed<small></span>
         ::end::
 
-        <a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> opened this issue ::ticket_create_date:: days ago - ::ticket_message_count:: comments</small>
+        <a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> opened this issue on ::ticket_create_date:: - ::ticket_message_count:: comments</small>
         <hr class="hr-ticket" />
         <div class="col-md-10">
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a></strong> commented ::ticket_create_date:: days ago</span>
+                <span class="list-group-item ticket-comment-head"><strong><a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a></strong> commented on ::ticket_create_date::</span>
                 <span class="list-group-item ticket-comment">::ticket_message::</span>
             </div>
             ::foreach messages_list::
