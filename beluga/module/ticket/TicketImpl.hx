@@ -282,9 +282,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             this.error = "Your title cannot be empty !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
         } else {
-            var date = Date.now();
             ticket.ti_us_id = account.getLoggedUser().id;
-            ticket.ti_date = date;
+            ticket.ti_date = Date.now();
             ticket.ti_title = args.title;
             ticket.ti_content = args.message;
             ticket.ti_status = 1;
