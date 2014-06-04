@@ -11,6 +11,7 @@ import neko.Web;
 import haxe.macro.Expr;
 import haxe.macro.Expr.ExprOf;
 import haxe.macro.Context;
+import tink.macro.Exprs;
 #end
 
 using tink.macro.Metadatas;
@@ -30,26 +31,26 @@ class TriggerDispatcher
 	//
 	private static var triggersList  : Array<String> = [];
 	private static var staticRoutes : Array< TriggerData > = [];
-	
+
 	public function new()
 	{
 		var triggersRoutes = getStaticRoutes();
 		addRoutesFromArray(triggersRoutes);
 	}
-	
+
 	public function addRoute(trigger : String, clazz : Dynamic, method : String) {
 		register( trigger, [ new CallbackTrigger(clazz, method) ] );
 	}
-	
+
 	public function addRoutes(trigger : String, routes : Array<{clazz : Dynamic, method : String}>) {
 		var callbacks = new Array<CallbackTrigger>();
-		
+
 		for (route in routes) {
 			callbacks.push(new CallbackTrigger(route.clazz, route.method));
 		}
 		register(trigger, callbacks);
 	}
-	
+
 	public function addRoutesFromFast(trigger : Fast) {
 		// Retrieve trigger event
 		var routes = new Array<CallbackTrigger>();
@@ -98,10 +99,10 @@ class TriggerDispatcher
 		}
 		return macro $ethis.realDispatch($event, $params);
 	}
-	
+
 	private static function checkTriggers():Void {
 		var errors : Array<String> = [];
-		
+
 		for (route in staticRoutes) {
 			if (triggersList.indexOf(route.trigger) == -1) {
 				errors.push("Trigger \"" + route.trigger + "\" doesn't exist. Called in " + route.clazz + "." + route.method);
@@ -116,13 +117,13 @@ class TriggerDispatcher
 			throw new BelugaException("Error: " + errorMsg);
 		}
 	}
-	
+
 	macro private static function getStaticRoutes() : Expr {
 		Context.onAfterGenerate(checkTriggers);
-		
+
 		return Context.makeExpr(staticRoutes, Context.currentPos());
 	}
-	
+
 	macro public static function readTriggerMetadata() : Array<Field> {
 		var fields = Context.getBuildFields();
 
@@ -137,7 +138,7 @@ class TriggerDispatcher
 				for (param in params) {
 					switch (param.expr) {
 						case EConst(CString(trigger)):
-							(if (isStatic) staticRoutes else instanceRoutes).push({ 
+							(if (isStatic) staticRoutes else instanceRoutes).push({
 								trigger: trigger,
 								clazz  : Context.getLocalClass().get().fullClassPath(),
 								method : field.name
@@ -164,15 +165,23 @@ class TriggerDispatcher
 			pos: Context.currentPos()
 		});
 
+		//register triggers at class reification
+		//use of reflection to avoid naming conflict
 		var registerDynamicMetadatas = macro {
-			for (route in blg_instanceRoutes)
-				beluga.core.Beluga.getInstance().triggerDispatcher.addRoute(route.trigger, this, route.method);
+			var blg_realClass = Type.resolveClass("beluga.core.Beluga");
+			var blg_belugaInstance = Reflect.callMethod(blg_realClass, Reflect.field(blg_realClass, "getInstance"), null);
+			var blg_triggerDispatcher = Reflect.field(blg_belugaInstance, "triggerDispatcher");
+			var blg_addRoute = Reflect.field(blg_triggerDispatcher, "addRoute");
+			for (route in blg_instanceRoutes) {
+				//beluga.core.Beluga.getInstance().triggerDispatcher.addRoute(route.trigger, this, route.method);
+				Reflect.callMethod(blg_triggerDispatcher, blg_addRoute, [route.trigger, this, route.method]);
+			}
 		};
 		//Overload constructor
 		constructor.insertInConstructor(registerDynamicMetadatas);
 		return fields;
 	}
-	
+
 	#if !macro
 	public function redirect(target : String, forceHeader : Bool = true) {
 		if (forceHeader) {
@@ -194,14 +203,14 @@ private class CallbackTrigger {
 		this.clazz = clazz;
 		this.method = method;
 	}
-	
+
 	public function call(params : Array<Dynamic> = null) {
 		if (params == null)
 			params = new Array<Dynamic>();
-	
+
 		var realClass = clazz;
 		if (Std.is(clazz, String)) {
-			
+
 			realClass = Type.resolveClass(clazz);
 			if (realClass == null)
 				throw new BelugaException("Error: class \"" + clazz + "\" can't be resolved");
