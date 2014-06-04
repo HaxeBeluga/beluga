@@ -22,6 +22,7 @@
 	          	<div class="timeline-panel">
 	            	<div class="timeline-heading">
 	            		<h3 class="center">::title::</h3>
+	            		<p>::creationDate::</p>
 	            	</div>
 		            <div class="timeline-body">
 		              <p>::text::</p>

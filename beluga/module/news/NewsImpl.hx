@@ -7,6 +7,7 @@ import beluga.module.news.model.CommentModel;
 import beluga.core.Beluga;
 
 import haxe.xml.Fast;
+import sys.db.Manager;
 
 class NewsImpl extends ModuleImpl implements NewsInternal {
 
@@ -20,7 +21,8 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
 	public function getAllNews() : Array<NewsModel> {
 		var ret = new Array<NewsModel>();
 
-		for (tmp in NewsModel.manager.dynamicSearch( {} ))
+		var row = Manager.cnx.request("SELECT * from beluga_news_news ORDER BY creationDate DESC");
+		for (tmp in row)
 			ret.push(tmp);
 		return ret;
 	}
