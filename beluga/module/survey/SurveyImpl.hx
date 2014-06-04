@@ -87,13 +87,13 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		}
 	}
 
-	public function getChoices(args : {id : Int}) {
+	public function getChoices(args : {id : Int}) : Array<Choice> {
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 		var arr = new Array<Choice>();
 
 		if (user != null) {
 			for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
-				for (tmp_c in Choice.manager.dynamicSearch( { survey_id : tmp.id, user_id : user.id } )) {
+				for (tmp_c in Choice.manager.dynamicSearch( { survey_id : tmp.id } )) {
 					arr.push(tmp_c);
 				}
 			}
@@ -209,5 +209,37 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 			}
 		}
 		return false;
+	}
+
+	public function getResults(args : {survey_id : Int}) : Array<Dynamic> {
+		var arr = new Array<Dynamic>();
+		var choices = new Array<Dynamic>();
+		var tot = 0;
+
+		for (tmp_r in Result.manager.dynamicSearch( { survey_id : args.survey_id } )) {
+			tot += 1;
+			var found = false;
+			for (t in arr) {
+				if (t.id == tmp_r.choice_id) {
+					t.pourcent += 1;
+					found = true;
+				}
+			}
+			if (found == false)
+				arr.push({id : tmp_r.choice_id, pourcent : 1});
+		}
+		for (tmp_c in Choice.manager.dynamicSearch( { survey_id : args.survey_id } )) {
+			var done = false;
+			for (tmp in arr) {
+				if (tmp.id == tmp_c.id) {
+					choices.push({choice : tmp_c, pourcent : tmp.pourcent * 100.0 / tot, vote : tmp.pourcent});
+					done = true;
+				}
+			}
+			if (done == false) {
+				choices.push({choice : tmp_c, pourcent : 0, vote : 0});
+			}
+		}
+		return choices;
 	}
 }
