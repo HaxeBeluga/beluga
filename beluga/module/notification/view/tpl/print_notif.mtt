@@ -1,4 +1,4 @@
-<div style="margin-top:50px;margin-left:auto;margin-right:auto;width:800px;">
+<div style="width:800px;">
 	<h1>::notif.title::</h1><br/>
 	<span class="form-control"><b>::notif.creationDate:::</b> ::notif.text::</span>
 	<br/>
