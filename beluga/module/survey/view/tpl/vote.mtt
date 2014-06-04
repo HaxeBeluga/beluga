@@ -19,5 +19,6 @@
 			</div>
 			::end::
 		<input type="submit" class="btn btn-primary" value="Vote !"/>
-	</form>
+	</form><br/>
+	<a href="::base_url::::path::default" class="btn btn-primary">Back to surveys list</a>
 </div>
