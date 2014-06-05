@@ -1,6 +1,7 @@
 package beluga.module.survey;
 
 import beluga.core.module.Module;
+import beluga.module.survey.model.Choice;
 
 /**
  * @author Guillaume Gomez
@@ -22,4 +23,6 @@ interface Survey extends Module
 	public function getSurveysList() : Array<SurveyData>;
 	public function redirect() : Void;
 	public function delete(args : {id : Int}) : Void;
+	public function getChoices(args : {id : Int}) : Array<Choice>;
+	public function getResults(args : {survey_id : Int}) : Array<Dynamic>;
 }
