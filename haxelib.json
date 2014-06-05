@@ -2,12 +2,12 @@
   "name": "beluga",
   "license": "MIT",
   "tags": ["php","neko","framework","game"],
-  "description": "Beluga is a video game framework.",
-  "contributors": ["masadow"],
+  "description": "Beluga is a framework that helps building a site embedding a video game.",
+  "contributors": ["masadow", "regnarock"],
   "releasenote": "Initial version, not released yet",
   "version": "0.1.0",
   "url": "http://myproject.org",
   "dependencies": {
-
+	"session"
   }
 }

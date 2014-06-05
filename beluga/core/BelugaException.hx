@@ -18,7 +18,7 @@ class BelugaException
 	public function toString() : String {
 		for (it in CallStack.callStack()) {
 			switch (it) {
-				case FilePos(s, file, line): return file + " l." + line +": " + this.message;
+				case FilePos(s, file, line): return this.message;
 				default:
 			}
 		}

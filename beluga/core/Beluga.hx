@@ -23,7 +23,6 @@ import neko.Web;
  */
 class Beluga
 {
-
 	//No singleton pattern allows multiple instance of Beluga
 	public var triggerDispatcher(default, null) : TriggerDispatcher;
 	// Keep an instance of beluga's database, read only
@@ -64,10 +63,10 @@ class Beluga
 		}
 
 		// Look for triggers
-		for (trigger in ConfigLoader.config.nodes.trigger) {
-			triggerDispatcher.addRoutesFromFast(trigger);
-		}
-
+		//for (trigger in ConfigLoader.config.nodes.trigger) {
+		//	triggerDispatcher.addRoutesFromFast(trigger);
+		//}
+		
 		//Init every modules
 		for (module in ConfigLoader.modules) {
 			var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);

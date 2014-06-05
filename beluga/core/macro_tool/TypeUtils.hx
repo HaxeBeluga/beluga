@@ -54,7 +54,7 @@ class TypeUtils
           }
         }
         default:
-          // Nothing to do 
+          // Nothing to do
       }
     }
     return inner_types;
