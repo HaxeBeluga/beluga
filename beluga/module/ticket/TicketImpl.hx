@@ -3,6 +3,7 @@ package beluga.module.ticket;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.account.model.User;
@@ -17,12 +18,7 @@ import sys.db.Manager;
 // Haxe
 import haxe.xml.Fast;
 
-/**
- * Implementation of the ticket system.
- *
- * @author Valentin & Jeremy
- */
-class TicketImpl extends ModuleImpl implements TicketInternal {
+class TicketImpl extends ModuleImpl implements TicketInternal implements MetadataReader {
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
     private var error: String = "";
@@ -37,6 +33,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     /** Actions trigger **/
 
+    @bTrigger("beluga_ticket_browse")
     public static function _browse(): Void {
         Beluga.getInstance().getModuleInstance(Ticket).browse();
     }
@@ -96,6 +93,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
     }
 
+    @bTrigger("beluga_ticket_create")
     public static function _create(): Void {
         Beluga.getInstance().getModuleInstance(Ticket).create();
     }
@@ -129,6 +127,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
     }
 
+    @bTrigger("beluga_ticket_show")
     public static function _show(args: { id: Int }): Void  {
         Beluga.getInstance().getModuleInstance(Ticket).show(args);
     }
@@ -175,6 +174,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
     }
 
+    @bTrigger("beluga_ticket_reopen")
     public static function _reopen(args: { id: Int }): Void  {
         Beluga.getInstance().getModuleInstance(Ticket).reopen(args);
     }
@@ -196,6 +196,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
     }
 
+    @bTrigger("beluga_ticket_close")
     public static function _close(args: { id: Int }): Void  {
         Beluga.getInstance().getModuleInstance(Ticket).close(args);
     }
@@ -217,6 +218,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
     }
 
+    @bTrigger("beluga_ticket_comment")
     public static function _comment(args: {
         id: Int,
         message: String
@@ -234,8 +236,10 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged()) {
             this.error = "You must be logged to create a ticket !";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
         } else if (args.message.length == 0) {
             this.error = "Your message cannot be empty !";
+            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
         } else {
             var message: Message = new Message();
             message.me_content = args.message;
@@ -243,9 +247,9 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             message.me_date_creation = Date.now();
             message.me_ti_id = args.id;
             message.insert();
+            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
             this.notifyTicketComment(args.id);
         }
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
     }
 
     public function notifyTicketComment(ticket_id: Int) {
@@ -259,6 +263,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [notify]);
     }
 
+    @bTrigger("beluga_ticket_submit")
     public static function _submit(args: {
         title: String,
         message: String,
@@ -308,6 +313,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         }
     }
 
+    @bTrigger("beluga_ticket_admin")
     public static function _admin(): Void {
         Beluga.getInstance().getModuleInstance(Ticket).admin();
     }
@@ -326,6 +332,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
     }
 
+    @bTrigger("beluga_ticket_deletelabel")
     public static function _deletelabel(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Ticket).deletelabel(args);
     }
@@ -348,6 +355,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         }
     }
 
+    @bTrigger("beluga_ticket_addlabel")
     public static function _addlabel(args: { name: String }): Void {
         Beluga.getInstance().getModuleInstance(Ticket).addlabel(args);
     }

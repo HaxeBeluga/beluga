@@ -96,6 +96,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 		return "";
 	}
 
+	@bTrigger("beluga_account_subscribe")
 	public static function _subscribe(args : {
 		login : String,
 		password : String,

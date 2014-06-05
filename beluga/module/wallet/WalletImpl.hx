@@ -3,6 +3,7 @@ package beluga.module.wallet;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.wallet.model.Currency;
@@ -15,7 +16,7 @@ import beluga.module.account.Account;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-class WalletImpl extends ModuleImpl implements WalletInternal {
+class WalletImpl extends ModuleImpl implements WalletInternal implements MetadataReader {
     // two errors for admin: global -> cannot access, local -> fields errors.
     var admin_global_error = "";
     var admin_local_error = "";
@@ -31,6 +32,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     // pages
 
+    @bTrigger("beluga_wallet_create")
     public static function _create(): Void {
         Beluga.getInstance().getModuleInstance(Wallet).create();
     }
@@ -49,6 +51,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
     }
 
+    @bTrigger("beluga_wallet_display")
     public static function _display(): Void {
         Beluga.getInstance().getModuleInstance(Wallet).display();
     }
@@ -115,6 +118,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         };
     }
 
+    @bTrigger("beluga_wallet_create_currency")
     public static function _createCurrency(args: { name: String, rate: String }): Void {
         Beluga.getInstance().getModuleInstance(Wallet).createCurrency(args);
     }
@@ -138,6 +142,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
     }
 
+    @bTrigger("beluga_wallet_remove_currency")
     public static function _removeCurrency(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Wallet).removeCurrency(args);
     }
@@ -160,6 +165,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
     }
 
+    @bTrigger("beluga_wallet_set_site_currency")
     public static function _setSiteCurrency(args: {id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Wallet).setSiteCurrency(args);
     }

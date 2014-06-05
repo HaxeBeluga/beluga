@@ -1,20 +1,22 @@
 package beluga.module.news;
 
+import beluga.core.Beluga;
+import beluga.core.macro.MetadataReader;
+
 import beluga.module.account.Account;
 import beluga.core.module.ModuleImpl;
 import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
-import beluga.core.Beluga;
 
 import haxe.xml.Fast;
 import sys.db.Manager;
 
-class NewsImpl extends ModuleImpl implements NewsInternal {
+class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataReader {
 
 	public function new() {
 		super();
 	}
-	
+
 	override public function loadConfig(data : Fast) {
 	}
 
@@ -121,6 +123,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
 		beluga.triggerDispatcher.dispatch("beluga_news_print", [args]);
 	}
 
+	@bTrigger("beluga_news_delete")
 	public static function _delete(args : {news_id : Int}) {
 		Beluga.getInstance().getModuleInstance(News).delete(args);
 	}
@@ -141,6 +144,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
 		beluga.triggerDispatcher.dispatch("beluga_news_delete_fail", []);
 	}
 
+	@bTrigger("beluga_news_create")
 	public static function _create(args : {title : String, text : String}) {
 		Beluga.getInstance().getModuleInstance(News).create(args);
 	}

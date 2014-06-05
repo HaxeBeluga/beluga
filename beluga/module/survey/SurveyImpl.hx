@@ -1,18 +1,20 @@
 package beluga.module.survey;
 
+import beluga.core.Beluga;
+import beluga.core.module.ModuleImpl;
+import beluga.core.macro.MetadataReader;
+
 import beluga.module.account.model.User;
 import beluga.module.survey.model.Choice;
 import beluga.module.survey.model.Result;
 import beluga.module.survey.SurveyInternal;
 import beluga.module.account.Account;
-import beluga.core.module.ModuleImpl;
 import beluga.module.survey.SurveyData;
 import beluga.module.survey.model.SurveyModel;
-import beluga.core.Beluga;
 
 import haxe.xml.Fast;
 
-class SurveyImpl extends ModuleImpl implements SurveyInternal {
+class SurveyImpl extends ModuleImpl implements SurveyInternal implements MetadataReader {
 
 	public function new() {
 		super();
@@ -30,6 +32,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		beluga.triggerDispatcher.dispatch("beluga_survey_redirect", []);
 	}
 
+	@bTrigger("beluga_survey_delete")
 	public static function _delete(args : {id : Int}) {
 		Beluga.getInstance().getModuleInstance(Survey).delete(args);
 	}
@@ -76,6 +79,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		return m_surveys;
 	}
 
+	@bTrigger("beluga_survey_print")
 	public static function _print(args : {id : Int}) {
 		Beluga.getInstance().getModuleInstance(Survey).print(args);
 	}
@@ -101,6 +105,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		return arr;
 	}
 
+	@bTrigger("beluga_survey_create")
 	public static function _create(args : {
 		title : String,
 		description : String,
@@ -152,6 +157,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 		beluga.triggerDispatcher.dispatch("beluga_survey_create_success", []);
 	}
 	
+	@bTrigger("beluga_survey_vote")
 	public static function _vote(args : {
 		id : Int,
 		option : Int
