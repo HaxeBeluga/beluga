@@ -9,12 +9,13 @@ import beluga.module.account.exception.LoginAlreadyExistException;
 import sys.db.Types;
 import beluga.module.account.ESubscribeFailCause;
 import haxe.Session;
+import beluga.core.macro.MetadataReader;
 
 /**
  * ...
  * @author Masadow
  */
-class AccountImpl extends ModuleImpl implements AccountInternal
+class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader
 {
 
 	private static inline var SESSION_USER = "session_user";
@@ -25,7 +26,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 	}
 
 	override public function loadConfig(data : Fast) {
-		
+
 	}
 
 	public static function _logout() {
@@ -37,7 +38,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
 	}
 
-	@trigger("beluga_account_login")
+	@bTrigger("beluga_account_login")
 	public static function _login(args : {
 		login : String,
 		password : String
@@ -74,7 +75,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		password_conf : String,
 		email : String
 	}) : String {
-		
+
 		if (args.login == "") {
 			return "invalid login";
 		}
@@ -84,14 +85,14 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		if (args.password != args.password_conf) {
 			return "passwords don't match";
 		}
-		
+
 		for (tmp in User.manager.dynamicSearch( {login : args.login} )) {
 			return "login already used";
 		}
 		//TODO place user form validation here
 		//Also validate that the user is unique with something like this
 		//User.manager.dynamicSearch({login : args.login, hashPassword: ahaxe.crypto.Md5.encode(args.password).first() != null;
-	
+
 		return "";
 	}
 
@@ -114,7 +115,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal
 		if (error == "") {
 			var user = new User();
 			user.login = args.login;
-			user.setPassword(args.password);		
+			user.setPassword(args.password);
 			//Save user in db
 			user.emailVerified = true;//TODO AB Change when activation mail sended.
 			user.subscribeDateTime = Date.now();

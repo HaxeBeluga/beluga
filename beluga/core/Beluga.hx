@@ -35,6 +35,7 @@ class Beluga
 	public static function getInstance() : Beluga {
 		if (instance == null) {
 			instance = new Beluga();
+			instance.initialize();
 		}
 		return instance;
 	}
@@ -52,7 +53,7 @@ class Beluga
 			FileSystem.createDirectory(Web.getCwd() + "/temp/sessions");
 		}
 		#end
-		
+
 		ModuleLoader.init();
 		triggerDispatcher = new TriggerDispatcher();
 
@@ -66,7 +67,15 @@ class Beluga
 		//for (trigger in ConfigLoader.config.nodes.trigger) {
 		//	triggerDispatcher.addRoutesFromFast(trigger);
 		//}
-		
+
+		//Create beluga API
+		api = new BelugaApi();
+		api.beluga = this;
+	}
+
+	//For all initialization code that require beluga's instance
+	// -> called once by getInstance
+	private function initialize() {
 		//Init every modules
 		for (module in ConfigLoader.modules) {
 			var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
@@ -74,17 +83,13 @@ class Beluga
 				moduleInstance._loadConfig(this, module);
 			}
 		}
-		
-		//Create beluga API
-		api = new BelugaApi();
-		api.beluga = this;
 	}
-	
+
 	public function dispatch(defaultTrigger : String = "index") {
 		var trigger = Web.getParams().get("trigger");
 		triggerDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
 	}
-	
+
 	public function cleanup() {
 		db.close();
 	}
@@ -93,7 +98,7 @@ class Beluga
 	{
 		return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz), key);
 	}
-	
+
 	public function getDispatchUri() : String
 	{
 		#if php

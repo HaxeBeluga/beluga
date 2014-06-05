@@ -134,7 +134,7 @@ class TriggerDispatcher
 			//Detect if field is static or not
 			var isStatic = field.access.exists(function(access) return access == AStatic);
 			//Get the meta params
-			for (params in field.meta.getValues("blg_trigger")) {
+			for (params in field.meta.getValues("bTrigger")) {
 				for (param in params) {
 					switch (param.expr) {
 						case EConst(CString(trigger)):
@@ -144,7 +144,7 @@ class TriggerDispatcher
 								method : field.name
 							});
 						case _:
-							throw new BelugaException("Error: blg_trigger takes only type String as arguments at " + param.pos);
+							throw new BelugaException("Error: bTrigger takes only type String as arguments at " + param.pos);
 					}
 				}
 			}
