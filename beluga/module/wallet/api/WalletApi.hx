@@ -1,5 +1,8 @@
 package beluga.module.wallet.api;
 
+// Haxe
+import haxe.web.Dispatch;
+
 // Beluga core
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -8,15 +11,11 @@ import beluga.core.BelugaException;
 // Beluga mods
 import beluga.module.wallet.Wallet;
 
-// Haxe
-import haxe.web.Dispatch;
-
 class WalletApi {
     public var beluga : Beluga;
     public var module : Wallet;
 
-    public function new() {
-    }
+    public function new() {}
 
     public function doCreate(): Void {
         beluga.triggerDispatcher.dispatch("beluga_wallet_create", []);

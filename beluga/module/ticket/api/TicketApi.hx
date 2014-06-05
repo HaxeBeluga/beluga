@@ -1,5 +1,8 @@
 package beluga.module.ticket.api;
 
+// Haxe
+import haxe.web.Dispatch;
+
 // Beluga core
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -8,15 +11,11 @@ import beluga.core.BelugaException;
 // Beluga mods
 import beluga.module.ticket.Ticket;
 
-// Haxe
-import haxe.web.Dispatch;
-
 class TicketApi {
     public var beluga : Beluga;
     public var module : Ticket;
 
-    public function new() {
-    }
+    public function new() {}
 
     public function doBrowse(): Void {
         beluga.triggerDispatcher.dispatch("beluga_ticket_browse");
@@ -61,5 +60,4 @@ class TicketApi {
     public function doDefault(): Void {
         trace("Ticket default page");
     }
-
 }

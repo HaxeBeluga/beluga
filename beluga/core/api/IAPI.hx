@@ -8,8 +8,7 @@ import beluga.core.Beluga;
  * @author Masadow
  */
 @:autoBuild(beluga.core.api.APIBuilder.build())
-interface IAPI<Module>
-{
-	public var beluga : Beluga;
-	public var module : Module;
+interface IAPI<Module> {
+    public var beluga : Beluga;
+    public var module : Module;
 }

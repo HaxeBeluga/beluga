@@ -1,90 +1,90 @@
 package beluga.module.notification;
 
-import beluga.module.account.Account;
+import haxe.xml.Fast;
+
 import beluga.core.module.ModuleImpl;
-import beluga.module.notification.model.NotificationModel;
 import beluga.core.Beluga;
 
-import haxe.xml.Fast;
+import beluga.module.account.Account;
+import beluga.module.notification.model.NotificationModel;
 
 class NotificationImpl extends ModuleImpl implements NotificationInternal {
 
-	public function new() {
-		super();
-	}
-	
-	override public function loadConfig(data : Fast) {
-	}
+    public function new() {
+        super();
+    }
 
-	public function getNotifications() : Array<NotificationModel> {
-		var ret = new Array<NotificationModel>();
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+    override public function loadConfig(data : Fast) {}
 
-		if (user != null) {
-			for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id} ))
-				ret.push(tmp);
-		}
-		return ret;
-	}
+    public function getNotifications() : Array<NotificationModel> {
+        var ret = new Array<NotificationModel>();
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-	public static function _print(args : {id : Int}) {
-		Beluga.getInstance().getModuleInstance(Notification).print(args);
-	}
+        if (user != null) {
+            for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id} ))
+                ret.push(tmp);
+        }
+        return ret;
+    }
 
-	public function print(args : {id : Int}) {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+    public static function _print(args : {id : Int}) {
+        Beluga.getInstance().getModuleInstance(Notification).print(args);
+    }
 
-		if (user == null) {
-			beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : null}]);
-			return;
-		}
+    public function print(args : {id : Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-		for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id, id : args.id} )) {
-			tmp.hasBeenRead = true;
-			tmp.update();
-			beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : tmp}]);
-			return;
-		}
-	}
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : null}]);
+            return;
+        }
 
-	@bTrigger("beluga_notification_delete")
-	public static function _delete(args : {id : Int}) {
-		Beluga.getInstance().getModuleInstance(Notification).delete(args);
-	}
+        for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id, id : args.id} )) {
+            tmp.hasBeenRead = true;
+            tmp.update();
+            beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : tmp}]);
+            return;
+        }
+    }
 
-	public function delete(args : {id : Int}) {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+    @bTrigger("beluga_notification_delete")
+    public static function _delete(args : {id : Int}) {
+        Beluga.getInstance().getModuleInstance(Notification).delete(args);
+    }
 
-		if (user == null) {
-			beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
-			return;
-		}
-		for (tmp in NotificationModel.manager.dynamicSearch( {id : args.id, user_id : user.id} )) {
-			tmp.delete();
-			beluga.triggerDispatcher.dispatch("beluga_notif_delete_success", []);
-			return;
-		}
-		beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
-	}
+    public function delete(args : {id : Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-	@bTrigger("beluga_notification_create")
-	public static function _create(args : {title : String, text : String, user_id: Int}) {
-		Beluga.getInstance().getModuleInstance(Notification).create(args);
-	}
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
+            return;
+        }
+        for (tmp in NotificationModel.manager.dynamicSearch( {id : args.id, user_id : user.id} )) {
+            tmp.delete();
+            beluga.triggerDispatcher.dispatch("beluga_notif_delete_success", []);
+            return;
+        }
+        beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
+    }
 
-	public function create(args : {title : String, text : String, user_id: Int}) {
-		if (args.title == "" || args.text == "") {
-			beluga.triggerDispatcher.dispatch("beluga_notif_create_fail", []);
-			return;
-		}
-		var notif = new NotificationModel();
+    @bTrigger("beluga_notification_create")
+    public static function _create(args : {title : String, text : String, user_id: Int}) {
+        Beluga.getInstance().getModuleInstance(Notification).create(args);
+    }
 
-		notif.title = args.title;
-		notif.text = args.text;
-		notif.user_id = args.user_id;
-		notif.hasBeenRead = false;
-		notif.creationDate = Date.now();
-		notif.insert();
-		beluga.triggerDispatcher.dispatch("beluga_notif_create_success", []);
-	}
+    public function create(args : {title : String, text : String, user_id: Int}) {
+        if (args.title == "" || args.text == "") {
+            beluga.triggerDispatcher.dispatch("beluga_notif_create_fail", []);
+            return;
+        }
+        var notif = new NotificationModel();
+
+        notif.title = args.title;
+        notif.text = args.text;
+        notif.user_id = args.user_id;
+        notif.hasBeenRead = false;
+        notif.creationDate = Date.now();
+        notif.insert();
+        beluga.triggerDispatcher.dispatch("beluga_notif_create_success", []);
+    }
 }

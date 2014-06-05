@@ -1,5 +1,9 @@
 package beluga.module.wallet;
 
+// Haxe
+import haxe.xml.Fast;
+import haxe.ds.Option;
+
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
@@ -11,10 +15,6 @@ import beluga.module.wallet.model.SiteCurrency;
 import beluga.module.wallet.model.WalletModel;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
-
-// Haxe
-import haxe.xml.Fast;
-import haxe.ds.Option;
 
 class WalletImpl extends ModuleImpl implements WalletInternal implements MetadataReader {
     // two errors for admin: global -> cannot access, local -> fields errors.

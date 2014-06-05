@@ -1,5 +1,9 @@
 package beluga.module.fileupload;
 
+// Haxe
+import haxe.xml.Fast;
+import sys.io.FileOutput;
+
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
@@ -10,10 +14,6 @@ import beluga.module.account.Account;
 import beluga.module.fileupload.model.File;
 import beluga.module.fileupload.model.Extension;
 
-// Haxe
-import haxe.xml.Fast;
-import sys.io.FileOutput;
-
 #if php
 import php.Web;
 #end
@@ -21,13 +21,11 @@ import php.Web;
 class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements MetadataReader {
     public var error: String = "";
 
-	public function new() {
+    public function new() {
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {
-
-    }
+    override public function loadConfig(data : Fast): Void {}
 
     /** Actions trigger **/
 
