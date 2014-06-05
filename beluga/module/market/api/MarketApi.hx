@@ -1,5 +1,8 @@
 package beluga.module.market.api;
 
+// Haxe
+import haxe.web.Dispatch;
+
 // Beluga core
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -8,15 +11,11 @@ import beluga.core.BelugaException;
 // Beluga mods
 import beluga.module.market.Market;
 
-// Haxe
-import haxe.web.Dispatch;
-
 class MarketApi {
     public var beluga : Beluga;
     public var module : Market;
 
-    public function new() {
-    }
+    public function new() {}
 
     public function doDisplay(): Void {
         beluga.triggerDispatcher.dispatch("beluga_market_display", []);
@@ -41,7 +40,6 @@ class MarketApi {
     public function doCheckoutCart(): Void {
         beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart", []);
     }
-
 
     public function doDefault(): Void {
         trace("Market default page");
