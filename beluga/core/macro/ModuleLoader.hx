@@ -29,12 +29,12 @@ class ModuleLoader
 		}
 		return realClass;
 	}
-	
+
 	macro public static function init() : Expr
 	{
 		ConfigLoader.forceBuild();
 		for (module in ConfigLoader.modules) {
-			
+
 			// Huge constraint :
 			// The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
 			// Only the package is added to the compile unit

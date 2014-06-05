@@ -3,6 +3,7 @@ package beluga.module.market;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.wallet.Wallet;
@@ -15,7 +16,7 @@ import beluga.module.account.model.User;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-class MarketImpl extends ModuleImpl implements MarketInternal {
+class MarketImpl extends ModuleImpl implements MarketInternal implements MetadataReader {
     var error = "";
     var info = "";
     var cart_error = "";
@@ -26,6 +27,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
     // widget functions
 
+    @bTrigger("beluga_market_display")
     public static function _display(): Void {
         Beluga.getInstance().getModuleInstance(Market).display();
     }
@@ -43,6 +45,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         };
     }
 
+    @bTrigger("beluga_market_display_admin")
     public static function _admin(): Void {
         Beluga.getInstance().getModuleInstance(Market).admin();
     }
@@ -53,6 +56,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         return {};
     }
 
+    @bTrigger("beluga_market_display_cart")
     public static function _cart(): Void {
         Beluga.getInstance().getModuleInstance(Market).cart();
     }
@@ -85,6 +89,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         };
     }
 
+    @bTrigger("beluga_market_add_product_to_cart")
     public static function _addProductToCart(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Market).addProductToCart(args);
     }
@@ -123,6 +128,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         }
     }
 
+    @bTrigger("beluga_market_remove_product_in_cart")
     public function _removeProductInCart(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Market).removeProductInCart(args);
     }
@@ -144,6 +150,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         }
     }
 
+    @bTrigger("beluga_market_checkout_cart")
     public static function _checkoutCart(): Void {
         Beluga.getInstance().getModuleInstance(Market).checkoutCart();
     }

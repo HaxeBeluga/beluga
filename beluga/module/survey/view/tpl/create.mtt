@@ -1,17 +1,17 @@
 <div id="mainDiv">
 	<h2>Creation of new survey</h2>
 	<form action="::base_url::::path::create" class="form-horizontal" role="form" method="POST">
-		<div class="field title form-group">
+		<div class="field title form-survey">
 			<label for="title">Title</label>
 			<input name="title" type="text" class="form-control" id="title" placeholder="Title of survey">
 		</div>
-		<div class="form-group">
+		<div class="form-survey">
     		<label for="description">Description</label>
     		<textarea type="text" class="form-control" id="description" name="description"></textarea>
   		</div>
 		<label class="control-label">Choices :</label>
 		<div id="choice">
-			<div class="form-group" id="1">
+			<div class="form-survey" id="1">
 			    <input type="text" class="form-control" id="choices" placeholder="New choice" name="choices">
 			</div>
 		</div>
@@ -28,7 +28,7 @@ function addEntry(){
 	if (nb < 20) {
 		var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + nb + "\">";
 		
-		tmp = "<div class=\"form-group\">" + tmp + "</div>";
+		tmp = "<div class=\"form-survey\">" + tmp + "</div>";
 		$("#choice").append(tmp);
 	}
 }

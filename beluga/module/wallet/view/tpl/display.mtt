@@ -11,14 +11,14 @@
 ::if (has_wallet == 1)::
 <div class="container wallet-display-widget">
     <div class="container-fluid">
-        <h4>Vous n'avez pas encore de porte-feuille !</h4>
-        <a href="::base_url::/beluga/wallet/create" class="btn btn-success wallet-create-submit pull-right">Creer un porte-feuille !</a>
+        <h4>You have no wallet for now !</h4>
+        <a href="::base_url::/beluga/wallet/create" class="btn btn-success wallet-create-submit pull-right">Create a new wallet !</a>
     </div>
 </div>
 ::else::
 <div class="container wallet-display-widget">
     <div class="container-fluid">
-        <h4>Votre porte-feuille ::user.login:: !</h4>
+        <h4>::user.login::'s wallet !</h4>
         <ul class="list-group">
           <li class="list-group-item">::currency_name::
           <button class="btn btn-info btn-xs disabled pull-right">::founds::</button></li>

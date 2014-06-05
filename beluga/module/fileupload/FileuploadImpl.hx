@@ -3,6 +3,7 @@ package beluga.module.fileupload;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.account.Account;
@@ -17,7 +18,7 @@ import sys.io.FileOutput;
 import php.Web;
 #end
 
-class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
+class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements MetadataReader {
     public var error: String = "";
 
 	public function new() {
@@ -30,6 +31,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
 
     /** Actions trigger **/
 
+    @bTrigger("beluga_fileupload_browse")
     public static function _browse(): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).browse();
     }
@@ -83,6 +85,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         return extensions;
     }
 
+    @bTrigger("beluga_fileupload_send")
     public static function _send(): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).send();
     }
@@ -104,8 +107,8 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
                 text: "Your file transfer terminate with success, you can consult your files in the file upload section !",
                 user_id: Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id
             };
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_notify_upload_success", [notif]);
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success", []);
+            beluga.triggerDispatcher.dispatch("beluga_fileupload_notify_upload_success", [notif]);
         }
     }
 
@@ -114,6 +117,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         return {};
     }
 
+    @bTrigger("beluga_fileupload_delete")
     public static function _delete(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).delete(args);
     }
@@ -135,6 +139,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         }
    }
 
+   @bTrigger("beluga_fileupload_admin")
     public static function _admin(): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).admin();
     }
@@ -151,6 +156,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         };
     }
 
+    @bTrigger("beluga_fileupload_addextension")
     public static function _addextension(args: { name: String }): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).addextension(args);
     }
@@ -176,6 +182,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension_success", []);
     }
 
+    @bTrigger("beluga_fileupload_deleteextension")
     public static function _deleteextension(args: { id: Int }): Void {
         Beluga.getInstance().getModuleInstance(Fileupload).deleteextension(args);
     }

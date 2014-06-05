@@ -47,6 +47,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 		}
 	}
 
+	@bTrigger("beluga_notification_delete")
 	public static function _delete(args : {id : Int}) {
 		Beluga.getInstance().getModuleInstance(Notification).delete(args);
 	}
@@ -66,6 +67,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 		beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
 	}
 
+	@bTrigger("beluga_notification_create")
 	public static function _create(args : {title : String, text : String, user_id: Int}) {
 		Beluga.getInstance().getModuleInstance(Notification).create(args);
 	}

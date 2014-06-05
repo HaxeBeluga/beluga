@@ -159,8 +159,6 @@ class ConfigLoader
 
 	macro private static function loadConfig() : Expr
 	{
-		var pos = Context.currentPos();
-
 		//Load configuration
 		builtConfigString = File.getContent(configFilePath);
 		var xml = Xml.parse(builtConfigString);
@@ -170,7 +168,6 @@ class ConfigLoader
 
 		//Parse the configuration file
 		loadModuleConfigurations(new Fast(xml));
-
 		xml = Xml.parse(builtConfigString);
 		clearForTarget(xml, getCompilationTarget());
 		config = new Fast(xml);

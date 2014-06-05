@@ -3,14 +3,14 @@ package beluga.module.forum;
 import haxe.xml.Fast;
 import beluga.core.Beluga;
 import beluga.core.module.ModuleImpl;
+import beluga.core.macro.MetadataReader;
 
 import beluga.module.forum.impl.channel.Display;
 import beluga.module.forum.impl.channel.Logic;
 
 // TODO: create a system of action depending on right / user level. add channel == admin || post message == user, admin
 
-class ForumImpl extends ModuleImpl implements ForumInternal
-{
+class ForumImpl extends ModuleImpl implements ForumInternal implements MetadataReader {
 
   private var key : Null<String> = null;
 
@@ -19,7 +19,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     super();
   }
 
-  override public function loadConfig(data : Fast) 
+  override public function loadConfig(data : Fast)
   {
 
   }
@@ -31,6 +31,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   /**
   * CHANNEL
   */
+  @bTrigger("beluga_forum_channel_display")
   public static function _displayChannel(args : {
     channel_key : String
   }) : Void
@@ -54,6 +55,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   /**
   * ADD CHANNEL
   */
+  @bTrigger("beluga_forum_channel_add_display")
   public static function _displayAddChannel(args : {
     parent_key : String
   }) : Void
@@ -77,6 +79,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   /**
   * MODIFY CHANNEL
   */
+  @bTrigger("beluga_forum_channel_modify_display")
   public static function _displayModifyChannel(args : {
     channel_key : String
   }) : Void
@@ -100,6 +103,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   /**
   * DELETE CHANNEL
   */
+  @bTrigger("beluga_forum_channel_delete_display")
   public static function _displayDeleteChannel(args : {
     channel_key : String
   }) : Void
@@ -128,10 +132,10 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   /**
   * CHANNEL
   */
-
+  @bTrigger("beluga_forum_channel_add")
   public static function _addChannel(args : {
     label : String,
-    parent_key : String 
+    parent_key : String
   }) : Void
   {
     Beluga.getInstance().getModuleInstance(Forum).addChannel(args);
@@ -139,13 +143,14 @@ class ForumImpl extends ModuleImpl implements ForumInternal
 
   public function addChannel(args : {
     label : String,
-    parent_key : String 
+    parent_key : String
   }) : Void
   {
     Logic.add(args);
     beluga.triggerDispatcher.dispatch("beluga_forum_channel_display", [{channel_key : args.parent_key}]);
   }
 
+  @bTrigger("beluga_forum_channel_modify")
   public static function _modifyChannel(args : {
     label : String,
     channel_key : String,
@@ -165,6 +170,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     beluga.triggerDispatcher.dispatch("beluga_forum_channel_display", [{channel_key : args.parent_key}]);
   }
 
+  @bTrigger("beluga_forum_channel_delete")
   public static function _deleteChannel(args : {
     channel_key : String,
     parent_key : String
@@ -191,7 +197,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     content : String,
     channel_key : String
   }) : Void
-  { 
+  {
     Beluga.getInstance().getModuleInstance(Forum).addMessage(args);
   }
 
@@ -201,7 +207,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     channel_key : String
   }) : Void
   {
-    
+
   }
 
   public static function _modifyMessage(args : {
@@ -219,7 +225,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     message_key : String
   }) : Void
   {
-    
+
   }
 
   public static function _deleteMessage(args : {
@@ -233,7 +239,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     message_key : String
   }) : Void
   {
-    
+
   }
 
   public static function _moveMessage(args : {
@@ -249,7 +255,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     channel_key : String
   }) : Void
   {
-    
+
   }
 
   /**
@@ -269,7 +275,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     group_key : String
   }) : Void
   {
-    
+
   }
 
   public static function _removeUserFromGroup(args : {
@@ -285,7 +291,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     group_key : String
   }) : Void
   {
-    
+
   }
 
   public static function _addGroupToChannel(args : {
@@ -301,7 +307,7 @@ class ForumImpl extends ModuleImpl implements ForumInternal
     channel_key : String
   }) : Void
   {
-    
+
   }
 
   public static function _removeGroupFromChannel(args : {
@@ -311,12 +317,12 @@ class ForumImpl extends ModuleImpl implements ForumInternal
   {
     Beluga.getInstance().getModuleInstance(Forum).removeGroupFromChannel(args);
   }
-  
+
   public function removeGroupFromChannel(args : {
     group_key : String,
     channel_key: String
   }) : Void
   {
-    
+
   }
 }
