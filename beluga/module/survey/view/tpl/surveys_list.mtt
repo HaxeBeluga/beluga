@@ -1,5 +1,5 @@
 <div>
-	<h1>Surveys list for <b>::user.login::</b> user</h1><br/>
+	<h1>Surveys list for <b>::if user::::user.login::::end::</b> user</h1><br/>
 	::if (error != "")::
 	<div class="alert alert-danger">::error::</div>
 	::end::
