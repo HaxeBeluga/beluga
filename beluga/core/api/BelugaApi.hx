@@ -1,31 +1,27 @@
 package beluga.core.api;
 
 import haxe.web.Dispatch;
-import beluga.core.macro.ModuleLoader;
 import haxe.Session;
 
-class BelugaApi implements IAPI<String>
-{
-	public var beluga : Beluga;
-	public var module : String;
-	
-	private function handleSessionPath()
-	{
+import beluga.core.macro.ModuleLoader;
 
-	}
+class BelugaApi implements IAPI<String> {
+    public var beluga : Beluga;
+    public var module : String;
 
-	public function new() {
-	}
+    private function handleSessionPath() {}
 
-	//Handle url like www.beluga.fr?trigger=login
-	public function doDefault(d : Dispatch) {
-		Sys.print("Welcome !");
-	}
-	
-	/*
-	 * Modules API are generated like:
-		 * public function doModule(d : Dispatch) {
-			* d.dispatch(new ModuleApi(beluga));
-		 * }
-	 */
+    public function new() {}
+
+    //Handle url like www.beluga.fr?trigger=login
+    public function doDefault(d : Dispatch) {
+        Sys.print("Welcome !");
+    }
+
+    /*
+     * Modules API are generated like:
+         * public function doModule(d : Dispatch) {
+            * d.dispatch(new ModuleApi(beluga));
+         * }
+     */
 }

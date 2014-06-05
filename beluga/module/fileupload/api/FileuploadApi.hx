@@ -1,5 +1,8 @@
 package beluga.module.fileupload.api;
 
+// Haxe
+import haxe.web.Dispatch;
+
 // Beluga core
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -8,11 +11,7 @@ import beluga.core.BelugaException;
 // Beluga mods
 import beluga.module.fileupload.Fileupload;
 
-// Haxe
-import haxe.web.Dispatch;
-
-class FileuploadApi
-{
+class FileuploadApi {
     public var beluga : Beluga;
     public var module : Fileupload;
 

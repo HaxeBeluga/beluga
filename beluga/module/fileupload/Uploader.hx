@@ -1,7 +1,9 @@
 package beluga.module.fileupload;
+
 import sys.io.FileOutput;
 import sys.io.File;
 import haxe.io.Bytes;
+
 import beluga.module.fileupload.model.Extension;
 
 #if php

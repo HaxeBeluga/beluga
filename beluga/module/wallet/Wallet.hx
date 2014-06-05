@@ -1,5 +1,8 @@
 package beluga.module.wallet;
 
+// haxe
+import haxe.ds.Option;
+
 // beluga core
 import beluga.core.module.Module;
 
@@ -7,9 +10,6 @@ import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.model.WalletModel;
-
-// haxe
-import haxe.ds.Option;
 
 interface Wallet extends Module {
     // widget functions

@@ -1,5 +1,8 @@
 package beluga.module.ticket;
 
+// Haxe
+import haxe.xml.Fast;
+
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
@@ -15,9 +18,6 @@ import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
 import sys.db.Manager;
 
-// Haxe
-import haxe.xml.Fast;
-
 class TicketImpl extends ModuleImpl implements TicketInternal implements MetadataReader {
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
@@ -27,9 +27,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {
-
-    }
+    override public function loadConfig(data : Fast): Void {}
 
     /** Actions trigger **/
 
