@@ -1,0 +1,13 @@
+<section>
+::walletWidget::
+::if (has_wallet == 1)::
+<div class="container wallet-display-widget" style="padding-top:10px;">
+    <div class="container-fluid">
+          <li class="list-group-item">Acheter des ::site_currency:: !
+          <a href="::base_url::/walletDemo/buyCurrency" class="btn btn-info btn-xs pull-right">Acheter 10</a></li>
+        </ul>
+    </div>
+</div>
+::end::
+::walletAdminWidget::
+</section>

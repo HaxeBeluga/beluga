@@ -1,0 +1,6 @@
+<!-- Beluga general config -->
+
+<include path="config/database.xml" />
+<include path="config/trigger.xml" />
+<include path="config/url.xml" />
+<include path="config/module.xml" />

@@ -1,0 +1,202 @@
+<section style="margin-bottom:50px;">
+    ::if (success)::
+    ::if (success != "")::
+        <div class="alert alert-success">::success::</div>
+    ::end::
+    ::end::
+    ::if (error)::
+    ::if (error != "")::
+    <div class="alert alert-danger">::error::</div>
+    ::end::
+    ::end::
+    <div class="jumbotron" style="background-color: rgba(240, 246, 202, 1);">
+        <h1>Bienvenue sur Beluga demo !</h1>
+        <p>Ceci est la page d'accueil pour la démonstration du framework haxe Beluga, n'hésitez pas à tester les différents modules disponibles avec le framework en cliquant sur les liens ci-dessous !</p>
+        <p><a href="https://HaxeBeluga.github.io" class="btn btn-success btn-lg" role="button">Accéder au site de Beluga</a>
+        <a href="https://github.com/HaxeBeluga/Beluga" class="btn btn-warning btn-lg" role="button">Voir sur Github</a></p>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- forum -->
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="::base_url::/img/forum.png" >
+                    <div class="caption">
+                        <h3>Module de Forum</h3>
+                        <p>Accéder à la page de présentation du forum, ici vous pourrez créer de nouveaux sujets, répondre a des files de
+                        discussion ou bien simplement consulter les messages existants. Un compte est requis afin de poster un message.</p>
+                        <p><a href="::base_url::/forumDemo/displayChannelPage?parent_key=" class="btn btn-success" role="button">Essayer le forum !</a></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Ticket -->
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="::base_url::/img/ticket.png" >
+                    <div class="caption">
+                        <h3>Module de Ticket</h3>
+                        <p>Intégrez un système de ticket à votre site afin de discuter simplement avec vos utilisateurs de différents problèmes, bugs ou améliorations liés à votre site !</p>
+                        <p><a href="::base_url::/ticketDemo/browsePage" class="btn btn-success" role="button">Essayer le système de ticket !</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="::base_url::/img/account.png" >
+                    <div class="caption">
+                        <h3>Module de Compte</h3>
+                        <p>Le module de compte vous permet d'un point de vue utilisateur d'accéder à toutes vos informations personnelles,
+                        et d'un point de vue développeur de gérer l'identification unifiée de vos utilisateurs sur vos différents services de manière très simple !</p>
+                        <p><a href="::base_url::/accountDemo/printInfo" class="btn btn-success" role="button">Explorer le compte !</a></p>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <!-- Survey -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="::base_url::/img/survey.png" >
+                        <div class="caption">
+                            <h3>Module de Sondage</h3>
+                            <p>Ce puissant module vous permet de créer très facilement des sondages à incorporer directement dans vos jeux !
+                            Tout est configurable, du nom du sondage à l'utilisateur y ayant accès en passant par le nombre de choix possibles,
+                            et la durée de validité !</p>
+                            <p><a href="::base_url::/surveyDemo/default" class="btn btn-success" role="button">Créer des sondages !</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- FileUpload -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="::base_url::/img/file_upload.png" >
+                        <div class="caption">
+                            <h3>Module de de téléchargement de fichier</h3>
+                            <p>Grâce à ce module vous donnez la possibilité à vos utilisateurs de sauvegarder facilement leurs fichiers sur vos serveurs !</p>
+                            <p><a href="::base_url::/fileUploadDemo/" class="btn btn-success" role="button">Uploader vos fichiers !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ticket admin -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="::base_url::/img/notif.png" >
+                        <div class="caption">
+                            <h3>Consultation des notification</h3>
+                            <p>Cette page vous permet de consulter toutes les notifications reçues par un utilisateur !</p>
+                            <p><a href="::base_url::/notificationDemo" class="btn btn-success" role="button">Voir les notifications !</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- ticket admin -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="::base_url::/img/labels_admin.png" >
+                        <div class="caption">
+                            <h3>Administration des labels de ticket</h3>
+                            <p>Exemple simple d'un widget fourni avec le module de ticket. Celui-ci permet la création ou suppression des labels disponibles dans le module de ticket.</p>
+                            <p><a href="::base_url::/ticketDemo/adminPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FileUpload admin -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="::base_url::/img/extension_admin.png" >
+                        <div class="caption">
+                            <h3>Administration des extensions de fichier</h3>
+                            <p>Exemple simple d'un widget fourni avec le module de téléchargement de fichier. Celui-ci est destiné à être intégré dans votre backoffice et vous permet de gérer les extensions de vos fichiers.</p>
+                            <p><a href="::base_url::/fileUploadDemo/adminPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News system -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Systeme de news</h3>
+                            <p>Ce module permet de gerer un systeme d'articles ainsi que la possibilite de les commenter.</p>
+                            <p><a href="::base_url::/newsDemo" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <!-- wallet module -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Module de porte-feuille</h3>
+                            <p>Cette page permet la demonstration du module de porte-feuille aussi bien du cote administration que de la consultation du porte-monnaie.</p>
+                            <p><a href="::base_url::/walletDemo/demoPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mail module -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Module d'envoi d'email</h3>
+                            <p>Ce module permet d'envoyer des emails.</p>
+                            <p><a href="::base_url::/mailDemo" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market module  -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Demonstration du marche</h3>
+                            <p>Demonstration de la page d'affichage des articles.</p>
+                            <p><a href="::base_url::/marketDemo/demoPage" class="btn btn-success" role="button">Depenser votre argent !</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <!-- Market module admin -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Module de d'administration du marche</h3>
+                            <p>Cette page propose la demonstration de la partie administration du module de marche, vous pouvez rajouter de nouveaux articles, les editer ou encore les supprimer depuis cette page !</p>
+                            <p><a href="::base_url::/marketDemo/adminPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market module cart -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Demonstration du panier</h3>
+                            <p>Cette page propose un affichage de la vue panier associee au module de marche.</p>
+                            <p><a href="::base_url::/marketDemo/cartPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    <!-- </div> -->
+</section>
+<a href="https://github.com/haxebeluga/beluga"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>

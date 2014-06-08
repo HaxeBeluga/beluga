@@ -1,0 +1,4 @@
+<url>
+	<base value="" if="php" />
+	<base value="" if="neko" />
+</url>

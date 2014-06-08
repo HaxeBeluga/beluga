@@ -1,0 +1,17 @@
+-cp src
+-lib beluga
+-lib session
+-lib tink_macro
+-php bin/php
+-main Main
+-D target=php
+
+--next
+
+-cp src
+-lib beluga
+-lib session
+-lib tink_macro
+-neko bin/neko/index.n
+-main Main
+-D target=neko
