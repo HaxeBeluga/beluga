@@ -1,4 +1,4 @@
-package modules.ticket_demo;
+package modules.ticket_test;
 
 // Beluga
 import beluga.core.Beluga;
@@ -7,7 +7,7 @@ import beluga.core.macro.MetadataReader;
 import beluga.module.ticket.Ticket;
 import beluga.module.notification.Notification;
 
-// BelugaDemo
+// BelugaTest
 import main_view.Renderer;
 
 // haxe web
@@ -21,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class TicketDemo implements MetadataReader {
+class TicketTest implements MetadataReader {
     public var beluga(default, null) : Beluga;
     public var ticket(default, null) : Ticket;
 
@@ -32,7 +32,7 @@ class TicketDemo implements MetadataReader {
 
     @bTrigger("beluga_ticket_show_browse")
     public static function _doBrowsePage() {
-       new TicketDemo(Beluga.getInstance()).doBrowsePage();
+       new TicketTest(Beluga.getInstance()).doBrowsePage();
     }
 
     public function doBrowsePage() {
@@ -47,7 +47,7 @@ class TicketDemo implements MetadataReader {
 
     @bTrigger("beluga_ticket_show_create")
     public static function _doCreatePage() {
-       new TicketDemo(Beluga.getInstance()).doCreatePage();
+       new TicketTest(Beluga.getInstance()).doCreatePage();
     }
 
     public function doCreatePage() {
@@ -62,7 +62,7 @@ class TicketDemo implements MetadataReader {
 
     @bTrigger("beluga_ticket_show_show")
     public static function _doShowPage() {
-       new TicketDemo(Beluga.getInstance()).doShowPage();
+       new TicketTest(Beluga.getInstance()).doShowPage();
     }
 
     public function doShowPage() {
@@ -90,7 +90,7 @@ class TicketDemo implements MetadataReader {
               "beluga_ticket_addlabel_fail",
               "beluga_ticket_deletelabel_fail")
     public static function _doAdminPage() {
-       new TicketDemo(Beluga.getInstance()).doAdminPage();
+       new TicketTest(Beluga.getInstance()).doAdminPage();
     }
 
     public function doAdminPage() {

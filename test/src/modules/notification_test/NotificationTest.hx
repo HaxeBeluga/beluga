@@ -1,4 +1,4 @@
-package modules.notification_demo;
+package modules.notification_test;
 
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -22,7 +22,7 @@ import neko.Web;
  * @author Guillaume Gomez
  */
 
-class NotificationDemo implements MetadataReader
+class NotificationTest implements MetadataReader
 {
 	public var beluga(default, null) : Beluga;
 	public var notif(default, null) : Notification;
@@ -38,7 +38,7 @@ class NotificationDemo implements MetadataReader
 
 	@bTrigger("beluga_notif_default")
 	public static function _doDefault() {
-		new NotificationDemo(Beluga.getInstance()).doDefault();
+		new NotificationTest(Beluga.getInstance()).doDefault();
 	}
 
 	public function doDefault() {
@@ -61,7 +61,7 @@ class NotificationDemo implements MetadataReader
 
 	@bTrigger("beluga_notif_printx")
 	public static function _doPrint(args : {notif : NotificationModel}) {
-		new NotificationDemo(Beluga.getInstance()).doPrint(args);
+		new NotificationTest(Beluga.getInstance()).doPrint(args);
 	}
 
 	public function doPrint(args : {notif : NotificationModel}) {
@@ -88,7 +88,7 @@ class NotificationDemo implements MetadataReader
 
 	@bTrigger("beluga_notif_create_fail")
 	public static function _doCreateFail() {
-		new NotificationDemo(Beluga.getInstance()).doCreateFail();
+		new NotificationTest(Beluga.getInstance()).doCreateFail();
 	}
 
 	public function doCreateFail() {
@@ -98,7 +98,7 @@ class NotificationDemo implements MetadataReader
 
 	@bTrigger("beluga_notif_create_success")
 	public static function _doCreateSuccess() {
-		new NotificationDemo(Beluga.getInstance()).doCreateSuccess();
+		new NotificationTest(Beluga.getInstance()).doCreateSuccess();
 	}
 
 	public function doCreateSuccess() {
@@ -108,7 +108,7 @@ class NotificationDemo implements MetadataReader
 
 	@bTrigger("beluga_notif_delete_success")
 	public static function _doDeleteSuccess() {
-		new NotificationDemo(Beluga.getInstance()).doDeleteSuccess();
+		new NotificationTest(Beluga.getInstance()).doDeleteSuccess();
 	}
 
 	public function doDeleteSuccess() {
@@ -118,7 +118,7 @@ class NotificationDemo implements MetadataReader
 
 	@bTrigger("beluga_notif_delete_fail")
 	public static function _doDeleteFail() {
-		new NotificationDemo(Beluga.getInstance()).doDeleteFail();
+		new NotificationTest(Beluga.getInstance()).doDeleteFail();
 	}
 
 	public function doDeleteFail() {

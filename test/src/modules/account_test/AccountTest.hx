@@ -1,4 +1,4 @@
-package modules.account_demo;
+package modules.account_test;
 
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -18,7 +18,7 @@ import php.Web;
  * @author Masadow
  */
 
-class AccountDemo implements MetadataReader
+class AccountTest implements MetadataReader
 {
 
     public var beluga(default, null) : Beluga;
@@ -34,7 +34,7 @@ class AccountDemo implements MetadataReader
      */
     @bTrigger("beluga_account_login_success")
     public static function _loginSuccess(u:User) {
-        new AccountDemo(Beluga.getInstance()).loginSuccess();
+        new AccountTest(Beluga.getInstance()).loginSuccess();
     }
 
     public function loginSuccess() {
@@ -44,7 +44,7 @@ class AccountDemo implements MetadataReader
 
     @bTrigger("beluga_account_login_fail")
     public static function _loginFail() {
-        new AccountDemo(Beluga.getInstance()).loginFail();
+        new AccountTest(Beluga.getInstance()).loginFail();
     }
 
     public function loginFail() {
@@ -59,7 +59,7 @@ class AccountDemo implements MetadataReader
 
     @bTrigger("beluga_account_logout")
     public static function _logout() {
-        new AccountDemo(Beluga.getInstance()).logout();
+        new AccountTest(Beluga.getInstance()).logout();
     }
 
     public function logout() {
@@ -72,7 +72,7 @@ class AccountDemo implements MetadataReader
      */
     @bTrigger("beluga_account_subscribe_success")
     public static function _subscribeSuccess(user : User) {
-        new AccountDemo(Beluga.getInstance()).subscribeSuccess(user);
+        new AccountTest(Beluga.getInstance()).subscribeSuccess(user);
     }
 
     public function subscribeSuccess(user : User) {
@@ -82,7 +82,7 @@ class AccountDemo implements MetadataReader
 
     @bTrigger("beluga_account_subscribe_fail")
     public static function _subscribeFail(error : String) {
-        new AccountDemo(Beluga.getInstance()).subscribeFail(error);
+        new AccountTest(Beluga.getInstance()).subscribeFail(error);
     }
 
     public function subscribeFail(error : String) {
@@ -97,7 +97,7 @@ class AccountDemo implements MetadataReader
 
     @bTrigger("beluga_account_show_user")
     public function _printCustomUserInfo(args: { id: Int }) {
-        new AccountDemo(Beluga.getInstance()).printCustomUserInfo(args);
+        new AccountTest(Beluga.getInstance()).printCustomUserInfo(args);
     }
 
     @bTrigger("beluga_account_show_user")
@@ -110,7 +110,7 @@ class AccountDemo implements MetadataReader
             return;
         }
         var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountDemo/"};
+        subscribeWidget.context = {user : user, path : "/accountTest/"};
 
         var html = Renderer.renderDefault("page_subscribe", "Information", {
             subscribeWidget: subscribeWidget.render()

@@ -1,4 +1,4 @@
-package modules.market_demo;
+package modules.market_test;
 
 // Beluga
 import beluga.core.Beluga;
@@ -7,7 +7,7 @@ import beluga.core.macro.MetadataReader;
 import beluga.module.market.Market;
 import beluga.module.account.Account;
 
-// BelugaDemo
+// BelugaTest
 import main_view.Renderer;
 
 // haxe web
@@ -21,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class MarketDemo implements MetadataReader {
+class MarketTest implements MetadataReader {
     public var beluga(default, null) : Beluga;
     public var market(default, null) : Market;
 
@@ -32,11 +32,11 @@ class MarketDemo implements MetadataReader {
 
     @bTrigger("beluga_market_add_product_to_cart_success",
               "beluga_market_add_product_to_cart_fail")
-    public static function _doDemoPage() {
-       new MarketDemo(Beluga.getInstance()).doDemoPage();
+    public static function _doTestPage() {
+       new MarketTest(Beluga.getInstance()).doTestPage();
     }
 
-    public function doDemoPage() {
+    public function doTestPage() {
         var marketWidget = this.market.getWidget("display");
         marketWidget.context = this.market.getDisplayContext();
 
@@ -60,7 +60,7 @@ class MarketDemo implements MetadataReader {
               "beluga_market_remove_product_in_cart_success",
               "beluga_market_checkout_cart_fail")
     public static function _doCartPage() {
-       new MarketDemo(Beluga.getInstance()).doCartPage();
+       new MarketTest(Beluga.getInstance()).doCartPage();
     }
 
     public function doCartPage() {
@@ -75,13 +75,13 @@ class MarketDemo implements MetadataReader {
 
     @bTrigger("beluga_market_checkout_cart_success")
     public static function _doCheckoutSuccess() {
-        new MarketDemo(Beluga.getInstance()).doCartPage();
+        new MarketTest(Beluga.getInstance()).doCartPage();
     }
 
     public function doDefault(d : Dispatch) {
         Web.setHeader("Content-Type", "text/plain");
         Sys.println("No action available for: " + d.parts[0]);
         Sys.println("Available actions are:");
-        Sys.println("demoPage");
+        Sys.println("TestPage");
     }
 }

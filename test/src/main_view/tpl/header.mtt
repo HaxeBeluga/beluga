@@ -14,43 +14,43 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        
-		<!-- Account -->  
+
+		<!-- Account -->
 		<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="::base_url::/accountDemo/subscribePage">Inscription</a></li>
+            <li><a href="::base_url::/accountTest/subscribePage">Inscription</a></li>
             ::if (user)::
-            <li><a href="::base_url::/accountDemo/logout">Déconnexion</a></li>
+            <li><a href="::base_url::/accountTest/logout">Déconnexion</a></li>
             ::else::
-            <li><a href="::base_url::/accountDemo/loginPage">Authentification</a></li>
+            <li><a href="::base_url::/accountTest/loginPage">Authentification</a></li>
             ::end::
           </ul>
         </li>
-		
-		<!-- Ticket -->  
+
+		<!-- Ticket -->
 		<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ticket<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="::base_url::/ticketDemo/browsePage">Browse</a></li>
-            <li><a href="::base_url::/ticketDemo/createPage">Create</a></li>
-            <li><a href="::base_url::/ticketDemo/showPage">Show</a></li>
+            <li><a href="::base_url::/ticketTest/browsePage">Browse</a></li>
+            <li><a href="::base_url::/ticketTest/createPage">Create</a></li>
+            <li><a href="::base_url::/ticketTest/showPage">Show</a></li>
           </ul>
         </li>
 
 		<!-- Survey -->
 		<li class="dropdown">
-        <a href="::base_url::/surveyDemo" class="dropdown-toggle" data-toggle="dropdown">Survey<b class="caret"></b></a>
+        <a href="::base_url::/surveyTest" class="dropdown-toggle" data-toggle="dropdown">Survey<b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="::base_url::/surveyDemo/">Main</a></li>
+            <li><a href="::base_url::/surveyTest/">Main</a></li>
         </ul>
     </li>
 
     <!-- Notificiation -->
     <li class="dropdown">
-        <a href="::base_url::/notificationDemo" class="dropdown-toggle" data-toggle="dropdown">Notifications<b class="caret"></b></a>
+        <a href="::base_url::/notificationTest" class="dropdown-toggle" data-toggle="dropdown">Notifications<b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="::base_url::/notificationDemo/">Notifications center</a></li>
+            <li><a href="::base_url::/notificationTest/">Notifications center</a></li>
         </ul>
     </li>
 
@@ -58,7 +58,7 @@
       </ul>
       <ul class="nav navbar-nav">
         <li>
-          <a href="::base_url::/accountDemo/printInfo">::login::</a>
+          <a href="::base_url::/accountTest/printInfo">::login::</a>
         </li>
       </ul>
       <form class="navbar-form navbar-right" role="search">

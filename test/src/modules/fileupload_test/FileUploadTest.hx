@@ -1,4 +1,4 @@
-package modules.fileupload_demo;
+package modules.fileupload_test;
 
 // Beluga
 import beluga.core.Beluga;
@@ -8,7 +8,7 @@ import beluga.module.fileupload.Fileupload;
 import beluga.module.account.Account;
 import beluga.module.notification.Notification;
 
-// BelugaDemo
+// BelugaTest
 import main_view.Renderer;
 
 // haxe web
@@ -20,7 +20,7 @@ import haxe.Resource;
 import php.Web;
 #end
 
-class FileUploadDemo implements MetadataReader {
+class FileUploadTest implements MetadataReader {
     public var beluga(default, null) : Beluga;
     public var file_upload(default, null) : Fileupload;
 
@@ -31,7 +31,7 @@ class FileUploadDemo implements MetadataReader {
 
     // @bTrigger("beluga_fileupload_show_browse")
     public static function _doBrowsePage() {
-       new FileUploadDemo(Beluga.getInstance()).doBrowsePage();
+       new FileUploadTest(Beluga.getInstance()).doBrowsePage();
     }
 
     public function doBrowsePage() {
@@ -46,7 +46,7 @@ class FileUploadDemo implements MetadataReader {
     }
 
     public static function _doSendPage() {
-       new FileUploadDemo(Beluga.getInstance()).doSendPage();
+       new FileUploadTest(Beluga.getInstance()).doSendPage();
     }
 
     public function doSendPage() {
@@ -67,7 +67,7 @@ class FileUploadDemo implements MetadataReader {
 
     @bTrigger("beluga_fileupload_delete_fail")
     public static function _doFailRemovePage(args: { reason: String }) {
-        new FileUploadDemo(Beluga.getInstance()).doFailRemovePage(args);
+        new FileUploadTest(Beluga.getInstance()).doFailRemovePage(args);
     }
 
     public function doFailRemovePage(args: { reason: String}) {
@@ -84,7 +84,7 @@ class FileUploadDemo implements MetadataReader {
 
     @bTrigger("beluga_fileupload_delete_success")
     public static function _doAllPage() {
-        new FileUploadDemo(Beluga.getInstance()).doAllPage();
+        new FileUploadTest(Beluga.getInstance()).doAllPage();
     }
 
     public function doAllPage() {
@@ -108,7 +108,7 @@ class FileUploadDemo implements MetadataReader {
 
 
     public static function _doDefault() {
-        new FileUploadDemo(Beluga.getInstance()).doDefault();
+        new FileUploadTest(Beluga.getInstance()).doDefault();
     }
 
     public function doDefault() {
@@ -133,7 +133,7 @@ class FileUploadDemo implements MetadataReader {
     @bTrigger("beluga_fileupload_deleteextension_success",
               "beluga_fileupload_addextension_success")
     public static function _doAdminPage() {
-       new FileUploadDemo(Beluga.getInstance()).doAdminPage();
+       new FileUploadTest(Beluga.getInstance()).doAdminPage();
     }
 
     public function doAdminPage() {
@@ -156,7 +156,7 @@ class FileUploadDemo implements MetadataReader {
     // @bTrigger("beluga_fileupload_deleteextension_fail",
     //           "beluga_fileupload_addextension_fail")
     public static function _doAdminPageFail() {
-       new FileUploadDemo(Beluga.getInstance()).doAdminPageFail();
+       new FileUploadTest(Beluga.getInstance()).doAdminPageFail();
     }
 
     public function doAdminPageFail() {
@@ -178,7 +178,7 @@ class FileUploadDemo implements MetadataReader {
 
     @bTrigger("beluga_fileupload_upload_fail")
     public static function _doFailUploadPage(args: { reason: String }) {
-       new FileUploadDemo(Beluga.getInstance()).doFailUploadPage(args);
+       new FileUploadTest(Beluga.getInstance()).doFailUploadPage(args);
     }
 
     public function doFailUploadPage(args: { reason: String }) {

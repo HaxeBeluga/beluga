@@ -32,7 +32,7 @@ class Assets
 				File.copy(path, dest + file);
 		}
 	}
-	
+
 	private static function deepDelete(src : String)
 	{
 		for (file in FileSystem.readDirectory(src))
@@ -47,12 +47,12 @@ class Assets
 		}
 		FileSystem.deleteDirectory(src);
 	}
-	
+
 	macro public static function build() : Expr
 	{
 		var dest = Compiler.getOutput();
 		var src = "assets/";
-		
+
 		//Remove file from output if neko
 		if (dest.endsWith(".n"))
 			dest = dest.substr(0, dest.lastIndexOf("/"));
@@ -86,41 +86,41 @@ class Assets
 		Context.addResource("template_default_header", File.getBytes("src/main_view/tpl/header.mtt"));
 		Context.addResource("template_default_footer", File.getBytes("src/main_view/tpl/footer.mtt"));
 
-		//#----AccountDemo Pages----#
-		Context.addResource("page_accueil", File.getBytes("src/modules/account_demo/tpl/accueil.mtt"));
-		Context.addResource("page_subscribe", File.getBytes("src/modules/account_demo/tpl/subscribe.mtt"));
-		Context.addResource("page_login", File.getBytes("src/modules/account_demo/tpl/login.mtt"));
+		//#----AccountTest Pages----#
+		Context.addResource("page_accueil", File.getBytes("src/modules/account_test/tpl/accueil.mtt"));
+		Context.addResource("page_subscribe", File.getBytes("src/modules/account_test/tpl/subscribe.mtt"));
+		Context.addResource("page_login", File.getBytes("src/modules/account_test/tpl/login.mtt"));
 
-		//#----TicketDemo Pages----#
-		Context.addResource("page_ticket_widget", File.getBytes("src/modules/ticket_demo/tpl/ticket_widget.mtt"));
+		//#----TicketTest Pages----#
+		Context.addResource("page_ticket_widget", File.getBytes("src/modules/ticket_test/tpl/ticket_widget.mtt"));
 
-		//#----SurveyDemo Pages----#
-		Context.addResource("page_survey", File.getBytes("src/modules/survey_demo/tpl/survey_page.mtt"));
+		//#----SurveyTest Pages----#
+		Context.addResource("page_survey", File.getBytes("src/modules/survey_test/tpl/survey_page.mtt"));
 
-		//#----FileUploadDemo Pages----#
-		Context.addResource("page_fileupload_widget", File.getBytes("src/modules/fileupload_demo/tpl/fileupload_widget.mtt"));
+		//#----FileUploadTest Pages----#
+		Context.addResource("page_fileupload_widget", File.getBytes("src/modules/fileupload_test/tpl/fileupload_widget.mtt"));
 
-		//#----NotificationDemo Pages----#
-		Context.addResource("page_notification", File.getBytes("src/modules/notification_demo/tpl/notification_page.mtt"));
+		//#----NotificationTest Pages----#
+		Context.addResource("page_notification", File.getBytes("src/modules/notification_test/tpl/notification_page.mtt"));
 
-		//#----ForumDemo Pages----#
-		Context.addResource("page_forum_widget", File.getBytes("src/modules/forum_demo/tpl/forum_widget.mtt"));
+		//#----ForumTest Pages----#
+		Context.addResource("page_forum_widget", File.getBytes("src/modules/forum_test/tpl/forum_widget.mtt"));
 
-		//#----NewsDemo Pages----#
-		Context.addResource("page_news", File.getBytes("src/modules/news_demo/tpl/news_page.mtt"));
+		//#----NewsTest Pages----#
+		Context.addResource("page_news", File.getBytes("src/modules/news_test/tpl/news_page.mtt"));
 
-		//#----WalletDemo Pages----#
-		Context.addResource("page_wallet_widget", File.getBytes("src/modules/wallet_demo/tpl/wallet_widget.mtt"));
+		//#----WalletTest Pages----#
+		Context.addResource("page_wallet_widget", File.getBytes("src/modules/wallet_test/tpl/wallet_widget.mtt"));
 
 
-		//#----MailDemo Pages----#
-		Context.addResource("page_mail", File.getBytes("src/modules/mail_demo/tpl/mail_page.mtt"));
+		//#----MailTest Pages----#
+		Context.addResource("page_mail", File.getBytes("src/modules/mail_test/tpl/mail_page.mtt"));
 
-		//#----WalletDemo Pages----#
-		Context.addResource("page_market_widget", File.getBytes("src/modules/market_demo/tpl/market_widget.mtt"));
-		Context.addResource("page_market_admin_widget", File.getBytes("src/modules/market_demo/tpl/market_admin_widget.mtt"));
+		//#----WalletTest Pages----#
+		Context.addResource("page_market_widget", File.getBytes("src/modules/market_test/tpl/market_widget.mtt"));
+		Context.addResource("page_market_admin_widget", File.getBytes("src/modules/market_test/tpl/market_admin_widget.mtt"));
 
 		return macro "Done";
 	}
-	
+
 }

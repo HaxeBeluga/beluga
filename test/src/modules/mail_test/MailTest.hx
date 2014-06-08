@@ -1,4 +1,4 @@
-package modules.mail_demo;
+package modules.mail_test;
 
 // Beluga
 import beluga.core.Beluga;
@@ -7,7 +7,7 @@ import beluga.core.macro.MetadataReader;
 import beluga.module.mail.Mail;
 import beluga.module.account.Account;
 
-// BelugaDemo
+// BelugaTest
 import main_view.Renderer;
 
 // haxe web
@@ -19,7 +19,7 @@ import haxe.Resource;
 import php.Web;
 #end
 
-class MailDemo implements MetadataReader {
+class MailTest implements MetadataReader {
     public var beluga(default, null) : Beluga;
     public var mail(default, null) : Mail;
     private var error_msg : String;
@@ -33,14 +33,14 @@ class MailDemo implements MetadataReader {
     }
 
     public static function _doDefault() {
-       new MailDemo(Beluga.getInstance()).doDefault();
+       new MailTest(Beluga.getInstance()).doDefault();
     }
 
     public function doDefault() {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         var widget = mail.getWidget("mail");
-        widget.context = {mails : mail.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/mailDemo/"};
+        widget.context = {mails : mail.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/mailTest/"};
 
         var mailWidget = widget.render();
 
@@ -52,7 +52,7 @@ class MailDemo implements MetadataReader {
 
     @bTrigger("beluga_mail_create")
     public static function _doCreate() {
-       new MailDemo(Beluga.getInstance()).subCreate({receiver : "", subject : "", message : ""});
+       new MailTest(Beluga.getInstance()).subCreate({receiver : "", subject : "", message : ""});
     }
 
     public function subCreate(args : {receiver : String, subject : String, message : String}) {
@@ -63,7 +63,7 @@ class MailDemo implements MetadataReader {
             return;
         }
         var widget = mail.getWidget("sendMail");
-        widget.context = {user : user, error : error_msg, success : success_msg, path : "/mailDemo/",
+        widget.context = {user : user, error : error_msg, success : success_msg, path : "/mailTest/",
                             receiver : args.receiver, subject : args.subject, message : args.message};
 
         var mailWidget = widget.render();
@@ -80,7 +80,7 @@ class MailDemo implements MetadataReader {
 
     @bTrigger("beluga_mail_send")
     public static function _doSend(args : {receiver : String, subject : String, message : String}) {
-        new MailDemo(Beluga.getInstance()).doSend(args);
+        new MailTest(Beluga.getInstance()).doSend(args);
     }
 
     public function doSend(args : {receiver : String, subject : String, message : String}) {
@@ -89,7 +89,7 @@ class MailDemo implements MetadataReader {
 
     @bTrigger("beluga_mail_send_fail")
     public static function _doSendFail(args : {error : String, receiver : String, subject : String, message : String}) {
-        new MailDemo(Beluga.getInstance()).doSendFail(args);
+        new MailTest(Beluga.getInstance()).doSendFail(args);
     }
 
     public function doSendFail(args : {error : String, receiver : String, subject : String, message : String}) {
@@ -99,7 +99,7 @@ class MailDemo implements MetadataReader {
 
     // @bTrigger("beluga_mail_send_success")
     public static function _doSendSuccess() {
-        new MailDemo(Beluga.getInstance()).doSendSuccess();
+        new MailTest(Beluga.getInstance()).doSendSuccess();
     }
 
     public function doSendSuccess() {
@@ -109,7 +109,7 @@ class MailDemo implements MetadataReader {
 
     @bTrigger("beluga_mail_print")
     public static function _doPrint(args : {id : Int}) {
-        new MailDemo(Beluga.getInstance()).doPrint(args);
+        new MailTest(Beluga.getInstance()).doPrint(args);
     }
 
     public function doPrint(args : {id : Int}) {
@@ -127,7 +127,7 @@ class MailDemo implements MetadataReader {
             return;
         }
         var widget = this.mail.getWidget("print");
-        widget.context = {path : "/mailDemo/", receiver : mail.receiver, subject : mail.subject, text : mail.text, date : mail.sentDate};
+        widget.context = {path : "/mailTest/", receiver : mail.receiver, subject : mail.subject, text : mail.text, date : mail.sentDate};
 
         var mailWidget = widget.render();
 

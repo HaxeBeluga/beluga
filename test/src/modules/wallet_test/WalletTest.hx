@@ -1,4 +1,4 @@
-package modules.wallet_demo;
+package modules.wallet_test;
 
 // Beluga
 import beluga.core.Beluga;
@@ -7,7 +7,7 @@ import beluga.core.macro.MetadataReader;
 import beluga.module.wallet.Wallet;
 import beluga.module.account.Account;
 
-// BelugaDemo
+// BelugaTest
 import main_view.Renderer;
 
 // haxe web
@@ -21,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class WalletDemo implements MetadataReader {
+class WalletTest implements MetadataReader {
     public var beluga(default, null) : Beluga;
     public var wallet(default, null) : Wallet;
 
@@ -38,11 +38,11 @@ class WalletDemo implements MetadataReader {
               "beluga_wallet_set_site_currency_success",
               "beluga_wallet_create_success",
               "beluga_wallet_create_fail")
-    public static function _doDemoPage() {
-       new WalletDemo(Beluga.getInstance()).doDemoPage();
+    public static function _doTestPage() {
+       new WalletTest(Beluga.getInstance()).doTestPage();
     }
 
-    public function doDemoPage() {
+    public function doTestPage() {
         var walletWidget = this.wallet.getWidget("display");
         walletWidget.context = this.wallet.getDisplayContext();
         var walletAdminWidget = this.wallet.getWidget("admin");
@@ -67,13 +67,13 @@ class WalletDemo implements MetadataReader {
             this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).getLoggedUser(), 10.);
         }
 
-        this.doDemoPage();
+        this.doTestPage();
     }
 
     public function doDefault(d : Dispatch) {
         Web.setHeader("Content-Type", "text/plain");
         Sys.println("No action available for: " + d.parts[0]);
         Sys.println("Available actions are:");
-        Sys.println("demoPage");
+        Sys.println("TestPage");
     }
 }

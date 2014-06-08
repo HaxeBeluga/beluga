@@ -8,18 +8,18 @@ import haxe.web.Dispatch;
 import haxe.Resource;
 import haxe.crypto.Md5;
 import beluga.module.account.model.User;
-import modules.account_demo.AccountDemo;
-import modules.account_demo.AccountDemoApi;
-import modules.ticket_demo.TicketDemo;
-import modules.survey_demo.SurveyDemo;
-import modules.fileupload_demo.FileUploadDemo;
-import modules.notification_demo.NotificationDemo;
-import modules.wallet_demo.WalletDemo;
-import modules.market_demo.MarketDemo;
+import modules.account_test.AccountTest;
+import modules.account_test.AccountTestApi;
+import modules.ticket_test.TicketTest;
+import modules.survey_test.SurveyTest;
+import modules.fileupload_test.FileUploadTest;
+import modules.notification_test.NotificationTest;
+import modules.wallet_test.WalletTest;
+import modules.market_test.MarketTest;
 import main_view.Renderer;
-import modules.forum_demo.ChannelDemo;
-import modules.news_demo.NewsDemo;
-import modules.mail_demo.MailDemo;
+import modules.forum_test.ChannelTest;
+import modules.news_test.NewsTest;
+import modules.mail_test.MailTest;
 
 #if php
 import php.Web;
@@ -42,7 +42,7 @@ class Main
 	static function main()
 	{
 		Assets.build();
-		
+
 		try {
 			beluga = Beluga.getInstance();
 			Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
@@ -73,44 +73,44 @@ class Main
 		}
 	}
 
-	public function doAccountDemo(d : Dispatch) {
-		d.dispatch(new AccountDemoApi(beluga));
+	public function doAccountTest(d : Dispatch) {
+		d.dispatch(new AccountTestApi(beluga));
 	}
 
-	public function doTicketDemo(d : Dispatch) {
-		d.dispatch(new TicketDemo(beluga));
+	public function doTicketTest(d : Dispatch) {
+		d.dispatch(new TicketTest(beluga));
 	}
 
-	public function doSurveyDemo(d : Dispatch) {
-		d.dispatch(new SurveyDemo(beluga));
+	public function doSurveyTest(d : Dispatch) {
+		d.dispatch(new SurveyTest(beluga));
 	}
 
-	public function doFileUploadDemo(d : Dispatch) {
-		d.dispatch(new FileUploadDemo(beluga));
+	public function doFileUploadTest(d : Dispatch) {
+		d.dispatch(new FileUploadTest(beluga));
 	}
 
-	public function doNotificationDemo(d : Dispatch) {
-		d.dispatch(new NotificationDemo(beluga));
+	public function doNotificationTest(d : Dispatch) {
+		d.dispatch(new NotificationTest(beluga));
 	}
 
-	public function doForumDemo(d : Dispatch) {
-		d.dispatch(new ChannelDemo(beluga));
+	public function doForumTest(d : Dispatch) {
+		d.dispatch(new ChannelTest(beluga));
 	}
 
-	public function doNewsDemo(d : Dispatch) {
-		d.dispatch(new NewsDemo(beluga));
+	public function doNewsTest(d : Dispatch) {
+		d.dispatch(new NewsTest(beluga));
 	}
 
-	public function doWalletDemo(d : Dispatch) {
-		d.dispatch(new WalletDemo(beluga));
+	public function doWalletTest(d : Dispatch) {
+		d.dispatch(new WalletTest(beluga));
 	}
 
-	public function doMailDemo(d : Dispatch) {
-		d.dispatch(new MailDemo(beluga));
+	public function doMailTest(d : Dispatch) {
+		d.dispatch(new MailTest(beluga));
 	}
 
-	public function doMarketDemo(d : Dispatch) {
-		d.dispatch(new MarketDemo(beluga));
+	public function doMarketTest(d : Dispatch) {
+		d.dispatch(new MarketTest(beluga));
 	}
 
 	public function doAccueil() {

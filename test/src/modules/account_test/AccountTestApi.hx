@@ -1,4 +1,4 @@
-package modules.account_demo;
+package modules.account_test;
 
 import haxe.Resource;
 import haxe.web.Dispatch;
@@ -8,7 +8,7 @@ import beluga.core.macro.MetadataReader;
 import beluga.module.account.model.User;
 import beluga.module.account.ESubscribeFailCause;
 import beluga.module.account.Account;
-import modules.account_demo.AccountDemo;
+import modules.account_test.AccountTest;
 import main_view.Renderer;
 
 #if php
@@ -21,7 +21,7 @@ import php.Web;
  * @author brissa_A
  */
 
-class AccountDemoApi implements MetadataReader
+class AccountTestApi implements MetadataReader
 {
 	public var beluga(default, null) : Beluga;
 	public var acc(default, null) : Account;
@@ -58,7 +58,7 @@ class AccountDemoApi implements MetadataReader
 			return;
 		}
 		var subscribeWidget = acc.getWidget("info");
-		subscribeWidget.context = {user : user, path : "/accountDemo/"};
+		subscribeWidget.context = {user : user, path : "/accountTest/"};
 
 		var html = Renderer.renderDefault("page_subscribe", "Information", {
 			subscribeWidget: subscribeWidget.render()
@@ -77,7 +77,7 @@ class AccountDemoApi implements MetadataReader
 
 	@bTrigger("beluga_account_edit")
 	public static function _doEdit() {
-		new AccountDemoApi(Beluga.getInstance()).doEdit();
+		new AccountTestApi(Beluga.getInstance()).doEdit();
 	}
 
 	public function doEdit() {
@@ -89,7 +89,7 @@ class AccountDemoApi implements MetadataReader
 			return;
 		}
 		var subscribeWidget = acc.getWidget("edit");
-		subscribeWidget.context = {email : user.email, path : "/accountDemo/"};
+		subscribeWidget.context = {email : user.email, path : "/accountTest/"};
 
 		var html = Renderer.renderDefault("page_subscribe", "Information", {
 			subscribeWidget: subscribeWidget.render()
@@ -99,7 +99,7 @@ class AccountDemoApi implements MetadataReader
 
 	@bTrigger("beluga_account_save")
 	public static function _doSave(args : {email : String}) {
-		new AccountDemoApi(Beluga.getInstance()).doSave(args);
+		new AccountTestApi(Beluga.getInstance()).doSave(args);
 	}
 
 	public function doSave(args : {email : String}) {
@@ -108,7 +108,7 @@ class AccountDemoApi implements MetadataReader
 
 	@bTrigger("beluga_account_edit_success")
 	public static function _doEditSuccess() {
-		new AccountDemoApi(Beluga.getInstance()).doEditSuccess();
+		new AccountTestApi(Beluga.getInstance()).doEditSuccess();
 	}
 
 	public function doEditSuccess() {
@@ -118,7 +118,7 @@ class AccountDemoApi implements MetadataReader
 
 	@bTrigger("beluga_account_edit_fail")
 	public static function _doEditFail() {
-		new AccountDemoApi(Beluga.getInstance()).doEditSuccess();
+		new AccountTestApi(Beluga.getInstance()).doEditSuccess();
 	}
 
 	public function doEditFail() {

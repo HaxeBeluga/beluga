@@ -1,4 +1,4 @@
-package modules.forum_demo;
+package modules.forum_test;
 
 // Haxe
 import haxe.web.Dispatch;
@@ -19,7 +19,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class ChannelDemo implements MetadataReader
+class ChannelTest implements MetadataReader
 {
   public var beluga(default, null) : Beluga;
   public var frm(default, null) : Forum;
@@ -33,7 +33,7 @@ class ChannelDemo implements MetadataReader
   @bTrigger("request_beluga_forum_channel_display")
   public static function _doDisplayChannelPage()
   {
-    new ChannelDemo(Beluga.getInstance()).doDisplayChannelPage();
+    new ChannelTest(Beluga.getInstance()).doDisplayChannelPage();
   }
 
   public function doDisplayChannelPage()
@@ -50,7 +50,7 @@ class ChannelDemo implements MetadataReader
   @bTrigger("request_beluga_forum_add_channel_display")
   public static function _doDisplayAddChannelPage()
   {
-    new ChannelDemo(Beluga.getInstance()).doDisplayAddChannelPage();
+    new ChannelTest(Beluga.getInstance()).doDisplayAddChannelPage();
   }
 
   public function doDisplayAddChannelPage()
@@ -67,7 +67,7 @@ class ChannelDemo implements MetadataReader
   @bTrigger("request_beluga_forum_modify_channel_display")
   public static function _doDisplayModifyChannelPage()
   {
-    new ChannelDemo(Beluga.getInstance()).doDisplayModifyChannelPage();
+    new ChannelTest(Beluga.getInstance()).doDisplayModifyChannelPage();
   }
 
   public function doDisplayModifyChannelPage()
@@ -84,7 +84,7 @@ class ChannelDemo implements MetadataReader
   @bTrigger("request_beluga_forum_delete_channel_display")
   public static function _doDisplayDeleteChannelPage()
   {
-    new ChannelDemo(Beluga.getInstance()).doDisplayDeleteChannelPage();
+    new ChannelTest(Beluga.getInstance()).doDisplayDeleteChannelPage();
   }
 
   public function doDisplayDeleteChannelPage()

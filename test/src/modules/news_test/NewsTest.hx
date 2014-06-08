@@ -1,4 +1,4 @@
-package modules.news_demo;
+package modules.news_test;
 
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -52,7 +52,7 @@ class NewsList {
 	}
 }
 
-class NewsDemo
+class NewsTest
 {
 	public var beluga(default, null) : Beluga;
 	public var news(default, null) : News;
@@ -68,7 +68,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_default")
 	public static function _doDefault() {
-		new NewsDemo(Beluga.getInstance()).doDefault();
+		new NewsTest(Beluga.getInstance()).doDefault();
 	}
 
 	public function doDefault() {
@@ -86,7 +86,7 @@ class NewsDemo
 			else
 				pos = 0;
 		}
-		widget.context = {news : news, error : error_msg, success : success_msg, path : "/newsDemo/", user: user};
+		widget.context = {news : news, error : error_msg, success : success_msg, path : "/newsTest/", user: user};
 
 		var newsWidget = widget.render();
 
@@ -98,7 +98,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_print")
 	public static function _doPrint(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doPrint(args);
+		new NewsTest(Beluga.getInstance()).doPrint(args);
 	}
 
 	public function doPrint(args : {news_id : Int}) {
@@ -117,7 +117,7 @@ class NewsDemo
 		for (tmp in t_comments) {
 			comments.push(new NewsData(tmp.text, tmp.user.login, tmp.creationDate, tmp.id));
 		}
-		widget.context = {news : news, comments : comments, path : "/newsDemo/",
+		widget.context = {news : news, comments : comments, path : "/newsTest/",
 							user : user, error : error_msg, success : success_msg};
 
 		var newsWidget = widget.render();
@@ -130,7 +130,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_redirect")
 	public static function _doRedirect() {
-		new NewsDemo(Beluga.getInstance()).doRedirect();
+		new NewsTest(Beluga.getInstance()).doRedirect();
 	}
 
 	public function doRedirect() {
@@ -140,7 +140,7 @@ class NewsDemo
 			return;
 		}
 		var widget = news.getWidget("create");
-		widget.context = {path : "/newsDemo/"};
+		widget.context = {path : "/newsTest/"};
 
 		var newsWidget = widget.render();
 
@@ -152,7 +152,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_redirectEdit")
 	public static function _doRedirectEdit(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doRedirectEdit(args);
+		new NewsTest(Beluga.getInstance()).doRedirectEdit(args);
 	}
 
 	public function doRedirectEdit(args : {news_id : Int}) {
@@ -169,7 +169,7 @@ class NewsDemo
 			return;
 		}
 		var widget = news.getWidget("edit");
-		widget.context = {path : "/newsDemo/", news : n, error : error_msg};
+		widget.context = {path : "/newsTest/", news : n, error : error_msg};
 
 		var newsWidget = widget.render();
 
@@ -181,7 +181,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_create")
 	public static function _doCreate(args : {title : String, text : String}) {
-		new NewsDemo(Beluga.getInstance()).doCreate(args);
+		new NewsTest(Beluga.getInstance()).doCreate(args);
 	}
 
 	public function doCreate(args : {title : String, text : String}) {
@@ -190,7 +190,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_delete")
 	public static function _doDelete(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doDelete(args);
+		new NewsTest(Beluga.getInstance()).doDelete(args);
 	}
 
 	public function doDelete(args : {news_id : Int}) {
@@ -199,7 +199,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_deleteCom")
 	public static function _doDeleteCom(args : {com_id : Int, news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doDeleteCom(args);
+		new NewsTest(Beluga.getInstance()).doDeleteCom(args);
 	}
 
 	public function doDeleteCom(args : {com_id : Int, news_id : Int}) {
@@ -208,7 +208,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_deleteComment_fail")
 	public static function _doDeleteCommentFail(args : {news_id : Int, error : String}) {
-		new NewsDemo(Beluga.getInstance()).doDeleteCommentFail(args);
+		new NewsTest(Beluga.getInstance()).doDeleteCommentFail(args);
 	}
 
 	public function doDeleteCommentFail(args : {news_id : Int, error : String}) {
@@ -218,7 +218,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_deleteComment_success")
 	public static function _doDeleteCommentSuccess(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doDeleteCommentSuccess(args);
+		new NewsTest(Beluga.getInstance()).doDeleteCommentSuccess(args);
 	}
 
 	public function doDeleteCommentSuccess(args : {news_id : Int}) {
@@ -228,13 +228,13 @@ class NewsDemo
 
 	@bTrigger("beluga_news_create_fail")
 	public static function _doCreateFail(args : {title : String, data : String, error : String}) {
-		new NewsDemo(Beluga.getInstance()).doCreateFail(args);
+		new NewsTest(Beluga.getInstance()).doCreateFail(args);
 	}
 
 	public function doCreateFail(args : {title : String, data : String, error : String}) {
 		error_msg = "Error ! News has not been created...";
 		var widget = news.getWidget("create");
-		widget.context = {path : "/newsDemo/", title : args.title, error : args.error, data : args.data};
+		widget.context = {path : "/newsTest/", title : args.title, error : args.error, data : args.data};
 
 		var newsWidget = widget.render();
 
@@ -246,7 +246,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_create_success")
 	public static function _doCreateSuccess() {
-		new NewsDemo(Beluga.getInstance()).doCreateSuccess();
+		new NewsTest(Beluga.getInstance()).doCreateSuccess();
 	}
 
 	public function doCreateSuccess() {
@@ -256,7 +256,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_edit_fail")
 	public static function _doEditFail(args : {news_id : Int, error : String}) {
-		new NewsDemo(Beluga.getInstance()).doEditFail(args);
+		new NewsTest(Beluga.getInstance()).doEditFail(args);
 	}
 
 	public function doEditFail(args : {news_id : Int, error : String}) {
@@ -266,7 +266,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_edit_success")
 	public static function _doEditSuccess(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doEditSuccess(args);
+		new NewsTest(Beluga.getInstance()).doEditSuccess(args);
 	}
 
 	public function doEditSuccess(args : {news_id : Int}) {
@@ -276,7 +276,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_addComment_success")
 	public static function _doAddCommentSuccess(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doAddCommentSuccess(args);
+		new NewsTest(Beluga.getInstance()).doAddCommentSuccess(args);
 	}
 
 	public function doAddCommentSuccess(args : {news_id : Int}) {
@@ -286,7 +286,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_addComment_fail")
 	public static function _doAddCommentFail(args : {news_id : Int}) {
-		new NewsDemo(Beluga.getInstance()).doAddCommentSuccess(args);
+		new NewsTest(Beluga.getInstance()).doAddCommentSuccess(args);
 	}
 
 	public function doAddCommentFail(args : {news_id : Int}) {
@@ -296,7 +296,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_delete_success")
 	public static function _doDeleteSuccess() {
-		new NewsDemo(Beluga.getInstance()).doDeleteSuccess();
+		new NewsTest(Beluga.getInstance()).doDeleteSuccess();
 	}
 
 	public function doDeleteSuccess() {
@@ -306,7 +306,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_delete_fail")
 	public static function _doDeleteFail() {
-		new NewsDemo(Beluga.getInstance()).doDeleteFail();
+		new NewsTest(Beluga.getInstance()).doDeleteFail();
 	}
 
 	public function doDeleteFail() {
@@ -316,7 +316,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_createComment")
 	public static function _doCreateComment(args : {news_id : Int, text : String}) {
-		new NewsDemo(Beluga.getInstance()).doCreateComment(args);
+		new NewsTest(Beluga.getInstance()).doCreateComment(args);
 	}
 
 	public function doCreateComment(args : {news_id : Int, text : String}) {
@@ -326,7 +326,7 @@ class NewsDemo
 
 	@bTrigger("beluga_news_edit")
 	public static function _doEdit(args : {news_id : Int, title : String, text : String}) {
-		new NewsDemo(Beluga.getInstance()).doEdit(args);
+		new NewsTest(Beluga.getInstance()).doEdit(args);
 	}
 
 	public function doEdit(args : {news_id : Int, title : String, text : String}) {

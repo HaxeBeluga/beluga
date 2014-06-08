@@ -1,4 +1,4 @@
-package modules.survey_demo;
+package modules.survey_test;
 
 import beluga.core.Beluga;
 import beluga.core.Widget;
@@ -25,7 +25,7 @@ import neko.Web;
  * @author Guillaume Gomez
  */
 
-class SurveyDemo implements MetadataReader
+class SurveyTest implements MetadataReader
 {
 	public var beluga(default, null) : Beluga;
 	public var survey(default, null) : Survey;
@@ -41,7 +41,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_default")
 	public static function _doDefault() {
-		new SurveyDemo(Beluga.getInstance()).doDefault();
+		new SurveyTest(Beluga.getInstance()).doDefault();
 	}
 
 	public function doDefault() {
@@ -65,7 +65,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_redirect")
 	public static function _doRedirectPage() {
-		new SurveyDemo(Beluga.getInstance()).doRedirectPage();
+		new SurveyTest(Beluga.getInstance()).doRedirectPage();
 	}
 
 	public function doRedirectPage() {
@@ -87,7 +87,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_create_fail")
 	public static function _doCreateFail() {
-		new SurveyDemo(Beluga.getInstance()).doCreateFail();
+		new SurveyTest(Beluga.getInstance()).doCreateFail();
 	}
 
 	public function doCreateFail() {
@@ -97,7 +97,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_create_success")
 	public static function _doCreateSuccess() {
-		new SurveyDemo(Beluga.getInstance()).doCreateSuccess();
+		new SurveyTest(Beluga.getInstance()).doCreateSuccess();
 	}
 
 	public function doCreateSuccess() {
@@ -107,7 +107,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_delete_success")
 	public static function _doDeleteSuccess() {
-		new SurveyDemo(Beluga.getInstance()).doDeleteSuccess();
+		new SurveyTest(Beluga.getInstance()).doDeleteSuccess();
 	}
 
 	public function doDeleteSuccess() {
@@ -117,7 +117,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_delete_fail")
 	public static function _doDeleteFail() {
-		new SurveyDemo(Beluga.getInstance()).doDeleteFail();
+		new SurveyTest(Beluga.getInstance()).doDeleteFail();
 	}
 
 	public function doDeleteFail() {
@@ -143,7 +143,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_vote_success")
 	public static function _doVoteSuccess() {
-		new SurveyDemo(Beluga.getInstance()).doVoteSuccess();
+		new SurveyTest(Beluga.getInstance()).doVoteSuccess();
 	}
 
 	 public function doVoteSuccess() {
@@ -153,7 +153,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_vote_fail")
 	public static function _doVoteFail() {
-		new SurveyDemo(Beluga.getInstance()).doVoteFail();
+		new SurveyTest(Beluga.getInstance()).doVoteFail();
 	}
 
 	public function doVoteFail() {
@@ -190,7 +190,7 @@ class SurveyDemo implements MetadataReader
 
 	@bTrigger("beluga_survey_printx")
 	public static function _doPrintPage(args : {survey : SurveyModel}) {
-		new SurveyDemo(Beluga.getInstance()).doPrintPage(args);
+		new SurveyTest(Beluga.getInstance()).doPrintPage(args);
 	}
 
 	public function doPrintPage(args : {survey : SurveyModel}) {
