@@ -11,10 +11,11 @@ before_script:
   - haxelib dev beluga .
   - haxelib run beluga setup templateTest
   - haxelib install session
+  - haxelib install tink_macro
   - cd templateTest
 
 script:
   - haxe templateTest.hxml
-  
+
 notifications:
   slack: beluga:TnSEYGr5VTjnqJkbFKMhJorQ
