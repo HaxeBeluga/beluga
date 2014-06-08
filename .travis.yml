@@ -12,10 +12,10 @@ before_script:
   - haxelib run beluga setup templateTest
   - haxelib install session
   - haxelib install tink_macro
+  - sudo chmod 774 run-tests.sh
 
 script:
-  - haxe templateTest/templateTest.hxml
-  - haxe test/BelugaTest.hxml
+  - ./run-tests.sh
 
 notifications:
   slack: beluga:TnSEYGr5VTjnqJkbFKMhJorQ
