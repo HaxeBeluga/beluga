@@ -167,7 +167,7 @@ class TriggerDispatcher {
         //use of reflection to avoid naming conflict
         var registerDynamicMetadatas = macro {
             var blg_realClass = Type.resolveClass("beluga.core.Beluga");
-            var blg_belugaInstance = Reflect.callMethod(blg_realClass, Reflect.field(blg_realClass, "getInstance"), null);
+            var blg_belugaInstance = Reflect.callMethod(blg_realClass, Reflect.field(blg_realClass, "getInstance"), []);
             var blg_triggerDispatcher = Reflect.field(blg_belugaInstance, "triggerDispatcher");
             var blg_addRoute = Reflect.field(blg_triggerDispatcher, "addRoute");
             for (route in blg_instanceRoutes) {
