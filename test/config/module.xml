@@ -1,0 +1,10 @@
+<module name="account"/>
+<module name="ticket" />
+<module name="survey" />
+<module name="fileupload" />
+<module name="notification" />
+<module name="forum" />
+<module name="news" />
+<module name="wallet" />
+<module name="mail" />
+<module name="market" />

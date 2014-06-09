@@ -1,0 +1,14 @@
+<!-- Ticket triggers -->
+<trigger name="beluga_ticket_assign_notify">
+	<route class="modules.ticket_test.TicketTest" method="_doNotifyAssign" ></route>
+</trigger>
+
+<!-- survey module triggers -->
+<trigger name="beluga_survey_answer_notify">
+	<route class="modules.survey_test.SurveyTest" method="_doAnswerNotify" ></route>
+</trigger>
+
+<!-- FileUpload triggers -->
+<trigger name="beluga_fileupload_notify_upload_success">
+	<route class="modules.fileupload_test.FileUploadTest" method="_doNotifyUploadSuccess" ></route>
+</trigger>
