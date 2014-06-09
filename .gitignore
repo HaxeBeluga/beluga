@@ -3,6 +3,3 @@
 
 #Test sources
 test/bin
-
-#web files
-*.htaccess
