@@ -1,8 +1,8 @@
 #FlashDeveloppFiles
 *.hxproj
 
-#munit files
-build/
-report/
-beluga.zip 
-haxelib.json 
+#Test sources
+test/bin
+
+#web files
+*.htaccess
