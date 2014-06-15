@@ -9,17 +9,19 @@
     </div>
 ::end::
 <div class="row">
-::foreach product_list::
-  <div class="col-sm-2 col-md-2">
-    <div class="thumbnail">
-      <img src="http://placehold.it/200x150" alt="product">
-      <div class="caption">
-        <h3>::product_name::</h3>
-        <p>::product_price:: ::currency::</p>
-        <p>::product_desc::</p>
-        <p><a href="::base_url::/beluga/market/addProductToCart?id=::product_id::" class="btn btn-info" role="button">Add</a></p>
-      </div>
-    </div>
-  </div>
-::end::
+  <ul class="media-list">
+      ::foreach product_list::
+        <li class="media">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="http://placehold.it/65x65" alt="">
+            </a>
+              <div class="media-body">
+                  <h4 class="media-heading">::product_name::</h4>
+                  <span class="label label-warning pull-right">::product_price:: ::currency::</span>
+                  <p>::product_desc::</p>
+                  <p><a href="::base_url::/beluga/market/addProductToCart?id=::product_id::" class="btn btn-info btn-xs pull-right" role="button">Add</a></p>
+              </div>
+        </li>
+      ::end::
+  </ul>
 </div>
