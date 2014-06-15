@@ -130,15 +130,26 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         }
     }
 
-    // FIXME: send the bought elements
+    // Checkout the cart of a given user.
+    // this function throw 2 different trigger:
+    // on success -> "beluga_market_checkout_cart_success" with in params a list of dynamics wihch
+    // contains {user -> the given user, product -> the product bougth, quantity -> the quantity of
+    // the given product}
+    // on failure -> "beluga_market_checkout_cart_fail"
     public function checkoutCart(): Void {
         if (beluga.getModuleInstance(Account).isLogged) {
             var user = beluga.getModuleInstance(Account).loggedUser;
             var cart = Cart.manager.dynamicSearch( {} );
+            var bought_items_list: List<Dynamic> = new List<Dynamic>();
             for (c in cart) {
+                bought_items_list.push({
+                    user: c.ca_user,
+                    product: c.ca_product,
+                    quantity: c.ca_quantity
+                });
                 c.delete();
             }
-            this.triggers.checkoutCartSuccess.dispatch();
+            beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart_success", [bought_items_list]);
         } else {
             this.error = "You should be connected to remove a product from your cart.";
             this.triggers.checkoutCartFail.dispatch();
