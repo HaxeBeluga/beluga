@@ -5,10 +5,10 @@
     ::end::
     ::end::
 	<h2>Edit of ::news.title::</h2>
-	<form action="::base_url::::path::edit" class="form-horizontal" role="form" method="POST">
+	<form action="::base_url::::path::edit" class="" role="form" method="POST">
 		<input name="news_id" value="::news.id::" type="hidden"/>
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
-		<div class="form-group">
+		<div class="">
 			<label for="title">Title</label>
 			<input class="form-control" id="title" name="title" placeholder="Enter title" value="::news.title::">
 		</div>

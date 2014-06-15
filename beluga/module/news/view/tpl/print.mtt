@@ -37,7 +37,7 @@
 			::elseif (user.id == news.user_id)::
 			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
 			::end::
-		
+
 			<div class="panel-heading"><h3 class="panel-title">::login::</h3></div>
 			<div class="panel-body">::text::</div>
 			<div class="panel-footer">Posted on ::date::</div>
@@ -47,7 +47,7 @@
 		<h4 style="text-align:center;">No comment on this news</h4>
 		::end::
 		::if (user)::
-		<form action="::base_url::::path::createComment" class="form-horizontal" role="form" method="POST">
+		<form action="::base_url::::path::createComment" class="" role="form" method="POST">
 			<input name="news_id" value="::news.id::" type="hidden"/>
 			<div class="form-group">
 				<label for="text">Comment this news :</label>
