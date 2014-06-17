@@ -126,8 +126,15 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         }
     }
 
-	public function getUser(userId : SId) {
-		return User.manager.get(userId);
+	public function getUser(userId : SId) : Null<User> {
+		try 
+		{
+			return User.manager.get(userId);
+		}
+		catch (e : Dynamic)
+		{
+			return null;
+		}
 	}
 
 
