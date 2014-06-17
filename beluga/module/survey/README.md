@@ -42,7 +42,7 @@ For example, the vote method sends back the `beluga_survey_vote_success` trigger
 public function print(args : {id : Int}) : Void
 ```
 
-This method take the survey's id in paramater. Calling it can throw two different triggers : `beluga_survey_printx` and `beluga_survey_votex` depending on the fact that the user has voted or not in this survey.
+This method take the survey's id in paramater. Calling it throw back the `beluga_survey_printx` trigger or nothing if the the survey was not found.
 
 ```Haxe
 public function create(args : {
@@ -67,4 +67,4 @@ The vote method takes the survey id and the choice id in parameter and throw bac
 public function delete(args : {id : Int}) : Void
 ```
 
-The delete method takes a survey id in parameter. One more, it throws back the `beluga_survey_delete_fail` trigger or `beluga_survey_delete_success` if it fails or succeeds.
+The delete method takes a survey id in parameter. It throws back the `beluga_survey_delete_fail` trigger or `beluga_survey_delete_success` if it fails or succeeds.
