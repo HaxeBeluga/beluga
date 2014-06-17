@@ -2,6 +2,7 @@ package beluga.module.account;
 
 import beluga.core.module.Module;
 import beluga.module.account.model.User;
+import sys.db.Types.SId;
 
 interface Account extends Module {
     public function subscribe(args : {
@@ -16,6 +17,8 @@ interface Account extends Module {
         password : String
     }) : Void;
 
+	public function getUser(userId : SId) : User;
+	
     public function showUser(args: { id: Int}): Void;
 
     public function logout() : Void;
