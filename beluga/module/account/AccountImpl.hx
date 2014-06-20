@@ -27,7 +27,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
     public function logout() {
-        Session.set(SESSION_USER, null);
+		Session.remove(SESSION_USER);
         beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
     }
 
