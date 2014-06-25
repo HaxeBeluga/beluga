@@ -1,4 +1,4 @@
-<div style="width:800px;">
+<div style="width:800px;" class="container">
 	::if (user)::
 	<h1>Notifications list for <b>::user.login::</b> user</h1><br/>
 	::end::

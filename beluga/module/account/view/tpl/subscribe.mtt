@@ -1,4 +1,4 @@
-<div class="beluga account subscribe" id="::_id::">
+<div class="beluga account subscribe container" id="::_id::">
 	<h1>Inscrivez vous</h1>
 	::if (error)::
 	::if (error != "")::
