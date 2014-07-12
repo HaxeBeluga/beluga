@@ -10,7 +10,7 @@ import beluga.core.module.ModuleImpl;
 import beluga.module.account.model.User;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
-import beluga.core.macro.MetadataReader;	
+import beluga.core.macro.MetadataReader;
 
 enum LastLoginErrorType {
 	InternalError;
@@ -20,16 +20,16 @@ enum LastLoginErrorType {
 class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
 
     private static inline var SESSION_USER = "session_user";
-	
+
 	public var triggers = new AccountTrigger();
 	public var widgets : AccountWidget;
-	
+
 	public var lastLoginError : Null<LastLoginErrorType> = null;
-	
+
 	public var loggedUser(get, set) : User;
-	
+
 	public var isLogged(get, never) : Bool;
-	
+
 	public function new() {
 		super();
     }
@@ -115,7 +115,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
 	public function getUser(userId : SId) : Null<User> {
-		try 
+		try
 		{
 			return User.manager.get(userId);
 		}

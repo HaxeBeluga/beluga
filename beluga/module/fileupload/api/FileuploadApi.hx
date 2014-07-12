@@ -18,12 +18,10 @@ class FileuploadApi {
     public function new() {
     }
 
-    public function doBrowse(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_browse");
-    }
+    public function doBrowse(): Void {}
 
     public function doSend(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_send");
+        module.send();
     }
 
     public function doDefault(): Void {
@@ -31,18 +29,14 @@ class FileuploadApi {
     }
 
     public function doDelete(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_delete", [args]);
+        module.delete(args);
     }
 
     public function doAddextension(args: { name: String }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension", [args]);
+        module.addextension(args);
     }
 
     public function doDeleteextension(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension", [args]);
-    }
-
-    public function doAdmin(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_admin");
+        module.deleteextension(args);
     }
 }
