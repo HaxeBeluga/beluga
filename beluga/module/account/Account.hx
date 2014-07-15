@@ -5,6 +5,9 @@ import beluga.module.account.model.User;
 import sys.db.Types.SId;
 
 interface Account extends Module {
+	
+	public var trigger : AccountTrigger;
+
     public function subscribe(args : {
         login : String,
         password : String,

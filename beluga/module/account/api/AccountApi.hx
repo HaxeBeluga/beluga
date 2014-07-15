@@ -19,7 +19,7 @@ class AccountApi  {
         login : String,
         password : String,
     }) {
-        beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
+		beluga.getModuleInstance(Account).trigger.login.dispatch(args);
     }
 
     public function doLogout() {
