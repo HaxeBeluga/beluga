@@ -16,8 +16,11 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
     private static inline var SESSION_USER = "session_user";
 
+	public var trigger = new AccountTrigger();
+	
     public function new() {
-        super();
+		super();
+        trigger.login.addMethode(this, this.login);
     }
 
     override public function loadConfig(data : Fast) {}
@@ -27,16 +30,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
     public function logout() {
-        Session.set(SESSION_USER, null);
+		Session.remove(SESSION_USER);
         beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
-    }
-
-    @bTrigger("beluga_account_login")
-    public static function _login(args : {
-        login : String,
-        password : String
-    }) {
-        Beluga.getInstance().getModuleInstance(Account).login(args);
     }
 
     public function login(args : {
@@ -61,7 +56,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             ]);
         }
     }
-
+	
     private function subscribeCheckArgs(args : {
         login : String,
         password : String,
@@ -125,6 +120,18 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             ]);
         }
     }
+
+	public function getUser(userId : SId) : Null<User> {
+		try 
+		{
+			return User.manager.get(userId);
+		}
+		catch (e : Dynamic)
+		{
+			return null;
+		}
+	}
+
 
     public function activateUser(userId : SId) {
         var user = User.manager.get(userId);

@@ -1,6 +1,7 @@
 package beluga.core;
 
 import haxe.Resource;
+import haxe.Session;
 import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
@@ -87,6 +88,7 @@ class Beluga {
 
     public function cleanup() {
         db.close();
+		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
     public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T {
