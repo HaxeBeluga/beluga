@@ -31,17 +31,17 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
     }
 
     @bTrigger("beluga_survey_delete")
-    public static function _delete(args : {id : Int}) {
+    public static function _delete(args : {survey_id : Int}) {
         Beluga.getInstance().getModuleInstance(Survey).delete(args);
     }
 
-    public function delete(args : {id : Int}) {
+    public function delete(args : {survey_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var nb = 0;
 
         if (user == null)
             return;
-        for (tmp in SurveyModel.manager.dynamicSearch( {author_id : user.id, id : args.id} )) {
+        for (tmp in SurveyModel.manager.dynamicSearch( {author_id : user.id, id : args.survey_id} )) {
             tmp.delete();
             nb += 1;
         }
@@ -78,23 +78,23 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
     }
 
     @bTrigger("beluga_survey_print")
-    public static function _print(args : {id : Int}) {
+    public static function _print(args : {survey_id : Int}) {
         Beluga.getInstance().getModuleInstance(Survey).print(args);
     }
 
-    public function print(args : {id : Int}) {
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+    public function print(args : {survey_id : Int}) {
+        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
             beluga.triggerDispatcher.dispatch("beluga_survey_printx", [{survey : tmp}]);
             return;
         }
     }
 
-    public function getChoices(args : {id : Int}) : Array<Choice> {
+    public function getChoices(args : {survey_id : Int}) : Array<Choice> {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var arr = new Array<Choice>();
 
         if (user != null) {
-            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
                 for (tmp_c in Choice.manager.dynamicSearch( { survey_id : tmp.id } )) {
                     arr.push(tmp_c);
                 }
@@ -157,14 +157,14 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
 
     @bTrigger("beluga_survey_vote")
     public static function _vote(args : {
-        id : Int,
+        survey_id : Int,
         option : Int
     }) {
         Beluga.getInstance().getModuleInstance(Survey).vote(args);
     }
 
     public function vote(args : {
-        id : Int,
+        survey_id : Int,
         option : Int
     }) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
@@ -173,14 +173,14 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
             return;
         }
 
-        for (tmp in Result.manager.search( { survey_id : args.id, user_id : user.id } )) {
+        for (tmp in Result.manager.search( { survey_id : args.survey_id, user_id : user.id } )) {
             beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", []);
             return;
         }
 
         var survey : SurveyModel;
 
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} ))
+        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} ))
             survey = tmp;
         var res = new Result();
 
@@ -201,11 +201,11 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
     }
 
 
-    public function canVote(args : {id : Int}) : Bool {
+    public function canVote(args : {survey_id : Int}) : Bool {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user != null) {
-            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
                 for (tmp_c in Result.manager.dynamicSearch( { survey_id : tmp.id, user_id : user.id } )) {
                     return false;
                 }

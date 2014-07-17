@@ -1,11 +1,11 @@
 Notification module's doc
-===================
+=========================
 
 The __notification__ module allows you to create and handle notifications easily. It depends on the __account__ module provided by Beluga so you won't be able to use the __notification__ module without it.
 
-This module offers a few numbers of method to easily integrate the widget inside your project.
+This module offers a few numbers of method to easily integrate this module inside your project.
 
-Here is the methods list:
+Here is the methods list :
 
 ```Haxe
 public function print(args : {id : Int}) : Void
@@ -19,7 +19,7 @@ public function delete(args : {
 public function getNotifications() : Array<NotificationModel>
 ```
 
-These functions are handle by the Beluga webdispatcher, and throw respectively these triggers :
+These functions are handled by the Beluga webdispatcher and throw respectively these triggers :
 
 * beluga_notif_printx
 * beluga_notif_delete_success
@@ -35,7 +35,7 @@ For example, the vote method sends back the `beluga_notif_delete_success` trigge
 public function print(args : {id : Int}) : Void
 ```
 
-This method take the notification's id in paramater. Calling it throws this trigger `beluga_notif_printx` with the the notification in parameter.
+This method takes the notification's id in paramater. Calling it throws this trigger `beluga_notif_printx` with the the notification in parameter.
 
 ```Haxe
 public function create(args : {
