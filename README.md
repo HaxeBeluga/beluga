@@ -39,4 +39,4 @@ The following targets are currently supported
 * Neko
 
 ### Credits ###
-Thanks to Jonathan Pellet for our wonderful logo.
+Thanks to [Jonathan Pellen](http://fr.viadeo.com/fr/profile/jonathan.pellen) for our wonderful logo.
