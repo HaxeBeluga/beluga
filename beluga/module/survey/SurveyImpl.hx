@@ -20,8 +20,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         super();
     }
 
-    override public function loadConfig(data : Fast) {}
-
     public static function _redirect() {
         Beluga.getInstance().getModuleInstance(Survey).redirect();
     }

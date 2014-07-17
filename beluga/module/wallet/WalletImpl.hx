@@ -28,7 +28,6 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
     public static var WEBSITE_ID = 1;
 
     public function new() { super(); }
-    override public function loadConfig(data : Fast): Void {}
 
     // pages
 

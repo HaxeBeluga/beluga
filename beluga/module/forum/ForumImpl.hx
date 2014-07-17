@@ -19,8 +19,6 @@ class ForumImpl extends ModuleImpl implements ForumInternal implements MetadataR
       super();
     }
 
-    override public function loadConfig(data : Fast) {}
-
     @bTrigger("beluga_forum_channel_display")
     public static function _displayChannel(args : {
         channel_key : String

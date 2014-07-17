@@ -59,11 +59,6 @@ class Beluga {
             db = new Database(ConfigLoader.config.node.database.elements);
         }
 
-        // Look for triggers
-        //for (trigger in ConfigLoader.config.nodes.trigger) {
-        //  triggerDispatcher.addRoutesFromFast(trigger);
-        //}
-
         //Create beluga API
         api = new BelugaApi();
         api.beluga = this;
@@ -91,8 +86,8 @@ class Beluga {
 		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
-    public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T {
-        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz), key);
+    public function getModuleInstance<T : Module>(clazz : Class<T>) : T {
+        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
     }
 
     public function getDispatchUri() : String {

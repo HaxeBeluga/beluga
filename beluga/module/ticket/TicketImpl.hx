@@ -27,8 +27,6 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {}
-
     /** Actions trigger **/
 
     @bTrigger("beluga_ticket_browse")
