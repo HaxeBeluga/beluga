@@ -23,7 +23,7 @@ class AccountApi  {
     }
 
     public function doLogout() {
-        module.logout();
+		beluga.getModuleInstance(Account).trigger.logout.dispatch();
     }
 
     public function doPrintInfo() {

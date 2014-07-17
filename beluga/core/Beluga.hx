@@ -38,13 +38,13 @@ class Beluga {
     }
 
     #if neko
-    private function new(handleSessionPath : Bool = true)
+    private function new(createSessionDirectory : Bool = true)
     #else
     private function new()
     #end
     {
         #if neko
-        if (handleSessionPath) {
+        if (createSessionDirectory) {
             FileSystem.createDirectory(Web.getCwd() + "/temp");
             FileSystem.createDirectory(Web.getCwd() + "/temp/sessions");
         }

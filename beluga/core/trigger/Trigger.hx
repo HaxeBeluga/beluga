@@ -1,7 +1,7 @@
 package beluga.core.trigger;
 
 /**
- * ...
+ * WARNING: Passing a Void argument as ArgType raise compilation Error see: TriggerVoid
  * @author brissa_A
  */
 class Trigger<ArgType>
@@ -28,8 +28,9 @@ class Trigger<ArgType>
 	
 	public function dispatch(param : ArgType) {
 		for (i in 0...fctArray.length) {
-			Reflect.callMethod(fctArray[i].obj, fctArray[i].fct, [param]);
+				Reflect.callMethod(fctArray[i].obj, fctArray[i].fct, [param]);
 		}
 	}
+
 }
 
