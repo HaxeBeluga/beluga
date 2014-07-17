@@ -1,6 +1,7 @@
 package beluga.module.account;
 
 import beluga.core.trigger.Trigger;
+import beluga.core.trigger.TriggerVoid;
 
 /**
  * ...
@@ -12,8 +13,10 @@ class AccountTrigger
         login : String,
         password : String,
     }>();
+	
+	public var logout = new TriggerVoid();
 
-	public function new() 
+	public function new()
 	{
 		
 	}

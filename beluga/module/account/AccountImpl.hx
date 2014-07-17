@@ -21,6 +21,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     public function new() {
 		super();
         trigger.login.addMethode(this, this.login);
+        trigger.logout.addMethode(this, this.logout);		
     }
 
     override public function loadConfig(data : Fast) {}
@@ -29,7 +30,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         Beluga.getInstance().getModuleInstance(Account).logout();
     }
 
-    public function logout() {
+    public function logout() : Void {
 		Session.remove(SESSION_USER);
         beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
     }
