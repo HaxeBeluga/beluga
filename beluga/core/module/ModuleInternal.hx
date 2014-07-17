@@ -10,5 +10,4 @@ import beluga.core.macro.ConfigLoader.ModuleConfig;
 interface ModuleInternal extends Module
 {
 	public function _loadConfig(beluga : Beluga, config : ModuleConfig) : Void;
-	public function loadConfig(data : Fast) : Void;
 }

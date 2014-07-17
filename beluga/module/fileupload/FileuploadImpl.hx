@@ -25,8 +25,6 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {}
-
     /** Actions trigger **/
 
     @bTrigger("beluga_fileupload_browse")

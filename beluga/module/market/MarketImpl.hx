@@ -23,8 +23,6 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
     var cart_info = "";
 
     public function new() { super(); }
-    override public function loadConfig(data : Fast): Void {}
-
     // widget functions
 
     @bTrigger("beluga_market_display")

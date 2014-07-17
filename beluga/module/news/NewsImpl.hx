@@ -17,8 +17,6 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
         super();
     }
 
-    override public function loadConfig(data : Fast) {}
-
     public function getAllNews() : Array<NewsModel> {
         var ret = new Array<NewsModel>();
 

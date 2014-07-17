@@ -9,13 +9,13 @@ import beluga.core.module.Module;
 class ModuleLoader {
     //Need to be there since all loaded modules are referred here
     //Resolve both simple and full path
-    public static function getModuleInstanceByName(name : String, key : String = "") : Module {
+    public static function getModuleInstanceByName(name : String) : Module {
         var realClass = Type.resolveClass(name + "Impl");
         if (realClass == null)
             realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
         if (realClass == null)
             throw new BelugaException("Module not found " + name);
-        return Reflect.field(realClass, "getInstance")(key);
+        return Type.createEmptyInstance(realClass);
     }
 
     public static function resolveModel(module : String, name : String) : Class<Dynamic> {
