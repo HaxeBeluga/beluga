@@ -199,7 +199,7 @@ class SurveyTest implements MetadataReader
 			Sys.println("Please log in !");
 			return;
 		}
-		if (this.survey.canVote({id : args.survey.id})) {
+		if (this.survey.canVote({survey_id : args.survey.id})) {
 			doVotePage({survey : args.survey});
 			return;
 		}
