@@ -7,7 +7,9 @@ Acting as a toolbox, Beluga provides different services such as account system, 
 
 Beluga is also open-source and communal, contributors are encouraged to participate to its development. Then, thanks to its powerful architecture, developers have the opportunity to contributes without removing the compatibility with previous versions of the project.
 
-### [Beluga demo](https://github.com/HaxeBeluga/BelugaDemo "belugademo") ###
+## Projects using it ##
+
+* [Dominax](https://github.com/HaxeBeluga/Dominax "dominax")
 
 ## Travis status ##
 
@@ -37,4 +39,4 @@ The following targets are currently supported
 * Neko
 
 ### Credits ###
-Thanks to Jonathan Pellet for our wonderful logo.
+Thanks to [Jonathan Pellen](http://fr.viadeo.com/fr/profile/jonathan.pellen) for our wonderful logo.
