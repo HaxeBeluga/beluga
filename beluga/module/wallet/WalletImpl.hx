@@ -29,6 +29,10 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
 
     public function new() { super(); }
 
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
+
     // pages
 
     @bTrigger("beluga_wallet_create")

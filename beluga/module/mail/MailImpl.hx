@@ -13,6 +13,10 @@ class MailImpl extends ModuleImpl implements MailInternal {
     public function new() {
         super();
     }
+	
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
 
     public function getMail(id : Int) : MailModel {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();

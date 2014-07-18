@@ -15,21 +15,21 @@ import beluga.core.macro.MetadataReader;
 class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
 
     private static inline var SESSION_USER = "session_user";
-
-	public var trigger = new AccountTrigger();
 	
-    public function new() {
+	public var trigger = new AccountTrigger();
+
+	public function new() {
 		super();
     }
 
-	public function initialize() {		
+	override public function initialize(beluga : Beluga) {
         trigger.login.addMethode(this, this.login);
-        trigger.logout.addMethode(this, this.logout);		
+		trigger.logout.addMethode(this, this.logout);
 	}
 
     public function logout() : Void {
 		Session.remove(SESSION_USER);
-        beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
+		beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
     }
 
     public function login(args : {
@@ -49,6 +49,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
         } else {
             setLoggedUser(user.first());
+			trace(beluga);
             beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
                 user.first()
             ]);
