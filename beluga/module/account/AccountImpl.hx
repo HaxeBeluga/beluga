@@ -10,7 +10,7 @@ import beluga.core.module.ModuleImpl;
 import beluga.module.account.model.User;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
-import beluga.core.macro.MetadataReader;
+import beluga.core.macro.MetadataReader;	
 
 class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
 
@@ -23,8 +23,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
 	override public function initialize(beluga : Beluga) {
-        trigger.login.addMethode(this, this.login);
-		trigger.logout.addMethode(this, this.logout);
+        trigger.login.add(this.login);
+		trigger.logout.add(this.logout);
 	}
 
     public function logout() : Void {

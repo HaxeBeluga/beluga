@@ -6,41 +6,21 @@ package beluga.core.trigger;
  */
 class Trigger<ArgType>
 {
-	var fctArray = new Array<{obj : Dynamic, fct : ArgType -> Void}>();
+	var fctArray = new Array<ArgType -> Void>();
 
 	public function new()
 	{
 	}
 
-	public function addStatic(fct : ArgType -> Void) {
-		fctArray.push({
-			obj: null,
-			fct: fct
-		});
+	public function add(fct : ArgType -> Void) {
+		fctArray.push(fct);
 	}
 
-	public function addMethode(obj : Dynamic, fct : ArgType -> Void) {
-		fctArray.push({
-			obj: obj,
-			fct: fct
-		});
-	}
-	
 	public function dispatch(param : ArgType) {
 		for (i in 0...fctArray.length) {
-				Reflect.callMethod(fctArray[i].obj, fctArray[i].fct, [param]);
+			fctArray[i](param);
 		}
 	}
 
-	public function dump() {
-		if (fctArray.length == 0) {
-			trace("no trigger registered");
-		} else {
-			for (i in 0...fctArray.length) {
-					trace(fctArray[i].obj + " " + fctArray[i].fct);
-			}
-		}
-	}
-	
 }
 

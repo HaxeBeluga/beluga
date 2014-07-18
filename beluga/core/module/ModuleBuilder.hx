@@ -60,10 +60,6 @@ class ModuleBuilder
 
 		var clazz = Context.getLocalClass().get();
 
-		var clazzTypePath = { sub: null, params: [], pack : [] , name : clazz.name };
-		var clazzComplexType = TPath( clazzTypePath );
-		var arrayType = macro : Map<String, $clazzComplexType>;
-
 		//Unsafe argument
 		var err = loadResources(clazz.module.split(".")[2]);
 		
