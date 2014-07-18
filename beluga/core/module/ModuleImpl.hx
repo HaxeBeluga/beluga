@@ -24,7 +24,7 @@ class ModuleImpl implements ModuleInternal
 
 	public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
 		this.beluga = beluga;
-		
+
 		for (table in module.tables) {
 			//Initialize all module tables
 			beluga.db.initTable(module.name, table);
@@ -40,6 +40,11 @@ class ModuleImpl implements ModuleInternal
 
 	}
 
+	public function initialize(beluga : Beluga) : Void {
+		
+	}
+
+	
 	public function getWidget(name : String) : Widget {
 		//First retrieve the class path
 		var module = Type.getClassName(Type.getClass(this)).split(".")[2];

@@ -16,7 +16,11 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     public function new() {
         super();
     }
-
+	
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
+	
     public function getAllNews() : Array<NewsModel> {
         var ret = new Array<NewsModel>();
 

@@ -14,6 +14,10 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         super();
     }
 
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
+
     public function getNotifications() : Array<NotificationModel> {
         var ret = new Array<NotificationModel>();
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();

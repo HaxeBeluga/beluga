@@ -32,5 +32,15 @@ class Trigger<ArgType>
 		}
 	}
 
+	public function dump() {
+		if (fctArray.length == 0) {
+			trace("no trigger registered");
+		} else {
+			for (i in 0...fctArray.length) {
+					trace(fctArray[i].obj + " " + fctArray[i].fct);
+			}
+		}
+	}
+	
 }
 

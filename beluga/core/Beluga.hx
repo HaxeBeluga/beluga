@@ -28,7 +28,7 @@ class Beluga {
     public var api : BelugaApi;
 
     private static var instance = null;
-
+	
     public static function getInstance() : Beluga {
         if (instance == null) {
             instance = new Beluga();
@@ -70,10 +70,12 @@ class Beluga {
         //Init every modules
         for (module in ConfigLoader.modules) {
             var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
-            if (moduleInstance != null) {
-                moduleInstance._loadConfig(this, module);
-            }
+			moduleInstance._loadConfig(this, module);
         }
+		 for (module in ConfigLoader.modules) {
+            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
+			moduleInstance.initialize(this);
+		 }
     }
 
     public function dispatch(defaultTrigger : String = "index") {
@@ -86,7 +88,7 @@ class Beluga {
 		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
-    public function getModuleInstance<T : Module>(clazz : Class<T>) : T {
+    public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
         return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
     }
 
