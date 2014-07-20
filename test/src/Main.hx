@@ -39,6 +39,7 @@ class Main
 {
 	public static var beluga : Beluga;
 
+	public static var account : AccountTest;
 
 	static function main()
 	{
@@ -46,6 +47,7 @@ class Main
 
 		try {
 			beluga = Beluga.getInstance();
+			account = new AccountTest(beluga);
 			Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
 			beluga.cleanup();
 		} catch (e : BelugaException) {

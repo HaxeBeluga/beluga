@@ -162,7 +162,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doVotePage(args : {survey : SurveyModel}) {
-		if (Beluga.getInstance().getModuleInstance(Account).isLogged() == false) {
+		if (Beluga.getInstance().getModuleInstance(Account).isLogged == false) {
 			Web.setHeader("Content-Type", "text/plain");
 			Sys.println("Please log in !");
 			return;
@@ -194,7 +194,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doPrintPage(args : {survey : SurveyModel}) {
-		if (Beluga.getInstance().getModuleInstance(Account).isLogged() == false) {
+		if (Beluga.getInstance().getModuleInstance(Account).isLogged == false) {
 			Web.setHeader("Content-Type", "text/plain");
 			Sys.println("Please log in !");
 			return;

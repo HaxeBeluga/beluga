@@ -22,6 +22,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     private static inline var SESSION_USER = "session_user";
 	
 	public var trigger = new AccountTrigger();
+	public var widget = new AccountWidget();
 	
 	public var lastLoginError : Null<LastLoginErrorType> = null;
 	
@@ -49,7 +50,6 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             login : args.login,
             hashPassword: haxe.crypto.Md5.encode(args.password)
         });
-
         if (user.length > 1) {
             //Somethings wrong in database
 			trigger.loginInternalError.dispatch();

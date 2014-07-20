@@ -28,11 +28,11 @@ class Renderer
 			ctx.base_url = "";
 		var body = (new haxe.Template(Resource.getString(page))).execute(ctx);
 		/*
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 		var login = "";
 
 		if (user != null) {
-			login = "Logged as " + Beluga.getInstance().getModuleInstance(Account).getLoggedUser().login;
+			login = "Logged as " + Beluga.getInstance().getModuleInstance(Account).loggedUser.login;
 		}
 		*/
 		var templateheader = (new haxe.Template(Resource.getString("template_default_header"))).execute( {

@@ -41,7 +41,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
     }
 
     public function create(): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.global_error = "Vous devez etres identifie pour acceder au widget porte-feuille !";
             beluga.triggerDispatcher.dispatch("beluga_wallet_create_fail");
         } else { // get the logged user
@@ -69,7 +69,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
         var user_founds = 0.;
 
         // check if the user is logged
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.global_error = "Vous devez etres identifie pour acceder au widget porte-feuille !";
         } else { // get the logged user
             user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
@@ -106,7 +106,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
     // Return the context to display the admin widget
     public function getDisplayAdminContext(): Dynamic {
         // Check if user is logged to display the widget, if not set the global error
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.admin_global_error = "Vous devez etres identifie pour acceder a ce widget !";
         }
         // retrieve the currencys list
@@ -153,7 +153,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
     // Remove a currency using it id
     public function removeCurrency(args: { id: Int }): Void {
         // Only a logged user can remove a currency
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.admin_local_error = "Vous devez etre connecte pour realiser cette action !";
             beluga.triggerDispatcher.dispatch("beluga_wallet_remove_currency_fail");
         } else {
@@ -174,7 +174,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
     }
 
     public function setSiteCurrency(args: {id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.admin_local_error = "Vous devez etre connecte pour realiser cette action !";
             beluga.triggerDispatcher.dispatch("beluga_wallet_set_site_currency_fail");
         } else {

@@ -47,7 +47,7 @@ class WalletTest implements MetadataReader {
         walletWidget.context = this.wallet.getDisplayContext();
         var walletAdminWidget = this.wallet.getWidget("admin");
         walletAdminWidget.context = this.wallet.getDisplayAdminContext();
-        var has_wallet = if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        var has_wallet = if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
             1;
         } else {
             0;
@@ -63,7 +63,7 @@ class WalletTest implements MetadataReader {
     }
 
     public function doBuyCurrency() {
-        if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).loggedUser, 10.);
         }
 
