@@ -37,8 +37,9 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         Beluga.getInstance().getModuleInstance(Survey).delete(args);
     }
 
+
     public function delete(args : {survey_id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var nb = 0;
 
         if (user == null)
@@ -57,7 +58,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
 
     public function getSurveysList() : Array<SurveyData> {
 
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         var m_surveys = new Array<SurveyData>();
 
@@ -92,7 +93,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
     }
 
     public function getChoices(args : {survey_id : Int}) : Array<Choice> {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var arr = new Array<Choice>();
 
         if (user != null) {
@@ -119,7 +120,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         description : String,
         choices : Array<String>
     }) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null || args.choices == null || args.choices.length < 2 || args.title == "") {
             beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
@@ -169,7 +170,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         survey_id : Int,
         option : Int
     }) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         if (user == null) {
             this.redirect();
             return;
@@ -204,7 +205,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
 
 
     public function canVote(args : {survey_id : Int}) : Bool {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {

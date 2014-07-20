@@ -72,7 +72,7 @@ class NewsTest
 	}
 
 	public function doDefault() {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
 		var widget = news.getWidget("news");
 		var t_news = this.news.getAllNews();
@@ -102,7 +102,7 @@ class NewsTest
 	}
 
 	public function doPrint(args : {news_id : Int}) {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 		var news = NewsModel.manager.get(args.news_id);
 
 		if (news == null) {
@@ -134,7 +134,7 @@ class NewsTest
 	}
 
 	public function doRedirect() {
-		if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+		if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
 			error_msg = "Please log in !";
 			doDefault();
 			return;
@@ -156,7 +156,7 @@ class NewsTest
 	}
 
 	public function doRedirectEdit(args : {news_id : Int}) {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 		if (user == null) {
 			error_msg = "Please log in !";
 			doDefault();

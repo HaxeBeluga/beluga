@@ -45,7 +45,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doDefault() {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 		if (user == null) {
 			Web.setHeader("Content-Type", "text/plain");
 			Sys.println("Please log in !");
@@ -69,7 +69,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doRedirectPage() {
-		if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+		if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
 			Web.setHeader("Content-Type", "text/plain");
 			Sys.println("Please log in !");
 			return;
@@ -126,7 +126,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doCreatePage() {
-		if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+		if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
 			Web.setHeader("Content-Type", "text/plain");
 			Sys.println("Please log in !");
 			return;

@@ -45,7 +45,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
             this.global_error = "Vous devez etres identifie pour acceder au widget porte-feuille !";
             beluga.triggerDispatcher.dispatch("beluga_wallet_create_fail");
         } else { // get the logged user
-            var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+            var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
             var wallet = new WalletModel();
             wallet.wa_user_id = user.id;
             wallet.wa_fund = 0.;
@@ -72,7 +72,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal implements Metadat
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
             this.global_error = "Vous devez etres identifie pour acceder au widget porte-feuille !";
         } else { // get the logged user
-            user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+            user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         }
 
         // retrieve wallet informations if the user has a wallet

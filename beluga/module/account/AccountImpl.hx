@@ -12,24 +12,33 @@ import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
 import beluga.core.macro.MetadataReader;	
 
+enum LastLoginErrorType {
+	InternalError;
+	WrongLogin;
+}
+
 class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
 
     private static inline var SESSION_USER = "session_user";
 	
 	public var trigger = new AccountTrigger();
-
+	
+	public var lastLoginError : Null<LastLoginErrorType> = null;
+	
+	public var loggedUser(get, set) : User;
+	
+	public var isLogged(get, never) : Bool;
+	
 	public function new() {
 		super();
     }
 
 	override public function initialize(beluga : Beluga) {
-        trigger.login.add(this.login);
-		trigger.logout.add(this.logout);
 	}
 
     public function logout() : Void {
 		Session.remove(SESSION_USER);
-		beluga.triggerDispatcher.dispatch("beluga_account_logout", []);
+		trigger.afterLogout.dispatch();
     }
 
     public function login(args : {
@@ -43,19 +52,17 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
         if (user.length > 1) {
             //Somethings wrong in database
-            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
+			trigger.loginInternalError.dispatch();
         } else if (user.length == 0) {
             //login or password wrong
-            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
+            trigger.loginWrongPassword.dispatch();
         } else {
-            setLoggedUser(user.first());
-			trace(beluga);
-            beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
-                user.first()
-            ]);
+            loggedUser = user.first();
+			trigger.loginSuccess.dispatch();
         }
+		trigger.afterLogin.dispatch();
     }
-	
+
     private function subscribeCheckArgs(args : {
         login : String,
         password : String,
@@ -83,16 +90,6 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         return "";
     }
 
-    @bTrigger("beluga_account_subscribe")
-    public static function _subscribe(args : {
-        login : String,
-        password : String,
-        password_conf : String,
-        email : String
-    }) {
-        Beluga.getInstance().getModuleInstance(Account).subscribe(args);
-    }
-
     public function subscribe(args : {
         login : String,
         password : String,
@@ -109,14 +106,10 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             user.subscribeDateTime = Date.now();
             user.email = args.email;
             user.insert();
-            //TODO AB Send activation mail
-            beluga.triggerDispatcher.dispatch("beluga_account_subscribe_success", [
-                user
-            ]);
+			//TODO AB Send activation mail
+            trigger.subscribeSuccess.dispatch({user: user});
         } else {
-            beluga.triggerDispatcher.dispatch("beluga_account_subscribe_fail", [
-                error
-            ]);
+            trigger.subscribeFail.dispatch({error : error});
         }
     }
 
@@ -138,30 +131,20 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         user.update();
     }
 
-    public function setLoggedUser(user : User) : User {
+    public function set_loggedUser(user : User) : User {
         Session.set(SESSION_USER, user);
         return user;
     }
 
-    public function getLoggedUser() : User {
+    public function get_loggedUser() : User {
         return Session.get(SESSION_USER);
     }
 
-    public function isLogged() : Bool {
+    public function get_isLogged() : Bool {
         return Session.get(SESSION_USER) != null;
     }
 
-    public function _showUser(args: { id: Int}): Void {
-        Beluga.getInstance().getModuleInstance(Account).showUser(args);
-    }
-
-    public function showUser(args: { id: Int}): Void {
-        beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
-    }
-
-    public function edit(email : String) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
+    public function editEmail(user : User, email : String) : Void {
         if (user != null) {
             user.email = email;
             user.update();

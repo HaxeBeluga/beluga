@@ -27,39 +27,35 @@ class AccountTest implements MetadataReader
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
+		acc.trigger.loginSuccess.add(this.loginSuccess);
+		acc.trigger.loginInternalError.add(this.loginFail);
+		acc.trigger.loginWrongPassword.add(this.loginFail);
+		
+		acc.trigger.subscribeFail.add(this.subscribeFail);
+		acc.trigger.subscribeSuccess.add(this.subscribeSuccess);
+		
+		acc.trigger.afterLogout.add(this.logout);
     }
 
     /*
      * Logination
      */
-    @bTrigger("beluga_account_login_success")
-    public static function _loginSuccess(u:User) {
-        new AccountTest(Beluga.getInstance()).loginSuccess();
-    }
-
     public function loginSuccess() {
-        var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Authentification succeeded !"});
+        var html = Renderer.renderDefault("page_accueil", "Accueil", { success : "Authentification succeeded !" } );
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_account_login_fail")
-    public static function _loginFail() {
-        new AccountTest(Beluga.getInstance()).loginFail();
     }
 
     public function loginFail() {
         var widget = acc.getWidget("login");
-        widget.context = {error : "Invalid login and/or password"};
+        widget.context = {
+			error : "Invalid login and/or password",
+			account : acc
+		};
         var loginWidget = widget.render();
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget
         });
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_account_logout")
-    public static function _logout() {
-        new AccountTest(Beluga.getInstance()).logout();
     }
 
     public function logout() {
@@ -70,27 +66,17 @@ class AccountTest implements MetadataReader
     /*
      *  Subscription
      */
-    @bTrigger("beluga_account_subscribe_success")
-    public static function _subscribeSuccess(user : User) {
-        new AccountTest(Beluga.getInstance()).subscribeSuccess(user);
-    }
-
-    public function subscribeSuccess(user : User) {
+    public function subscribeSuccess(args : {user : User}) {
         var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Subscribe succeeded !"});
         Sys.print(html);
     }
 
-    @bTrigger("beluga_account_subscribe_fail")
-    public static function _subscribeFail(error : String) {
-        new AccountTest(Beluga.getInstance()).subscribeFail(error);
-    }
-
-    public function subscribeFail(error : String) {
+    public function subscribeFail(args : {error : String}) {
         var subscribeWidget = acc.getWidget("subscribe");
 
-        subscribeWidget.context = {error : error};
+        subscribeWidget.context = {error : args.error};
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
-            subscribeWidget: subscribeWidget.render(), error : error
+            subscribeWidget: subscribeWidget.render(), error : args.error
         });
         Sys.print(html);
     }

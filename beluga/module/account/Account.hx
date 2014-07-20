@@ -8,6 +8,10 @@ interface Account extends Module {
 	
 	public var trigger : AccountTrigger;
 
+	public var loggedUser(get, set) : User;
+	
+	public var isLogged(get, never) : Bool;	
+	
     public function subscribe(args : {
         login : String,
         password : String,
@@ -21,16 +25,8 @@ interface Account extends Module {
     }) : Void;
 
 	public function getUser(userId : SId) : User;
-	
-    public function showUser(args: { id: Int}): Void;
 
     public function logout() : Void;
 
-    public function setLoggedUser(user : User) : User;
-
-    public function getLoggedUser() : User;
-
-    public function isLogged() : Bool;
-
-    public function edit(email : String) : Void;
+    public function editEmail(user : User, email : String) : Void;
 }

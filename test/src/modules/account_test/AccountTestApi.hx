@@ -33,8 +33,10 @@ class AccountTestApi implements MetadataReader
 
 	public function doLoginPage() {
         var loginWidget = acc.getWidget("login");
-        loginWidget.context = {error : ""};
-
+        loginWidget.context = {
+			error : "",
+			account: acc
+		};
 		var html = Renderer.renderDefault("page_login", "Authentification", {
 			loginWidget: loginWidget.render()
 		});
@@ -75,11 +77,6 @@ class AccountTestApi implements MetadataReader
 		Sys.print(html);
 	}
 
-	@bTrigger("beluga_account_edit")
-	public static function _doEdit() {
-		new AccountTestApi(Beluga.getInstance()).doEdit();
-	}
-
 	public function doEdit() {
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
@@ -97,30 +94,14 @@ class AccountTestApi implements MetadataReader
 		Sys.print(html);
 	}
 
-	@bTrigger("beluga_account_save")
-	public static function _doSave(args : {email : String}) {
-		new AccountTestApi(Beluga.getInstance()).doSave(args);
-	}
-
 	public function doSave(args : {email : String}) {
-		this.acc.edit(args.email);
-	}
-
-	@bTrigger("beluga_account_edit_success")
-	public static function _doEditSuccess() {
-		new AccountTestApi(Beluga.getInstance()).doEditSuccess();
+		this.acc.editEmail(this.acc.getLoggedUser(), args.email);
 	}
 
 	public function doEditSuccess() {
 		var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Email address has been changed successfully", error : ""});
 		Sys.print(html);
 	}
-
-	@bTrigger("beluga_account_edit_fail")
-	public static function _doEditFail() {
-		new AccountTestApi(Beluga.getInstance()).doEditSuccess();
-	}
-
 	public function doEditFail() {
 		var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Error occurred when trying to change email address"});
 		Sys.print(html);

@@ -64,7 +64,7 @@ class WalletTest implements MetadataReader {
 
     public function doBuyCurrency() {
         if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).getLoggedUser(), 10.);
+            this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).loggedUser, 10.);
         }
 
         this.doTestPage();
