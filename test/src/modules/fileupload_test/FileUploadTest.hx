@@ -92,7 +92,7 @@ class FileUploadTest implements MetadataReader {
         var browseWidget = "";
         var fileUploadWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged()) {
-            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).getLoggedUser().login + "</strong></h2>";
+            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
             browseWidget = tmpBrowse.render();
@@ -116,7 +116,7 @@ class FileUploadTest implements MetadataReader {
         var browseWidget = "";
         var fileUploadWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged()) {
-            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).getLoggedUser().login + "</strong></h2>";
+            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
             browseWidget = tmpBrowse.render();

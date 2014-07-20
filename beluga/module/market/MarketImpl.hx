@@ -74,7 +74,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
         if (!beluga.getModuleInstance(Account).isLogged()) {
             this.cart_error = "You must be logged to access your cart";
         } else {
-            user_cart = this.getUserCart(beluga.getModuleInstance(Account).getLoggedUser());
+            user_cart = this.getUserCart(beluga.getModuleInstance(Account).loggedUser);
             for( c in user_cart ) {
                 total_price += c.product_total_price;
             }
@@ -102,7 +102,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
         if (beluga.getModuleInstance(Account).isLogged()) {
             switch (this.getProductFromId(args.id)) {
                 case Some(p): { // Le produit existe on l'insert dans le cart
-                    var user_id = beluga.getModuleInstance(Account).getLoggedUser().id;
+                    var user_id = beluga.getModuleInstance(Account).loggedUser.id;
                     switch (this.getCart(args.id, user_id)) {
                         case Some(cart): {
                             cart.ca_quantity += 1;
@@ -161,7 +161,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
     // FIXME: send the bought elements
     public function checkoutCart(): Void {
         if (beluga.getModuleInstance(Account).isLogged()) {
-            var user = beluga.getModuleInstance(Account).getLoggedUser();
+            var user = beluga.getModuleInstance(Account).loggedUser;
             var cart = Cart.manager.dynamicSearch( {} );
             for (c in cart) {
                 c.delete();

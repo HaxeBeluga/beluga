@@ -26,17 +26,19 @@ class Renderer
 			ctx.base_url = ConfigLoader.config.node.url.node.base.att.value;
 		else
 			ctx.base_url = "";
-		var accueil = (new haxe.Template(Resource.getString(page))).execute(ctx);
+		var body = (new haxe.Template(Resource.getString(page))).execute(ctx);
+		/*
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 		var login = "";
 
 		if (user != null) {
 			login = "Logged as " + Beluga.getInstance().getModuleInstance(Account).getLoggedUser().login;
 		}
+		*/
 		var templateheader = (new haxe.Template(Resource.getString("template_default_header"))).execute( {
 			base_url: ctx.base_url,
-			login: login,
-			user : user
+			//login: login,
+			//user : user
 		});
 		var templatefooter = (new haxe.Template(Resource.getString("template_default_footer"))).execute( {
 			base_url: ctx.base_url,
@@ -45,7 +47,7 @@ class Renderer
 			base_url: ctx.base_url,
 			header: templateheader,
 			footer: templatefooter,
-			content: accueil
+			content: body
 		});
 		var bodyhtml = (new haxe.Template(Resource.getString("html_body"))).execute({
 			base_url: ctx.base_url,

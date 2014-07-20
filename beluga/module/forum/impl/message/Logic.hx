@@ -28,7 +28,7 @@ class Logic {
         mess.title = args.title;
         mess.content = args.content;
         mess.creation_time = Date.now();
-        mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).getLoggedUser();
+        mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).loggedUser;
         mess.status = status;
         mess.tag = tag;
         mess.parent = null;
@@ -49,7 +49,7 @@ class Logic {
 
         mess.title = args.title;
         mess.content = args.content;
-        mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).getLoggedUser();
+        mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).loggedUser;
         mess.edition_time = Date.now();
 
         mess.update();

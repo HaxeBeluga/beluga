@@ -243,7 +243,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         } else {
             var message: Message = new Message();
             message.me_content = args.message;
-            message.me_us_id_author = account.getLoggedUser().id;
+            message.me_us_id_author = account.loggedUser.id;
             message.me_date_creation = Date.now();
             message.me_ti_id = args.id;
             message.insert();
@@ -287,7 +287,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
             this.error = "Your title cannot be empty !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
         } else {
-            ticket.ti_us_id = account.getLoggedUser().id;
+            ticket.ti_us_id = account.loggedUser.id;
             ticket.ti_date = Date.now();
             ticket.ti_title = args.title;
             ticket.ti_content = args.message;
@@ -303,7 +303,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
                 var args = {
                     title: "Ticket assignnment: " + args.title + " !",
                     text: "You've been assigned to the ticket number " + ticket_id + ", " +
-                    args.title + " by " + account.getLoggedUser().login +
+                    args.title + " by " + account.loggedUser.login +
                     " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" + ".",
                     user_id: assignement.as_us_id
                 };
