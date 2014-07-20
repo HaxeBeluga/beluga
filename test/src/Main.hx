@@ -51,13 +51,13 @@ class Main
 		Sys.print(beluga.getModuleInstance(Account).widget.loginForm.render());
 		beluga.cleanup();
 	}
-	
+
 	static function main()
 	{
 		Assets.build();
 
 		try {
-			var beluga = Beluga.getInstance();
+			beluga = Beluga.getInstance();
 			account = new AccountTest(beluga);
 			Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
 			beluga.cleanup();

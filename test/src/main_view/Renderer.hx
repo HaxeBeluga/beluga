@@ -22,23 +22,11 @@ class Renderer
 	 * Render a page with the default template
 	 */
 	public static function renderDefault(page : String, title: String, ctx : Dynamic) {
-		if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base && ConfigLoader.config.node.url.node.base.has.value)
-			ctx.base_url = ConfigLoader.config.node.url.node.base.att.value;
-		else
-			ctx.base_url = "";
+		ctx.base_url = ConfigLoader.getBaseUrl();
 		var body = (new haxe.Template(Resource.getString(page))).execute(ctx);
-		/*
-		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-		var login = "";
-
-		if (user != null) {
-			login = "Logged as " + Beluga.getInstance().getModuleInstance(Account).loggedUser.login;
-		}
-		*/
 		var templateheader = (new haxe.Template(Resource.getString("template_default_header"))).execute( {
 			base_url: ctx.base_url,
-			//login: login,
-			//user : user
+			user : Beluga.getInstance().getModuleInstance(Account).loggedUser
 		});
 		var templatefooter = (new haxe.Template(Resource.getString("template_default_footer"))).execute( {
 			base_url: ctx.base_url,
