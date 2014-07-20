@@ -88,7 +88,7 @@ class AccountTest implements MetadataReader
 
     @bTrigger("beluga_account_show_user")
     public function printCustomUserInfo(args: { id: Int }) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : ""});

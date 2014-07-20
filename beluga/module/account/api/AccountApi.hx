@@ -42,7 +42,7 @@ class AccountApi  {
 
     public function doEdit(args : {?email : String}) {
         if (args.email != null) {
-			module.editEmail(module.getLoggedUser(), args.email);
+			module.editEmail(module.loggedUser, args.email);
 		}
     }
 

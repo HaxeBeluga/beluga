@@ -55,7 +55,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     }
 
     public function edit(args : {news_id : Int, title : String, text : String}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             beluga.triggerDispatcher.dispatch("beluga_news_edit_fail", [{news_id : args.news_id, error : "Please login before edit this news"}]);
@@ -76,7 +76,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     }
 
     public function addComment(args : {news_id : Int, text : String}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id} )) {
@@ -99,7 +99,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     }
 
     public function deleteComment(args : {news_id : Int, comment_id : Int}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id, user_id : user.id} )) {
@@ -134,7 +134,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     }
 
     public function delete(args : {news_id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id, user_id : user.id} )) {
@@ -155,7 +155,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     }
 
     public function create(args : {title : String, text : String}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null || args.title == "" || args.text == "") {
             if (user == null)

@@ -44,7 +44,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         var files: List<Dynamic> = new List<Dynamic>();
         var user_id: Int = 0;
 
-        if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
             user_id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
             files = this.getUserFileList(user_id);
         } else {
@@ -91,7 +91,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function send(): Void{
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
             return;
         }
@@ -123,7 +123,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function delete(args: { id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
             return;
         } else {
@@ -162,7 +162,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function addextension(args: { name: String }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = "You must be logged to access this section";
         } else if (args.name == "") {
             this.error = "The field is empty";
@@ -188,7 +188,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function deleteextension(args: { id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = "You must be logged to access this section";
         } else {
             var ext = null;

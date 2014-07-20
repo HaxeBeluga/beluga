@@ -33,12 +33,8 @@ class AccountTestApi implements MetadataReader
 
 	public function doLoginPage() {
         var loginWidget = acc.getWidget("login");
-        loginWidget.context = {
-			error : "",
-			account: acc
-		};
 		var html = Renderer.renderDefault("page_login", "Authentification", {
-			loginWidget: loginWidget.render()
+			loginWidget: acc.widget.loginForm.render()
 		});
 		Sys.print(html);
 	}
@@ -52,7 +48,7 @@ class AccountTestApi implements MetadataReader
 	}
 
 	public function doPrintInfo() {
-		var user = this.acc.getLoggedUser();
+		var user = this.acc.loggedUser;
 
 		if (user == null) {
 			var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : ""});
@@ -78,7 +74,7 @@ class AccountTestApi implements MetadataReader
 	}
 
 	public function doEdit() {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
 		if (user == null) {
 			var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
@@ -95,7 +91,7 @@ class AccountTestApi implements MetadataReader
 	}
 
 	public function doSave(args : {email : String}) {
-		this.acc.editEmail(this.acc.getLoggedUser(), args.email);
+		this.acc.editEmail(this.acc.loggedUser, args.email);
 	}
 
 	public function doEditSuccess() {

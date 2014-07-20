@@ -20,7 +20,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 
     public function getNotifications() : Array<NotificationModel> {
         var ret = new Array<NotificationModel>();
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id} ))
@@ -34,7 +34,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
     }
 
     public function print(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : null}]);
@@ -55,7 +55,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
     }
 
     public function delete(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);

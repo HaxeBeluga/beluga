@@ -11,18 +11,18 @@ import beluga.module.account.model.User;
 class AccountTrigger
 {
 	//Login
-	public var loginInternalError : TriggerVoid;
-	public var loginWrongPassword : TriggerVoid;
-	public var loginSuccess : TriggerVoid;
-	public var afterLogin : TriggerVoid;
+	public var loginInternalError = new TriggerVoid();
+	public var loginWrongPassword = new TriggerVoid();
+	public var loginSuccess = new TriggerVoid();
+	public var afterLogin = new TriggerVoid();
 	
 	//Logout
-	public var afterLogout: TriggerVoid;
+	public var afterLogout = new TriggerVoid();
 
 	//subscribe
-	public var subscribeFail: Trigger<{error : String}>;
-	public var subscribeSuccess: Trigger<{user : User}>;
-	public var afterSubscribe: TriggerVoid;
+	public var subscribeFail = new Trigger<{error : String}>();
+	public var subscribeSuccess = new Trigger<{user : User}>();
+	public var afterSubscribe = new TriggerVoid();
 	
 	public function new()
 	{

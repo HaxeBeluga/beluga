@@ -91,7 +91,7 @@ class FileUploadTest implements MetadataReader {
         var contextMsg = "";
         var browseWidget = "";
         var fileUploadWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
@@ -115,7 +115,7 @@ class FileUploadTest implements MetadataReader {
         var contextMsg = this.createErrorMsg("Vous devez vous logger pour acceder a cette page !");
         var browseWidget = "";
         var fileUploadWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
@@ -139,7 +139,7 @@ class FileUploadTest implements MetadataReader {
     public function doAdminPage() {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var adminWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>";
             var tmpWidget = file_upload.getWidget("admin");
             tmpWidget.context = file_upload.getAdminContext();
@@ -162,7 +162,7 @@ class FileUploadTest implements MetadataReader {
     public function doAdminPageFail() {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var adminWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>";
             var tmpWidget = file_upload.getWidget("admin");
             tmpWidget.context = file_upload.getAdminContext();
@@ -185,7 +185,7 @@ class FileUploadTest implements MetadataReader {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var browseWidget = "";
         var fileUploadWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>" + this.createErrorMsg(args.reason);
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
