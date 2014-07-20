@@ -60,6 +60,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             loggedUser = user.first();
 			trigger.loginSuccess.dispatch();
         }
+		trace("Log in");
 		trigger.afterLogin.dispatch();
     }
 
