@@ -34,7 +34,7 @@ class AccountTestApi implements MetadataReader
 	public function doLoginPage() {
         var loginWidget = acc.getWidget("login");
 		var html = Renderer.renderDefault("page_login", "Authentification", {
-			loginWidget: acc.widget.loginForm.render()
+			loginWidget: acc.widgets.loginForm.render()
 		});
 		Sys.print(html);
 	}
