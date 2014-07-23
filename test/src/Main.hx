@@ -48,7 +48,7 @@ class Main
 		Assets.build();
 		var beluga = Beluga.getInstance();
 		Dispatch.run(beluga.getDispatchUri(), Web.getParams(), beluga.api);
-		Sys.print(beluga.getModuleInstance(Account).widget.loginForm.render());
+		Sys.print(beluga.getModuleInstance(Account).widgets.loginForm.render());
 		beluga.cleanup();
 	}
 

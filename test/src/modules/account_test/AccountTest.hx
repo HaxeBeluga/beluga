@@ -27,14 +27,14 @@ class AccountTest implements MetadataReader
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
-		acc.trigger.loginSuccess.add(this.loginSuccess);
-		acc.trigger.loginInternalError.add(this.loginFail);
-		acc.trigger.loginWrongPassword.add(this.loginFail);
+		acc.triggers.loginSuccess.add(this.loginSuccess);
+		acc.triggers.loginInternalError.add(this.loginFail);
+		acc.triggers.loginWrongPassword.add(this.loginFail);
 		
-		acc.trigger.subscribeFail.add(this.subscribeFail);
-		acc.trigger.subscribeSuccess.add(this.subscribeSuccess);
+		acc.triggers.subscribeFail.add(this.subscribeFail);
+		acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
 		
-		acc.trigger.afterLogout.add(this.logout);
+		acc.triggers.afterLogout.add(this.logout);
     }
 
     /*

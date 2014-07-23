@@ -6,9 +6,9 @@ import sys.db.Types.SId;
 
 interface Account extends Module {
 	
-	public var trigger : AccountTrigger;
+	public var triggers : AccountTrigger;
 	
-	public var widget : AccountWidget;
+	public var widgets : AccountWidget;
 
 	public var loggedUser(get, set) : User;
 	

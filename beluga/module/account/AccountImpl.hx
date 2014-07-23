@@ -21,8 +21,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
     private static inline var SESSION_USER = "session_user";
 	
-	public var trigger = new AccountTrigger();
-	public var widget = new AccountWidget();
+	public var triggers = new AccountTrigger();
+	public var widgets = new AccountWidget();
 	
 	public var lastLoginError : Null<LastLoginErrorType> = null;
 	
@@ -39,7 +39,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
     public function logout() : Void {
 		Session.remove(SESSION_USER);
-		trigger.afterLogout.dispatch();
+		triggers.afterLogout.dispatch();
     }
 
     public function login(args : {
@@ -52,16 +52,15 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         });
         if (user.length > 1) {
             //Somethings wrong in database
-			trigger.loginInternalError.dispatch();
+			triggers.loginInternalError.dispatch();
         } else if (user.length == 0) {
             //login or password wrong
-            trigger.loginWrongPassword.dispatch();
+            triggers.loginWrongPassword.dispatch();
         } else {
             loggedUser = user.first();
-			trigger.loginSuccess.dispatch();
+			triggers.loginSuccess.dispatch();
         }
-		trace("Log in");
-		trigger.afterLogin.dispatch();
+		triggers.afterLogin.dispatch();
     }
 
     private function subscribeCheckArgs(args : {
@@ -108,9 +107,9 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             user.email = args.email;
             user.insert();
 			//TODO AB Send activation mail
-            trigger.subscribeSuccess.dispatch({user: user});
+            triggers.subscribeSuccess.dispatch({user: user});
         } else {
-            trigger.subscribeFail.dispatch({error : error});
+            triggers.subscribeFail.dispatch({error : error});
         }
     }
 
