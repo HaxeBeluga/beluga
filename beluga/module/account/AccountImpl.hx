@@ -11,11 +11,10 @@ import beluga.module.account.model.User;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
 import beluga.core.macro.MetadataReader;	
-
-enum LastLoginErrorType {
-	InternalError;
-	WrongLogin;
-}
+import beluga.core.validation.AttrValidator;
+import beluga.core.validation.SimpleValidator;
+import beluga.core.validation.Validator;
+import beluga.core.form.DataChecker;
 
 class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
 
@@ -23,8 +22,6 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 	
 	public var triggers = new AccountTrigger();
 	public var widgets : AccountWidget;
-	
-	public var lastLoginError : Null<LastLoginErrorType> = null;
 	
 	public var loggedUser(get, set) : User;
 	
@@ -47,57 +44,65 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         login : String,
         password : String
     }) {
-        var user : List<User> = User.manager.dynamicSearch({
-            login : args.login,
-            hashPassword: haxe.crypto.Md5.encode(args.password)
-        });
-        if (user.length > 1) {
-            //Somethings wrong in database
-			triggers.loginInternalError.dispatch();
-        } else if (user.length == 0) {
-            //login or password wrong
-            triggers.loginWrongPassword.dispatch();
-        } else {
-            loggedUser = user.first();
-			triggers.loginSuccess.dispatch();
-        }
+		if (loginValidation(args)) {
+			//Execute Action
+			var user : List<User> = User.manager.dynamicSearch({
+				login : args.login,
+				hashPassword: haxe.crypto.Md5.encode(args.password)
+			});
+
+			if (user.length > 1) {
+				//Somethings wrong in database
+				widgets.loginForm.globalErrorKey = "loginForm.error.internalError";
+				triggers.loginInternalError.dispatch();
+			} else if (user.length == 0) {
+				widgets.loginForm.globalErrorKey = "loginForm.error.wrongPassword";
+				triggers.loginWrongPassword.dispatch();
+			} else {
+				loggedUser = user.first();
+				widgets.loginForm.globalSuccessKey = "loginForm.success";
+				triggers.loginSuccess.dispatch();
+			}
+		}
 		triggers.afterLogin.dispatch();
     }
 
-    private function subscribeCheckArgs(args : {
+	public function loginValidation(args : {
         login : String,
-        password : String,
-        password_conf : String,
-        email : String
-    }) : String {
-
-        if (args.login == "") {
-            return "invalid login";
-        }
-        if (args.password == "" || args.password_conf == "") {
-            return "missing password";
-        }
-        if (args.password != args.password_conf) {
-            return "passwords don't match";
-        }
-
-        for (tmp in User.manager.dynamicSearch( {login : args.login} )) {
-            return "login already used";
-        }
-        //TODO: place user form validation here
-        //Also validate that the user is unique with something like this
-        //User.manager.dynamicSearch({login : args.login, hashPassword: ahaxe.crypto.Md5.encode(args.password).first() != null;
-
-        return "";
-    }
-
+        password : String
+    }) {
+		//Form validation
+		var validatorForm = new SimpleValidator();
+		
+		var pwdValidator = new AttrValidator(validatorForm, args.password, [
+			"pwd.sizeBetween" => DataChecker.checkRangeLength.bind(_ , 2, 255),
+			"pwd.notNullOrEmpty" => DataChecker.isNotBlanckOrNull
+		]);
+		
+		var loginValidator = new AttrValidator(validatorForm, args.login, [
+			"login.sizeBetween" => DataChecker.checkRangeLength.bind(_, 2, 255),
+			"login.notNullOrEmpty" => DataChecker.isNotBlanckOrNull
+		]);	
+		
+		var errorList = validatorForm.validate();
+		
+		//Update widget
+		if (errorList.length != 0) {
+			widgets.loginForm.loginErrorKeys = loginValidator.validate();
+			widgets.loginForm.passwordErrorKeys = pwdValidator.validate();
+			triggers.loginValidationError.dispatch();
+			return false;
+		}
+		return true;
+	}
+	
     public function subscribe(args : {
         login : String,
         password : String,
         password_conf : String,
         email : String
     }) {
-        var error = subscribeCheckArgs(args);
+        var error = "";
         if (error == "") {
             var user = new User();
             user.login = args.login;

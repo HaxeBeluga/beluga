@@ -30,6 +30,7 @@ class AccountTest implements MetadataReader
 		acc.triggers.loginSuccess.add(this.loginSuccess);
 		acc.triggers.loginInternalError.add(this.loginFail);
 		acc.triggers.loginWrongPassword.add(this.loginFail);
+		acc.triggers.loginValidationError.add(this.loginFail);
 		
 		acc.triggers.subscribeFail.add(this.subscribeFail);
 		acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
@@ -41,19 +42,15 @@ class AccountTest implements MetadataReader
      * Logination
      */
     public function loginSuccess() {
-        var html = Renderer.renderDefault("page_accueil", "Accueil", { success : "Authentification succeeded !" } );
+        var html = Renderer.renderDefault("page_login", "Authentification", {
+            loginWidget: acc.widgets.loginForm.render()
+        });
         Sys.print(html);
     }
 
     public function loginFail() {
-        var widget = acc.getWidget("login");
-        widget.context = {
-			error : "Invalid login and/or password",
-			account : acc
-		};
-        var loginWidget = widget.render();
         var html = Renderer.renderDefault("page_login", "Authentification", {
-            loginWidget: loginWidget
+            loginWidget: acc.widgets.loginForm.render()
         });
         Sys.print(html);
     }

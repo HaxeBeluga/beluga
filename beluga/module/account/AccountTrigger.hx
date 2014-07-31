@@ -11,6 +11,7 @@ import beluga.module.account.model.User;
 class AccountTrigger
 {
 	//Login
+	public var loginValidationError = new TriggerVoid();
 	public var loginInternalError = new TriggerVoid();
 	public var loginWrongPassword = new TriggerVoid();
 	public var loginSuccess = new TriggerVoid();

@@ -27,32 +27,44 @@ class DataChecker {
     }
 
     public static function checkMinLength(form_value : String, min_length : Int) : Bool {
-        return (form_value.length >= min_length);
+	return (form_value.length >= min_length) || isBlanckOrNull(form_value);
     }
 
     public static function checkMaxLength(form_value : String, max_length : Int) : Bool {
-        return (form_value.length <= max_length);
+        return (form_value.length <= max_length) || isBlanckOrNull(form_value);
     }
 
     public static function checkRangeLength(form_value : String, min_length : Int, max_length : Int) : Bool {
-        return (checkMinLength(form_value, min_length) == true && checkMaxLength(form_value, max_length) == true);
+        return (checkMinLength(form_value, min_length) == true && checkMaxLength(form_value, max_length) == true) || isBlanckOrNull(form_value);
     }
 
     public static function checkEqualLength(form_value : String, length : Int) : Bool {
-        return (form_value.length == length);
+        return (form_value.length == length) || isBlanckOrNull(form_value);
     }
 
     public static function checkMatch(form_value : String, pattern : EReg) : Bool {
-        return (pattern.match(form_value));
+        return (pattern.match(form_value)) || isBlanckOrNull(form_value);
     }
 
     @generic
     public static function checkEqualTo<FormDataType>(field : FormDataType, field_bis : FormDataType) : Bool {
-        return (field == field_bis);
+        return (field == field_bis) || isBlanckOrNull(field);
     }
 
     @generic
     public static function checkAlter<FormDataType>(field : FormDataType, alter_func : FormDataType -> Bool) : Bool {
-        return (alter_func(field));
+        return (alter_func(field))|| isBlanckOrNull(field);
     }
+
+	public static function isNotBlanckOrNull(o : Dynamic) {
+		if (Std.is(o, String)) {
+			return o != null && o.length != 0;
+		}
+		return o != null;
+	}
+	
+	public static function isBlanckOrNull(o : Dynamic) {
+		return !isNotBlanckOrNull(o);
+	}
+
 }

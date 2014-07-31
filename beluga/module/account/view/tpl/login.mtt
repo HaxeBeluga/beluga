@@ -1,9 +1,14 @@
 <div class="beluga account login" id="beluga_::_id::">
 	<h1>Connectez vous</h1>
-	::if (error)::
-	::if (error != "")::
-		<div class="alert alert-danger">::error::</div>
+	::if (globalErrorKey)::
+		::if (globalErrorKey != "")::
+			<div class="alert alert-danger">::globalErrorKey::</div>
+		::end::
 	::end::
+	::if (globalSuccessKey)::
+		::if (globalSuccessKey != "")::
+			<div class="alert alert-success">::globalSuccessKey::</div>
+		::end::
 	::end::
 	<br/>
 	::if (!isLogged)::
@@ -14,6 +19,13 @@
 			<div class="col-sm-6">
 				<input type="text" name="login" class="form-control" placeholder="Identifiant"/>
 			</div>
+			<ul>
+			::if loginErrorKeys::
+			::foreach loginErrorKeys::
+				<li>::__current__::</li>
+			::end::
+			::end::
+			</ul>
 		</div>
 		
 		<div class="form-group">
@@ -21,6 +33,13 @@
 			<div class="col-sm-6">
 				<input type="password" class="form-control" name="password" placeholder="Mot de passe"/>
 			</div>
+			<ul>
+			::if passwordErrorKeys::
+			::foreach passwordErrorKeys::
+				<li>::__current__::</li>
+			::end::
+			::end::
+			</ul>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-2">
