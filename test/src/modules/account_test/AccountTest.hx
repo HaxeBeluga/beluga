@@ -72,11 +72,9 @@ class AccountTest implements MetadataReader
     }
 
     public function subscribeFail(args : {error : String}) {
-        var subscribeWidget = acc.getWidget("subscribe");
-
-        subscribeWidget.context = {error : args.error};
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
-            subscribeWidget: subscribeWidget.render(), error : args.error
+            subscribeWidget: acc.widgets.subscribeForm.render(),
+			error : args.error
         });
         Sys.print(html);
     }

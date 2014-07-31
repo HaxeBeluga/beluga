@@ -4,9 +4,9 @@ package beluga.core.widget;
  * ...
  * @author brissa_A
  */
-interface Widget<T>
+interface Widget
 {
 
-	public function render(var ctx : T);
+	public function render() : String;
 	
 }

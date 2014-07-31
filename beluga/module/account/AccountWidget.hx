@@ -1,5 +1,6 @@
 package beluga.module.account;
 import beluga.module.account.widget.LoginForm;
+import beluga.module.account.widget.SubscribeForm;
 
 /**
  * ...
@@ -8,6 +9,8 @@ import beluga.module.account.widget.LoginForm;
 class AccountWidget
 {
 	public var loginForm = new LoginForm();
+	
+	public var subscribeForm  = new SubscribeForm();
 	
 	public function new() 
 	{
