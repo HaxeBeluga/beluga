@@ -9,22 +9,22 @@ import beluga.module.account.Account;
  * ...
  * @author brissa_A
  */
-class LoginForm extends MttWidget
+ 
+class SubscribeForm extends MttWidget
 {
 	var acc : Account;
 	
-	public function new (mttfile = "beluga_account_login.mtt") {
+	public function new (mttfile = "beluga_account_subscribe.mtt") {
 		super(mttfile);
 		acc = Beluga.getInstance().getModuleInstance(Account);
 	}
 	
 	override private function getContext() {
 		var context = {
-			isLogged : acc.isLogged,
-			loggedUser : acc.loggedUser,
 			base_url : ConfigLoader.getBaseUrl(),
-			id: MttWidget.id++
+			id: MttWidget.id++,
 		};
 		return context;
 	}
+
 }

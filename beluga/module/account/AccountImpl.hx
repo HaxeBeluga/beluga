@@ -22,7 +22,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     private static inline var SESSION_USER = "session_user";
 	
 	public var triggers = new AccountTrigger();
-	public var widgets = new AccountWidget();
+	public var widgets : AccountWidget;
 	
 	public var lastLoginError : Null<LastLoginErrorType> = null;
 	
@@ -35,6 +35,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
 	override public function initialize(beluga : Beluga) {
+		this.widgets = new AccountWidget();
 	}
 
     public function logout() : Void {

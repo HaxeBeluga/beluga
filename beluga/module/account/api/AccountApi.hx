@@ -33,7 +33,7 @@ class AccountApi  {
         password_conf : String,
         email : String
     }) {
-       beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args]);
+       module.subscribe(args);
     }
 
     public function doDefault() {
