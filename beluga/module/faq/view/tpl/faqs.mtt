@@ -1,0 +1,40 @@
+<div>
+	<h1 class="center">Faq's categories list</h1><br/>
+	::if (error)::
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
+	::if (success)::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	::end::
+	<div class="container">
+		::if (faqs.categories.length > 0)::
+		<ul>
+			::foreach faqs.categories::
+	        <li>
+	          	<div id="::id::">
+	          		<a href="::base_url::::path::print_category?id=::id::" class="btn btn-primary">::name::</a>
+	          	</div>
+	        </li>
+	        ::end::
+	    </ul>
+	    ::end::
+	    ::if (faqs.faqs.length > 0)::
+	    <ul>
+			::foreach faqs.faqs::
+	        <li>
+	          	<div>
+	          		<h1>::question::</h1>
+	          		<p>::answer::</p>
+	          	</div>
+	        </li>
+	        ::end::
+	    </ul>
+	    ::end::
+	</div>
+	<a href="::base_url::::path::redirectCreateCategory?category_id=::id::" class="btn btn-primary">Create new category</a>
+	<a href="::base_url::::path::redirectCreateFaq?category_id=::id::" class="btn btn-primary">Create new FAQ entry</a>
+</div>
