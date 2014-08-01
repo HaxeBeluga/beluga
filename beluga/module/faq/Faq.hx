@@ -20,4 +20,5 @@ interface Faq extends Module
     public function editFAQ(args : {question_id: Int, question : String, answer : String}) : Void;
     public function getAllFromCategory(category_id: Int) : CategoryData;
     public function getAllCategories() : Array<CategoryModel>;
+    public function getCategory(category_id : Int) : CategoryModel;
 }

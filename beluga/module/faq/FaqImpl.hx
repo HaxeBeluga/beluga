@@ -18,6 +18,13 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
 
     override public function loadConfig(data : Fast) {}
 
+    public function getCategory(category_id : Int) : CategoryModel {
+        for (tmp in CategoryModel.manager.dynamicSearch( { id: category_id} )) {
+            return tmp;
+        }
+        return null;
+    }
+
     public function getAllCategories() : Array<CategoryModel> {
         var ret = new Array<CategoryModel>();
 
@@ -45,12 +52,19 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function createFAQ(args : {question : String, answer : String, category_id : Int}) {
-        if (args.question == "" || args.answer == "") {
-            beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail", [{error_msg : "Incomplete question and or answer"}]);
+        if (args.question == "") {
+            beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail",
+            [{error_msg : "Incomplete question", question: args.question, answer: args.answer, id: args.category_id}]);
+            return;
+        }
+        if (args.answer == "") {
+            beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail",
+            [{error_msg : "Incomplete answer", question: args.question, answer: args.answer, id: args.category_id}]);
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-            beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail", [{error_msg : "You need to be logged"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail",
+            [{error_msg : "You need to be logged", question: args.question, answer: args.answer, id: args.category_id}]);
             return;
         }
         if (args.category_id != -1) {
@@ -61,14 +75,16 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
                 break;
             }
             if (false == found) {
-                beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail", [{error_msg : "Unknow category"}]);
+                beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail",
+                [{error_msg : "Unknow category", question: args.question, answer: args.answer, id: args.category_id}]);
                 return;
             }
         }
 
         for (tmp in FaqModel.manager.dynamicSearch( { category_id: args.category_id } )) {
             if (tmp.question == args.question) {
-                beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail", [{error_msg : "Another entry already treats this question"}]);
+                beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail",
+                [{error_msg : "Another entry already treats this question", question: args.question, answer: args.answer, id: args.category_id}]);
                 return;
             }
         }
@@ -81,7 +97,6 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_success", [{id: args.category_id}]);
     }
 
-    @bTrigger("beluga_faq_create")
     public static function _createCategory(args : {name : String, parent: Int}) {
         Beluga.getInstance().getModuleInstance(Faq).createCategory(args);
     }
@@ -95,21 +110,19 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "You need to be logged", id: args.parent}]);
             return;
         }
-        if (args.parent != -1) {
-            var found = false;
+        var found = false;
 
-            for (tmp in CategoryModel.manager.dynamicSearch( { category_id: args.parent} )) {
-                if (tmp.name == args.name) {
-                    beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Another category already has this name", id: args.parent}]);
-                    return;
-                }
-                found = true;
-                break;
-            }
-            if (found = false) {
-                beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Invalid parent id", id: args.parent}]);
+        for (tmp in CategoryModel.manager.dynamicSearch( { parent_id: args.parent} )) {
+            if (tmp.name == args.name) {
+                beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Another category already has this name", id: args.parent}]);
                 return;
             }
+            found = true;
+            break;
+        }
+        if (found == false) {
+            beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Invalid parent id", id: args.parent}]);
+            return;
         }
         var entry = new CategoryModel();
 

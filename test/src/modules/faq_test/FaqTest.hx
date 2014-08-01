@@ -47,17 +47,24 @@ class FaqTest
         doPrint({category_id: -1});
     }
 
-    @bTrigger("beluga_print_category")
-    public static function _doPrint(args : {category_id : Int}) {
-        new FaqTest(Beluga.getInstance()).doPrint(args);
-    }
-
     public function doPrint(args : {category_id : Int}) {
         var data = faq.getAllFromCategory(args.category_id);
         var widget = this.faq.getWidget("faqs");
 
-        widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                            error : error_msg, success : success_msg, id : args.category_id };
+        if (args.category_id == -1) {
+            widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
+                                error : error_msg, success : success_msg, id : args.category_id };
+        } else {
+            var cat = faq.getCategory(args.category_id);
+
+            if (cat == null) {
+                widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
+                                error : error_msg, success : success_msg, id : args.category_id };
+            } else {
+                widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
+                                error : error_msg, success : success_msg, id : args.category_id, category_name: cat.name };
+            }
+        }
 
         var faqWidget = widget.render();
 
@@ -65,11 +72,6 @@ class FaqTest
             faqWidget: faqWidget
         });
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_faq_redirectCreateCategory")
-    public static function _doRedirectCreateCategory(args : {category_id : Int}) {
-        new FaqTest(Beluga.getInstance()).doRedirectCreateCategory(args);
     }
 
     public function doRedirectCreateCategory(args : {category_id : Int}) {
@@ -85,9 +87,17 @@ class FaqTest
         Sys.print(html);
     }
 
-    @bTrigger("beluga_faq_createCategory")
-    public static function _doCreateCategory(args : {name : String, parent : Int}) {
-        new FaqTest(Beluga.getInstance()).doCreateCategory(args);
+    public function doRedirectCreateFAQ(args : {category_id : Int}) {
+        var widget = this.faq.getWidget("create_faq");
+
+        widget.context = {path : "/faqTest/", error : error_msg, success : success_msg, parent : args.category_id };
+
+        var faqWidget = widget.render();
+
+        var html = Renderer.renderDefault("page_faq", "FAQ", {
+            faqWidget: faqWidget
+        });
+        Sys.print(html);
     }
 
     public function doCreateCategory(args : {name : String, parent : Int}) {
@@ -100,7 +110,7 @@ class FaqTest
     }
 
     public function doCreateCategorySuccess(args : {id : Int}) {
-        success_msg = "Comment has been created successfully";
+        success_msg = "Category has been created successfully";
         this.doPrint({category_id : args.id});
     }
 
@@ -110,10 +120,36 @@ class FaqTest
     }
 
     public function doCreateCategoryFail(args : {error_msg : String, id: Int}) {
-        success_msg = "Comment has been created successfully";
-        var widget = this.faq.getWidget("create_category");
+        error_msg = args.error_msg;
+        doRedirectCreateCategory({category_id: args.id});
+    }
 
-        widget.context = {path : "/faqTest/", error : error_msg, success : success_msg, parent : args.id };
+
+    public function doCreateFAQ(args : {question : String, answer : String, parent : Int}) {
+        this.faq.createFAQ({question : args.question, answer: args.answer, category_id: args.parent});
+    }
+
+    @bTrigger("beluga_faq_createFAQ_success")
+    public static function _doCreateFAQSuccess(args : {id : Int}) {
+        new FaqTest(Beluga.getInstance()).doCreateFAQSuccess(args);
+    }
+
+    public function doCreateFAQSuccess(args : {id : Int}) {
+        success_msg = "FAQ entry has been created successfully";
+        this.doPrint({category_id : args.id});
+    }
+
+    @bTrigger("beluga_faq_createFAQ_fail")
+    public static function _doCreateFAQFail(args : {error_msg : String, question: String, answer: String, id: Int}) {
+        new FaqTest(Beluga.getInstance()).doCreateFAQFail(args);
+    }
+
+    public function doCreateFAQFail(args : {error_msg : String, question: String, answer: String, id: Int}) {
+        error_msg = args.error_msg;
+        var widget = this.faq.getWidget("create_faq");
+
+        widget.context = {path : "/faqTest/", error : error_msg, success : success_msg, parent : args.id,
+            question : args.question, answer: args.answer };
 
         var faqWidget = widget.render();
 
