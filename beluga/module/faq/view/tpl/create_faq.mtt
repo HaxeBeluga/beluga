@@ -24,5 +24,6 @@
 		<input type="submit" class="btn btn-primary" value="Create"/>
 	</form>
 	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::print?id=::parent::">Go back</a>
 	<a class="btn btn-primary" href="::base_url::::path::">Go back to FAQ categories list</a>
 </div>

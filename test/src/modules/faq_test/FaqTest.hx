@@ -48,21 +48,27 @@ class FaqTest implements MetadataReader
     }
 
     public function doPrint(args : {id : Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var data = faq.getAllFromCategory(args.id);
+        var cat = faq.getCategory(args.id);
         var widget = this.faq.getWidget("faqs");
+        var parent_id = -1;
 
+        if (cat != null) {
+            parent_id = cat.parent_id;
+        }
         if (args.id == -1) {
-            widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                                error : error_msg, success : success_msg, id : args.id };
+            widget.context = {faqs : data, categories : data.categories, path : "/faqTest/", parent_id : parent_id,
+                                error : error_msg, success : success_msg, actual_id : args.id, user : user };
         } else {
             var cat = faq.getCategory(args.id);
 
             if (cat == null) {
-                widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                                error : error_msg, success : success_msg, id : args.id };
+                widget.context = {faqs : data, categories : data.categories, path : "/faqTest/", parent_id : parent_id,
+                                error : error_msg, success : success_msg, actual_id : args.id, user : user };
             } else {
-                widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                                error : error_msg, success : success_msg, id : args.id, category_name: cat.name };
+                widget.context = {faqs : data, categories : data.categories, path : "/faqTest/", user : user, parent_id : parent_id,
+                                error : error_msg, success : success_msg, actual_id : args.id, category_name: cat.name };
             }
         }
 
@@ -157,5 +163,139 @@ class FaqTest implements MetadataReader
             faqWidget: faqWidget
         });
         Sys.print(html);
+    }
+
+    public function doDeleteFAQ(args : {id: Int, category_id: Int}) {
+        this.faq.deleteFAQ({question_id: args.id, category_id: args.category_id});
+    }
+
+    @bTrigger("beluga_faq_deleteFAQ_fail")
+    public static function _doDeleteFAQFail(args : {id : Int, error: String}) {
+        new FaqTest(Beluga.getInstance()).doDeleteFAQFail(args);
+    }
+
+    public function doDeleteFAQFail(args : {id : Int, error: String}) {
+        error_msg = args.error;
+        doPrint({id: args.id});
+    }
+
+    @bTrigger("beluga_faq_deleteFAQ_success")
+    public static function _doDeleteFAQSuccess(args : {id : Int, error: String}) {
+        new FaqTest(Beluga.getInstance()).doDeleteFAQSuccess(args);
+    }
+
+    public function doDeleteFAQSuccess(args : {id : Int, error: String}) {
+        success_msg = "FAQ entry has been successfully deleted";
+        doPrint({id: args.id});
+    }
+
+    public function doDeleteCategory(args : {id: Int, parent_id: Int}) {
+        this.faq.deleteCategory({category_id: args.id, parent_id: args.parent_id});
+    }
+
+    @bTrigger("beluga_faq_deleteCategory_fail")
+    public static function _doDeleteCategoryFail(args : {id : Int, error: String}) {
+        new FaqTest(Beluga.getInstance()).doDeleteCategoryFail(args);
+    }
+
+    public function doDeleteCategoryFail(args : {id : Int, error: String}) {
+        error_msg = args.error;
+        doPrint({id: args.id});
+    }
+
+    @bTrigger("beluga_faq_deleteCategory_success")
+    public static function _doDeleteCategorySuccess(args : {id : Int, error: String}) {
+        new FaqTest(Beluga.getInstance()).doDeleteCategorySuccess(args);
+    }
+
+    public function doDeleteCategorySuccess(args : {id : Int, error: String}) {
+        success_msg = "Category has been successfully deleted";
+        doPrint({id: args.id});
+    }
+
+    public function doRedirectEditCategory(args : {id: Int}) {
+        var widget = this.faq.getWidget("edit_category");
+        var cat = faq.getCategory(args.id);
+
+        if (cat == null) {
+            doEditCategoryFail({error : "Unknown category"});
+            return;
+        }
+        widget.context = {path : "/faqTest/", error : error_msg, success : success_msg, parent : cat.parent_id, id: args.id,
+            name: cat.name };
+
+        var faqWidget = widget.render();
+
+        var html = Renderer.renderDefault("page_faq", "FAQ", {
+            faqWidget: faqWidget
+        });
+        Sys.print(html);
+    }
+
+    public function doEditCategory(args : {category_id: Int, name: String}) {
+        this.faq.editCategory(args);
+    }
+
+    @bTrigger("beluga_faq_editCategory_fail")
+    public static function _doEditCategoryFail(args : {error: String}) {
+        new FaqTest(Beluga.getInstance()).doEditCategoryFail(args);
+    }
+
+    public function doEditCategoryFail(args : {error: String}) {
+        error_msg = args.error;
+        doPrint({id: -1});
+    }
+
+    @bTrigger("beluga_faq_editCategory_success")
+    public static function _doEditCategorySuccess(args : {id : Int}) {
+        new FaqTest(Beluga.getInstance()).doEditCategorySuccess(args);
+    }
+
+    public function doEditCategorySuccess(args : {id : Int}) {
+        success_msg = "Category has been successfully edited";
+        doPrint({id: args.id});
+    }
+
+    public function doRedirectEditFAQ(args : {id: Int}) {
+        var widget = this.faq.getWidget("edit_faq");
+        var faq = faq.getFAQ(args.id);
+
+        if (faq == null) {
+            doEditFAQFail({error : "Unknown category"});
+            return;
+        }
+        widget.context = {path : "/faqTest/", error : error_msg, success : success_msg, parent : faq.category_id, id: args.id,
+            question: faq.question, answer: faq.answer };
+
+        var faqWidget = widget.render();
+
+        var html = Renderer.renderDefault("page_faq", "FAQ", {
+            faqWidget: faqWidget
+        });
+        Sys.print(html);
+    }
+
+    public function doEditFAQ(args : {faq_id: Int, question: String, answer: String}) {
+        this.faq.editFAQ(args);
+    }
+
+    @bTrigger("beluga_faq_editFAQ_fail")
+    public static function _doEditFAQFail(args : {error: String}) {
+        new FaqTest(Beluga.getInstance()).doEditFAQFail(args);
+    }
+
+    public function doEditFAQFail(args : {error: String}) {
+        error_msg = args.error;
+        doPrint({id: -1});
+    }
+
+    @bTrigger("beluga_faq_editFAQ_success")
+    public static function _doEditFAQSuccess(args : {id : Int}) {
+        new FaqTest(Beluga.getInstance()).doEditFAQSuccess(args);
+    }
+
+    public function doEditFAQSuccess(args : {id : Int}) {
+        success_msg = "Category has been successfully edited";
+        doPrint({id: args.id});
     }
 }

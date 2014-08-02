@@ -25,6 +25,13 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         return null;
     }
 
+    public function getFAQ(faq_id : Int) : FaqModel {
+        for (tmp in FaqModel.manager.dynamicSearch( { id: faq_id} )) {
+            return tmp;
+        }
+        return null;
+    }
+
     public function getAllCategories() : Array<CategoryModel> {
         var ret = new Array<CategoryModel>();
 
@@ -70,7 +77,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         if (args.category_id != -1) {
             var found = false;
 
-            for (tmp in CategoryModel.manager.dynamicSearch( { category_id: args.category_id} )) {
+            for (tmp in CategoryModel.manager.dynamicSearch( { id: args.category_id} )) {
                 found = true;
                 break;
             }
@@ -112,13 +119,17 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         }
         var found = false;
 
-        for (tmp in CategoryModel.manager.dynamicSearch( { parent_id: args.parent} )) {
-            if (tmp.name == args.name) {
-                beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Another category already has this name", id: args.parent}]);
-                return;
+        if (args.parent != -1) {
+            for (tmp in CategoryModel.manager.dynamicSearch( { id: args.parent} )) {
+                if (tmp.name == args.name) {
+                    beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Another category already has this name", id: args.parent}]);
+                    return;
+                }
+                found = true;
+                break;
             }
+        } else {
             found = true;
-            break;
         }
         if (found == false) {
             beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Invalid parent id", id: args.parent}]);
@@ -132,36 +143,36 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_success", [{id: entry.parent_id}]);
     }
 
-    public static function _deleteFAQ(args : {question_id : Int}) {
+    public static function _deleteFAQ(args : {question_id : Int, category_id : Int}) {
         Beluga.getInstance().getModuleInstance(Faq).deleteFAQ(args);
     }
 
-    public function deleteFAQ(args : {question_id : Int}) {
+    public function deleteFAQ(args : {question_id : Int, category_id : Int}) {
         if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-            beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_fail", [{error_msg : "You need to be logged"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_fail", [{id: args.category_id, error : "You need to be logged"}]);
             return;
         }
-        for (tmp in FaqModel.manager.dynamicSearch( {id : args.question_id} )) {
+        for (tmp in FaqModel.manager.dynamicSearch( {id : args.question_id, category_id: args.category_id} )) {
             tmp.delete();
-            beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_success", []);
+            beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_success", [{id: args.category_id}]);
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_fail", [{error_msg : "Id not found"}]);
+        beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_fail", [{id: args.category_id, error : "Id not found"}]);
     }
 
-    public static function _deleteCategory(args : {category_id : Int}) {
+    public static function _deleteCategory(args : {category_id : Int, parent_id: Int}) {
         Beluga.getInstance().getModuleInstance(Faq).deleteCategory(args);
     }
 
-    function clearCategoryData(id: Int) : Bool {
-        for (tmp in CategoryModel.manager.dynamicSearch( {id : id} )) {
+    function clearCategoryData(id: Int, parent_id: Int) : Bool {
+        for (tmp in CategoryModel.manager.dynamicSearch( {id : id, parent_id: parent_id} )) {
             var tmp_data = getAllFromCategory(tmp.id);
 
             for (f in tmp_data.faqs) {
                 f.delete();
             }
             for (cat in tmp_data.categories) {
-                clearCategoryData(cat.id);
+                clearCategoryData(cat.id, id);
             }
             tmp.delete();
             return true;
@@ -169,45 +180,45 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         return false;
     }
 
-    public function deleteCategory(args : {category_id : Int}) {
+    public function deleteCategory(args : {category_id : Int, parent_id: Int}) {
         if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-            beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_fail", [{error_msg : "You need to be logged"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_fail", [{id: args.parent_id, error : "You need to be logged"}]);
             return;
         }
-        if (clearCategoryData(args.category_id) == true) {
-            beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_success", []);
+        if (clearCategoryData(args.category_id, args.parent_id) == true) {
+            beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_success", [{id: args.parent_id}]);
         } else {
-            beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_fail", [{error_msg : "Id not found"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_fail", [{id: args.parent_id, error : "Id not found"}]);
         }
     }
 
-    public static function _editFAQ(args : {question_id: Int, question : String, answer : String}) {
+    public static function _editFAQ(args : {faq_id: Int, question : String, answer : String}) {
         Beluga.getInstance().getModuleInstance(Faq).editFAQ(args);
     }
 
-    public function editFAQ(args : {question_id: Int, question : String, answer : String}) {
+    public function editFAQ(args : {faq_id: Int, question : String, answer : String}) {
         if (args.question == "" || args.answer == "") {
-            beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error_msg : "Incomplete question and or answer"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error : "Incomplete question and or answer"}]);
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-            beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error_msg : "You need to be logged"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error : "You need to be logged"}]);
             return;
         }
-        for (tmp in FaqModel.manager.dynamicSearch( {id : args.question_id} )) {
+        for (tmp in FaqModel.manager.dynamicSearch( {id : args.faq_id} )) {
             for (tmp2 in FaqModel.manager.dynamicSearch( { category_id: tmp.category_id} )) {
                 if (tmp2.question == args.question) {
-                    beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error_msg : "Another entry treats this question"}]);
+                    beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error : "Another entry treats this question"}]);
                     return;
                 }
             }
             tmp.question = args.question;
             tmp.answer = args.answer;
             tmp.update();
-            beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_success", []);
+            beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_success", [{id: tmp.category_id}]);
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error_msg : "Id not found"}]);
+        beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error : "Id not found"}]);
     }
 
     public static function _editCategory(args : {category_id: Int, name : String}) {
@@ -216,17 +227,17 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
 
     public function editCategory(args : {category_id: Int, name : String}) {
         if (args.name == "") {
-            beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error_msg : "Incomplete name"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error : "Incomplete name"}]);
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-            beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error_msg : "You need to be logged"}]);
+            beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error : "You need to be logged"}]);
             return;
         }
         for (tmp in CategoryModel.manager.dynamicSearch( {id : args.category_id} )) {
-            for (tmp2 in CategoryModel.manager.dynamicSearch( { parent: tmp.parent_id} )) {
+            for (tmp2 in CategoryModel.manager.dynamicSearch( { parent_id: tmp.parent_id} )) {
                 if (tmp2.name == args.name) {
-                    beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error_msg : "Another category has this name"}]);
+                    beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error : "Another category has this name"}]);
                     return;
                 }
             }
@@ -235,6 +246,6 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_success", [{id: tmp.parent_id}]);
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error_msg : "Id not found"}]);
+        beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error : "Id not found"}]);
     }
 }

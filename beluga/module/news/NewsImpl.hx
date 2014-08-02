@@ -39,7 +39,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     public function getComments(args : {news_id : Int}) : Array<CommentModel> {
         var ret = new Array<CommentModel>();
 
-        var row = Manager.cnx.request("SELECT * from beluga_news_comment WHERE news_id=" + args.news_id + " ORDER BY creationDate DESC");
+        var row = Manager.cnx.request("SELECT * from beluga_news_comment WHERE news_id=" + args.news_id + " ORDER BY creationDate");
         for (tmp in row) {
             for (tmp2 in CommentModel.manager.dynamicSearch( {id : tmp.id} )) {
                 ret.push(tmp2);
