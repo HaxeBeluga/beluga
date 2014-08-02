@@ -44,25 +44,25 @@ class FaqTest
     }
 
     public function doDefault() {
-        doPrint({category_id: -1});
+        doPrint({id: -1});
     }
 
-    public function doPrint(args : {category_id : Int}) {
-        var data = faq.getAllFromCategory(args.category_id);
+    public function doPrint(args : {id : Int}) {
+        var data = faq.getAllFromCategory(args.id);
         var widget = this.faq.getWidget("faqs");
 
-        if (args.category_id == -1) {
+        if (args.id == -1) {
             widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                                error : error_msg, success : success_msg, id : args.category_id };
+                                error : error_msg, success : success_msg, id : args.id };
         } else {
-            var cat = faq.getCategory(args.category_id);
+            var cat = faq.getCategory(args.id);
 
             if (cat == null) {
                 widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                                error : error_msg, success : success_msg, id : args.category_id };
+                                error : error_msg, success : success_msg, id : args.id };
             } else {
                 widget.context = {faqs : data, categories : data.categories, path : "/faqTest/",
-                                error : error_msg, success : success_msg, id : args.category_id, category_name: cat.name };
+                                error : error_msg, success : success_msg, id : args.id, category_name: cat.name };
             }
         }
 
@@ -111,7 +111,7 @@ class FaqTest
 
     public function doCreateCategorySuccess(args : {id : Int}) {
         success_msg = "Category has been created successfully";
-        this.doPrint({category_id : args.id});
+        this.doPrint({id : args.id});
     }
 
     @bTrigger("beluga_faq_createCategory_fail")
@@ -136,7 +136,7 @@ class FaqTest
 
     public function doCreateFAQSuccess(args : {id : Int}) {
         success_msg = "FAQ entry has been created successfully";
-        this.doPrint({category_id : args.id});
+        this.doPrint({id : args.id});
     }
 
     @bTrigger("beluga_faq_createFAQ_fail")

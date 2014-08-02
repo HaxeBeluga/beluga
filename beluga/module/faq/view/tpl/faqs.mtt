@@ -20,14 +20,15 @@
 	::end::
 	<div class="container">
 		::if (faqs.categories.length > 0)::
-		<ul>
+		<ul class="list-group">
 			::foreach faqs.categories::
-	        <li>
-	          	<div id="::id::">
-	          		<form action="::base_url::::path::print" class="form-horizontal" role="form" method="POST">
+	        <li class="list-group-item">
+	          	<div>
+	          		<a href="::base_url::::path::print?id=::id::" class="btn">::name::</a>
+	          		<!--<form action="::base_url::::path::print" class="form-horizontal" role="form" method="POST">
 	          			<input class="form-control" id="category_id" name="category_id" value="::id::" style="display:none;">
-	          			<input type="submit" class="btn btn-primary" value="::name::"/>
-	          		</form>
+	          			<input type="submit" value="::name::"/>
+	          		</form>-->
 	          	</div>
 	        </li>
 	        ::end::
@@ -35,9 +36,9 @@
 	    ::end::
 	    ::if (faqs.faqs.length > 0)::
 	    <h2>FAQ entries</h2>
-	    <ul>
+	    <ul class="list-group">
 			::foreach faqs.faqs::
-	        <li>
+	        <li class="list-group-item">
 	          	<div>
 	          		<h1>::question::</h1>
 	          		<p>::answer::</p>
