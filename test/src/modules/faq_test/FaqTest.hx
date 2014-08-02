@@ -22,7 +22,7 @@ import php.Web;
  * @author Guillaume Gomez
  */
 
-class FaqTest
+class FaqTest implements MetadataReader
 {
     public var beluga(default, null) : Beluga;
     public var faq(default, null) : Faq;

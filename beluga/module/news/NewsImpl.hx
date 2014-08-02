@@ -39,12 +39,14 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     public function getComments(args : {news_id : Int}) : Array<CommentModel> {
         var ret = new Array<CommentModel>();
 
-        /* TODO : Implement this code instead of the other one
-        var row = Manager.cnx.request("SELECT * from beluga_news_comment WHERE news_id = " + args.news_id + " ORDER BY creationDate DESC");
-        for (tmp in row)
-            ret.push(tmp);*/
-        for (tmp in CommentModel.manager.dynamicSearch( {news_id : args.news_id} ))
-            ret.push(tmp);
+        var row = Manager.cnx.request("SELECT * from beluga_news_comment WHERE news_id=" + args.news_id + " ORDER BY creationDate DESC");
+        for (tmp in row) {
+            for (tmp2 in CommentModel.manager.dynamicSearch( {id : tmp.id} )) {
+                ret.push(tmp2);
+                break;
+            }
+        }
+        Sys.print(ret.length);
         return ret;
     }
 
@@ -74,22 +76,28 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     }
 
     public function addComment(args : {news_id : Int, text : String}) : Void {
+        if (args.text == "") {
+            beluga.triggerDispatcher.dispatch("beluga_news_addComment_fail", [{news_id : args.news_id, error: "Comment cannot be empty"}]);
+            return;
+        } 
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-        if (user != null) {
-            for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id} )) {
-                var com = new CommentModel();
-
-                com.text = args.text;
-                com.news_id = args.news_id;
-                com.user_id = user.id;
-                com.creationDate = Date.now();
-                com.insert();
-                beluga.triggerDispatcher.dispatch("beluga_news_addComment_success", [{news_id : args.news_id}]);
-                return;
-            }
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_news_addComment_fail", [{news_id : args.news_id, error: "You need to be logged to post a comment"}]);
+            return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_news_addComment_fail", [{news_id : args.news_id}]);
+        for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id} )) {
+            var com = new CommentModel();
+
+            com.text = args.text;
+            com.news_id = args.news_id;
+            com.user_id = user.id;
+            com.creationDate = Date.now();
+            com.insert();
+            beluga.triggerDispatcher.dispatch("beluga_news_addComment_success", [{news_id : args.news_id}]);
+            return;
+        }
+        beluga.triggerDispatcher.dispatch("beluga_news_addComment_fail", [{news_id : args.news_id, error: "News cannot be found"}]);
     }
 
     public static function _deleteComment(args : {news_id : Int, comment_id : Int}) : Void {
