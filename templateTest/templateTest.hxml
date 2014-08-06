@@ -1,0 +1,6 @@
+-main Main
+-cp src
+-lib beluga
+-lib tink_macro
+-lib session
+-php bin

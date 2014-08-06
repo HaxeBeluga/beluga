@@ -20,6 +20,7 @@ import main_view.Renderer;
 import modules.forum_test.ChannelTest;
 import modules.news_test.NewsTest;
 import modules.mail_test.MailTest;
+import modules.faq_test.FaqTest;
 
 #if php
 import php.Web;
@@ -111,6 +112,10 @@ class Main
 
 	public function doMarketTest(d : Dispatch) {
 		d.dispatch(new MarketTest(beluga));
+	}
+
+	public function doFaqTest(d : Dispatch) {
+		d.dispatch(new FaqTest(beluga));
 	}
 
 	public function doAccueil() {

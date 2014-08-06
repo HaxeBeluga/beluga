@@ -1,0 +1,73 @@
+<div>
+	::if (category_name)::
+	::if (category_name != "")::
+	<h1 class="center">Entries for <b>::category_name::</b> category</h1><br/>
+	::else::
+	<h1 class="center">Faq's categories list</h1><br/>
+	::end::
+	::else::
+	<h1 class="center">Faq's categories list</h1><br/>
+	::end::
+	::if (error)::
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
+	::if (success)::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	::end::
+	<div class="container">
+		::if (faqs.categories.length > 0)::
+		<ul class="list-group">
+			::foreach faqs.categories::
+			<li class="list-group-item">
+				<div>
+					::if (user)::
+					<a class="pull-right" href="::base_url::::path::deleteCategory?id=::id::&parent_id=::actual_id::" style="margin-top:6px;margin-right:4px;">
+						<span class="glyphicon glyphicon-remove"></span>
+					</a>
+					<a href="::base_url::::path::redirectEditCategory?id=::id::" style="float:right;cursor:pointer;margin-right:5px;">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</a>
+					::end::
+					<a href="::base_url::::path::print?id=::id::" class="btn">::name::</a>
+				</div>
+			</li>
+			::end::
+		</ul>
+		::end::
+		::if (faqs.faqs.length > 0)::
+		<h2>FAQ entries</h2>
+		<ul class="list-group">
+			::foreach faqs.faqs::
+			<div class="panel panel-primary">
+				::if (user)::
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteFAQ?id=::id::&category_id=::actual_id::" style="margin-top:6px;margin-right:4px;">
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::redirectEditFAQ?id=::id::" style="float:right;cursor:pointer;margin-right:5px;">
+					<span class="glyphicon glyphicon-pencil"></span>
+				</a>
+				::end::
+				<div class="panel-heading" id="::question::">
+					<h3 class="panel-title">
+						<a href="#::question::">::question::</a>
+					</h3>
+				</div>
+				<div class="panel-body">::answer::</div>
+			</div>
+			::end::
+		</ul>
+		::end::
+	</div>
+	<a href="::base_url::::path::redirectCreateCategory?category_id=::actual_id::" class="btn btn-primary">Create new category</a>
+	<a href="::base_url::::path::redirectCreateFAQ?category_id=::actual_id::" class="btn btn-primary">Create new FAQ entry</a>
+	::if (category_name)::
+	::if (category_name != "")::
+	<a class="btn btn-primary" href="::base_url::::path::print?id=::parent_id::">Go up</a>
+	<a class="btn btn-primary" href="::base_url::::path::">Go back to FAQ categories list</a>
+	::end::
+	::end::
+</div>
