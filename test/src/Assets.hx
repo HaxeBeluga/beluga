@@ -112,13 +112,15 @@ class Assets
 		//#----WalletTest Pages----#
 		Context.addResource("page_wallet_widget", File.getBytes("src/modules/wallet_test/tpl/wallet_widget.mtt"));
 
-
 		//#----MailTest Pages----#
 		Context.addResource("page_mail", File.getBytes("src/modules/mail_test/tpl/mail_page.mtt"));
 
 		//#----WalletTest Pages----#
 		Context.addResource("page_market_widget", File.getBytes("src/modules/market_test/tpl/market_widget.mtt"));
 		Context.addResource("page_market_admin_widget", File.getBytes("src/modules/market_test/tpl/market_admin_widget.mtt"));
+
+		//#----FaqTest Pages----#
+		Context.addResource("page_faq", File.getBytes("src/modules/faq_test/tpl/faq_page.mtt"));
 
 		return macro "Done";
 	}
