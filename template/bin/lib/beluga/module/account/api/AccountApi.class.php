@@ -9,9 +9,6 @@ class beluga_module_account_api_AccountApi {
 	public function doLogin($args) {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_login", (new _hx_array(array($args))));
 	}
-	public function doLogout() {
-		$this->module->logout();
-	}
 	public function doPrintInfo() {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_printInfo", (new _hx_array(array())));
 	}
@@ -22,7 +19,7 @@ class beluga_module_account_api_AccountApi {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_subscribe", (new _hx_array(array($args))));
 	}
 	public function doDefault() {
-		haxe_Log::trace("Account default page", _hx_anonymous(array("fileName" => "AccountApi.hx", "lineNumber" => 47, "className" => "beluga.module.account.api.AccountApi", "methodName" => "doDefault")));
+		haxe_Log::trace("Account default page", _hx_anonymous(array("fileName" => "AccountApi.hx", "lineNumber" => 43, "className" => "beluga.module.account.api.AccountApi", "methodName" => "doDefault")));
 	}
 	public function doEdit() {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_edit", (new _hx_array(array())));

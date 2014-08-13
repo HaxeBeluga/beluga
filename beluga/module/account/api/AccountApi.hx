@@ -22,10 +22,6 @@ class AccountApi  {
         beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
     }
 
-    public function doLogout() {
-        module.logout();
-    }
-
     public function doPrintInfo() {
         beluga.triggerDispatcher.dispatch("beluga_account_printInfo", []);
     }

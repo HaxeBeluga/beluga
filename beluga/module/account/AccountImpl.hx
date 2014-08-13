@@ -140,8 +140,11 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
     public function activateUser(userId : SId) {
         var user = User.manager.get(userId);
-        user.emailVerified = true;
-        user.update();
+
+        if (user != null) {
+            user.emailVerified = true;
+            user.update();
+        }
     }
 
     public function setLoggedUser(user : User) : User {
@@ -163,6 +166,26 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
     public function showUser(args: { id: Int}): Void {
         beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+    }
+
+    public static function _deleteUser() : Void {
+        Beluga.getInstance().getModuleInstance(Account).deleteUser();
+    }
+
+    public function deleteUser() : Void {
+        var user = this.getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "You have to be logged"}]);
+            return;
+        }
+        for (tmp in User.manager.dynamicSearch({id : user.id })) {
+            tmp.delete();
+            Session.remove(SESSION_USER);
+            beluga.triggerDispatcher.dispatch("beluga_account_delete_success", []);
+            return;
+        }
+        beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "Unknown user"}]);
     }
 
     public function edit(email : String) : Void {

@@ -17,6 +17,8 @@ interface Account extends Module {
         password : String
     }) : Void;
 
+    public function deleteUser() : Void;
+
 	public function getUser(userId : SId) : User;
 	
     public function showUser(args: { id: Int}): Void;

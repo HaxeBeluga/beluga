@@ -97,6 +97,42 @@ class AccountTestApi implements MetadataReader
 		Sys.print(html);
 	}
 
+	public function doDelete() {
+        this.acc.deleteUser();
+    }
+
+    @bTrigger("beluga_account_delete_fail")
+    public static function _deleteUserFail(args : {err: String}) {
+        new AccountTestApi(Beluga.getInstance()).deleteUserFail(args);
+    }
+
+    public function deleteUserFail(args : {err: String}) {
+        var user = this.acc.getLoggedUser();
+
+        if (user == null) {
+            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
+            Sys.print(html);
+            return;
+        }
+        var subscribeWidget = acc.getWidget("info");
+        subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
+
+        var html = Renderer.renderDefault("page_subscribe", "Information", {
+            subscribeWidget: subscribeWidget.render()
+        });
+        Sys.print(html);
+    }
+
+    @bTrigger("beluga_account_delete_success")
+    public static function _deleteUserSuccess() {
+        new AccountTestApi(Beluga.getInstance()).deleteUserSuccess();
+    }
+
+    public function deleteUserSuccess() {
+        var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Your account has been deleted successfully", login: ""});
+        Sys.print(html);
+    }
+
 	@bTrigger("beluga_account_save")
 	public static function _doSave(args : {email : String}) {
 		new AccountTestApi(Beluga.getInstance()).doSave(args);
