@@ -225,4 +225,48 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             }
         }
     }
+
+    public function ban(user_id: Int) : Void {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You have to be logged"}]);
+        } else {
+            if (user_id == user.id)
+                beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You can't ban yourself !"}]);
+            else if (!user.isAdmin)
+                beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You need admin rights to do that"}]);
+            else {
+                for (tmp in User.manager.dynamicSearch({id : user_id })) {
+                    tmp.isBan = true;
+                    tmp.update();
+                    beluga.triggerDispatcher.dispatch("beluga_account_ban_success", []);
+                    return;
+                }
+                beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "Unknown user"}]);
+            }
+        }
+    }
+
+    public function unban(user_id: Int) : Void {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You have to be logged"}]);
+        } else {
+            if (user_id == user.id)
+                beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You can't unban yourself !"}]);
+            else if (!user.isAdmin)
+                beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You need admin rights to do that"}]);
+            else {
+                for (tmp in User.manager.dynamicSearch({id : user_id })) {
+                    tmp.isBan = false;
+                    tmp.update();
+                    beluga.triggerDispatcher.dispatch("beluga_account_unban_success", []);
+                    return;
+                }
+                beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "Unknown user"}]);
+            }
+        }
+    }
 }
