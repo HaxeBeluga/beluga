@@ -12,4 +12,6 @@ interface beluga_module_account_Account extends beluga_core_module_Module{
 	function getLoggedUser();
 	function isLogged();
 	function edit($user_id, $email);
+	function ban($user_id);
+	function unban($user_id);
 }

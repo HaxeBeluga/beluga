@@ -1,9 +1,14 @@
 <div style="margin-top:20px;width:800px;">
-	::if (error)::
+	<!--::if (error)::
 	::if (error != "")::
-		<div class="alert alert-danger">::error::</div>
+	<div class="alert alert-danger">::error::</div>
 	::end::
 	::end::
+	::if (success)::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	::end::-->
 	<div class="form-horizontal">
 		<div class="form-group">
 			<label class="col-sm-4">Identifiant</label>
@@ -42,7 +47,34 @@
 			</div>
 		</div>
 	</div>
-	::if (user.isAdmin)::
-
+	<!--::if (user.isAdmin)::
+	<div>
+		<h3>Admin part</h3>
+		<ul class="list-group">
+		::foreach users::
+			<li class="list-group-item">
+				<p>name</p>
+				::if (isBan)::
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::unban?id=::id::">Unban</a>
+				::else::
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::ban?id=::id::">Ban</a>
+				::end::
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::delete?id=::id::">Delete</a>
+			</li>
+		::end::
+		</ul>
+	</div>
 	::end::
+	<div>
+		<h3>Friends</h3>
+	</div>
+	<div>
+		<h3>Blacklisted people</h3>
+	</div>
+	<div>
+		<h3>Sponsor</h3>
+	</div>
+	<div>
+		<h3>Users' list (to make new friend or blacklist others !)</h3>
+	</div>-->
 </div>

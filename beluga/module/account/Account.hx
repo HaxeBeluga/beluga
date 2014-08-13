@@ -43,4 +43,8 @@ interface Account extends Module {
     public function isLogged() : Bool;
 
     public function edit(user_id: Int, email : String) : Void;
+
+    public function ban(user_id: Int) : Void;
+
+    public function unban(user_id: Int) : Void;
 }

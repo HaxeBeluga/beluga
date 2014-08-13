@@ -9,9 +9,6 @@ class beluga_module_account_api_AccountApi {
 	public function doLogin($args) {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_login", (new _hx_array(array($args))));
 	}
-	public function doPrintInfo() {
-		$this->beluga->triggerDispatcher->realDispatch("beluga_account_printInfo", (new _hx_array(array())));
-	}
 	public function doShowUser($args) {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_show_user", (new _hx_array(array($args))));
 	}
