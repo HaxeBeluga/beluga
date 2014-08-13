@@ -1,4 +1,9 @@
 <div style="margin-top:20px;width:800px;">
+	::if (error)::
+	::if (error != "")::
+		<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
 	<div class="form-horizontal">
 		<div class="form-group">
 			<label class="col-sm-4">Identifiant</label>
@@ -25,6 +30,7 @@
 				::user.subscribeDateTime::
 			</div>
 		</div>
+		<a class="btn btn-danger" href="::base_url::::path::delete">Delete account (be sure of yourself !)</a>
 		<div class="form-group">
 			<div class="col-sm-2">
 			</div>

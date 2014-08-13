@@ -26,6 +26,8 @@ interface Account extends Module {
         password : String
     }) : Void;
 
+    public function deleteUser() : Void;
+
 	public function getUser(userId : SId) : User;
 
     public function logout() : Void;
