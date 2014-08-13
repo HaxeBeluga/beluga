@@ -17,9 +17,11 @@ interface Account extends Module {
         password : String
     }) : Void;
 
-    public function deleteUser() : Void;
+    public function deleteUser(args : {id : Int}) : Void;
 
 	public function getUser(userId : SId) : User;
+
+    public function getUsers() : Array<User>;
 	
     public function showUser(args: { id: Int}): Void;
 
@@ -31,5 +33,5 @@ interface Account extends Module {
 
     public function isLogged() : Bool;
 
-    public function edit(email : String) : Void;
+    public function edit(user_id: Int, email : String) : Void;
 }

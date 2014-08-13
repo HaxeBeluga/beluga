@@ -43,22 +43,26 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         login : String,
         password : String
     }) {
-        var user : List<User> = User.manager.dynamicSearch({
-            login : args.login,
-            hashPassword: haxe.crypto.Md5.encode(args.password)
-        });
+        var user : List<User> = User.manager.dynamicSearch({login : args.login});
 
         if (user.length > 1) {
             //Somethings wrong in database
-            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
+            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Something's wrong in database"}]);
         } else if (user.length == 0) {
-            //login or password wrong
-            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", []);
+            //login wrong
+            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Unknown user"}]);
         } else {
-            setLoggedUser(user.first());
-            beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
-                user.first()
-            ]);
+            if (user.first().hashPassword != haxe.crypto.Md5.encode(args.password)) {
+                beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Invalid login and / or password"}]);
+            }
+            else if (user.first().isBan == true) {
+                beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Your account as been banished"}]);
+            } else {
+                setLoggedUser(user.first());
+                beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
+                    user.first()
+                ]);
+            }
         }
     }
 	
@@ -114,6 +118,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             user.emailVerified = true;//TODO AB Change when activation mail sended.
             user.subscribeDateTime = Date.now();
             user.email = args.email;
+            user.isAdmin = false;
+            user.isBan = false;
             user.insert();
             //TODO AB Send activation mail
             beluga.triggerDispatcher.dispatch("beluga_account_subscribe_success", [
@@ -137,6 +143,20 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 		}
 	}
 
+    public function getUsers() : Array<User> {
+        var user = this.getLoggedUser();
+        var list = new Array<User>();
+
+        if (user == null) {
+            return list;
+        }
+        for (tmp in User.manager.dynamicSearch({})) {
+            if (tmp.id != user.id) {
+                list.push(tmp);
+            }
+        }
+        return list;
+    }
 
     public function activateUser(userId : SId) {
         var user = User.manager.get(userId);
@@ -168,35 +188,41 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
     }
 
-    public static function _deleteUser() : Void {
-        Beluga.getInstance().getModuleInstance(Account).deleteUser();
+    public static function _deleteUser(args : {id: Int}) : Void {
+        Beluga.getInstance().getModuleInstance(Account).deleteUser(args);
     }
 
-    public function deleteUser() : Void {
+    public function deleteUser(args : {id: Int}) : Void {
         var user = this.getLoggedUser();
 
         if (user == null) {
             beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "You have to be logged"}]);
-            return;
+        } else if (user.id != args.id && user.isAdmin == false) {
+            beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "You can't delete this account"}]);
+        } else {
+            for (tmp in User.manager.dynamicSearch({id : args.id })) {
+                tmp.delete();
+                Session.remove(SESSION_USER);
+                beluga.triggerDispatcher.dispatch("beluga_account_delete_success", []);
+                return;
+            }
+            beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "Unknown user"}]);
         }
-        for (tmp in User.manager.dynamicSearch({id : user.id })) {
-            tmp.delete();
-            Session.remove(SESSION_USER);
-            beluga.triggerDispatcher.dispatch("beluga_account_delete_success", []);
-            return;
-        }
-        beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "Unknown user"}]);
     }
 
-    public function edit(email : String) : Void {
+    public function edit(user_id: Int, email : String) : Void {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
-        if (user != null) {
-            user.email = email;
-            user.update();
-            beluga.triggerDispatcher.dispatch("beluga_account_edit_success", []);
-            return;
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_edit_fail", []);
+        } else {
+            if (user.id != user_id && user.isAdmin == false) {
+                beluga.triggerDispatcher.dispatch("beluga_account_edit_fail", []);
+            } else {
+                user.email = email;
+                user.update();
+                beluga.triggerDispatcher.dispatch("beluga_account_edit_success", []);
+            }
         }
-        beluga.triggerDispatcher.dispatch("beluga_account_edit_fail", []);
     }
 }

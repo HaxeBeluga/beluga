@@ -46,10 +46,9 @@ class SurveyTest implements MetadataReader
 
 	public function doDefault() {
 		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		
 		if (user == null) {
-			Web.setHeader("Content-Type", "text/plain");
-			Sys.println("Please log in !");
-			return;
+			error_msg = "Please log in !";
 		}
 		var widget = survey.getWidget("surveys_list");
 		widget.context = {surveys : survey.getSurveysList(), user : user,
@@ -70,8 +69,8 @@ class SurveyTest implements MetadataReader
 
 	public function doRedirectPage() {
 		if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-			Web.setHeader("Content-Type", "text/plain");
-			Sys.println("Please log in !");
+			error_msg = "Please log in !";
+			doDefault();
 			return;
 		}
 		var widget = survey.getWidget("create");
@@ -127,8 +126,8 @@ class SurveyTest implements MetadataReader
 
 	public function doCreatePage() {
 		if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
-			Web.setHeader("Content-Type", "text/plain");
-			Sys.println("Please log in !");
+			error_msg = "Please log in !";
+			doDefault();
 			return;
 		}
         var widget = survey.getWidget("create");
@@ -152,19 +151,19 @@ class SurveyTest implements MetadataReader
 	}
 
 	@bTrigger("beluga_survey_vote_fail")
-	public static function _doVoteFail() {
-		new SurveyTest(Beluga.getInstance()).doVoteFail();
+	public static function _doVoteFail(args : {err : String}) {
+		new SurveyTest(Beluga.getInstance()).doVoteFail(args);
 	}
 
-	public function doVoteFail() {
-	 	error_msg = "Error when registering your vote...";
+	public function doVoteFail(args : {err : String}) {
+	 	error_msg = args.err;
 	 	this.doDefault();
 	}
 
 	public function doVotePage(args : {survey : SurveyModel}) {
 		if (Beluga.getInstance().getModuleInstance(Account).isLogged() == false) {
-			Web.setHeader("Content-Type", "text/plain");
-			Sys.println("Please log in !");
+			error_msg = "Please log in !";
+			doDefault();
 			return;
 		}
 
@@ -187,52 +186,31 @@ class SurveyTest implements MetadataReader
 		});
 		Sys.print(html);
 	}
-
-	@bTrigger("beluga_survey_printx")
-	public static function _doPrintPage(args : {survey : SurveyModel}) {
-		new SurveyTest(Beluga.getInstance()).doPrintPage(args);
+	
+	@bTrigger("beluga_survey_print")
+	public static function _doPrint(args : {id : Int}) {
+		new SurveyTest(Beluga.getInstance()).doPrint(args);
 	}
 
-	public function doPrintPage(args : {survey : SurveyModel}) {
+	public function doPrint(args : {id : Int}) {
 		if (Beluga.getInstance().getModuleInstance(Account).isLogged() == false) {
-			Web.setHeader("Content-Type", "text/plain");
-			Sys.println("Please log in !");
+			error_msg = "Please log in !";
+			doDefault();
 			return;
 		}
-		if (this.survey.canVote({survey_id : args.survey.id})) {
-			doVotePage({survey : args.survey});
+		var sur = this.survey.getSurvey(args.id);
+		if (sur == null) {
+			error_msg = "Unknown survey";
+			doDefault();
 			return;
 		}
-		var arr = new Array<Dynamic>();
-		var choices = new Array<Dynamic>();
-		var tot = 0;
-
-		for (tmp_r in Result.manager.dynamicSearch( { survey_id : args.survey.id } )) {
-			tot += 1;
-			var found = false;
-			for (t in arr) {
-				if (t.choice_id == tmp_r) {
-					t.pourcent += 1;
-					found = true;
-				}
-			}
-			if (found == false)
-				arr.push({id : tmp_r.choice_id, pourcent : 1});
+		if (this.survey.canVote({survey_id : args.id})) {
+			doVotePage({survey : sur});
+			return;
 		}
-		for (tmp_c in Choice.manager.dynamicSearch( { survey_id : args.survey.id } )) {
-			var done = false;
-			for (tmp in arr) {
-				if (tmp.id == tmp_c.id) {
-					choices.push({choice : tmp_c, pourcent : tmp.pourcent * 100.0 / tot, vote : tmp.pourcent});
-					done = true;
-				}
-			}
-			if (done == false) {
-				choices.push({choice : tmp_c, pourcent : 0, vote : 0});
-			}
-		}
+		var choices = this.survey.getResults({survey_id: args.id});
 		var widget = survey.getWidget("print_survey");
-		widget.context = {survey : args.survey, choices : choices, path : "/beluga/survey/"};
+		widget.context = {survey : sur, choices : choices, path : "/beluga/survey/"};
 
 		var surveyWidget = widget.render();
 

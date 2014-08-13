@@ -31,17 +31,17 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
     }
 
     @bTrigger("beluga_survey_delete")
-    public static function _delete(args : {survey_id : Int}) {
+    public static function _delete(args : {id : Int}) {
         Beluga.getInstance().getModuleInstance(Survey).delete(args);
     }
 
-    public function delete(args : {survey_id : Int}) {
+    public function delete(args : {id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var nb = 0;
 
         if (user == null)
             return;
-        for (tmp in SurveyModel.manager.dynamicSearch( {author_id : user.id, id : args.survey_id} )) {
+        for (tmp in SurveyModel.manager.dynamicSearch( {author_id : user.id, id : args.id} )) {
             tmp.delete();
             nb += 1;
         }
@@ -51,6 +51,13 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         } else {
             beluga.triggerDispatcher.dispatch("beluga_survey_delete_fail", []);
         }
+    }
+
+    public function getSurvey(id: Int) : SurveyModel {
+        for (tmp in SurveyModel.manager.dynamicSearch( { id : id } )) {
+            return tmp;
+        }
+        return null;
     }
 
     public function getSurveysList() : Array<SurveyData> {
@@ -75,18 +82,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
             m_surveys.push(tmp_v);
         }
         return m_surveys;
-    }
-
-    @bTrigger("beluga_survey_print")
-    public static function _print(args : {survey_id : Int}) {
-        Beluga.getInstance().getModuleInstance(Survey).print(args);
-    }
-
-    public function print(args : {survey_id : Int}) {
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_printx", [{survey : tmp}]);
-            return;
-        }
     }
 
     public function getChoices(args : {survey_id : Int}) : Array<Choice> {
@@ -157,47 +152,47 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
 
     @bTrigger("beluga_survey_vote")
     public static function _vote(args : {
-        survey_id : Int,
+        id : Int,
         option : Int
     }) {
         Beluga.getInstance().getModuleInstance(Survey).vote(args);
     }
 
     public function vote(args : {
-        survey_id : Int,
+        id : Int,
         option : Int
     }) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         if (user == null) {
-            this.redirect();
+            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "You have to be logged to vote !"}]);
             return;
         }
 
-        for (tmp in Result.manager.search( { survey_id : args.survey_id, user_id : user.id } )) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", []);
+        for (tmp in Result.manager.search( { survey_id : args.id, user_id : user.id } )) {
+            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "You already has voted for this survey"}]);
             return;
         }
 
-        var survey : SurveyModel;
+        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+            var res = new Result();
 
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} ))
-            survey = tmp;
-        var res = new Result();
+            res.survey_id = tmp.id;
+            res.user_id = user.id;
+            res.choice_id = args.option;
+            res.insert();
 
-        res.survey_id = survey.id;
-        res.user_id = user.id;
-        res.choice_id = args.option;
-        res.insert();
+            var notify = {
+                title: "New answer to your survey !",
+                text: user.login + " has just answer to your survey " + tmp.name +
+                " <a href=\"/beluga/survey/print?id=" + tmp.id + "\">See</a>.",
+                user_id: user.id
+            };
 
-        var notify = {
-            title: "New answer to your survey !",
-            text: user.login + " has just answer to your survey " + survey.name +
-            " <a href=\"/beluga/survey/print?id=" + survey.id + "\">See</a>.",
-            user_id: survey.author_id
-        };
-
-        beluga.triggerDispatcher.dispatch("beluga_survey_answer_notify", [notify]);
-        beluga.triggerDispatcher.dispatch("beluga_survey_vote_success", []);
+            beluga.triggerDispatcher.dispatch("beluga_survey_answer_notify", [notify]);
+            beluga.triggerDispatcher.dispatch("beluga_survey_vote_success", []);
+            return;
+        }
+        beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "Survey not found"}]);
     }
 
 
