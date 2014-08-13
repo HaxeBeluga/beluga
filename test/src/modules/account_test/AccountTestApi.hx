@@ -82,7 +82,7 @@ class AccountTestApi implements MetadataReader
 			return;
 		}
 		var subscribeWidget = acc.getWidget("edit");
-		subscribeWidget.context = {email : user.email, path : "/accountTest/"};
+		subscribeWidget.context = {user : user, path : "/accountTest/"};
 
 		var html = Renderer.renderDefault("page_subscribe", "Information", {
 			subscribeWidget: subscribeWidget.render()
@@ -90,8 +90,8 @@ class AccountTestApi implements MetadataReader
 		Sys.print(html);
 	}
 
-	public function doDelete() {
-        this.acc.deleteUser();
+	public function doDelete(args : {id: Int}) {
+        this.acc.deleteUser(args);
     }
 
     @bTrigger("beluga_account_delete_fail")
@@ -127,12 +127,17 @@ class AccountTestApi implements MetadataReader
     }
 
 	@bTrigger("beluga_account_save")
-	public static function _doSave(args : {email : String}) {
+	public static function _doSave(args : {id: Int, email : String}) {
 		new AccountTestApi(Beluga.getInstance()).doSave(args);
 	}
 
-	public function doSave(args : {email : String}) {
-		this.acc.editEmail(this.acc.loggedUser, args.email);
+	public function doSave(args : {id: Int, email : String}) {
+		this.acc.edit(args.id, args.email);
+	}
+
+	@bTrigger("beluga_account_edit_success")
+	public static function _doEditSuccess() {
+		new AccountTestApi(Beluga.getInstance()).doEditSuccess();
 	}
 
 	public function doEditSuccess() {

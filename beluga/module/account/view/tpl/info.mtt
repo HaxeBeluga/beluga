@@ -30,7 +30,10 @@
 				::user.subscribeDateTime::
 			</div>
 		</div>
-		<a class="btn btn-danger" href="::base_url::::path::delete">Delete account (be sure of yourself !)</a>
+		<div class="form-group">
+			<label class="col-sm-4">Delete</label>
+			<a class="btn btn-danger" href="::base_url::::path::delete?id=::user.id::">Delete account (be sure of yourself !)</a>
+		</div>
 		<div class="form-group">
 			<div class="col-sm-2">
 			</div>
@@ -39,4 +42,7 @@
 			</div>
 		</div>
 	</div>
+	::if (user.isAdmin)::
+
+	::end::
 </div>

@@ -45,12 +45,15 @@ class AccountTest implements MetadataReader
         Sys.print(html);
     }
 
-    public function loginFail() {
+    @bTrigger("beluga_account_login_fail")
+    public static function _loginFail(args : {err : String}) {
+        new AccountTest(Beluga.getInstance()).loginFail(args);
+    }
+
+    public function loginFail(args : {err : String}) {
         var widget = acc.getWidget("login");
-        widget.context = {
-			error : "Invalid login and/or password",
-			account : acc
-		};
+        widget.context = {error : args.err};
+
         var loginWidget = widget.render();
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget
@@ -94,7 +97,12 @@ class AccountTest implements MetadataReader
             return;
         }
         var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/"};
+        if (!user.isAdmin)
+            subscribeWidget.context = {user : user, path : "/accountTest/"};
+        else {
+            var users = Beluga.getInstance().getModuleInstance(Account).getUsers();
+            subscribeWidget.context = {user : user, path : "/accountTest/"};
+        }
 
         var html = Renderer.renderDefault("page_subscribe", "Information", {
             subscribeWidget: subscribeWidget.render()

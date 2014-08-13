@@ -26,11 +26,21 @@ interface Account extends Module {
         password : String
     }) : Void;
 
-    public function deleteUser() : Void;
+    public function deleteUser(args : {id : Int}) : Void;
 
 	public function getUser(userId : SId) : User;
 
+    public function getUsers() : Array<User>;
+	
+    public function showUser(args: { id: Int}): Void;
+
     public function logout() : Void;
 
-    public function editEmail(user : User, email : String) : Void;
+    public function setLoggedUser(user : User) : User;
+
+    public function getLoggedUser() : User;
+
+    public function isLogged() : Bool;
+
+    public function edit(user_id: Int, email : String) : Void;
 }
