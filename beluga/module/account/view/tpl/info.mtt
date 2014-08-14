@@ -43,15 +43,14 @@
 			</div>
 		</div>
 	</div>
-	<h1>hey : ::user.isAdmin::</h1>
-	::if user.isAdmin::
+	::if (user.isAdmin == "1")::
 	<div>
 		<h3>Admin part</h3>
 		<ul class="list-group">
 		::foreach users::
 			<li class="list-group-item">
 				<div class="pull-right">
-					::if (isBan)::
+					::if (isBan == "1")::
 					<a class="btn btn-danger btn-xs" href="::base_url::::path::unban?id=::id::">Unban</a>
 					::else::
 					<a class="btn btn-danger btn-xs" href="::base_url::::path::ban?id=::id::">Ban</a>
