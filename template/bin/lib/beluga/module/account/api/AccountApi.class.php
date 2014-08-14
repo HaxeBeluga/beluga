@@ -16,7 +16,7 @@ class beluga_module_account_api_AccountApi {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_subscribe", (new _hx_array(array($args))));
 	}
 	public function doDefault() {
-		haxe_Log::trace("Account default page", _hx_anonymous(array("fileName" => "AccountApi.hx", "lineNumber" => 43, "className" => "beluga.module.account.api.AccountApi", "methodName" => "doDefault")));
+		$this->beluga->triggerDispatcher->realDispatch("beluga_account_default", (new _hx_array(array())));
 	}
 	public function doEdit() {
 		$this->beluga->triggerDispatcher->realDispatch("beluga_account_edit", (new _hx_array(array())));

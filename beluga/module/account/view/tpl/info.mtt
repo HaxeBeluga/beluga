@@ -1,5 +1,5 @@
 <div style="margin-top:20px;width:800px;">
-	<!--::if (error)::
+	::if (error)::
 	::if (error != "")::
 	<div class="alert alert-danger">::error::</div>
 	::end::
@@ -8,18 +8,16 @@
 	::if (success != "")::
 	<div class="alert alert-success">::success::</div>
 	::end::
-	::end::-->
+	::end::
 	<div class="form-horizontal">
 		<div class="form-group">
 			<label class="col-sm-4">Identifiant</label>
-			<div class="col-sm-6">
-				::user.login::
-			</div>
+			<div class="col-sm-6">::user.login::</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-4">email</label>
 			<div class="col-sm-6">
-				<a href="mailto:::user.email::">::user.email::</a>
+				<a href="mailto:::email::">::user.email::</a>
 			</div>
 			<div class="col-sm-1">
 			</div>
@@ -31,13 +29,11 @@
 		</div>
 		<div class="form-group">
 			<label class="col-sm-4">Date d'inscription</label>
-			<div class="col-sm-6">
-				::user.subscribeDateTime::
-			</div>
+			<div class="col-sm-6">::user.subscribeDateTime::</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-4">Delete</label>
-			<a class="btn btn-danger" href="::base_url::::path::delete?id=::user.id::">Delete account (be sure of yourself !)</a>
+			<a class="btn btn-danger" href="::base_url::::path::delete?id=::id::">Delete account (be sure of yourself !)</a>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-2">
@@ -47,19 +43,22 @@
 			</div>
 		</div>
 	</div>
-	<!--::if (user.isAdmin)::
+	<h1>hey : ::user.isAdmin::</h1>
+	::if user.isAdmin::
 	<div>
 		<h3>Admin part</h3>
 		<ul class="list-group">
 		::foreach users::
 			<li class="list-group-item">
-				<p>name</p>
-				::if (isBan)::
-				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::unban?id=::id::">Unban</a>
-				::else::
-				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::ban?id=::id::">Ban</a>
-				::end::
-				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::delete?id=::id::">Delete</a>
+				<div class="pull-right">
+					::if (isBan)::
+					<a class="btn btn-danger btn-xs" href="::base_url::::path::unban?id=::id::">Unban</a>
+					::else::
+					<a class="btn btn-danger btn-xs" href="::base_url::::path::ban?id=::id::">Ban</a>
+					::end::
+					<a class="btn btn-danger btn-xs" href="::base_url::::path::delete?id=::id::">Delete</a>
+				</div>
+				<p>::login::</p>
 			</li>
 		::end::
 		</ul>
@@ -76,5 +75,5 @@
 	</div>
 	<div>
 		<h3>Users' list (to make new friend or blacklist others !)</h3>
-	</div>-->
+	</div>
 </div>

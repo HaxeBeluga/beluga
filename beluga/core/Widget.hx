@@ -38,7 +38,7 @@ class Widget {
     }
 
     //Once a widget is rendered, you can't modify it again.
-    //If you want to this, you have to clone it (before or after first rendering)
+    //If you want to do this, you have to clone it (before or after first rendering)
     public function render() : String {
         if (id == 0) {
             //prepend css to the template
