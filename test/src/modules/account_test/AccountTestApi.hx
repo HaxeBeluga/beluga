@@ -50,17 +50,15 @@ class AccountTestApi implements MetadataReader
     }
 
     public function doPrintInfo() {
-        var user = this.acc.getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : ""});
+            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "You need to be logged"});
             Sys.print(html);
             return;
         }
         var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/"};
-        Sys.print("yo !");
-        return;
+        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getUsers(), error: ""};
         var tmp = subscribeWidget.render();
 
         var html = Renderer.renderDefault("page_subscribe", "Information", {
@@ -73,7 +71,12 @@ class AccountTestApi implements MetadataReader
         this.acc.logout();
     }
 
-    public function doDefault(d : Dispatch) {
+    @bTrigger("beluga_account_default")
+    public static function _doDefault() {
+        new AccountTestApi(Beluga.getInstance()).doDefault();
+    }
+
+    public function doDefault() {
         var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : ""});
         Sys.print(html);
     }

@@ -36,7 +36,7 @@ class AccountApi  {
     }
 
     public function doDefault() {
-        trace("Account default page");
+        beluga.triggerDispatcher.dispatch("beluga_account_default", []);
     }
 
     public function doEdit() {
