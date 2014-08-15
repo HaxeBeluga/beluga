@@ -50,10 +50,10 @@
 		::foreach users::
 			<li class="list-group-item">
 				<div class="pull-right">
-					::if (isBan == "1")::
-					<a class="btn btn-danger btn-xs" href="::base_url::::path::unban?id=::id::">Unban</a>
+					::if (__current__.isBan == "1")::
+					<a class="btn btn-warning btn-xs" href="::base_url::::path::unban?id=::id::">Unban</a>
 					::else::
-					<a class="btn btn-danger btn-xs" href="::base_url::::path::ban?id=::id::">Ban</a>
+					<a class="btn btn-warning btn-xs" href="::base_url::::path::ban?id=::id::">Ban</a>
 					::end::
 					<a class="btn btn-danger btn-xs" href="::base_url::::path::delete?id=::id::">Delete</a>
 				</div>
@@ -65,14 +65,54 @@
 	::end::
 	<div>
 		<h3>Friends</h3>
+		<ul class="list-group">
+		::if (friends.length > 0)::
+		::foreach friends::
+			<li class="list-group-item">
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::unfriend?id=::id::">Remove from your friends</a>
+				<p>::login::</p>
+			</li>
+		::end::
+		::else::
+		<p>You have no friend.</p>
+		::end::
 	</div>
 	<div>
 		<h3>Blacklisted people</h3>
+		<ul class="list-group">
+		::if (blacklisted.length > 0)::
+		::foreach blacklisted::
+			<li class="list-group-item">
+				<a class="btn btn-warning btn-xs pull-right" href="::base_url::::path::unblacklist?id=::id::">Unblacklist</a>
+				<p>::login::</p>
+			</li>
+		::end::
+		::else::
+		<p>You have blacklisted no one.</p>
+		::end::
 	</div>
 	<div>
 		<h3>Sponsor</h3>
+		::if (user.sponsor)::
+		<p>::user.sponsor.login::
+		::else::
+		<p>You have no sponsor</p>
+		::end::
 	</div>
 	<div>
-		<h3>Users' list (to make new friend or blacklist others !)</h3>
+		<h3>Not friends list</h3><ul class="list-group">
+		::if (not_friends.length > 0)::
+		::foreach not_friends::
+			<li class="list-group-item">
+			<div class="pull-right">
+					<a class="btn btn-warning btn-xs" href="::base_url::::path::blacklist?id=::id::">Blacklist</a>
+					<a class="btn btn-success btn-xs" href="::base_url::::path::friend?id=::id::">Add to your friends</a>
+				</div>
+				<p>::login::</p>
+			</li>
+		::end::
+		::else::
+		<p>You're friend with everyone (congratulations I guess ?)</p>
+		::end::
 	</div>
 </div>

@@ -345,6 +345,24 @@ class sys_db_Manager {
 		$this->class_proto->prototype->{"get_" . _hx_string_or_null($r->prop)} = array(new _hx_lambda(array(&$hkey, &$hprop, &$lock, &$manager, &$r, &$spod), "sys_db_Manager_3"), 'execute');
 		$this->class_proto->prototype->{"set_" . _hx_string_or_null($r->prop)} = array(new _hx_lambda(array(&$hkey, &$hprop, &$lock, &$manager, &$r, &$spod), "sys_db_Manager_4"), 'execute');
 	}
+	public function h__get($x, $prop, $key, $lock) {
+		$v = Reflect::field($x, $prop);
+		if($v !== null) {
+			return $v->value;
+		}
+		$y = $this->unsafeGet(Reflect::field($x, $key), $lock);
+		$x->{$prop} = _hx_anonymous(array("value" => $y));
+		return $y;
+	}
+	public function h__set($x, $prop, $key, $v) {
+		$x->{$prop} = _hx_anonymous(array("value" => $v));
+		if($v === null) {
+			$x->{$key} = null;
+		} else {
+			$value = Reflect::field($v, $this->table_keys[0]);
+			$x->{$key} = $value;
+		}
+	}
 	public function makeCacheKey($x) {
 		if($this->table_keys->length === 1) {
 			$k = Reflect::field($x, $this->table_keys[0]);

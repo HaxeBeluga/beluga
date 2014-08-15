@@ -30,7 +30,15 @@ interface Account extends Module {
 
 	public function getUser(userId : SId) : User;
 
+    public function getSponsor(userId : SId) : User;
+
     public function getUsers() : Array<User>;
+
+    public function getFriends(user_id: Int) : Array<User>;
+
+    public function getNotFriends(user_id: Int) : Array<User>;
+
+    public function getBlackListed(user_id: Int) : Array<User>;
 	
     public function showUser(args: { id: Int}): Void;
 
@@ -47,4 +55,12 @@ interface Account extends Module {
     public function ban(user_id: Int) : Void;
 
     public function unban(user_id: Int) : Void;
+
+    public function friend(user_id: Int, friend_id: Int) : Void;
+
+    public function unfriend(user_id: Int, friend_id: Int) : Void;
+
+    public function blacklist(user_id: Int, friend_id: Int) : Void;
+
+    public function unblacklist(user_id: Int, friend_id: Int) : Void;
 }
