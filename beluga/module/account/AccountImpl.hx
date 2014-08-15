@@ -4,10 +4,13 @@ import haxe.xml.Fast;
 import haxe.Session;
 import sys.db.Types.SId;
 import sys.db.Types;
+import sys.db.Manager;
 
 import beluga.core.Beluga;
 import beluga.core.module.ModuleImpl;
 import beluga.module.account.model.User;
+import beluga.module.account.model.Friend;
+import beluga.module.account.model.BlackList;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
 import beluga.core.macro.MetadataReader;
@@ -52,16 +55,19 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             //login wrong
             beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Unknown user"}]);
         } else {
-            if (user.first().hashPassword != haxe.crypto.Md5.encode(args.password)) {
+            var tmp = user.first();
+            if (tmp.hashPassword != haxe.crypto.Md5.encode(args.password)) {
                 beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Invalid login and / or password"}]);
-            }
-            else if (user.first().isBan == true) {
-                beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Your account as been banished"}]);
             } else {
-                setLoggedUser(user.first());
-                beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
-                    user.first()
-                ]);
+                // you cannot compare like this : tmp.isBan == true, it will always return false !
+                if (tmp.isBan) {
+                    beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Your account as been bannished"}]);
+                } else {
+                    setLoggedUser(tmp);
+                    beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
+                        tmp
+                    ]);
+                }
             }
         }
     }
@@ -143,6 +149,14 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 		}
 	}
 
+    public function getSponsor(userId : SId) : User {
+        var user = this.getUser(userId);
+
+        if (user == null)
+            return null;
+        return user.sponsor;
+    }
+
     public function getUsers() : Array<User> {
         var user = this.getLoggedUser();
         var list = new Array<User>();
@@ -156,6 +170,49 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             }
         }
         return list;
+    }
+
+    public function getFriends(user_id: Int) : Array<User> {
+        var friends = new Array<User>();
+
+        for (tmp in Friend.manager.dynamicSearch({user_id: user_id})) {
+            friends.push(tmp.friend);
+        }
+        return friends;
+    }
+
+    public function getNotFriends(user_id: Int) : Array<User> {
+        var not_friends = new Array<User>();
+
+        var row = Manager.cnx.request("select * from beluga_acc_user WHERE id!=" + user_id + " AND id NOT IN (SELECT friend_id from beluga_acc_friend)");
+        for (tmp in row) {
+            // Need to improve this part of the code
+            // A sql query would be far more better
+            not_friends.push(tmp);
+            // haxe magic
+            if (isBlacklistedBy(user_id, tmp.id) || isBlacklistedBy(tmp.id, user_id))
+                not_friends.pop();
+        }
+        return not_friends;
+    }
+
+    public function getBlackListed(user_id: Int) : Array<User> {
+        var blacklisted = new Array<User>();
+
+        for (tmp in BlackList.manager.dynamicSearch({user_id: user_id})) {
+            blacklisted.push(tmp.blacklisted);
+        }
+        return blacklisted;
+    }
+
+    public function isBlacklistedBy(user_id: Int, blacklister_id: Int) : Bool {
+        var list = getBlackListed(blacklister_id);
+
+        for (tmp in list) {
+            if (tmp.id == user_id)
+                return true;
+        }
+        return false;
     }
 
     public function activateUser(userId : SId) {
@@ -238,6 +295,10 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
                 beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You need admin rights to do that"}]);
             else {
                 for (tmp in User.manager.dynamicSearch({id : user_id })) {
+                    if (tmp.isBan == true) {
+                        beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "This user is already bannished"}]);
+                        return;
+                    }
                     tmp.isBan = true;
                     tmp.update();
                     beluga.triggerDispatcher.dispatch("beluga_account_ban_success", []);
@@ -260,6 +321,10 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
                 beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You need admin rights to do that"}]);
             else {
                 for (tmp in User.manager.dynamicSearch({id : user_id })) {
+                    if (user.isBan == false) {
+                        beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "This user is not bannished"}]);
+                        return;
+                    }
                     tmp.isBan = false;
                     tmp.update();
                     beluga.triggerDispatcher.dispatch("beluga_account_unban_success", []);
@@ -267,6 +332,114 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
                 }
                 beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "Unknown user"}]);
             }
+        }
+    }
+
+    public function friend(user_id: Int, friend_id: Int) : Void {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "You have to be logged"}]);
+        } else {
+            var friend = this.getUser(friend_id);
+
+            if (friend == null) {
+                beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "Unknown user"}]);
+                return;
+            }
+            if (user_id == friend_id) {
+                beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "You can't be friend with yourself !"}]);
+                return;
+            }
+            for (tmp in Friend.manager.dynamicSearch({user_id : user_id, friend_id: friend_id })) {
+                beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "You're already friend with this person"}]);
+                return;
+            }
+            var f = new Friend();
+
+            f.user_id = user_id;
+            f.friend_id = friend_id;
+            f.insert();
+            beluga.triggerDispatcher.dispatch("beluga_account_friend_success", []);
+        }
+    }
+
+    public function unfriend(user_id: Int, friend_id: Int) : Void {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "You have to be logged"}]);
+        } else {
+            var friend = this.getUser(friend_id);
+
+            if (friend == null) {
+                beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "Unknown user"}]);
+                return;
+            }
+            if (user_id == friend_id) {
+                beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "You can't be friend with yourself !"}]);
+                return;
+            }
+            for (tmp in Friend.manager.dynamicSearch({user_id : user_id, friend_id: friend_id })) {
+                tmp.delete();
+                beluga.triggerDispatcher.dispatch("beluga_account_unfriend_success", []);
+                return;
+            }
+            beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "You're not friend with this person"}]);
+        }
+    }
+
+    public function blacklist(user_id: Int, to_blacklist_id: Int) : Void {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "You have to be logged"}]);
+        } else {
+            var to_blacklist = this.getUser(to_blacklist_id);
+
+            if (to_blacklist == null) {
+                beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "Unknown user"}]);
+                return;
+            }
+            if (user_id == to_blacklist_id) {
+                beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "You can't blacklist yourself !"}]);
+                return;
+            }
+            for (tmp in BlackList.manager.dynamicSearch({user_id : user_id, blacklisted_id: to_blacklist_id })) {
+                beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "This person is already blacklisted"}]);
+                return;
+            }
+            var f = new BlackList();
+
+            f.user_id = user_id;
+            f.blacklisted_id = to_blacklist_id;
+            f.insert();
+            beluga.triggerDispatcher.dispatch("beluga_account_blacklist_success", []);
+        }
+    }
+
+    public function unblacklist(user_id: Int, to_unblacklist_id: Int) : Void {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user == null) {
+            beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "You have to be logged"}]);
+        } else {
+            var to_unblacklist = this.getUser(to_unblacklist_id);
+
+            if (to_unblacklist == null) {
+                beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "Unknown user"}]);
+                return;
+            }
+            if (user_id == to_unblacklist_id) {
+                beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "You can't blacklist yourself !"}]);
+                return;
+            }
+            for (tmp in BlackList.manager.dynamicSearch({user_id : user_id, blacklisted_id: to_unblacklist_id })) {
+                tmp.delete();
+                beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_success", []);
+                return;
+            }
+            beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "You've not blacklisted this person !"}]);
         }
     }
 }

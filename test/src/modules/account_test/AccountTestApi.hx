@@ -25,6 +25,8 @@ class AccountTestApi implements MetadataReader
 {
     public var beluga(default, null) : Beluga;
     public var acc(default, null) : Account;
+    public var success_msg : String;
+    public var error_msg : String;
 
     public function new(beluga : Beluga) {
         this.beluga = beluga;
@@ -58,7 +60,8 @@ class AccountTestApi implements MetadataReader
             return;
         }
         var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getUsers(), error: ""};
+        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getUsers(), friends: this.acc.getFriends(user.id),
+            not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
         var tmp = subscribeWidget.render();
 
         var html = Renderer.renderDefault("page_subscribe", "Information", {
@@ -149,19 +152,8 @@ class AccountTestApi implements MetadataReader
     }
 
     public function banFail(args : {err: String}) {
-        var user = this.acc.getLoggedUser();
-
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: subscribeWidget.render()
-        });
+        error_msg = args.err;
+        this.doPrintInfo();
     }
 
     @bTrigger("beluga_account_ban_success")
@@ -170,19 +162,8 @@ class AccountTestApi implements MetadataReader
     }
 
     public function banSuccess() {
-        var user = this.acc.getLoggedUser();
-
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/", success: "The user has been bannished"};
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: subscribeWidget.render()
-        });
+        success_msg = "The user has been bannished";
+        doPrintInfo();
     }
 
     public function doUnban(args : {id: Int}) {
@@ -195,19 +176,8 @@ class AccountTestApi implements MetadataReader
     }
 
     public function unbanFail(args : {err: String}) {
-        var user = this.acc.getLoggedUser();
-
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: subscribeWidget.render()
-        });
+        error_msg = args.err;
+        this.doPrintInfo();
     }
 
     @bTrigger("beluga_account_unban_success")
@@ -216,19 +186,8 @@ class AccountTestApi implements MetadataReader
     }
 
     public function unbanSuccess() {
-        var user = this.acc.getLoggedUser();
-
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/", success: "The user has been bannished"};
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: subscribeWidget.render()
-        });
+        success_msg = "The user is not bannished anymore";
+        doPrintInfo();
     }
 
     @bTrigger("beluga_account_save")
@@ -260,4 +219,125 @@ class AccountTestApi implements MetadataReader
         Sys.print(html);
     }
 
+    public function doBlacklist(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.acc.blacklist(user.id, args.id);
+        else
+            doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_blacklist_fail")
+    public static function _blacklistFail(args : {err: String}) {
+        new AccountTestApi(Beluga.getInstance()).blacklistFail(args);
+    }
+
+    public function blacklistFail(args : {err: String}) {
+        error_msg = args.err;
+        this.doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_blacklist_success")
+    public static function _blacklistSuccess() {
+        new AccountTestApi(Beluga.getInstance()).blacklistSuccess();
+    }
+
+    public function blacklistSuccess() {
+        success_msg = "The user has been blacklisted";
+        doPrintInfo();
+    }
+
+    public function doUnblacklist(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.acc.unblacklist(user.id, args.id);
+        else
+            doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_unblacklist_fail")
+    public static function _unblacklistFail(args : {err: String}) {
+        new AccountTestApi(Beluga.getInstance()).unblacklistFail(args);
+    }
+
+    public function unblacklistFail(args : {err: String}) {
+        error_msg = args.err;
+        this.doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_unblacklist_success")
+    public static function _unblacklistSuccess() {
+        new AccountTestApi(Beluga.getInstance()).unblacklistSuccess();
+    }
+
+    public function unblacklistSuccess() {
+        success_msg = "The user is not blacklisted anymore";
+        doPrintInfo();
+    }
+
+
+
+
+
+
+
+    public function doFriend(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.acc.friend(user.id, args.id);
+        else
+            doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_friend_fail")
+    public static function _friendFail(args : {err: String}) {
+        new AccountTestApi(Beluga.getInstance()).friendFail(args);
+    }
+
+    public function friendFail(args : {err: String}) {
+        error_msg = args.err;
+        this.doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_friend_success")
+    public static function _friendSuccess() {
+        new AccountTestApi(Beluga.getInstance()).friendSuccess();
+    }
+
+    public function friendSuccess() {
+        success_msg = "The user is now your friend";
+        doPrintInfo();
+    }
+
+    public function doUnfriend(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.acc.unfriend(user.id, args.id);
+        else
+            doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_unfriend_fail")
+    public static function _unfriendFail(args : {err: String}) {
+        new AccountTestApi(Beluga.getInstance()).unfriendFail(args);
+    }
+
+    public function unfriendFail(args : {err: String}) {
+        error_msg = args.err;
+        this.doPrintInfo();
+    }
+
+    @bTrigger("beluga_account_unfriend_success")
+    public static function _unfriendSuccess() {
+        new AccountTestApi(Beluga.getInstance()).unfriendSuccess();
+    }
+
+    public function unfriendSuccess() {
+        success_msg = "The user is not your friend anymore";
+        doPrintInfo();
+    }
 }
