@@ -22,14 +22,6 @@ class AccountApi  {
         beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
     }
 
-    public function doLogout() {
-        module.logout();
-    }
-
-    public function doPrintInfo() {
-        beluga.triggerDispatcher.dispatch("beluga_account_printInfo", []);
-    }
-
     public function doShowUser(args: { id: Int }) {
         beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
     }
@@ -44,7 +36,7 @@ class AccountApi  {
     }
 
     public function doDefault() {
-        trace("Account default page");
+        beluga.triggerDispatcher.dispatch("beluga_account_default", []);
     }
 
     public function doEdit() {

@@ -32,12 +32,13 @@
 		::if (comments.length > 0)::
 		::foreach comments::
 		<div class="panel panel-primary">
+			::if (user)::
 			::if (login == user.login)::
 			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
 			::elseif (user.id == news.user_id)::
 			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
 			::end::
-		
+			::end::
 			<div class="panel-heading"><h3 class="panel-title">::login::</h3></div>
 			<div class="panel-body">::text::</div>
 			<div class="panel-footer">Posted on ::date::</div>

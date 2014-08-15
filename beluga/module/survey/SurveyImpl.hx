@@ -53,6 +53,13 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         }
     }
 
+    public function getSurvey(id: Int) : SurveyModel {
+        for (tmp in SurveyModel.manager.dynamicSearch( { id : id } )) {
+            return tmp;
+        }
+        return null;
+    }
+
     public function getSurveysList() : Array<SurveyData> {
 
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
@@ -77,24 +84,12 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         return m_surveys;
     }
 
-    @bTrigger("beluga_survey_print")
-    public static function _print(args : {id : Int}) {
-        Beluga.getInstance().getModuleInstance(Survey).print(args);
-    }
-
-    public function print(args : {id : Int}) {
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_printx", [{survey : tmp}]);
-            return;
-        }
-    }
-
-    public function getChoices(args : {id : Int}) : Array<Choice> {
+    public function getChoices(args : {survey_id : Int}) : Array<Choice> {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var arr = new Array<Choice>();
 
         if (user != null) {
-            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
                 for (tmp_c in Choice.manager.dynamicSearch( { survey_id : tmp.id } )) {
                     arr.push(tmp_c);
                 }
@@ -169,43 +164,43 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
     }) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         if (user == null) {
-            this.redirect();
+            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "You have to be logged to vote !"}]);
             return;
         }
 
         for (tmp in Result.manager.search( { survey_id : args.id, user_id : user.id } )) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", []);
+            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "You already has voted for this survey"}]);
             return;
         }
 
-        var survey : SurveyModel;
+        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+            var res = new Result();
 
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} ))
-            survey = tmp;
-        var res = new Result();
+            res.survey_id = tmp.id;
+            res.user_id = user.id;
+            res.choice_id = args.option;
+            res.insert();
 
-        res.survey_id = survey.id;
-        res.user_id = user.id;
-        res.choice_id = args.option;
-        res.insert();
+            var notify = {
+                title: "New answer to your survey !",
+                text: user.login + " has just answer to your survey " + tmp.name +
+                " <a href=\"/beluga/survey/print?id=" + tmp.id + "\">See</a>.",
+                user_id: user.id
+            };
 
-        var notify = {
-            title: "New answer to your survey !",
-            text: user.login + " has just answer to your survey " + survey.name +
-            " <a href=\"/beluga/survey/print?id=" + survey.id + "\">See</a>.",
-            user_id: survey.author_id
-        };
-
-        beluga.triggerDispatcher.dispatch("beluga_survey_answer_notify", [notify]);
-        beluga.triggerDispatcher.dispatch("beluga_survey_vote_success", []);
+            beluga.triggerDispatcher.dispatch("beluga_survey_answer_notify", [notify]);
+            beluga.triggerDispatcher.dispatch("beluga_survey_vote_success", []);
+            return;
+        }
+        beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "Survey not found"}]);
     }
 
 
-    public function canVote(args : {id : Int}) : Bool {
+    public function canVote(args : {survey_id : Int}) : Bool {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user != null) {
-            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+            for (tmp in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
                 for (tmp_c in Result.manager.dynamicSearch( { survey_id : tmp.id, user_id : user.id } )) {
                     return false;
                 }

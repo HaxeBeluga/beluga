@@ -8,3 +8,4 @@
 <module name="wallet" />
 <module name="mail" />
 <module name="market" />
+<module name="faq" />
