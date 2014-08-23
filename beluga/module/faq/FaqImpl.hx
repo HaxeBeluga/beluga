@@ -16,8 +16,6 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         super();
     }
 
-    override public function loadConfig(data : Fast) {}
-
     public function getCategory(category_id : Int) : CategoryModel {
         for (tmp in CategoryModel.manager.dynamicSearch( { id: category_id} )) {
             return tmp;
@@ -69,7 +67,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             [{error_msg : "Incomplete answer", question: args.question, answer: args.answer, id: args.category_id}]);
             return;
         }
-        if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             beluga.triggerDispatcher.dispatch("beluga_faq_createFAQ_fail",
             [{error_msg : "You need to be logged", question: args.question, answer: args.answer, id: args.category_id}]);
             return;
@@ -113,7 +111,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "Missing name", id: args.parent}]);
             return;
         }
-        if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             beluga.triggerDispatcher.dispatch("beluga_faq_createCategory_fail", [{error_msg : "You need to be logged", id: args.parent}]);
             return;
         }
@@ -148,7 +146,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function deleteFAQ(args : {question_id : Int, category_id : Int}) {
-        if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             beluga.triggerDispatcher.dispatch("beluga_faq_deleteFAQ_fail", [{id: args.category_id, error : "You need to be logged"}]);
             return;
         }
@@ -181,7 +179,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function deleteCategory(args : {category_id : Int, parent_id: Int}) {
-        if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             beluga.triggerDispatcher.dispatch("beluga_faq_deleteCategory_fail", [{id: args.parent_id, error : "You need to be logged"}]);
             return;
         }
@@ -201,7 +199,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error : "Incomplete question and or answer"}]);
             return;
         }
-        if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             beluga.triggerDispatcher.dispatch("beluga_faq_editFAQ_fail", [{error : "You need to be logged"}]);
             return;
         }
@@ -230,7 +228,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error : "Incomplete name"}]);
             return;
         }
-        if (Beluga.getInstance().getModuleInstance(Account).getLoggedUser() == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             beluga.triggerDispatcher.dispatch("beluga_faq_editCategory_fail", [{error : "You need to be logged"}]);
             return;
         }
