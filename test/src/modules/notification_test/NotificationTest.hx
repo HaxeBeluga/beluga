@@ -42,7 +42,7 @@ class NotificationTest implements MetadataReader
 	}
 
 	public function doDefault() {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 		if (user == null) {
 			Web.setHeader("Content-Type", "text/plain");
 			Sys.println("Please log in !");
@@ -65,7 +65,7 @@ class NotificationTest implements MetadataReader
 	}
 
 	public function doPrint(args : {notif : NotificationModel}) {
-		var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+		var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 		if (user == null) {
 			doDefault();
 			return;

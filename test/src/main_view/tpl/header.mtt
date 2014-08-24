@@ -20,10 +20,10 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="::base_url::/accountTest/subscribePage">Inscription</a></li>
-            ::if (user)::
-            <li><a href="::base_url::/accountTest/logout">Déconnexion</a></li>
+            ::if user::
+				<li><a href="::base_url::/accountTest/logout">Déconnexion</a></li>
             ::else::
-            <li><a href="::base_url::/accountTest/loginPage">Authentification</a></li>
+				<li><a href="::base_url::/accountTest/loginPage">Authentification</a></li>
             ::end::
           </ul>
         </li>
@@ -55,11 +55,13 @@
     </li>
 
 
-      </ul>
+	</ul>
       <ul class="nav navbar-nav">
+		::if user::
         <li>
-          <a href="::base_url::/accountTest/printInfo">::login::</a>
+          <a href="::base_url::/accountTest/printInfo">You are logged as ::user.login::</a>
         </li>
+		::end::
       </ul>
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">

@@ -48,7 +48,7 @@ class FaqTest implements MetadataReader
     }
 
     public function doPrint(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var data = faq.getAllFromCategory(args.id);
         var cat = faq.getCategory(args.id);
         var widget = this.faq.getWidget("faqs");

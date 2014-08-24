@@ -13,11 +13,13 @@ class MailImpl extends ModuleImpl implements MailInternal {
     public function new() {
         super();
     }
-
-    override public function loadConfig(data : Fast) {}
+	
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
 
     public function getMail(id : Int) : MailModel {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in MailModel.manager.dynamicSearch( {user_id : user.id, id : id} ))
@@ -28,7 +30,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
 
     public function getDraftMails() : Array<MailModel> {
         var ret = new Array<MailModel>();
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : false} ))
@@ -39,7 +41,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
 
     public function getSentMails() : Array<MailModel> {
         var ret = new Array<MailModel>();
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : true} ))
@@ -49,7 +51,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
     }
 
     public function sendMail(args : {receiver : String, subject : String, message : String}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "You must log in to send mail", receiver : args.receiver, subject : args.subject, message : args.message}]);

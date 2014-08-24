@@ -3,20 +3,29 @@ package beluga.core.macro;
 import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.macro.Compiler;
+import haxe.CallStack;
 
 import beluga.core.module.Module;
 
 class ModuleLoader {
+	
+	private static var modules = new Map<String, Module>();
+	
     //Need to be there since all loaded modules are referred here
     //Resolve both simple and full path
-    public static function getModuleInstanceByName(name : String, key : String = "") : Module {
-        var realClass = Type.resolveClass(name + "Impl");
-        if (realClass == null)
-            realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
-        if (realClass == null)
-            throw new BelugaException("Module not found " + name);
-        return Reflect.field(realClass, "getInstance")(key);
-    }
+    public static function getModuleInstanceByName(name : String) : Module {
+		var realClass = Type.resolveClass(name + "Impl");
+		if (realClass == null)
+			realClass = Type.resolveClass("beluga.module." + name.toLowerCase() + "." + name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() + "Impl");
+		if (realClass == null)
+			throw new BelugaException("Module not found " + name);
+		if (modules.exists(Type.getClassName(realClass))) {
+			return cast modules.get(Type.getClassName((realClass)));
+		}
+		var instance = Type.createInstance(realClass, []);
+		modules.set(Type.getClassName(realClass), instance);
+		return instance;
+	}
 
     public static function resolveModel(module : String, name : String) : Class<Dynamic> {
         var realClass = Type.resolveClass("beluga.module." + module + ".model." + name);

@@ -174,4 +174,13 @@ class ConfigLoader {
 
         return Context.makeExpr(path + "/beluga", Context.currentPos());
     }
+	
+	macro public static function getBaseUrl() :ExprOf<String> {
+		var base_url : String;
+		if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base && ConfigLoader.config.node.url.node.base.has.value)
+			base_url = ConfigLoader.config.node.url.node.base.att.value;
+		else
+			base_url = "";
+		return macro $v{base_url};
+	}
 }

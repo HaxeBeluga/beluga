@@ -25,8 +25,10 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {}
-
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
+	
     /** Actions trigger **/
 
     @bTrigger("beluga_fileupload_browse")
@@ -42,8 +44,8 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         var files: List<Dynamic> = new List<Dynamic>();
         var user_id: Int = 0;
 
-        if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            user_id = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            user_id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
             files = this.getUserFileList(user_id);
         } else {
             this.error = "You must be logged to access this page";
@@ -89,13 +91,13 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function send(): Void{
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
             return;
         }
 
-        var id = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
-        var login = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().login;
+        var id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
+        var login = Beluga.getInstance().getModuleInstance(Account).loggedUser.login;
         var up = new Uploader(login, id);
         if (up.is_valid == false) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_upload_fail", [{reason: "Invalid file extension"}]);
@@ -103,7 +105,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
             var notif = {
                 title: "File transfer completed !",
                 text: "Your file transfer terminate with success, you can consult your files in the file upload section !",
-                user_id: Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id
+                user_id: Beluga.getInstance().getModuleInstance(Account).loggedUser.id
             };
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success", []);
             beluga.triggerDispatcher.dispatch("beluga_fileupload_notify_upload_success", [notif]);
@@ -121,12 +123,12 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function delete(args: { id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
             return;
         } else {
             var file = File.manager.get(args.id);
-            var current_user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
+            var current_user = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
             if (file.fi_id_owner != current_user) {
                 beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
                 return;
@@ -160,7 +162,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function addextension(args: { name: String }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = "You must be logged to access this section";
         } else if (args.name == "") {
             this.error = "The field is empty";
@@ -186,7 +188,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
     }
 
     public function deleteextension(args: { id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = "You must be logged to access this section";
         } else {
             var ext = null;

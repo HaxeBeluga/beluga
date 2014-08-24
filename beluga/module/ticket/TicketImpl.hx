@@ -27,7 +27,9 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {}
+	override public function initialize(beluga : Beluga) : Void {
+		
+	}
 
     /** Actions trigger **/
 
@@ -184,7 +186,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
 
          // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to reopen a ticket !";
         } else {
             var ticket = TicketModel.manager.get(args.id);
@@ -206,7 +208,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
 
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to close a ticket !";
         } else {
             var ticket = TicketModel.manager.get(args.id);
@@ -232,7 +234,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
 
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to create a ticket !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
         } else if (args.message.length == 0) {
@@ -241,7 +243,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         } else {
             var message: Message = new Message();
             message.me_content = args.message;
-            message.me_us_id_author = account.getLoggedUser().id;
+            message.me_us_id_author = account.loggedUser.id;
             message.me_date_creation = Date.now();
             message.me_ti_id = args.id;
             message.insert();
@@ -278,14 +280,14 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         var ticket = new TicketModel();
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to create a ticket !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
         } else if (args.title.length == 0) {
             this.error = "Your title cannot be empty !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
         } else {
-            ticket.ti_us_id = account.getLoggedUser().id;
+            ticket.ti_us_id = account.loggedUser.id;
             ticket.ti_date = Date.now();
             ticket.ti_title = args.title;
             ticket.ti_content = args.message;
@@ -301,7 +303,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
                 var args = {
                     title: "Ticket assignnment: " + args.title + " !",
                     text: "You've been assigned to the ticket number " + ticket_id + ", " +
-                    args.title + " by " + account.getLoggedUser().login +
+                    args.title + " by " + account.loggedUser.login +
                     " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" + ".",
                     user_id: assignement.as_us_id
                 };
@@ -338,7 +340,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
     public function deletelabel(args: { id: Int }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to delete a label !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_fail", []);
         } else {
@@ -361,7 +363,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
     public function addlabel(args: { name: String }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to add a label !";
             beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
         } else if (args.name.length == 0) {

@@ -37,7 +37,7 @@ class MailTest implements MetadataReader {
     }
 
     public function doDefault() {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         var widget = mail.getWidget("mail");
         widget.context = {mails : mail.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/mailTest/"};
@@ -56,7 +56,7 @@ class MailTest implements MetadataReader {
     }
 
     public function subCreate(args : {receiver : String, subject : String, message : String}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             this.doDefault();
@@ -113,7 +113,7 @@ class MailTest implements MetadataReader {
     }
 
     public function doPrint(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             error_msg = "You have to log in";

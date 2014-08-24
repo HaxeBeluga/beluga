@@ -4,6 +4,7 @@ import beluga.core.Beluga;
 import beluga.core.api.BelugaApi;
 import beluga.core.Widget;
 import beluga.core.BelugaException;
+import beluga.module.account.Account;
 import haxe.web.Dispatch;
 import haxe.Resource;
 import haxe.crypto.Md5;
@@ -39,6 +40,18 @@ class Main
 {
 	public static var beluga : Beluga;
 
+	public static var account : AccountTest;
+
+	/*
+	 * Exemple of the minimum code to make a working authentification
+	 */
+	static function mainMinimum() {
+		Assets.build();
+		var beluga = Beluga.getInstance();
+		Dispatch.run(beluga.getDispatchUri(), Web.getParams(), beluga.api);
+		Sys.print(beluga.getModuleInstance(Account).widgets.loginForm.render());
+		beluga.cleanup();
+	}
 
 	static function main()
 	{
@@ -46,6 +59,7 @@ class Main
 
 		try {
 			beluga = Beluga.getInstance();
+			account = new AccountTest(beluga);
 			Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
 			beluga.cleanup();
 		} catch (e : BelugaException) {

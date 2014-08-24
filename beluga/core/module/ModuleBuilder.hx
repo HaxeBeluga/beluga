@@ -60,36 +60,6 @@ class ModuleBuilder
 
 		var clazz = Context.getLocalClass().get();
 
-		var clazzTypePath = { sub: null, params: [], pack : [] , name : clazz.name };
-		var clazzComplexType = TPath( clazzTypePath );
-		var arrayType = macro : Map<String, $clazzComplexType>;
-
-		//Generate instance static field
-		fields.push( { name : "instance", doc : null, meta : [], access : [APrivate, AStatic], kind : FVar(arrayType, null), pos : pos } );
-
-		var classDecl = {
-			pos : Context.currentPos(),
-			expr: ENew(clazzTypePath, [])
-		};
-		var bodyFunc = macro {
-			if (instance == null) {
-				instance = new Map<String, $clazzComplexType>();
-			}
-			if (!instance.exists(key)) {
-				instance.set(key, ${classDecl}); 
-			}
-			return instance.get(key);
-		};
-		var fun : Function = {
-			ret : clazzComplexType,
-			params : [],
-			expr : bodyFunc,
-			args : 	[
-						{name: "key", opt: false, value: null, type: macro : String}
-					]
-		};
-		fields.push( { name : "getInstance", doc : null, meta : [], access : [APublic, AStatic], kind : FFun(fun), pos : pos } );
-		
 		//Unsafe argument
 		var err = loadResources(clazz.module.split(".")[2]);
 		
