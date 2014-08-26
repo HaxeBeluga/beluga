@@ -16,34 +16,38 @@ import beluga.module.account.ESubscribeFailCause;
 import beluga.core.macro.MetadataReader;
 
 enum LastLoginErrorType {
-	InternalError;
-	WrongLogin;
+    InternalError;
+    WrongLogin;
 }
 
 class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
 
     private static inline var SESSION_USER = "session_user";
 
-	public var triggers = new AccountTrigger();
-	public var widgets : AccountWidget;
-
-	public var lastLoginError : Null<LastLoginErrorType> = null;
-
-	public var loggedUser(get, set) : User;
-
-	public var isLogged(get, never) : Bool;
-
-	public function new() {
-		super();
+    public var triggers = new AccountTrigger();
+    public var widgets : AccountWidget;
+    
+    public var lastLoginError : Null<LastLoginErrorType> = null;
+    
+    public var loggedUser(get, set) : User;
+    
+    public var isLogged(get, never) : Bool;
+    
+    public function new() {
+        super();
     }
 
-	override public function initialize(beluga : Beluga) {
-		this.widgets = new AccountWidget();
-	}
+    override public function initialize(beluga : Beluga) {
+        this.widgets = new AccountWidget();
+    }
+
+    public function getLoggedUser() : User {
+        return this.loggedUser;
+    }
 
     public function logout() : Void {
-		Session.remove(SESSION_USER);
-		triggers.afterLogout.dispatch();
+        Session.remove(SESSION_USER);
+        triggers.afterLogout.dispatch();
     }
 
     public function login(args : {
@@ -54,27 +58,24 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
         if (user.length > 1) {
             //Somethings wrong in database
-            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Something's wrong in database"}]);
+            triggers.loginFail.dispatch({err: "Something's wrong in database"});
         } else if (user.length == 0) {
             //login wrong
-            beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Unknown user"}]);
+            triggers.loginFail.dispatch({err: "Unknown user"});
         } else {
             var tmp = user.first();
             if (tmp.hashPassword != haxe.crypto.Md5.encode(args.password)) {
-                beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Invalid login and / or password"}]);
+                triggers.loginFail.dispatch({err: "Invalid login and / or password"});
             } else {
                 // you cannot compare like this : tmp.isBan == true, it will always return false !
                 if (tmp.isBan) {
-                    beluga.triggerDispatcher.dispatch("beluga_account_login_fail", [{err: "Your account as been bannished"}]);
+                    triggers.loginFail.dispatch({err: "Your account as been bannished"});
                 } else {
-                    setLoggedUser(tmp);
-                    beluga.triggerDispatcher.dispatch("beluga_account_login_success", [
-                        tmp
-                    ]);
+                    loggedUser = tmp;
+                    triggers.loginSuccess.dispatch();
                 }
             }
         }
-		triggers.afterLogin.dispatch();
     }
 
     private function subscribeCheckArgs(args : {
@@ -111,6 +112,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         email : String
     }) {
         var error = subscribeCheckArgs(args);
+
         if (error == "") {
             var user = new User();
             user.login = args.login;
@@ -122,23 +124,23 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             user.isAdmin = false;
             user.isBan = false;
             user.insert();
-			//TODO AB Send activation mail
+            //TODO AB Send activation mail
             triggers.subscribeSuccess.dispatch({user: user});
         } else {
-            triggers.subscribeFail.dispatch({error : error});
+            triggers.subscribeFail.dispatch({err : error});
         }
     }
 
-	public function getUser(userId : SId) : Null<User> {
-		try
-		{
-			return User.manager.get(userId);
-		}
-		catch (e : Dynamic)
-		{
-			return null;
-		}
-	}
+    public function getUser(userId : SId) : Null<User> {
+        try 
+        {
+            return User.manager.get(userId);
+        }
+        catch (e : Dynamic)
+        {
+            return null;
+        }
+    }
 
     public function getSponsor(userId : SId) : User {
         var user = this.getUser(userId);
@@ -149,7 +151,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
     public function getUsers() : Array<User> {
-        var user = this.getLoggedUser();
+        var user = this.loggedUser;
         var list = new Array<User>();
 
         if (user == null) {
@@ -241,20 +243,20 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
     public function deleteUser(args : {id: Int}) : Void {
-        var user = this.getLoggedUser();
+        var user = this.loggedUser;
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "You have to be logged"}]);
+            triggers.deleteFail.dispatch({err : "You have to be logged"});
         } else if (user.id != args.id && user.isAdmin == false) {
-            beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "You can't delete this account"}]);
+            triggers.deleteFail.dispatch({err : "You can't delete this account"});
         } else {
             for (tmp in User.manager.dynamicSearch({id : args.id })) {
                 tmp.delete();
                 Session.remove(SESSION_USER);
-                beluga.triggerDispatcher.dispatch("beluga_account_delete_success", []);
+                triggers.deleteSuccess.dispatch();
                 return;
             }
-            beluga.triggerDispatcher.dispatch("beluga_account_delete_fail", [{err: "Unknown user"}]);
+            triggers.deleteFail.dispatch({err : "Unknown user"});
         }
     }
 
@@ -262,14 +264,14 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_edit_fail", []);
+            triggers.editFail.dispatch({err : "Please log in"});
         } else {
             if (user.id != user_id && user.isAdmin == false) {
-                beluga.triggerDispatcher.dispatch("beluga_account_edit_fail", []);
+                triggers.editFail.dispatch({err : "You can't do that"});
             } else {
                 user.email = email;
                 user.update();
-                beluga.triggerDispatcher.dispatch("beluga_account_edit_success", []);
+                triggers.editSuccess.dispatch();
             }
         }
     }
@@ -278,24 +280,24 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You have to be logged"}]);
+            triggers.banFail.dispatch({err : "You have to be logged"});
         } else {
-            if (user_id == user.id)
-                beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You can't ban yourself !"}]);
-            else if (!user.isAdmin)
-                beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "You need admin rights to do that"}]);
+            if (!user.isAdmin)
+                triggers.banFail.dispatch({err : "You need admin rights to do that"});
+            else if (user_id == user.id)
+                triggers.banFail.dispatch({err : "You can't ban yourself !"});
             else {
                 for (tmp in User.manager.dynamicSearch({id : user_id })) {
                     if (tmp.isBan == true) {
-                        beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "This user is already bannished"}]);
+                        triggers.banFail.dispatch({err : "This user is already bannished"});
                         return;
                     }
                     tmp.isBan = true;
                     tmp.update();
-                    beluga.triggerDispatcher.dispatch("beluga_account_ban_success", []);
+                    triggers.banSuccess.dispatch();
                     return;
                 }
-                beluga.triggerDispatcher.dispatch("beluga_account_ban_fail", [{err: "Unknown user"}]);
+                triggers.banFail.dispatch({err : "Unknown user"});
             }
         }
     }
@@ -304,24 +306,24 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You have to be logged"}]);
+            triggers.unbanFail.dispatch({err : "You have to be logged"});
         } else {
-            if (user_id == user.id)
-                beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You can't unban yourself !"}]);
-            else if (!user.isAdmin)
-                beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "You need admin rights to do that"}]);
+            if (!user.isAdmin)
+                triggers.unbanFail.dispatch({err : "You need admin rights to do that"});
+            else if (user_id == user.id)
+                triggers.unbanFail.dispatch({err : "You can't unban yourself !"});
             else {
                 for (tmp in User.manager.dynamicSearch({id : user_id })) {
                     if (user.isBan == false) {
-                        beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "This user is not bannished"}]);
+                        triggers.unbanFail.dispatch({err : "This user is not bannished"});
                         return;
                     }
                     tmp.isBan = false;
                     tmp.update();
-                    beluga.triggerDispatcher.dispatch("beluga_account_unban_success", []);
+                    triggers.unbanSuccess.dispatch();
                     return;
                 }
-                beluga.triggerDispatcher.dispatch("beluga_account_unban_fail", [{err: "Unknown user"}]);
+                triggers.unbanFail.dispatch({err : "Unknown user"});
             }
         }
     }
@@ -330,20 +332,20 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "You have to be logged"}]);
+            triggers.friendFail.dispatch({err : "You have to be logged"});
         } else {
             var friend = this.getUser(friend_id);
 
             if (friend == null) {
-                beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "Unknown user"}]);
+                triggers.friendFail.dispatch({err : "Unknown user"});
                 return;
             }
             if (user_id == friend_id) {
-                beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "You can't be friend with yourself !"}]);
+                triggers.friendFail.dispatch({err : "You can't be friend with yourself !"});
                 return;
             }
             for (tmp in Friend.manager.dynamicSearch({user_id : user_id, friend_id: friend_id })) {
-                beluga.triggerDispatcher.dispatch("beluga_account_friend_fail", [{err: "You're already friend with this person"}]);
+                triggers.friendFail.dispatch({err : "You're already friend with this user"});
                 return;
             }
             var f = new Friend();
@@ -351,7 +353,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             f.user_id = user_id;
             f.friend_id = friend_id;
             f.insert();
-            beluga.triggerDispatcher.dispatch("beluga_account_friend_success", []);
+            triggers.friendSuccess.dispatch();
         }
     }
 
@@ -359,24 +361,24 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "You have to be logged"}]);
+            triggers.unfriendFail.dispatch({err : "You have to be logged"});
         } else {
             var friend = this.getUser(friend_id);
 
             if (friend == null) {
-                beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "Unknown user"}]);
+                triggers.unfriendFail.dispatch({err : "Unknown user"});
                 return;
             }
             if (user_id == friend_id) {
-                beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "You can't be friend with yourself !"}]);
+                triggers.unfriendFail.dispatch({err : "You can't be friend with yourself !"});
                 return;
             }
             for (tmp in Friend.manager.dynamicSearch({user_id : user_id, friend_id: friend_id })) {
                 tmp.delete();
-                beluga.triggerDispatcher.dispatch("beluga_account_unfriend_success", []);
+                triggers.unfriendSuccess.dispatch();
                 return;
             }
-            beluga.triggerDispatcher.dispatch("beluga_account_unfriend_fail", [{err: "You're not friend with this person"}]);
+            triggers.unfriendFail.dispatch({err : "You're not friend with this person"});
         }
     }
 
@@ -384,20 +386,20 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "You have to be logged"}]);
+            triggers.blacklistFail.dispatch({err : "You have to be logged"});
         } else {
             var to_blacklist = this.getUser(to_blacklist_id);
 
             if (to_blacklist == null) {
-                beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "Unknown user"}]);
+                triggers.blacklistFail.dispatch({err : "Unknown user"});
                 return;
             }
             if (user_id == to_blacklist_id) {
-                beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "You can't blacklist yourself !"}]);
+                triggers.blacklistFail.dispatch({err : "You can't blacklist yourself !"});
                 return;
             }
             for (tmp in BlackList.manager.dynamicSearch({user_id : user_id, blacklisted_id: to_blacklist_id })) {
-                beluga.triggerDispatcher.dispatch("beluga_account_blacklist_fail", [{err: "This person is already blacklisted"}]);
+                triggers.blacklistFail.dispatch({err : "This person is already blacklisted"});
                 return;
             }
             var f = new BlackList();
@@ -405,7 +407,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
             f.user_id = user_id;
             f.blacklisted_id = to_blacklist_id;
             f.insert();
-            beluga.triggerDispatcher.dispatch("beluga_account_blacklist_success", []);
+            triggers.blacklistSuccess.dispatch();
         }
     }
 
@@ -413,24 +415,24 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "You have to be logged"}]);
+            triggers.unblacklistFail.dispatch({err : "You have to be logged"});
         } else {
             var to_unblacklist = this.getUser(to_unblacklist_id);
 
             if (to_unblacklist == null) {
-                beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "Unknown user"}]);
+            triggers.unblacklistFail.dispatch({err : "Unknown user"});
                 return;
             }
             if (user_id == to_unblacklist_id) {
-                beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "You can't blacklist yourself !"}]);
+                triggers.unblacklistFail.dispatch({err : "You can't blacklist yourself !"});
                 return;
             }
             for (tmp in BlackList.manager.dynamicSearch({user_id : user_id, blacklisted_id: to_unblacklist_id })) {
                 tmp.delete();
-                beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_success", []);
+                triggers.unblacklistSuccess.dispatch();
                 return;
             }
-            beluga.triggerDispatcher.dispatch("beluga_account_unblacklist_fail", [{err: "You've not blacklisted this person !"}]);
+            triggers.unblacklistFail.dispatch({err : "You've not blacklisted this person !"});
         }
     }
 }

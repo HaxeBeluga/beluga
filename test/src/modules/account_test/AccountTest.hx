@@ -28,13 +28,12 @@ class AccountTest implements MetadataReader
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
         acc.triggers.loginSuccess.add(this.loginSuccess);
-		acc.triggers.loginInternalError.add(this.loginFail);
-		acc.triggers.loginWrongPassword.add(this.loginFail);
-		
-		acc.triggers.subscribeFail.add(this.subscribeFail);
-		acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
-		
-		acc.triggers.afterLogout.add(this.logout);
+        acc.triggers.loginFail.add(this.loginFail);
+        
+        acc.triggers.subscribeFail.add(this.subscribeFail);
+        acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
+        
+        acc.triggers.afterLogout.add(this.logout);
     }
 
     /*
@@ -43,11 +42,6 @@ class AccountTest implements MetadataReader
     public function loginSuccess() {
         var html = Renderer.renderDefault("page_accueil", "Accueil", { success : "Authentification succeeded !" } );
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_account_login_fail")
-    public static function _loginFail(args : {err : String}) {
-        new AccountTest(Beluga.getInstance()).loginFail(args);
     }
 
     public function loginFail(args : {err : String}) {
@@ -74,10 +68,10 @@ class AccountTest implements MetadataReader
         Sys.print(html);
     }
 
-    public function subscribeFail(args : {error : String}) {
+    public function subscribeFail(args : {err : String}) {
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
             subscribeWidget: acc.widgets.subscribeForm.render(),
-			error : args.error
+            error : args.err
         });
         Sys.print(html);
     }

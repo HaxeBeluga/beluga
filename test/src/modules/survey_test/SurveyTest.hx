@@ -161,7 +161,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doVotePage(args : {survey : SurveyModel}) {
-		if (Beluga.getInstance().getModuleInstance(Account).isLogged() == false) {
+		if (Beluga.getInstance().getModuleInstance(Account).isLogged == false) {
 			error_msg = "Please log in !";
 			doDefault();
 			return;
@@ -193,7 +193,7 @@ class SurveyTest implements MetadataReader
 	}
 
 	public function doPrint(args : {id : Int}) {
-		if (Beluga.getInstance().getModuleInstance(Account).isLogged() == false) {
+		if (Beluga.getInstance().getModuleInstance(Account).isLogged == false) {
 			error_msg = "Please log in !";
 			doDefault();
 			return;

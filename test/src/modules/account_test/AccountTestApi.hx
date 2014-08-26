@@ -31,6 +31,30 @@ class AccountTestApi implements MetadataReader
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
+
+        acc.triggers.deleteSuccess.add(this.deleteUserSuccess);
+        acc.triggers.deleteFail.add(this.deleteUserFail);
+        
+        acc.triggers.banFail.add(this.banFail);
+        acc.triggers.banSuccess.add(this.banSuccess);
+        
+        acc.triggers.unbanFail.add(this.unbanFail);
+        acc.triggers.unbanSuccess.add(this.unbanSuccess);
+
+        acc.triggers.editFail.add(this.doEditFail);
+        acc.triggers.editSuccess.add(this.doEditSuccess);
+
+        acc.triggers.blacklistFail.add(this.blacklistFail);
+        acc.triggers.blacklistSuccess.add(this.blacklistSuccess);
+
+        acc.triggers.unblacklistFail.add(this.unblacklistFail);
+        acc.triggers.unblacklistSuccess.add(this.unblacklistSuccess);
+
+        acc.triggers.friendFail.add(this.friendFail);
+        acc.triggers.friendSuccess.add(this.friendSuccess);
+
+        acc.triggers.unfriendFail.add(this.unfriendFail);
+        acc.triggers.unfriendSuccess.add(this.unfriendSuccess);
     }
 
     public function doLoginPage() {
@@ -84,10 +108,10 @@ class AccountTestApi implements MetadataReader
         Sys.print(html);
     }
 
-    @bTrigger("beluga_account_edit")
+    /*@bTrigger("beluga_account_edit")
     public static function _doEdit() {
         new AccountTestApi(Beluga.getInstance()).doEdit();
-    }
+    }*/
 
     public function doEdit() {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
@@ -110,11 +134,6 @@ class AccountTestApi implements MetadataReader
         this.acc.deleteUser(args);
     }
 
-    @bTrigger("beluga_account_delete_fail")
-    public static function _deleteUserFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).deleteUserFail(args);
-    }
-
     public function deleteUserFail(args : {err: String}) {
         var user = this.acc.getLoggedUser();
 
@@ -132,11 +151,6 @@ class AccountTestApi implements MetadataReader
         Sys.print(html);
     }
 
-    @bTrigger("beluga_account_delete_success")
-    public static function _deleteUserSuccess() {
-        new AccountTestApi(Beluga.getInstance()).deleteUserSuccess();
-    }
-
     public function deleteUserSuccess() {
         var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Your account has been deleted successfully", login: ""});
         Sys.print(html);
@@ -146,19 +160,9 @@ class AccountTestApi implements MetadataReader
         this.acc.ban(args.id);
     }
 
-    @bTrigger("beluga_account_ban_fail")
-    public static function _banFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).banFail(args);
-    }
-
     public function banFail(args : {err: String}) {
         error_msg = args.err;
         this.doPrintInfo();
-    }
-
-    @bTrigger("beluga_account_ban_success")
-    public static function _banSuccess() {
-        new AccountTestApi(Beluga.getInstance()).banSuccess();
     }
 
     public function banSuccess() {
@@ -170,19 +174,9 @@ class AccountTestApi implements MetadataReader
         this.acc.unban(args.id);
     }
 
-    @bTrigger("beluga_account_unban_fail")
-    public static function _unbanFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).unbanFail(args);
-    }
-
     public function unbanFail(args : {err: String}) {
         error_msg = args.err;
         this.doPrintInfo();
-    }
-
-    @bTrigger("beluga_account_unban_success")
-    public static function _unbanSuccess() {
-        new AccountTestApi(Beluga.getInstance()).unbanSuccess();
     }
 
     public function unbanSuccess() {
@@ -190,18 +184,13 @@ class AccountTestApi implements MetadataReader
         doPrintInfo();
     }
 
-    @bTrigger("beluga_account_save")
+    /*@bTrigger("beluga_account_save")
     public static function _doSave(args : {id: Int, email : String}) {
         new AccountTestApi(Beluga.getInstance()).doSave(args);
-    }
+    }*/
 
     public function doSave(args : {id: Int, email : String}) {
         this.acc.edit(args.id, args.email);
-    }
-
-    @bTrigger("beluga_account_edit_success")
-    public static function _doEditSuccess() {
-        new AccountTestApi(Beluga.getInstance()).doEditSuccess();
     }
 
     public function doEditSuccess() {
@@ -209,13 +198,8 @@ class AccountTestApi implements MetadataReader
         Sys.print(html);
     }
 
-    @bTrigger("beluga_account_edit_fail")
-    public static function _doEditFail() {
-        new AccountTestApi(Beluga.getInstance()).doEditSuccess();
-    }
-
-    public function doEditFail() {
-        var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Error occurred when trying to change email address"});
+    public function doEditFail(args : {err : String}) {
+        var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : args.err});
         Sys.print(html);
     }
 
@@ -228,19 +212,9 @@ class AccountTestApi implements MetadataReader
             doPrintInfo();
     }
 
-    @bTrigger("beluga_account_blacklist_fail")
-    public static function _blacklistFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).blacklistFail(args);
-    }
-
     public function blacklistFail(args : {err: String}) {
         error_msg = args.err;
         this.doPrintInfo();
-    }
-
-    @bTrigger("beluga_account_blacklist_success")
-    public static function _blacklistSuccess() {
-        new AccountTestApi(Beluga.getInstance()).blacklistSuccess();
     }
 
     public function blacklistSuccess() {
@@ -257,19 +231,9 @@ class AccountTestApi implements MetadataReader
             doPrintInfo();
     }
 
-    @bTrigger("beluga_account_unblacklist_fail")
-    public static function _unblacklistFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).unblacklistFail(args);
-    }
-
     public function unblacklistFail(args : {err: String}) {
         error_msg = args.err;
         this.doPrintInfo();
-    }
-
-    @bTrigger("beluga_account_unblacklist_success")
-    public static function _unblacklistSuccess() {
-        new AccountTestApi(Beluga.getInstance()).unblacklistSuccess();
     }
 
     public function unblacklistSuccess() {
@@ -286,19 +250,9 @@ class AccountTestApi implements MetadataReader
             doPrintInfo();
     }
 
-    @bTrigger("beluga_account_friend_fail")
-    public static function _friendFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).friendFail(args);
-    }
-
     public function friendFail(args : {err: String}) {
         error_msg = args.err;
         this.doPrintInfo();
-    }
-
-    @bTrigger("beluga_account_friend_success")
-    public static function _friendSuccess() {
-        new AccountTestApi(Beluga.getInstance()).friendSuccess();
     }
 
     public function friendSuccess() {
@@ -315,19 +269,9 @@ class AccountTestApi implements MetadataReader
             doPrintInfo();
     }
 
-    @bTrigger("beluga_account_unfriend_fail")
-    public static function _unfriendFail(args : {err: String}) {
-        new AccountTestApi(Beluga.getInstance()).unfriendFail(args);
-    }
-
     public function unfriendFail(args : {err: String}) {
         error_msg = args.err;
         this.doPrintInfo();
-    }
-
-    @bTrigger("beluga_account_unfriend_success")
-    public static function _unfriendSuccess() {
-        new AccountTestApi(Beluga.getInstance()).unfriendSuccess();
     }
 
     public function unfriendSuccess() {

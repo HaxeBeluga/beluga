@@ -44,11 +44,11 @@ interface Account extends Module {
 
     public function logout() : Void;
 
-    public function setLoggedUser(user : User) : User;
+    //public function setLoggedUser(user : User) : User;
 
     public function getLoggedUser() : User;
 
-    public function isLogged() : Bool;
+    //public function isLogged() : Bool;
 
     public function edit(user_id: Int, email : String) : Void;
 
