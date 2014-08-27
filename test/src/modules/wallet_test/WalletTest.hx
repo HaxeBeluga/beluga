@@ -28,18 +28,14 @@ class WalletTest implements MetadataReader {
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.wallet = beluga.getModuleInstance(Wallet);
-    }
-
-    @bTrigger("beluga_wallet_create_currency_success",
-              "beluga_wallet_create_currency_fail",
-              "beluga_wallet_remove_currency_success",
-              "beluga_wallet_remove_currency_fail",
-              "beluga_wallet_set_site_currency_fail",
-              "beluga_wallet_set_site_currency_success",
-              "beluga_wallet_create_success",
-              "beluga_wallet_create_fail")
-    public static function _doTestPage() {
-       new WalletTest(Beluga.getInstance()).doTestPage();
+        this.wallet.triggers.creationSuccess.add(this.doTestPage);
+        this.wallet.triggers.creationFail.add(this.doTestPage);
+        this.wallet.triggers.currencyCreationSuccess.add(this.doTestPage);
+        this.wallet.triggers.currencyCreationFail.add(this.doTestPage);
+        this.wallet.triggers.currencyRemoveSuccess.add(this.doTestPage);
+        this.wallet.triggers.currencyRemoveFail.add(this.doTestPage);
+        this.wallet.triggers.setSiteCurrencySuccess.add(this.doTestPage);
+        this.wallet.triggers.setSiteCurrencyFail.add(this.doTestPage);
     }
 
     public function doTestPage() {

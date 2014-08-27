@@ -12,6 +12,8 @@ import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.model.WalletModel;
 
 interface Wallet extends Module {
+    public var triggers: WalletTrigger;
+
     // widget functions
     public function create(): Void;
     public function display(): Void;

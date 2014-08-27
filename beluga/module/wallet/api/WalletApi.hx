@@ -18,30 +18,28 @@ class WalletApi {
     public function new() {}
 
     public function doCreate(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_wallet_create", []);
+        module.create();
     }
 
     public function doDisplay(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_wallet_display", []);
+        module.display();
     }
 
     public function doAdmin(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_wallet_display_admin", []);
+        module.admin();
     }
 
 
     public function doCreateCurrency(args: { name: String, rate: String }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_wallet_create_currency", [args]);
-
+        module.createCurrency(args);
     }
 
     public function doRemoveCurrency(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_wallet_remove_currency", [args]);
-
+        module.removeCurrency(args);
     }
 
     public function doSetSiteCurrency(args: {id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_wallet_set_site_currency", [args]);
+        module.setSiteCurrency(args);
     }
 
     public function doDefault(): Void {
