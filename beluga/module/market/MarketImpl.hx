@@ -17,23 +17,19 @@ import haxe.xml.Fast;
 import haxe.ds.Option;
 
 class MarketImpl extends ModuleImpl implements MarketInternal implements MetadataReader {
+    public var triggers = new MarketTrigger();
     var error = "";
     var info = "";
     var cart_error = "";
     var cart_info = "";
 
     public function new() { super(); }
-	
+
 	override public function initialize(beluga : Beluga) : Void {
-		
+
 	}
 
     // widget functions
-
-    @bTrigger("beluga_market_display")
-    public static function _display(): Void {
-        Beluga.getInstance().getModuleInstance(Market).display();
-    }
 
     public function display(): Void {}
 
@@ -48,20 +44,10 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
         };
     }
 
-    @bTrigger("beluga_market_display_admin")
-    public static function _admin(): Void {
-        Beluga.getInstance().getModuleInstance(Market).admin();
-    }
-
     public function admin(): Void {}
 
     public function getAdminContext(): Dynamic {
         return {};
-    }
-
-    @bTrigger("beluga_market_display_cart")
-    public static function _cart(): Void {
-        Beluga.getInstance().getModuleInstance(Market).cart();
     }
 
     public function cart(): Void {}
@@ -92,11 +78,6 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
         };
     }
 
-    @bTrigger("beluga_market_add_product_to_cart")
-    public static function _addProductToCart(args: { id: Int }): Void {
-        Beluga.getInstance().getModuleInstance(Market).addProductToCart(args);
-    }
-
     public function addProductToCart(args: { id: Int }): Void {
         // Check if the user is connected
         if (beluga.getModuleInstance(Account).isLogged) {
@@ -118,22 +99,17 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
                             this.info = "The product is add to the cart.";
                         }
                     };
-                    beluga.triggerDispatcher.dispatch("beluga_market_add_product_to_cart_success", []);
+                    this.triggers.addProductSuccess.dispatch();
                 };
                 case None: { // le produit n'existe pas on lance une erreur par trigger
                     this.error = "This product doesn't exist or is not available.";
-                    beluga.triggerDispatcher.dispatch("beluga_market_add_product_to_cart_fail", []);
+                    this.triggers.addProductFail.dispatch();
                 }
             }
         } else { // User is not connected, we throw an error by trigger
             this.error = "You should be connected to add a product to the cart.";
-            beluga.triggerDispatcher.dispatch("beluga_market_add_product_to_cart_fail", []);
+            this.triggers.addProductFail.dispatch();
         }
-    }
-
-    @bTrigger("beluga_market_remove_product_in_cart")
-    public function _removeProductInCart(args: { id: Int }): Void {
-        Beluga.getInstance().getModuleInstance(Market).removeProductInCart(args);
     }
 
     public function removeProductInCart(args: { id: Int }): Void {
@@ -141,21 +117,16 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
             switch (this.getCartById(args.id)) {
                 case Some(cart): {
                     cart.delete();
-                    beluga.triggerDispatcher.dispatch("beluga_market_remove_product_in_cart_success", []);
+                    this.triggers.removeProductSuccess.dispatch();
                 }
                 case None: {
-                    beluga.triggerDispatcher.dispatch("beluga_market_remove_product_in_cart_fail", []);
+                    this.triggers.removeProductFail.dispatch();
                 }
             }
         } else { // User is not connected, we throw an error by trigger
             this.error = "You should be connected to remove a product from your cart.";
-            beluga.triggerDispatcher.dispatch("beluga_market_remove_product_in_cart_fail", []);
+            this.triggers.removeProductFail.dispatch();
         }
-    }
-
-    @bTrigger("beluga_market_checkout_cart")
-    public static function _checkoutCart(): Void {
-        Beluga.getInstance().getModuleInstance(Market).checkoutCart();
     }
 
     // FIXME: send the bought elements
@@ -166,10 +137,10 @@ class MarketImpl extends ModuleImpl implements MarketInternal implements Metadat
             for (c in cart) {
                 c.delete();
             }
-            beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart_success", []);
+            this.triggers.checkoutCartSuccess.dispatch();
         } else {
             this.error = "You should be connected to remove a product from your cart.";
-            beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart_fail", []);
+            this.triggers.checkoutCartFail.dispatch();
         }
     }
 

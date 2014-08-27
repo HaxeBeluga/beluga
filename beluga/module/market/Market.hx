@@ -10,6 +10,7 @@ import beluga.module.market.model.Product;
 import haxe.ds.Option;
 
 interface Market extends Module {
+    public var triggers: MarketTrigger;
     // widget functions
     public function display(): Void;
     public function admin(): Void;

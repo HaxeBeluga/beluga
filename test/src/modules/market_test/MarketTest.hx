@@ -28,12 +28,12 @@ class MarketTest implements MetadataReader {
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.market = beluga.getModuleInstance(Market);
-    }
-
-    @bTrigger("beluga_market_add_product_to_cart_success",
-              "beluga_market_add_product_to_cart_fail")
-    public static function _doTestPage() {
-       new MarketTest(Beluga.getInstance()).doTestPage();
+        this.market.triggers.addProductSuccess.add(this.doTestPage);
+        this.market.triggers.addProductFail.add(this.doTestPage);
+        this.market.triggers.removeProductSuccess.add(this.doCartPage);
+        this.market.triggers.removeProductSuccess.add(this.doCartPage);
+        this.market.triggers.checkoutCartSuccess.add(this.doCartPage);
+        this.market.triggers.checkoutCartFail.add(this.doCartPage);
     }
 
     public function doTestPage() {
@@ -56,13 +56,6 @@ class MarketTest implements MetadataReader {
         Sys.print(html);
     }
 
-    @bTrigger("beluga_market_remove_product_in_cart_fail",
-              "beluga_market_remove_product_in_cart_success",
-              "beluga_market_checkout_cart_fail")
-    public static function _doCartPage() {
-       new MarketTest(Beluga.getInstance()).doCartPage();
-    }
-
     public function doCartPage() {
         var marketCartWidget = this.market.getWidget("cart");
         marketCartWidget.context = this.market.getCartContext();
@@ -71,11 +64,6 @@ class MarketTest implements MetadataReader {
             marketAdminWidget: marketCartWidget.render(),
         });
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_market_checkout_cart_success")
-    public static function _doCheckoutSuccess() {
-        new MarketTest(Beluga.getInstance()).doCartPage();
     }
 
     public function doDefault(d : Dispatch) {
