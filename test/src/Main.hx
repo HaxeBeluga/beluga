@@ -46,6 +46,7 @@ class Main
     public static var survey : SurveyTest;
     public static var market : MarketTest;
     public static var wallet : WalletTest;
+    public static var news : NewsTest;
 
     /*
      * Exemple of the minimum code to make a working authentification
@@ -70,6 +71,7 @@ class Main
             survey = new SurveyTest(beluga);
             market = new MarketTest(beluga);
             wallet = new WalletTest(beluga);
+            news = new NewsTest(beluga);
             Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             beluga.cleanup();
         } catch (e : BelugaException) {
