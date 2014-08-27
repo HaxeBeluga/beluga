@@ -43,6 +43,7 @@ class Main
 	public static var account : AccountTest;
 	public static var file_upload : FileUploadTest;
 	public static var ticket : TicketTest;
+	public static var survey : SurveyTest;
 
 	/*
 	 * Exemple of the minimum code to make a working authentification
@@ -64,6 +65,7 @@ class Main
 			account = new AccountTest(beluga);
 			file_upload = new FileUploadTest(beluga);
 			ticket = new TicketTest(beluga);
+			survey = new SurveyTest(beluga);
 			Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
 			beluga.cleanup();
 		} catch (e : BelugaException) {
