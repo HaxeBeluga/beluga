@@ -3,6 +3,8 @@ package beluga.module.ticket;
 import beluga.core.module.Module;
 
 interface Ticket extends Module {
+    public var triggers: TicketTrigger;
+
     public function browse(): Void;
     public function create(): Void;
     public function show(args: { id: Int }): Void;
