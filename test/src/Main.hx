@@ -36,8 +36,7 @@ import neko.Web;
  * @author Masadow
  */
 
-class Main
-{
+class Main {
     public static var beluga : Beluga;
 
     public static var account : AccountTest;
@@ -150,5 +149,4 @@ class Main
         var html = Renderer.renderDefault("page_accueil", "Accueil",{});
         Sys.print(html);
     }
-
 }

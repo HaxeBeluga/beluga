@@ -156,17 +156,17 @@ class SurveyTest {
             doDefault();
             return;
         }
-		var survey = this.survey.getSurvey(args.survey_id);
-		if (survey == null) {
-			error_msg = "Unknown survey";
-			doDefault();
-			return;
-		}
-		if (this.survey.canVote({survey_id : args.survey_id})) {
-			doVotePage({survey : survey});
-			return;
-		}
-		var choices = this.survey.getResults({survey_id: args.survey_id});
+        var survey = this.survey.getSurvey(args.survey_id);
+        if (survey == null) {
+            error_msg = "Unknown survey";
+            doDefault();
+            return;
+        }
+        if (this.survey.canVote({survey_id : args.survey_id})) {
+            doVotePage({survey : survey});
+            return;
+        }
+        var choices = this.survey.getResults({survey_id: args.survey_id});
         var widget = this.survey.getWidget("print_survey");
         widget.context = {survey : survey, choices : choices, path : "/beluga/survey/"};
 
