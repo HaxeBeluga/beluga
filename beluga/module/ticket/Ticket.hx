@@ -4,6 +4,7 @@ import beluga.core.module.Module;
 
 interface Ticket extends Module {
     public var triggers: TicketTrigger;
+    public var widgets : TicketWidget;
 
     public function browse(): Void;
     public function create(): Void;

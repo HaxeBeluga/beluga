@@ -40,11 +40,11 @@ class TicketTest {
     }
 
     public function doBrowsePage() {
-        var ticketWidget = ticket.getWidget("browse");
-        ticketWidget.context = ticket.getBrowseContext();
+        // var ticketWidget = ticket.getWidget("browse");
+        // ticketWidget.context = ticket.getBrowseContext();
 
         var html = Renderer.renderDefault("page_ticket_widget", "Browse tickets", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.browse
         });
         Sys.print(html);
     }
