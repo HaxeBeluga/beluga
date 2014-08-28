@@ -27,6 +27,10 @@ class AccountApi  {
 		module.logout();
     }
 
+    public function doShowUser(args: { id: Int }) {
+        beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+    }
+
     public function doSubscribe(args : {
         login : String,
         password : String,
@@ -37,12 +41,12 @@ class AccountApi  {
     }
 
     public function doDefault() {
-        trace("Account default page");
+        beluga.triggerDispatcher.dispatch("beluga_account_default", []);
     }
 
     public function doEdit(args : {?email : String}) {
         if (args.email != null) {
-			module.editEmail(module.loggedUser, args.email);
+			module.edit(module.loggedUser.id, args.email);
 		}
     }
 
