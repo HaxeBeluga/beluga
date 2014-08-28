@@ -6,7 +6,6 @@ import haxe.xml.Fast;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.account.model.User;
@@ -18,7 +17,7 @@ import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
 import sys.db.Manager;
 
-class TicketImpl extends ModuleImpl implements TicketInternal implements MetadataReader {
+class TicketImpl extends ModuleImpl implements TicketInternal {
     public var triggers = new TicketTrigger();
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.

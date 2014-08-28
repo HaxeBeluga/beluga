@@ -7,7 +7,6 @@ import sys.io.FileOutput;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.account.Account;
@@ -18,7 +17,7 @@ import beluga.module.fileupload.model.Extension;
 import php.Web;
 #end
 
-class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements MetadataReader {
+class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public var error: String = "";
     public var triggers = new FileuploadTrigger();
     // public var widgets : FileuploadWidget;

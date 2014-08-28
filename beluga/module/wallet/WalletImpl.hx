@@ -7,7 +7,6 @@ import haxe.ds.Option;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.wallet.model.Currency;
@@ -16,7 +15,7 @@ import beluga.module.wallet.model.WalletModel;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 
-class WalletImpl extends ModuleImpl implements WalletInternal implements MetadataReader {
+class WalletImpl extends ModuleImpl implements WalletInternal {
     public var triggers = new WalletTrigger();
     // two errors for admin: global -> cannot access, local -> fields errors.
     var admin_global_error = "";

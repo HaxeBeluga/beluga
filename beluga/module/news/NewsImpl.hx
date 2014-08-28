@@ -4,14 +4,13 @@ import haxe.xml.Fast;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 import beluga.module.account.Account;
 import beluga.core.module.ModuleImpl;
 import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
 
-class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataReader {
+class NewsImpl extends ModuleImpl implements NewsInternal {
     public var triggers = new NewsTrigger();
 
     public function new() {

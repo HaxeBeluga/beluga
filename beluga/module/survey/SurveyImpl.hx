@@ -4,7 +4,6 @@ import haxe.xml.Fast;
 
 import beluga.core.Beluga;
 import beluga.core.module.ModuleImpl;
-import beluga.core.macro.MetadataReader;
 
 import beluga.module.account.model.User;
 import beluga.module.survey.model.Choice;
@@ -14,7 +13,7 @@ import beluga.module.account.Account;
 import beluga.module.survey.SurveyData;
 import beluga.module.survey.model.SurveyModel;
 
-class SurveyImpl extends ModuleImpl implements SurveyInternal implements MetadataReader {
+class SurveyImpl extends ModuleImpl implements SurveyInternal {
     public var triggers = new SurveyTrigger();
 
     public function new() {

@@ -3,7 +3,6 @@ package beluga.module.market;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.wallet.Wallet;
@@ -16,7 +15,7 @@ import beluga.module.account.model.User;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-class MarketImpl extends ModuleImpl implements MarketInternal implements MetadataReader {
+class MarketImpl extends ModuleImpl implements MarketInternal {
     public var triggers = new MarketTrigger();
     var error = "";
     var info = "";
