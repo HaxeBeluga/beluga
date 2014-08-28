@@ -40,31 +40,22 @@ class TicketTest {
     }
 
     public function doBrowsePage() {
-        // var ticketWidget = ticket.getWidget("browse");
-        // ticketWidget.context = ticket.getBrowseContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Browse tickets", {
-            ticketWidget: ticket.widgets.browse
+            ticketWidget: ticket.widgets.browse.render()
         });
         Sys.print(html);
     }
 
     public function doCreatePage() {
-        var ticketWidget = ticket.getWidget("create");
-        ticketWidget.context = ticket.getCreateContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Create tickets", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.create.render()
         });
         Sys.print(html);
     }
 
     public function doShowPage() {
-        var ticketWidget = ticket.getWidget("show");
-        ticketWidget.context = ticket.getShowContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Show ticket", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.show.render()
         });
         Sys.print(html);
     }
@@ -79,12 +70,8 @@ class TicketTest {
     }
 
     public function doAdminPage() {
-        var ticketWidget = ticket.getWidget("admin");
-
-        ticketWidget.context = ticket.getAdminContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Admin page", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.admin.render()
         });
         Sys.print(html);
     }
