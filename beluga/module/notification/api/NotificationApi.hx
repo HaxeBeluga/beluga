@@ -15,7 +15,7 @@ class NotificationApi {
     public function new() { }
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_notif_default", []);
+        module.triggers.defaultNotification.dispatch();
     }
 
     public function doPrint(args : {id : Int}) {
