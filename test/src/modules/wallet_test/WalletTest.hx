@@ -39,19 +39,12 @@ class WalletTest {
     }
 
     public function doTestPage() {
-        var walletWidget = this.wallet.getWidget("display");
-        walletWidget.context = this.wallet.getDisplayContext();
-        var walletAdminWidget = this.wallet.getWidget("admin");
-        walletAdminWidget.context = this.wallet.getDisplayAdminContext();
-        var has_wallet = if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            1;
-        } else {
-            0;
-        };
-
+        var has_wallet =
+            if (Beluga.getInstance().getModuleInstance(Account).isLogged) { 1; }
+            else { 0; };
         var html = Renderer.renderDefault("page_wallet_widget", "Your wallet", {
-            walletWidget: walletWidget.render(),
-            walletAdminWidget: walletAdminWidget.render(),
+            walletWidget: wallet.widgets.show.render(),
+            walletAdminWidget: wallet.widgets.admin.render(),
             has_wallet: has_wallet,
             site_currency: this.wallet.getSiteCurrencyOrDefault().cu_name
         });

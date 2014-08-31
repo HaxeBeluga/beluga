@@ -13,6 +13,7 @@ import beluga.module.wallet.model.WalletModel;
 
 interface Wallet extends Module {
     public var triggers: WalletTrigger;
+    public var widgets: WalletWidget;
 
     // widget functions
     public function create(): Void;
@@ -23,8 +24,8 @@ interface Wallet extends Module {
     public function setSiteCurrency(args: {id: Int }): Void;
 
     // widget context functions
-    public function getDisplayContext(): Dynamic;
-    public function getDisplayAdminContext(): Dynamic;
+    public function getShowContext(): Dynamic;
+    public function getAdminContext(): Dynamic;
 
     // tools functions
     public function getCurrentRealFunds(user: User): Option<Float>;
