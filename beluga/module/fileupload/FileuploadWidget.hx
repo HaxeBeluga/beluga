@@ -7,7 +7,7 @@ import beluga.module.fileupload.widget.Send;
 class FileuploadWidget {
     public var send = new Send();
     public var browse = new Browse();
-    public var Admin = new Admin();
+    public var admin = new Admin();
 
     public function new() {}
 }
