@@ -4,7 +4,7 @@ import beluga.core.module.Module;
 
 interface Fileupload extends Module {
     public var triggers: FileuploadTrigger;
-    // public var widgets: FileuploadWidget;
+    public var widgets: FileuploadWidget;
 
     public function send(): Void;
     public function delete(args: { id: Int }): Void;
