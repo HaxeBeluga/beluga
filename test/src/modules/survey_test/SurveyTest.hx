@@ -46,9 +46,7 @@ class SurveyTest {
     public function doDefault() {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         if (user == null) {
-            Web.setHeader("Content-Type", "text/plain");
-            Sys.println("Please log in !");
-            return;
+            error_msg = "Please log in !";
         }
         var widget = survey.getWidget("surveys_list");
         widget.context = {surveys : survey.getSurveysList(), user : user,
@@ -64,8 +62,8 @@ class SurveyTest {
 
     public function doRedirectPage() {
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            Web.setHeader("Content-Type", "text/plain");
-            Sys.println("Please log in !");
+            error_msg = "Please log in !";
+            doDefault();
             return;
         }
         var widget = survey.getWidget("create");
@@ -101,8 +99,8 @@ class SurveyTest {
 
     public function doCreatePage() {
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            Web.setHeader("Content-Type", "text/plain");
-            Sys.println("Please log in !");
+            error_msg = "Please log in !";
+            doDefault();
             return;
         }
         var widget = survey.getWidget("create");
@@ -120,15 +118,15 @@ class SurveyTest {
         this.doDefault();
     }
 
-    public function doVoteFail() {
-        error_msg = "Error when registering your vote...";
+    public function doVoteFail(args : {err : String}) {
+        error_msg = args.err;
         this.doDefault();
-    }
+     }
 
     public function doVotePage(args : {survey : SurveyModel}) {
         if (Beluga.getInstance().getModuleInstance(Account).isLogged == false) {
-            Web.setHeader("Content-Type", "text/plain");
-            Sys.println("Please log in !");
+            error_msg = "Please log in !";
+            doDefault();
             return;
         }
 
@@ -152,46 +150,25 @@ class SurveyTest {
         Sys.print(html);
     }
 
-    public function doPrintPage(args : {survey : SurveyModel}) {
+    public function doPrintPage(args : {survey_id : Int}) {
         if (Beluga.getInstance().getModuleInstance(Account).isLogged == false) {
-            Web.setHeader("Content-Type", "text/plain");
-            Sys.println("Please log in !");
+            error_msg = "Please log in !";
+            doDefault();
             return;
         }
-        if (this.survey.canVote({survey_id : args.survey.id})) {
-            doVotePage({survey : args.survey});
-            return;
-        }
-        var arr = new Array<Dynamic>();
-        var choices = new Array<Dynamic>();
-        var tot = 0;
-
-        for (tmp_r in Result.manager.dynamicSearch( { survey_id : args.survey.id } )) {
-            tot += 1;
-            var found = false;
-            for (t in arr) {
-                if (t.choice_id == tmp_r) {
-                    t.pourcent += 1;
-                    found = true;
-                }
-            }
-            if (found == false)
-                arr.push({id : tmp_r.choice_id, pourcent : 1});
-        }
-        for (tmp_c in Choice.manager.dynamicSearch( { survey_id : args.survey.id } )) {
-            var done = false;
-            for (tmp in arr) {
-                if (tmp.id == tmp_c.id) {
-                    choices.push({choice : tmp_c, pourcent : tmp.pourcent * 100.0 / tot, vote : tmp.pourcent});
-                    done = true;
-                }
-            }
-            if (done == false) {
-                choices.push({choice : tmp_c, pourcent : 0, vote : 0});
-            }
-        }
-        var widget = survey.getWidget("print_survey");
-        widget.context = {survey : args.survey, choices : choices, path : "/beluga/survey/"};
+		var survey = this.survey.getSurvey(args.survey_id);
+		if (survey == null) {
+			error_msg = "Unknown survey";
+			doDefault();
+			return;
+		}
+		if (this.survey.canVote({survey_id : args.survey_id})) {
+			doVotePage({survey : survey});
+			return;
+		}
+		var choices = this.survey.getResults({survey_id: args.survey_id});
+        var widget = this.survey.getWidget("print_survey");
+        widget.context = {survey : survey, choices : choices, path : "/beluga/survey/"};
 
         var surveyWidget = widget.render();
 
