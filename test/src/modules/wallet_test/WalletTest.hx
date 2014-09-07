@@ -21,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class WalletTest implements MetadataReader {
+class WalletTest {
     public var beluga(default, null) : Beluga;
     public var wallet(default, null) : Wallet;
 

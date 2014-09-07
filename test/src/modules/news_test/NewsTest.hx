@@ -17,10 +17,6 @@ import sys.db.Types;
 import php.Web;
 #end
 
-/**
- * @author Guillaume Gomez
- */
-
 class NewsData {
     public var text : String;
     public var login : String;

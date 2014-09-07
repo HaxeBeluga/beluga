@@ -17,13 +17,7 @@ import php.Web;
 import neko.Web;
 #end
 
-/**
- * Beluga #1
- * @author Guillaume Gomez
- */
-
-class NotificationTest implements MetadataReader
-{
+class NotificationTest {
     public var beluga(default, null) : Beluga;
     public var notif(default, null) : Notification;
     private var error_msg : String;

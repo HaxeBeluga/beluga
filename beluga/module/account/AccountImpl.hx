@@ -20,7 +20,7 @@ enum LastLoginErrorType {
     WrongLogin;
 }
 
-class AccountImpl extends ModuleImpl implements AccountInternal implements MetadataReader {
+class AccountImpl extends ModuleImpl implements AccountInternal {
 
     private static inline var SESSION_USER = "session_user";
 

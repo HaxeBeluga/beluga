@@ -21,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class TicketTest implements MetadataReader {
+class TicketTest {
     public var beluga(default, null) : Beluga;
     public var ticket(default, null) : Ticket;
 

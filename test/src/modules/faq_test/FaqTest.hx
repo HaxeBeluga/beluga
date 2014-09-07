@@ -18,12 +18,7 @@ import sys.db.Types;
 import php.Web;
 #end
 
-/**
- * @author Guillaume Gomez
- */
-
-class FaqTest implements MetadataReader
-{
+class FaqTest {
     public var beluga(default, null) : Beluga;
     public var faq(default, null) : Faq;
     private var error_msg : String;

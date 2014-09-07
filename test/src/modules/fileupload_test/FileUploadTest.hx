@@ -20,7 +20,7 @@ import haxe.Resource;
 import php.Web;
 #end
 
-class FileUploadTest implements MetadataReader {
+class FileUploadTest {
     public var beluga(default, null) : Beluga;
     public var file_upload(default, null) : Fileupload;
 

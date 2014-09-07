@@ -20,13 +20,7 @@ import php.Web;
 import neko.Web;
 #end
 
-/**
- * Beluga #1
- * @author Guillaume Gomez
- */
-
-class SurveyTest implements MetadataReader
-{
+class SurveyTest {
     public var beluga(default, null) : Beluga;
     public var survey(default, null) : Survey;
     private var error_msg : String;

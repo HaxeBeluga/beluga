@@ -19,7 +19,7 @@ import haxe.Resource;
 import php.Web;
 #end
 
-class MailTest implements MetadataReader {
+class MailTest {
     public var beluga(default, null) : Beluga;
     public var mail(default, null) : Mail;
     private var error_msg : String;

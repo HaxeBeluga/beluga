@@ -18,8 +18,7 @@ import php.Web;
  * @author Masadow
  */
 
-class AccountTest implements MetadataReader
-{
+class AccountTest {
 
     public var beluga(default, null) : Beluga;
     public var acc(default, null) : Account;

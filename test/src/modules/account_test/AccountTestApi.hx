@@ -21,8 +21,7 @@ import php.Web;
  * @author brissa_A
  */
 
-class AccountTestApi implements MetadataReader
-{
+class AccountTestApi {
     public var beluga(default, null) : Beluga;
     public var acc(default, null) : Account;
     public var success_msg : String;

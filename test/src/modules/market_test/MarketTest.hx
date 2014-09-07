@@ -21,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class MarketTest implements MetadataReader {
+class MarketTest {
     public var beluga(default, null) : Beluga;
     public var market(default, null) : Market;
 
