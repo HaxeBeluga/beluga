@@ -55,6 +55,8 @@ class AccountTestApi implements MetadataReader
 
         acc.triggers.unfriendFail.add(this.unfriendFail);
         acc.triggers.unfriendSuccess.add(this.unfriendSuccess);
+
+        acc.triggers.defaultPage.add(this.doDefault);
     }
 
     public function doLoginPage() {
@@ -96,11 +98,6 @@ class AccountTestApi implements MetadataReader
 
     public function doLogout() {
         this.acc.logout();
-    }
-
-    @bTrigger("beluga_account_default")
-    public static function _doDefault() {
-        new AccountTestApi(Beluga.getInstance()).doDefault();
     }
 
     public function doDefault() {

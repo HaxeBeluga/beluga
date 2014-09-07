@@ -13,7 +13,7 @@ class AccountTrigger
     //Login
     public var loginFail = new Trigger<{err : String}>();
     public var loginSuccess = new TriggerVoid();
-    
+
     //Logout
     public var afterLogout = new TriggerVoid();
 
@@ -52,10 +52,13 @@ class AccountTrigger
     //unblacklist
     public var unblacklistFail = new Trigger<{err : String}>();
     public var unblacklistSuccess = new TriggerVoid();
-    
+
+    public var showUser = new Trigger<{ id: Int}>();
+    public var defaultPage = new TriggerVoid();
+
     public function new()
     {
-        
+
     }
-    
+
 }

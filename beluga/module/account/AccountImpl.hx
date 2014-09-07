@@ -26,13 +26,13 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
-    
+
     public var lastLoginError : Null<LastLoginErrorType> = null;
-    
+
     public var loggedUser(get, set) : User;
-    
+
     public var isLogged(get, never) : Bool;
-    
+
     public function new() {
         super();
     }
@@ -132,7 +132,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
     }
 
     public function getUser(userId : SId) : Null<User> {
-        try 
+        try
         {
             return User.manager.get(userId);
         }
@@ -230,12 +230,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal implements Metad
         return Session.get(SESSION_USER) != null;
     }
 
-    public function _showUser(args: { id: Int}): Void {
-        Beluga.getInstance().getModuleInstance(Account).showUser(args);
-    }
-
     public function showUser(args: { id: Int}): Void {
-        beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+        this.triggers.showUser.dispatch(args);
     }
 
     public static function _deleteUser(args : {id: Int}) : Void {
