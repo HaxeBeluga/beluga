@@ -17,6 +17,8 @@ import haxe.ds.Option;
 
 class MarketImpl extends ModuleImpl implements MarketInternal {
     public var triggers = new MarketTrigger();
+    public var widgets: MarketWidget;
+
     var error = "";
     var info = "";
     var cart_error = "";
@@ -24,9 +26,9 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
     public function new() { super(); }
 
-	override public function initialize(beluga : Beluga) : Void {
-
-	}
+    override public function initialize(beluga : Beluga) : Void {
+        this.widgets = new MarketWidget();
+    }
 
     // widget functions
 

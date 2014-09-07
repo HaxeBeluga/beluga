@@ -59,8 +59,7 @@ class Main {
         beluga.cleanup();
     }
 
-    static function main()
-    {
+    static function main() {
         Assets.build();
 
         try {
@@ -75,13 +74,12 @@ class Main {
             notification = new NotificationTest(beluga);
             Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             beluga.cleanup();
-        } catch (e : BelugaException) {
+        } catch (e: BelugaException) {
             trace(e);
         }
     }
 
     public function new() {
-
     }
 
     public function doBeluga(d : Dispatch) {
