@@ -6,8 +6,9 @@ import beluga.module.faq.model.FaqModel;
 import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
 
-interface Faq extends Module
-{
+interface Faq extends Module {
+    public var triggers: FaqTrigger;
+
     public function createFAQ(args : {
         question : String,
         answer : String,

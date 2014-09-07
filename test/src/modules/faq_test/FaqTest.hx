@@ -36,11 +36,21 @@ class FaqTest implements MetadataReader
         this.error_msg = "";
         this.success_msg = "";
         this.id = -1;
-    }
 
-    @bTrigger("beluga_faq_default")
-    public static function _doDefault() {
-        new FaqTest(Beluga.getInstance()).doDefault();
+        this.faq.triggers.defaultPage.add(this.doDefault);
+        this.faq.triggers.createCategorySuccess.add(this.doCreateCategorySuccess);
+        this.faq.triggers.createCategoryFail.add(this.doCreateCategoryFail);
+        this.faq.triggers.deleteCategorySuccess.add(this.doCreateCategorySuccess);
+        this.faq.triggers.deleteCategoryFail.add(this.doCreateCategoryFail);
+        this.faq.triggers.editCategorySuccess.add(this.doEditCategorySuccess);
+        this.faq.triggers.editCategoryFail.add(this.doEditCategoryFail);
+
+        this.faq.triggers.createSuccess.add(this.doCreateFAQSuccess);
+        this.faq.triggers.createFail.add(this.doCreateFAQFail);
+        this.faq.triggers.deleteSuccess.add(this.doDeleteFAQSuccess);
+        this.faq.triggers.deleteFail.add(this.doDeleteFAQFail);
+        this.faq.triggers.editSuccess.add(this.doEditFAQSuccess);
+        this.faq.triggers.editFail.add(this.doEditFAQFail);
     }
 
     public function doDefault() {
@@ -110,23 +120,13 @@ class FaqTest implements MetadataReader
         this.faq.createCategory(args);
     }
 
-    @bTrigger("beluga_faq_createCategory_success")
-    public static function _doCreateCategorySuccess(args : {id : Int}) {
-        new FaqTest(Beluga.getInstance()).doCreateCategorySuccess(args);
-    }
-
     public function doCreateCategorySuccess(args : {id : Int}) {
         success_msg = "Category has been created successfully";
         this.doPrint({id : args.id});
     }
 
-    @bTrigger("beluga_faq_createCategory_fail")
-    public static function _doCreateCategoryFail(args : {error_msg : String, id: Int}) {
-        new FaqTest(Beluga.getInstance()).doCreateCategoryFail(args);
-    }
-
-    public function doCreateCategoryFail(args : {error_msg : String, id: Int}) {
-        error_msg = args.error_msg;
+    public function doCreateCategoryFail(args : {error : String, id: Int}) {
+        error_msg = args.error;
         doRedirectCreateCategory({category_id: args.id});
     }
 
@@ -135,23 +135,13 @@ class FaqTest implements MetadataReader
         this.faq.createFAQ({question : args.question, answer: args.answer, category_id: args.parent});
     }
 
-    @bTrigger("beluga_faq_createFAQ_success")
-    public static function _doCreateFAQSuccess(args : {id : Int}) {
-        new FaqTest(Beluga.getInstance()).doCreateFAQSuccess(args);
-    }
-
     public function doCreateFAQSuccess(args : {id : Int}) {
         success_msg = "FAQ entry has been created successfully";
         this.doPrint({id : args.id});
     }
 
-    @bTrigger("beluga_faq_createFAQ_fail")
-    public static function _doCreateFAQFail(args : {error_msg : String, question: String, answer: String, id: Int}) {
-        new FaqTest(Beluga.getInstance()).doCreateFAQFail(args);
-    }
-
-    public function doCreateFAQFail(args : {error_msg : String, question: String, answer: String, id: Int}) {
-        error_msg = args.error_msg;
+    public function doCreateFAQFail(args : {error: String, question: String, answer: String, id: Int}) {
+        error_msg = args.error;
         var widget = this.faq.getWidget("create_faq");
 
         widget.context = {path : "/faqTest/", error : error_msg, success : success_msg, parent : args.id,
@@ -169,22 +159,12 @@ class FaqTest implements MetadataReader
         this.faq.deleteFAQ({question_id: args.id, category_id: args.category_id});
     }
 
-    @bTrigger("beluga_faq_deleteFAQ_fail")
-    public static function _doDeleteFAQFail(args : {id : Int, error: String}) {
-        new FaqTest(Beluga.getInstance()).doDeleteFAQFail(args);
-    }
-
     public function doDeleteFAQFail(args : {id : Int, error: String}) {
         error_msg = args.error;
         doPrint({id: args.id});
     }
 
-    @bTrigger("beluga_faq_deleteFAQ_success")
-    public static function _doDeleteFAQSuccess(args : {id : Int, error: String}) {
-        new FaqTest(Beluga.getInstance()).doDeleteFAQSuccess(args);
-    }
-
-    public function doDeleteFAQSuccess(args : {id : Int, error: String}) {
+    public function doDeleteFAQSuccess(args : {id : Int}) {
         success_msg = "FAQ entry has been successfully deleted";
         doPrint({id: args.id});
     }
@@ -193,19 +173,9 @@ class FaqTest implements MetadataReader
         this.faq.deleteCategory({category_id: args.id, parent_id: args.parent_id});
     }
 
-    @bTrigger("beluga_faq_deleteCategory_fail")
-    public static function _doDeleteCategoryFail(args : {id : Int, error: String}) {
-        new FaqTest(Beluga.getInstance()).doDeleteCategoryFail(args);
-    }
-
     public function doDeleteCategoryFail(args : {id : Int, error: String}) {
         error_msg = args.error;
         doPrint({id: args.id});
-    }
-
-    @bTrigger("beluga_faq_deleteCategory_success")
-    public static function _doDeleteCategorySuccess(args : {id : Int, error: String}) {
-        new FaqTest(Beluga.getInstance()).doDeleteCategorySuccess(args);
     }
 
     public function doDeleteCategorySuccess(args : {id : Int, error: String}) {
@@ -236,19 +206,9 @@ class FaqTest implements MetadataReader
         this.faq.editCategory(args);
     }
 
-    @bTrigger("beluga_faq_editCategory_fail")
-    public static function _doEditCategoryFail(args : {error: String}) {
-        new FaqTest(Beluga.getInstance()).doEditCategoryFail(args);
-    }
-
     public function doEditCategoryFail(args : {error: String}) {
         error_msg = args.error;
         doPrint({id: -1});
-    }
-
-    @bTrigger("beluga_faq_editCategory_success")
-    public static function _doEditCategorySuccess(args : {id : Int}) {
-        new FaqTest(Beluga.getInstance()).doEditCategorySuccess(args);
     }
 
     public function doEditCategorySuccess(args : {id : Int}) {
@@ -279,19 +239,9 @@ class FaqTest implements MetadataReader
         this.faq.editFAQ(args);
     }
 
-    @bTrigger("beluga_faq_editFAQ_fail")
-    public static function _doEditFAQFail(args : {error: String}) {
-        new FaqTest(Beluga.getInstance()).doEditFAQFail(args);
-    }
-
     public function doEditFAQFail(args : {error: String}) {
         error_msg = args.error;
         doPrint({id: -1});
-    }
-
-    @bTrigger("beluga_faq_editFAQ_success")
-    public static function _doEditFAQSuccess(args : {id : Int}) {
-        new FaqTest(Beluga.getInstance()).doEditFAQSuccess(args);
     }
 
     public function doEditFAQSuccess(args : {id : Int}) {

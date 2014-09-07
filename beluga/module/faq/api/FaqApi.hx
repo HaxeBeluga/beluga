@@ -16,18 +16,18 @@ class FaqApi {
     }
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_faq_default", []);
+        this.module.triggers.defaultPage.dispatch();
     }
 
     public function doCreate(args : {question : String, answer : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_faq_create", [args]);
+        this.module.triggers.create.dispatch(args);
     }
 
     public function doEdit(args : {question_id : Int, question : String, answer : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_faq_edit", [args]);
+        this.module.triggers.edit.dispatch(args);
     }
 
     public function doDelete(args : {question_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_faq_delete", [args]);
+        this.module.triggers.delete.dispatch(args);
     }
 }
