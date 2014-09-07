@@ -16,38 +16,38 @@ class NewsApi {
     }
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_news_default", []);
+        module.triggers.defaultNews.dispatch();
     }
 
     public function doPrint(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_print", [args]);
+        module.triggers.print.dispatch(args);
     }
 
     public function doCreate(args : {title : String, text : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_create", [args]);
+        module.create(args);
     }
 
     public function doEdit(args : {news_id : Int, title : String, text : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_edit", [args]);
+        module.edit(args);
     }
 
     public function doDelete(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_delete", [args]);
+        module.delete(args);
     }
 
-    public function doDeleteCom(args : {com_id : Int, news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_deleteCom", [args]);
+    public function doDeleteCom(args : {comment_id : Int, news_id : Int}) {
+        module.deleteComment(args);
     }
 
     public function doRedirect() {
-        beluga.triggerDispatcher.dispatch("beluga_news_redirect", []);
+        module.triggers.redirect.dispatch();
     }
 
     public function doCreateComment(args : {news_id : Int, text : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_createComment", []);
+        module.addComment(args);
     }
 
     public function doRedirectEdit(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_redirectEdit", [args]);
+        module.triggers.redirectEdit.dispatch(args);
     }
 }

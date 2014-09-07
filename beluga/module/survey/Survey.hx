@@ -6,6 +6,8 @@ import beluga.module.survey.model.Choice;
 import beluga.module.survey.model.SurveyModel;
 
 interface Survey extends Module {
+    public var triggers: SurveyTrigger;
+
     public function canVote(args : {survey_id : Int}) : Bool;
     public function create(args : {
         title : String,
@@ -13,13 +15,14 @@ interface Survey extends Module {
         choices : Array<String>
     }) : Void;
     public function vote(args : {
-        id : Int,
+        survey_id : Int,
         option : Int
     }) : Void;
-    public function getSurvey(id: Int) : SurveyModel;
+    public function getSurvey(survey_id: Int) : SurveyModel;
     public function getSurveysList() : Array<SurveyData>;
     public function redirect() : Void;
-    public function delete(args : {id : Int}) : Void;
+    public function delete(args : {survey_id : Int}) : Void;
     public function getChoices(args : {survey_id : Int}) : Array<Choice>;
     public function getResults(args : {survey_id : Int}) : Array<Dynamic>;
+    public function print(args : {survey_id : Int}): Void;
 }

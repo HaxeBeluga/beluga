@@ -5,8 +5,9 @@ import beluga.core.module.Module;
 import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
 
-interface News extends Module
-{
+interface News extends Module {
+    public var triggers: NewsTrigger;
+
     public function print(args : {news_id : Int}) : Void;
     public function create(args : {title : String, text : String}) : Void;
     public function delete(args : {news_id : Int}) : Void;

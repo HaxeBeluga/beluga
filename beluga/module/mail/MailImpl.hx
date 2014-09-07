@@ -9,13 +9,14 @@ import beluga.module.account.Account;
 import beluga.module.mail.model.MailModel;
 
 class MailImpl extends ModuleImpl implements MailInternal {
+    public var triggers = new MailTrigger();
 
     public function new() {
         super();
     }
-	
+
 	override public function initialize(beluga : Beluga) : Void {
-		
+
 	}
 
     public function getMail(id : Int) : MailModel {
@@ -54,7 +55,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "You must log in to send mail", receiver : args.receiver, subject : args.subject, message : args.message}]);
+            this.triggers.sendFail.dispatch({error : "You must log in to send mail", receiver : args.receiver, subject : args.subject, message : args.message});
             return;
         }
         var receiver:String = "";
@@ -64,7 +65,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
         untyped __php__("$sender = filter_var($sender, FILTER_SANITIZE_EMAIL)");
         ret = untyped __php__("filter_var($sender, FILTER_VALIDATE_EMAIL)");
         if (!ret) {
-            beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "Error on sender email", receiver : args.receiver, subject : args.subject, message : args.message}]);
+            this.triggers.sendFail.dispatch({error : "Error on sender email", receiver : args.receiver, subject : args.subject, message : args.message});
             return;
         }
         receiver = args.receiver;
@@ -85,17 +86,17 @@ class MailImpl extends ModuleImpl implements MailInternal {
                 mail.hasBeenSent = false;
                 mail.hasBeenSent = true;
                 mail.insert();
-                beluga.triggerDispatcher.dispatch("beluga_mail_send_success", [{}]);
+                this.triggers.sendSuccess.dispatch();
                 return;
             }
-            beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "Error when sending mail", receiver : receiver, subject : args.subject, message : args.message}]);
+            this.triggers.sendFail.dispatch({error : "Error when sending mail", receiver : receiver, subject : args.subject, message : args.message});
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "Error on receiver email", receiver : receiver, subject : args.subject, message : args.message}]);
+        this.triggers.sendFail.dispatch({error : "Error on receiver email", receiver : receiver, subject : args.subject, message : args.message});
         #else
-        beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "Only working with php", receiver : receiver, subject : args.subject, message : args.message}]);
+        this.triggers.sendFail.dispatch({error : "Only working with php", receiver : receiver, subject : args.subject, message : args.message});
         return;
         #end
-        beluga.triggerDispatcher.dispatch("beluga_mail_send_fail", [{error : "error", receiver : receiver, subject : args.subject, message : args.message}]);
+        this.triggers.sendFail.dispatch({error : "error", receiver : receiver, subject : args.subject, message : args.message});
     }
 }

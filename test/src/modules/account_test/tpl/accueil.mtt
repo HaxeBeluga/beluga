@@ -163,7 +163,7 @@
                         <div class="caption">
                             <h3>Demonstration du marche</h3>
                             <p>Demonstration de la page d'affichage des articles.</p>
-                            <p><a href="::base_url::/marketTest/TestPage" class="btn btn-success" role="button">Depenser votre argent !</a></p>
+                            <p><a href="::base_url::/marketTest/testPage" class="btn btn-success" role="button">Depenser votre argent !</a></p>
                         </div>
                     </div>
                 </div>

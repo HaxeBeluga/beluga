@@ -9,12 +9,12 @@ import beluga.module.account.widget.SubscribeForm;
 class AccountWidget
 {
 	public var loginForm = new LoginForm();
-	
+
 	public var subscribeForm  = new SubscribeForm();
-	
-	public function new() 
+
+	public function new()
 	{
-		
+
 	}
-	
+
 }

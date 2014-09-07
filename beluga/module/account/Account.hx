@@ -5,15 +5,15 @@ import beluga.module.account.model.User;
 import sys.db.Types.SId;
 
 interface Account extends Module {
-	
+
 	public var triggers : AccountTrigger;
-	
+
 	public var widgets : AccountWidget;
 
 	public var loggedUser(get, set) : User;
-	
-	public var isLogged(get, never) : Bool;	
-	
+
+	public var isLogged(get, never) : Bool;
+
     public function subscribe(args : {
         login : String,
         password : String,
@@ -39,7 +39,7 @@ interface Account extends Module {
     public function getNotFriends(user_id: Int) : Array<User>;
 
     public function getBlackListed(user_id: Int) : Array<User>;
-	
+
     public function showUser(args: { id: Int}): Void;
 
     public function logout() : Void;

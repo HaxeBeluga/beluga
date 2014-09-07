@@ -4,7 +4,6 @@ import haxe.xml.Fast;
 
 import beluga.core.Beluga;
 import beluga.core.module.ModuleImpl;
-import beluga.core.macro.MetadataReader;
 
 import beluga.module.account.model.User;
 import beluga.module.survey.model.Choice;
@@ -14,44 +13,36 @@ import beluga.module.account.Account;
 import beluga.module.survey.SurveyData;
 import beluga.module.survey.model.SurveyModel;
 
-class SurveyImpl extends ModuleImpl implements SurveyInternal implements MetadataReader {
+class SurveyImpl extends ModuleImpl implements SurveyInternal {
+    public var triggers = new SurveyTrigger();
 
     public function new() {
         super();
     }
 
-	override public function initialize(beluga : Beluga) : Void {
-		
-	}
+    override public function initialize(beluga : Beluga) : Void {
 
-    public static function _redirect() {
-        Beluga.getInstance().getModuleInstance(Survey).redirect();
     }
 
     public function redirect() {
-        beluga.triggerDispatcher.dispatch("beluga_survey_redirect", []);
+        this.triggers.redirect.dispatch();
     }
 
-    @bTrigger("beluga_survey_delete")
-    public static function _delete(args : {id : Int}) {
-        Beluga.getInstance().getModuleInstance(Survey).delete(args);
-    }
-
-    public function delete(args : {id : Int}) {
+    public function delete(args : {survey_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var nb = 0;
 
         if (user == null)
             return;
-        for (tmp in SurveyModel.manager.dynamicSearch( {author_id : user.id, id : args.id} )) {
+        for (tmp in SurveyModel.manager.dynamicSearch( {author_id : user.id, id : args.survey_id} )) {
             tmp.delete();
             nb += 1;
         }
 
         if (nb > 0) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_delete_success", []);
+            this.triggers.deleteSuccess.dispatch();
         } else {
-            beluga.triggerDispatcher.dispatch("beluga_survey_delete_fail", []);
+            this.triggers.deleteFail.dispatch();
         }
     }
 
@@ -86,6 +77,10 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         return m_surveys;
     }
 
+    public function print(args : {survey_id : Int}) {
+        this.triggers.printSurvey.dispatch({survey_id: args.survey_id});
+    }
+
     public function getChoices(args : {survey_id : Int}) : Array<Choice> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var arr = new Array<Choice>();
@@ -100,15 +95,6 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         return arr;
     }
 
-    @bTrigger("beluga_survey_create")
-    public static function _create(args : {
-        title : String,
-        description : String,
-        choices : Array<String>
-    }) {
-        Beluga.getInstance().getModuleInstance(Survey).create(args);
-    }
-
     public function create(args : {
         title : String,
         description : String,
@@ -117,7 +103,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null || args.choices == null || args.choices.length < 2 || args.title == "") {
-            beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
+            this.triggers.createFail.dispatch();
             return;
         }
 
@@ -129,7 +115,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
                     tmp_choices.push(t);
 
         if (tmp_choices.length < 2) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_create_fail", []);
+            this.triggers.createFail.dispatch();
             return;
         }
 
@@ -148,53 +134,43 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal implements Metadat
             c.survey_id = survey.id;
             c.insert();
         }
-
-        beluga.triggerDispatcher.dispatch("beluga_survey_create_success", []);
-    }
-
-    @bTrigger("beluga_survey_vote")
-    public static function _vote(args : {
-        id : Int,
-        option : Int
-    }) {
-        Beluga.getInstance().getModuleInstance(Survey).vote(args);
+        this.triggers.createSuccess.dispatch();
     }
 
     public function vote(args : {
-        id : Int,
+        survey_id : Int,
         option : Int
     }) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "You have to be logged to vote !"}]);
+            this.triggers.voteFail.dispatch({err: "You have to be logged to vote !"});
             return;
         }
 
-        for (tmp in Result.manager.search( { survey_id : args.id, user_id : user.id } )) {
-            beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "You already has voted for this survey"}]);
+        for (tmp in Result.manager.search( { survey_id : args.survey_id, user_id : user.id } )) {
+            this.triggers.voteFail.dispatch({err: "You already has voted for this survey"});
             return;
         }
 
-        for (tmp in SurveyModel.manager.dynamicSearch( {id : args.id} )) {
+        for (survey in SurveyModel.manager.dynamicSearch( {id : args.survey_id} )) {
             var res = new Result();
 
-            res.survey_id = tmp.id;
+            res.survey_id = survey.id;
             res.user_id = user.id;
             res.choice_id = args.option;
             res.insert();
 
             var notify = {
                 title: "New answer to your survey !",
-                text: user.login + " has just answer to your survey " + tmp.name +
-                " <a href=\"/beluga/survey/print?id=" + tmp.id + "\">See</a>.",
-                user_id: user.id
+                text: user.login + " has just answer to your survey " + survey.name +
+                " <a href=\"/beluga/survey/print?id=" + survey.id + "\">See</a>.",
+                user_id: survey.author_id
             };
-
-            beluga.triggerDispatcher.dispatch("beluga_survey_answer_notify", [notify]);
-            beluga.triggerDispatcher.dispatch("beluga_survey_vote_success", []);
+            this.triggers.answerNotify.dispatch(notify);
+            this.triggers.voteSuccess.dispatch();
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_survey_vote_fail", [{err: "Survey not found"}]);
+        this.triggers.voteFail.dispatch({err: "Survey not found"});
     }
 
 

@@ -18,27 +18,27 @@ class MarketApi {
     public function new() {}
 
     public function doDisplay(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_market_display", []);
+        module.display();
     }
 
     public function doAdmin(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_market_display_admin", []);
+        module.admin();
     }
 
     public function doCart(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_market_display_cart", []);
+        module.cart();
     }
 
     public function doAddProductToCart(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_market_add_product_to_cart", [args]);
+        module.addProductToCart(args);
     }
 
     public function doRemoveProductInCart(args: { id: Int }): Void {
-        beluga.triggerDispatcher.dispatch("beluga_market_remove_product_in_cart", [args]);
+        module.removeProductInCart(args);
     }
 
     public function doCheckoutCart(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart", []);
+        module.checkoutCart();
     }
 
     public function doDefault(): Void {

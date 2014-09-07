@@ -28,7 +28,7 @@ class AccountApi  {
     }
 
     public function doShowUser(args: { id: Int }) {
-        beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+        this.module.showUser(args);
     }
 
     public function doSubscribe(args : {
@@ -41,7 +41,7 @@ class AccountApi  {
     }
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_account_default", []);
+        this.module.triggers.defaultPage.dispatch();
     }
 
     public function doEdit(args : {?email : String}) {

@@ -18,8 +18,7 @@ import php.Web;
  * @author Masadow
  */
 
-class AccountTest implements MetadataReader
-{
+class AccountTest {
 
     public var beluga(default, null) : Beluga;
     public var acc(default, null) : Account;
@@ -29,10 +28,10 @@ class AccountTest implements MetadataReader
         this.acc = beluga.getModuleInstance(Account);
         acc.triggers.loginSuccess.add(this.loginSuccess);
         acc.triggers.loginFail.add(this.loginFail);
-        
+
         acc.triggers.subscribeFail.add(this.subscribeFail);
         acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
-        
+
         acc.triggers.afterLogout.add(this.logout);
     }
 

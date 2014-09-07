@@ -15,18 +15,18 @@ class MailApi {
     public function new() {}
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_mail_default", []);
+        this.module.triggers.defaultMail.dispatch();
     }
 
     public function doCreate() {
-        beluga.triggerDispatcher.dispatch("beluga_mail_create", []);
+        this.module.triggers.create.dispatch();
     }
 
     public function doSend(args : {receiver : String, subject : String, message : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_mail_send", [args]);
+        this.module.sendMail(args);
     }
 
     public function doPrint(args : {id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_mail_print", [args]);
+        this.module.triggers.print.dispatch(args);
     }
 }
