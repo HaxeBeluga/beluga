@@ -1,0 +1,8 @@
+package beluga.moduleName.account;
+
+import beluga.core.trigger.Trigger;
+import beluga.core.trigger.TriggerVoid;
+
+class ::className::Trigger {
+
+}
