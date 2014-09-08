@@ -11,11 +11,15 @@
 ## Beluga installation
 
 To install beluga simply run this command:
+```Shell
 > haxelib git beluga https://github.com/HaxeBeluga/Beluga
+```
 
 ## Generate project
 To generate a default working project run:
+```Shell
 > haxelib run beluga setup_project TestProject
+```
 
 Several files are generated:
 ```
@@ -34,7 +38,9 @@ You need to edit beluga.xml file to set your database configuration.
 
 ## Run project
 Compile haxe by running from inside TestProject folder:
->haxe TestSetupProject.hxml
+```Shell
+> haxe TestSetupProject.hxml
+```
 
 Point your document root to TestProject/bin folder
 
