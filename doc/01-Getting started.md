@@ -30,7 +30,12 @@ TestProject
 ```
 
 ## Configure project
-You need to edit beluga.xml cofiguration file to set your database configuration.
+You need to edit beluga.xml file to set your database configuration.
 
 ## Run project
-Compile haxe by running
+Compile haxe by running from inside TestProject folder:
+>haxe TestSetupProject.hxml
+
+Point your document root to TestProject/bin folder
+
+You can now access to your website with a working login form !
