@@ -32,8 +32,7 @@ class SurveyApi {
 
         for (t in x)
             tmp.push(t);
-
-       module.create({title : args.title, description : args.description, choices : tmp});
+        module.create({title : args.title, description : args.description, choices : tmp});
     }
 
     public function doVote(args: {id : Int, option : Int}) {

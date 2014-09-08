@@ -12,7 +12,7 @@ class SurveyTrigger {
     public var printSurvey = new Trigger<{survey_id : Int}>();
     public var createFail = new TriggerVoid();
     public var createSuccess = new TriggerVoid();
-    public var voteFail = new Trigger<{err: String}>();
+    public var voteFail = new Trigger<{survey : Int}>();
     public var voteSuccess = new TriggerVoid();
     public var answerNotify = new Trigger<{title: String, text: String, user_id: SId}>();
     public var defaultSurvey = new TriggerVoid();
