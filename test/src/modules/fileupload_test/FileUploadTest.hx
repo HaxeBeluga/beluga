@@ -20,42 +20,37 @@ import haxe.Resource;
 import php.Web;
 #end
 
-class FileUploadTest implements MetadataReader {
+class FileUploadTest {
     public var beluga(default, null) : Beluga;
     public var file_upload(default, null) : Fileupload;
 
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.file_upload = beluga.getModuleInstance(Fileupload);
-    }
-
-    // @bTrigger("beluga_fileupload_show_browse")
-    public static function _doBrowsePage() {
-       new FileUploadTest(Beluga.getInstance()).doBrowsePage();
+        this.file_upload.triggers.uploadFail.add(this.doFailUploadPage);
+        this.file_upload.triggers.deleteSuccess.add(this.doAllPage);
+        this.file_upload.triggers.deleteFail.add(this.doFailRemovePage);
+        this.file_upload.triggers.uploadSuccess.add(this.doNotifyUploadSuccess);
+        this.file_upload.triggers.addExtensionSuccess.add(this.doAdminPage);
+        this.file_upload.triggers.deleteExtensionSuccess.add(this.doAdminPage);
+        this.file_upload.triggers.addExtensionFail.add(this.doAdminPageFail);
+        this.file_upload.triggers.deleteExtensionFail.add(this.doAdminPageFail);
     }
 
     public function doBrowsePage() {
-        var browseWidget = file_upload.getWidget("browse");
-        browseWidget.context = file_upload.getBrowseContext();
         var html = Renderer.renderDefault("page_fileupload_widget", "Browse files", {
             context_message: "",
-            browseWidget: browseWidget.render(),
+            browseWidget: file_upload.widgets.browse.render(),
             fileUploadWidget: ""
         });
         Sys.print(html);
     }
 
-    public static function _doSendPage() {
-       new FileUploadTest(Beluga.getInstance()).doSendPage();
-    }
-
     public function doSendPage() {
-        var fileUploadWidget = file_upload.getWidget("send");
-        fileUploadWidget.context = file_upload.getSendContext();
         var html = Renderer.renderDefault("page_fileupload_widget", "Send file", {
             context_message: "",
             browseWidget: "",
-            fileUploadWidget: fileUploadWidget.render()
+            fileUploadWidget: file_upload.widgets.send.render()
         });
         Sys.print(html);
     }
@@ -65,7 +60,6 @@ class FileUploadTest implements MetadataReader {
                 <strong>Error!</strong> " + msg + "</div>";
     }
 
-    @bTrigger("beluga_fileupload_delete_fail")
     public static function _doFailRemovePage(args: { reason: String }) {
         new FileUploadTest(Beluga.getInstance()).doFailRemovePage(args);
     }
@@ -82,21 +76,14 @@ class FileUploadTest implements MetadataReader {
         Sys.print(html);
     }
 
-    @bTrigger("beluga_fileupload_delete_success")
-    public static function _doAllPage() {
-        new FileUploadTest(Beluga.getInstance()).doAllPage();
-    }
-
     public function doAllPage() {
         var contextMsg = "";
         var browseWidget = "";
         var fileUploadWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
-            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).getLoggedUser().login + "</strong></h2>";
-            var tmpBrowse = file_upload.getWidget("browse");
-            tmpBrowse.context = file_upload.getBrowseContext();
-            browseWidget = tmpBrowse.render();
-            fileUploadWidget = file_upload.getWidget("send").render();
+        if (this.beluga.getModuleInstance(Account).isLogged) {
+            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
+            browseWidget = file_upload.widgets.browse.render();
+            fileUploadWidget = file_upload.widgets.send.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Default page", {
             context_message: contextMsg,
@@ -104,19 +91,14 @@ class FileUploadTest implements MetadataReader {
             fileUploadWidget: fileUploadWidget
         });
         Sys.print(html);
-    }
-
-
-    public static function _doDefault() {
-        new FileUploadTest(Beluga.getInstance()).doDefault();
     }
 
     public function doDefault() {
         var contextMsg = this.createErrorMsg("Vous devez vous logger pour acceder a cette page !");
         var browseWidget = "";
         var fileUploadWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
-            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).getLoggedUser().login + "</strong></h2>";
+        if (this.beluga.getModuleInstance(Account).isLogged) {
+            contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
             browseWidget = tmpBrowse.render();
@@ -130,20 +112,12 @@ class FileUploadTest implements MetadataReader {
         Sys.print(html);
     }
 
-    @bTrigger("beluga_fileupload_deleteextension_success",
-              "beluga_fileupload_addextension_success")
-    public static function _doAdminPage() {
-       new FileUploadTest(Beluga.getInstance()).doAdminPage();
-    }
-
     public function doAdminPage() {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var adminWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>";
-            var tmpWidget = file_upload.getWidget("admin");
-            tmpWidget.context = file_upload.getAdminContext();
-            adminWidget = tmpWidget.render();
+            adminWidget = file_upload.widgets.admin.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Admin page", {
             context_message: contextMsg,
@@ -153,8 +127,7 @@ class FileUploadTest implements MetadataReader {
         Sys.print(html);
     }
 
-    // @bTrigger("beluga_fileupload_deleteextension_fail",
-    //           "beluga_fileupload_addextension_fail")
+
     public static function _doAdminPageFail() {
        new FileUploadTest(Beluga.getInstance()).doAdminPageFail();
     }
@@ -162,11 +135,9 @@ class FileUploadTest implements MetadataReader {
     public function doAdminPageFail() {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var adminWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>";
-            var tmpWidget = file_upload.getWidget("admin");
-            tmpWidget.context = file_upload.getAdminContext();
-            adminWidget = tmpWidget.render();
+            adminWidget = file_upload.widgets.admin.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Admin page", {
             context_message: contextMsg,
@@ -176,7 +147,6 @@ class FileUploadTest implements MetadataReader {
         Sys.print(html);
     }
 
-    @bTrigger("beluga_fileupload_upload_fail")
     public static function _doFailUploadPage(args: { reason: String }) {
        new FileUploadTest(Beluga.getInstance()).doFailUploadPage(args);
     }
@@ -185,7 +155,7 @@ class FileUploadTest implements MetadataReader {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var browseWidget = "";
         var fileUploadWidget = "";
-        if (this.beluga.getModuleInstance(Account).isLogged()) {
+        if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>" + this.createErrorMsg(args.reason);
             var tmpBrowse = file_upload.getWidget("browse");
             tmpBrowse.context = file_upload.getBrowseContext();
@@ -200,9 +170,9 @@ class FileUploadTest implements MetadataReader {
         Sys.print(html);
     }
 
-    @bTrigger("beluga_fileupload_notify_upload_success")
-    public function _doNotifyUploadSuccess(args : {title : String, text : String, user_id: Int}) {
+    public function doNotifyUploadSuccess(args : {title : String, text : String, user_id: Int}) {
         var notification = Beluga.getInstance().getModuleInstance(Notification);
         notification.create(args);
+        this.doAllPage();
     }
 }

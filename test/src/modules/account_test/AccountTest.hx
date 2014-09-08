@@ -18,8 +18,7 @@ import php.Web;
  * @author Masadow
  */
 
-class AccountTest implements MetadataReader
-{
+class AccountTest {
 
     public var beluga(default, null) : Beluga;
     public var acc(default, null) : Account;
@@ -27,39 +26,32 @@ class AccountTest implements MetadataReader
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
+        acc.triggers.loginSuccess.add(this.loginSuccess);
+        acc.triggers.loginFail.add(this.loginFail);
+
+        acc.triggers.subscribeFail.add(this.subscribeFail);
+        acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
+
+        acc.triggers.afterLogout.add(this.logout);
     }
 
     /*
      * Logination
      */
-    @bTrigger("beluga_account_login_success")
-    public static function _loginSuccess(u:User) {
-        new AccountTest(Beluga.getInstance()).loginSuccess();
-    }
-
     public function loginSuccess() {
-        var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Authentification succeeded !"});
+        var html = Renderer.renderDefault("page_accueil", "Accueil", { success : "Authentification succeeded !" } );
         Sys.print(html);
     }
 
-    @bTrigger("beluga_account_login_fail")
-    public static function _loginFail() {
-        new AccountTest(Beluga.getInstance()).loginFail();
-    }
-
-    public function loginFail() {
+    public function loginFail(args : {err : String}) {
         var widget = acc.getWidget("login");
-        widget.context = {error : "Invalid login and/or password"};
+        widget.context = {error : args.err};
+
         var loginWidget = widget.render();
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget
         });
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_account_logout")
-    public static function _logout() {
-        new AccountTest(Beluga.getInstance()).logout();
     }
 
     public function logout() {
@@ -70,27 +62,15 @@ class AccountTest implements MetadataReader
     /*
      *  Subscription
      */
-    @bTrigger("beluga_account_subscribe_success")
-    public static function _subscribeSuccess(user : User) {
-        new AccountTest(Beluga.getInstance()).subscribeSuccess(user);
-    }
-
-    public function subscribeSuccess(user : User) {
+    public function subscribeSuccess(args : {user : User}) {
         var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Subscribe succeeded !"});
         Sys.print(html);
     }
 
-    @bTrigger("beluga_account_subscribe_fail")
-    public static function _subscribeFail(error : String) {
-        new AccountTest(Beluga.getInstance()).subscribeFail(error);
-    }
-
-    public function subscribeFail(error : String) {
-        var subscribeWidget = acc.getWidget("subscribe");
-
-        subscribeWidget.context = {error : error};
+    public function subscribeFail(args : {err : String}) {
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
-            subscribeWidget: subscribeWidget.render(), error : error
+            subscribeWidget: acc.widgets.subscribeForm.render(),
+            error : args.err
         });
         Sys.print(html);
     }
@@ -102,7 +82,7 @@ class AccountTest implements MetadataReader
 
     @bTrigger("beluga_account_show_user")
     public function printCustomUserInfo(args: { id: Int }) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : ""});
@@ -110,7 +90,12 @@ class AccountTest implements MetadataReader
             return;
         }
         var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/"};
+        if (!user.isAdmin)
+            subscribeWidget.context = {user : user, path : "/accountTest/"};
+        else {
+            var users = Beluga.getInstance().getModuleInstance(Account).getUsers();
+            subscribeWidget.context = {user : user, path : "/accountTest/"};
+        }
 
         var html = Renderer.renderDefault("page_subscribe", "Information", {
             subscribeWidget: subscribeWidget.render()

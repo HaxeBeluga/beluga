@@ -5,11 +5,15 @@ import beluga.core.module.Module;
 
 // beluga mods
 import beluga.module.market.model.Product;
+import beluga.module.market.MarketWidget;
 
 // haxe
 import haxe.ds.Option;
 
 interface Market extends Module {
+    public var triggers: MarketTrigger;
+    public var widgets: MarketWidget;
+
     // widget functions
     public function display(): Void;
     public function admin(): Void;

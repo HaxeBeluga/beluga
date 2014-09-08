@@ -6,7 +6,6 @@ import haxe.xml.Fast;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.account.model.User;
@@ -18,7 +17,10 @@ import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
 import sys.db.Manager;
 
-class TicketImpl extends ModuleImpl implements TicketInternal implements MetadataReader {
+class TicketImpl extends ModuleImpl implements TicketInternal {
+    public var triggers = new TicketTrigger();
+    public var widgets: TicketWidget;
+
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
     private var error: String = "";
@@ -27,17 +29,14 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {}
+    override public function initialize(beluga : Beluga) : Void {
+        this.widgets = new TicketWidget();
+    }
 
     /** Actions trigger **/
 
-    @bTrigger("beluga_ticket_browse")
-    public static function _browse(): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).browse();
-    }
-
     public function browse(): Void{
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_browse", []);
+        this.triggers.browse.dispatch();
     }
 
     /// Set the context informations for the browse widget:
@@ -91,13 +90,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         };
     }
 
-    @bTrigger("beluga_ticket_create")
-    public static function _create(): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).create();
-    }
-
     public function create(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
+        this.triggers.create.dispatch();
     }
 
     /// Return the context for the view create ticket
@@ -125,14 +119,9 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         };
     }
 
-    @bTrigger("beluga_ticket_show")
-    public static function _show(args: { id: Int }): Void  {
-        Beluga.getInstance().getModuleInstance(Ticket).show(args);
-    }
-
     public function show(args: { id: Int }): Void {
         this.show_id = args.id;
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
+        this.triggers.show.dispatch();
     }
 
     /// Create the context for the Show view:
@@ -172,11 +161,6 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         };
     }
 
-    @bTrigger("beluga_ticket_reopen")
-    public static function _reopen(args: { id: Int }): Void  {
-        Beluga.getInstance().getModuleInstance(Ticket).reopen(args);
-    }
-
     /// Just get the id of the ticket, then reopen it
     /// FIXME: Check if the user is logged then reopen else error message
     public function reopen(args: { id: Int }): Void {
@@ -184,19 +168,14 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
 
          // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to reopen a ticket !";
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.ti_status = 1;
             ticket.update();
         }
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
-    }
-
-    @bTrigger("beluga_ticket_close")
-    public static function _close(args: { id: Int }): Void  {
-        Beluga.getInstance().getModuleInstance(Ticket).close(args);
+        this.show(args);
     }
 
     /// Just get the id of the ticket, then close it
@@ -206,22 +185,14 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
 
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to close a ticket !";
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.ti_status = 0;
             ticket.update();
         }
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [args]);
-    }
-
-    @bTrigger("beluga_ticket_comment")
-    public static function _comment(args: {
-        id: Int,
-        message: String
-    }): Void  {
-        Beluga.getInstance().getModuleInstance(Ticket).comment(args);
+        this.show(args);
     }
 
     public function comment(args: {
@@ -232,20 +203,20 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
 
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to create a ticket !";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
+            this.show({id: args.id});
         } else if (args.message.length == 0) {
             this.error = "Your message cannot be empty !";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
+            this.show({id: args.id});
         } else {
             var message: Message = new Message();
             message.me_content = args.message;
-            message.me_us_id_author = account.getLoggedUser().id;
+            message.me_us_id_author = account.loggedUser.id;
             message.me_date_creation = Date.now();
             message.me_ti_id = args.id;
             message.insert();
-            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", [{ id: args.id }]);
+            this.show({id: args.id});
             this.notifyTicketComment(args.id);
         }
     }
@@ -258,16 +229,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
             " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" +  ".",
             user_id: ticket.ti_us_id
         };
-        beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [notify]);
-    }
-
-    @bTrigger("beluga_ticket_submit")
-    public static function _submit(args: {
-        title: String,
-        message: String,
-        assignee: String
-    }): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).submit(args);
+        this.triggers.assignNotify.dispatch(notify);
     }
 
     public function submit(args: {
@@ -278,14 +240,14 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         var ticket = new TicketModel();
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to create a ticket !";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
+            this.triggers.create.dispatch();
         } else if (args.title.length == 0) {
             this.error = "Your title cannot be empty !";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_show_create", []);
+            this.triggers.create.dispatch();
         } else {
-            ticket.ti_us_id = account.getLoggedUser().id;
+            ticket.ti_us_id = account.loggedUser.id;
             ticket.ti_date = Date.now();
             ticket.ti_title = args.title;
             ticket.ti_content = args.message;
@@ -301,24 +263,18 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
                 var args = {
                     title: "Ticket assignnment: " + args.title + " !",
                     text: "You've been assigned to the ticket number " + ticket_id + ", " +
-                    args.title + " by " + account.getLoggedUser().login +
+                    args.title + " by " + account.loggedUser.login +
                     " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" + ".",
                     user_id: assignement.as_us_id
                 };
-                beluga.triggerDispatcher.dispatch("beluga_ticket_assign_notify", [args]);
+                this.triggers.assignNotify.dispatch(args);
             }
-            beluga.triggerDispatcher.dispatch("beluga_ticket_show_show", []);
+            this.show({id: ticket_id});
         }
     }
 
-    @bTrigger("beluga_ticket_admin")
-    public static function _admin(): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).admin();
-    }
-
     public function admin(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_ticket_show_admin", []);
-        // beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_success", []);
+        this.triggers.admin.dispatch();
     }
 
     /// return the context for the admin widget in the form of a List<Dynamic>
@@ -330,50 +286,40 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
         };
     }
 
-    @bTrigger("beluga_ticket_deletelabel")
-    public static function _deletelabel(args: { id: Int }): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).deletelabel(args);
-    }
-
     public function deletelabel(args: { id: Int }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to delete a label !";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_fail", []);
+            this.triggers.deleteLabelFail.dispatch();
         } else {
             if (this.labelExistFromID(args.id)) {
                 var label = Label.manager.get(args.id);
                 label.delete();
-                beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_success", []);
+            this.triggers.deleteLabelSuccess.dispatch();
             } else {
                 this.error = "There is no existing label with the given id !";
-                beluga.triggerDispatcher.dispatch("beluga_ticket_deletelabel_fail", []);
+                this.triggers.deleteLabelFail.dispatch();
             }
         }
-    }
-
-    @bTrigger("beluga_ticket_addlabel")
-    public static function _addlabel(args: { name: String }): Void {
-        Beluga.getInstance().getModuleInstance(Ticket).addlabel(args);
     }
 
     public function addlabel(args: { name: String }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
-        if (!account.isLogged()) {
+        if (!account.isLogged) {
             this.error = "You must be logged to add a label !";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
+            this.triggers.addLabelFail.dispatch();
         } else if (args.name.length == 0) {
             this.error = "Your label cannot be empty!";
-            beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
+            this.triggers.addLabelFail.dispatch();
         } else {
             if (this.labelExist(args.name)) {
                 this.error = "This label already exist!";
-                beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_fail", []);
+                this.triggers.addLabelFail.dispatch();
             } else {
                 this.createNewLabel(args.name);
-                beluga.triggerDispatcher.dispatch("beluga_ticket_addlabel_success", []);
+                this.triggers.addLabelSuccess.dispatch();
             }
         }
     }
@@ -450,7 +396,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal implements Metadat
     /// { message_content: String, message_creation_date: Date, message_author: String}
     public function getTicketMessages(ticket_id: Int): List<Dynamic> {
         var messages: List<Dynamic> = new List<Dynamic>();
-        
+
         for( m in Message.manager.search($me_ti_id == ticket_id) ) {
             messages.push({
                 message_content: m.me_content,

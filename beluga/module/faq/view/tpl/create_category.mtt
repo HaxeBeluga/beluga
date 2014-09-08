@@ -1,0 +1,17 @@
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+	<h2>Creation of category</h2>
+	<form action="::base_url::::path::createCategory" class="form-horizontal" role="form" method="POST">
+		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
+		<div class="form-group">
+			<label for="name">Name</label>
+			<input class="form-control" id="name" name="name" placeholder="Enter name">
+		</div>
+		<div class="form-group" style="display:none;">
+			<input class="form-control" id="parent" name="parent" value="::parent::">
+		</div>
+		<input type="submit" class="btn btn-primary" value="Create"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::print?id=::parent::">Go back</a>
+	<a class="btn btn-primary" href="::base_url::::path::">Go back to FAQ categories list</a>
+</div>

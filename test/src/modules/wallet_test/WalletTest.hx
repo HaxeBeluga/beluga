@@ -21,41 +21,30 @@ import php.Web;
 import neko.Web;
 #end
 
-class WalletTest implements MetadataReader {
+class WalletTest {
     public var beluga(default, null) : Beluga;
     public var wallet(default, null) : Wallet;
 
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.wallet = beluga.getModuleInstance(Wallet);
-    }
-
-    @bTrigger("beluga_wallet_create_currency_success",
-              "beluga_wallet_create_currency_fail",
-              "beluga_wallet_remove_currency_success",
-              "beluga_wallet_remove_currency_fail",
-              "beluga_wallet_set_site_currency_fail",
-              "beluga_wallet_set_site_currency_success",
-              "beluga_wallet_create_success",
-              "beluga_wallet_create_fail")
-    public static function _doTestPage() {
-       new WalletTest(Beluga.getInstance()).doTestPage();
+        this.wallet.triggers.creationSuccess.add(this.doTestPage);
+        this.wallet.triggers.creationFail.add(this.doTestPage);
+        this.wallet.triggers.currencyCreationSuccess.add(this.doTestPage);
+        this.wallet.triggers.currencyCreationFail.add(this.doTestPage);
+        this.wallet.triggers.currencyRemoveSuccess.add(this.doTestPage);
+        this.wallet.triggers.currencyRemoveFail.add(this.doTestPage);
+        this.wallet.triggers.setSiteCurrencySuccess.add(this.doTestPage);
+        this.wallet.triggers.setSiteCurrencyFail.add(this.doTestPage);
     }
 
     public function doTestPage() {
-        var walletWidget = this.wallet.getWidget("display");
-        walletWidget.context = this.wallet.getDisplayContext();
-        var walletAdminWidget = this.wallet.getWidget("admin");
-        walletAdminWidget.context = this.wallet.getDisplayAdminContext();
-        var has_wallet = if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            1;
-        } else {
-            0;
-        };
-
+        var has_wallet =
+            if (Beluga.getInstance().getModuleInstance(Account).isLogged) { 1; }
+            else { 0; };
         var html = Renderer.renderDefault("page_wallet_widget", "Your wallet", {
-            walletWidget: walletWidget.render(),
-            walletAdminWidget: walletAdminWidget.render(),
+            walletWidget: wallet.widgets.show.render(),
+            walletAdminWidget: wallet.widgets.admin.render(),
             has_wallet: has_wallet,
             site_currency: this.wallet.getSiteCurrencyOrDefault().cu_name
         });
@@ -63,8 +52,8 @@ class WalletTest implements MetadataReader {
     }
 
     public function doBuyCurrency() {
-        if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).getLoggedUser(), 10.);
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).loggedUser, 10.);
         }
 
         this.doTestPage();

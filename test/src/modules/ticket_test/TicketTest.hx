@@ -21,56 +21,41 @@ import php.Web;
 import neko.Web;
 #end
 
-class TicketTest implements MetadataReader {
+class TicketTest {
     public var beluga(default, null) : Beluga;
     public var ticket(default, null) : Ticket;
 
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.ticket = beluga.getModuleInstance(Ticket);
-    }
-
-    @bTrigger("beluga_ticket_show_browse")
-    public static function _doBrowsePage() {
-       new TicketTest(Beluga.getInstance()).doBrowsePage();
+        this.ticket.triggers.show.add(this.doShowPage);
+        this.ticket.triggers.create.add(this.doCreatePage);
+        this.ticket.triggers.browse.add(this.doBrowsePage);
+        this.ticket.triggers.admin.add(this.doAdminPage);
+        this.ticket.triggers.addLabelSuccess.add(this.doAdminPage);
+        this.ticket.triggers.deleteLabelSuccess.add(this.doAdminPage);
+        this.ticket.triggers.addLabelFail.add(this.doAdminPage);
+        this.ticket.triggers.deleteLabelFail.add(this.doAdminPage);
+        this.ticket.triggers.assignNotify.add(this.doNotifyAssign);
     }
 
     public function doBrowsePage() {
-        var ticketWidget = ticket.getWidget("browse");
-        ticketWidget.context = ticket.getBrowseContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Browse tickets", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.browse.render()
         });
         Sys.print(html);
-    }
-
-    @bTrigger("beluga_ticket_show_create")
-    public static function _doCreatePage() {
-       new TicketTest(Beluga.getInstance()).doCreatePage();
     }
 
     public function doCreatePage() {
-        var ticketWidget = ticket.getWidget("create");
-        ticketWidget.context = ticket.getCreateContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Create tickets", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.create.render()
         });
         Sys.print(html);
     }
 
-    @bTrigger("beluga_ticket_show_show")
-    public static function _doShowPage() {
-       new TicketTest(Beluga.getInstance()).doShowPage();
-    }
-
     public function doShowPage() {
-        var ticketWidget = ticket.getWidget("show");
-        ticketWidget.context = ticket.getShowContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Show ticket", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.show.render()
         });
         Sys.print(html);
     }
@@ -84,28 +69,14 @@ class TicketTest implements MetadataReader {
         Sys.println("showPage");
     }
 
-    @bTrigger("beluga_ticket_show_admin",
-              "beluga_ticket_addlabel_success",
-              "beluga_ticket_deletelabel_success",
-              "beluga_ticket_addlabel_fail",
-              "beluga_ticket_deletelabel_fail")
-    public static function _doAdminPage() {
-       new TicketTest(Beluga.getInstance()).doAdminPage();
-    }
-
     public function doAdminPage() {
-        var ticketWidget = ticket.getWidget("admin");
-
-        ticketWidget.context = ticket.getAdminContext();
-
         var html = Renderer.renderDefault("page_ticket_widget", "Admin page", {
-            ticketWidget: ticketWidget.render()
+            ticketWidget: ticket.widgets.admin.render()
         });
         Sys.print(html);
     }
 
-    @bTrigger("beluga_ticket_assign_notify")
-    public function _doNotifyAssign(args : {title : String, text : String, user_id: Int}) {
+    public function doNotifyAssign(args : {title : String, text : String, user_id: Int}) {
         var notification = Beluga.getInstance().getModuleInstance(Notification);
         notification.create(args);
     }

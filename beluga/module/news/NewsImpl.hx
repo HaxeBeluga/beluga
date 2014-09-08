@@ -4,20 +4,22 @@ import haxe.xml.Fast;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 import beluga.module.account.Account;
 import beluga.core.module.ModuleImpl;
 import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
 
-class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataReader {
+class NewsImpl extends ModuleImpl implements NewsInternal {
+    public var triggers = new NewsTrigger();
 
     public function new() {
         super();
     }
 
-    override public function loadConfig(data : Fast) {}
+	override public function initialize(beluga : Beluga) : Void {
+
+	}
 
     public function getAllNews() : Array<NewsModel> {
         var ret = new Array<NewsModel>();
@@ -39,96 +41,87 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
     public function getComments(args : {news_id : Int}) : Array<CommentModel> {
         var ret = new Array<CommentModel>();
 
-        for (tmp in CommentModel.manager.dynamicSearch( {news_id : args.news_id} ))
-            ret.push(tmp);
+        var row = Manager.cnx.request("SELECT * from beluga_news_comment WHERE news_id=" + args.news_id + " ORDER BY creationDate");
+        for (tmp in row) {
+            for (tmp2 in CommentModel.manager.dynamicSearch( {id : tmp.id} )) {
+                ret.push(tmp2);
+                break;
+            }
+        }
+        Sys.print(ret.length);
         return ret;
     }
 
-    public static function _edit(args : {news_id : Int, title : String, text : String}) : Void {
-        Beluga.getInstance().getModuleInstance(News).edit(args);
-    }
-
     public function edit(args : {news_id : Int, title : String, text : String}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_news_edit_fail", [{news_id : args.news_id, error : "Please login before edit this news"}]);
+            this.triggers.editFail.dispatch({news_id : args.news_id, error : "Please login before edit this news"});
             return;
         }
         for (tmp in NewsModel.manager.dynamicSearch( {user_id : user.id, id : args.news_id} )) {
             tmp.title = args.title;
             tmp.text = args.text;
             tmp.update();
-            beluga.triggerDispatcher.dispatch("beluga_news_edit_success", [{news_id : args.news_id}]);
+            this.triggers.editSuccess.dispatch({news_id : args.news_id});
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_news_edit_fail", [{news_id : args.news_id, error : "You can't edit this news"}]);
-    }
-
-    public static function _addComment(args : {news_id : Int, text : String}) : Void {
-        Beluga.getInstance().getModuleInstance(News).addComment(args);
+        this.triggers.editFail.dispatch({news_id : args.news_id, error : "You can't edit this news"});
     }
 
     public function addComment(args : {news_id : Int, text : String}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-        if (user != null) {
-            for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id} )) {
-                var com = new CommentModel();
-
-                com.text = args.text;
-                com.news_id = args.news_id;
-                com.user_id = user.id;
-                com.creationDate = Date.now();
-                com.insert();
-                beluga.triggerDispatcher.dispatch("beluga_news_addComment_success", [{news_id : args.news_id}]);
-                return;
-            }
+        if (args.text == "") {
+            this.triggers.addCommentFail.dispatch({news_id : args.news_id, error: "Comment cannot be empty"});
+            return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_news_addComment_fail", [{news_id : args.news_id}]);
-    }
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
-    public static function _deleteComment(args : {news_id : Int, comment_id : Int}) : Void {
-        Beluga.getInstance().getModuleInstance(News).deleteComment(args);
+        if (user == null) {
+            this.triggers.addCommentFail.dispatch({news_id : args.news_id, error: "You need to be logged to post a comment"});
+            return;
+        }
+        for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id} )) {
+            var com = new CommentModel();
+
+            com.text = args.text;
+            com.news_id = args.news_id;
+            com.user_id = user.id;
+            com.creationDate = Date.now();
+            com.insert();
+            this.triggers.addCommentSuccess.dispatch({news_id : args.news_id});
+            return;
+        }
+        this.triggers.addCommentFail.dispatch({news_id : args.news_id, error: "News cannot be found"});
     }
 
     public function deleteComment(args : {news_id : Int, comment_id : Int}) : Void {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id, user_id : user.id} )) {
                 for (tmp_c in CommentModel.manager.dynamicSearch( {id : args.comment_id, news_id : args.news_id} )) {
                     tmp_c.delete();
-                    beluga.triggerDispatcher.dispatch("beluga_news_deleteComment_success", [{news_id : args.news_id}]);
+                    this.triggers.deleteCommentSuccess.dispatch({news_id : args.news_id});
                     return;
                 }
-                beluga.triggerDispatcher.dispatch("beluga_news_deleteComment_fail", [{news_id : args.news_id, error : "This comment doesn't exist"}]);
+                this.triggers.deleteCommentFail.dispatch({news_id : args.news_id, error : "This comment doesn't exist"});
                 return;
             }
             for (tmp in CommentModel.manager.dynamicSearch( {id : args.comment_id, news_id : args.news_id, user_id : user.id} )) {
                 tmp.delete();
-                beluga.triggerDispatcher.dispatch("beluga_news_deleteComment_success", [{news_id : args.news_id}]);
+                this.triggers.deleteCommentSuccess.dispatch({news_id : args.news_id});
                 return;
             }
         }
-        beluga.triggerDispatcher.dispatch("beluga_news_deleteComment_fail", [{news_id : args.news_id, error : "You can't delete this comment"}]);
-    }
-
-    public static function _print(args : {news_id : Int}) {
-        Beluga.getInstance().getModuleInstance(News).print(args);
+        this.triggers.deleteCommentFail.dispatch({news_id : args.news_id, error : "You can't delete this comment"});
     }
 
     public function print(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_print", [args]);
-    }
-
-    @bTrigger("beluga_news_delete")
-    public static function _delete(args : {news_id : Int}) {
-        Beluga.getInstance().getModuleInstance(News).delete(args);
+        this.triggers.print.dispatch(args);
     }
 
     public function delete(args : {news_id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NewsModel.manager.dynamicSearch( {id : args.news_id, user_id : user.id} )) {
@@ -136,28 +129,23 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
                     tmp_c.delete();
                 }
                 tmp.delete();
-                beluga.triggerDispatcher.dispatch("beluga_news_delete_success", []);
+                this.triggers.deleteSuccess.dispatch();
                 return;
             }
         }
-        beluga.triggerDispatcher.dispatch("beluga_news_delete_fail", []);
-    }
-
-    @bTrigger("beluga_news_create")
-    public static function _create(args : {title : String, text : String}) {
-        Beluga.getInstance().getModuleInstance(News).create(args);
+        this.triggers.deleteFail.dispatch();
     }
 
     public function create(args : {title : String, text : String}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null || args.title == "" || args.text == "") {
             if (user == null)
-                beluga.triggerDispatcher.dispatch("beluga_news_create_fail", [{title : args.title, data : args.text, error : "Please log in to create a news"}]);
+                this.triggers.createFail.dispatch({title : args.title, data : args.text, error : "Please log in to create a news"});
             else if (args.title == "")
-                beluga.triggerDispatcher.dispatch("beluga_news_create_fail", [{title : args.title, data : args.text, error : "Please enter a title"}]);
+                this.triggers.createFail.dispatch({title : args.title, data : args.text, error : "Please enter a title"});
             else
-                beluga.triggerDispatcher.dispatch("beluga_news_create_fail", [{title : args.title, data : args.text, error : "Please enter the news"}]);
+                this.triggers.createFail.dispatch({title : args.title, data : args.text, error : "Please enter the news"});
             return;
         }
         var news = new NewsModel();
@@ -167,6 +155,6 @@ class NewsImpl extends ModuleImpl implements NewsInternal implements MetadataRea
         news.user_id = user.id;
         news.creationDate = Date.now();
         news.insert();
-        beluga.triggerDispatcher.dispatch("beluga_news_create_success", []);
+        this.triggers.createSuccess.dispatch();
     }
 }

@@ -10,6 +10,7 @@
 	<div class="alert alert-success">::success::</div>
 	::end::
 	::end::
+	::if (news.length > 0)::
 	<div class="container">
 		<ul class="timeline">
 			::foreach news::
@@ -38,6 +39,7 @@
 		    <li class="clearfix" style="float: none;"></li>
 	    </ul>
 	</div>
+	::end::
 	<a href="::base_url::::path::redirect" class="btn btn-primary">Create new news</a>
 </div>
 <script>

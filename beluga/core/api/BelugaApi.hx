@@ -17,6 +17,10 @@ class BelugaApi implements IAPI<String> {
     public function doDefault(d : Dispatch) {
         Sys.print("Welcome !");
     }
+	
+	public function doBeluga(d : Dispatch) {
+		d.dispatch(this);
+	}
 
     /*
      * Modules API are generated like:

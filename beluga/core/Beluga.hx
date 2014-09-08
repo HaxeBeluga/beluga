@@ -1,6 +1,7 @@
 package beluga.core;
 
 import haxe.Resource;
+import haxe.Session;
 import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
@@ -27,7 +28,7 @@ class Beluga {
     public var api : BelugaApi;
 
     private static var instance = null;
-
+	
     public static function getInstance() : Beluga {
         if (instance == null) {
             instance = new Beluga();
@@ -37,13 +38,13 @@ class Beluga {
     }
 
     #if neko
-    private function new(handleSessionPath : Bool = true)
+    private function new(createSessionDirectory : Bool = true)
     #else
     private function new()
     #end
     {
         #if neko
-        if (handleSessionPath) {
+        if (createSessionDirectory) {
             FileSystem.createDirectory(Web.getCwd() + "/temp");
             FileSystem.createDirectory(Web.getCwd() + "/temp/sessions");
         }
@@ -58,11 +59,6 @@ class Beluga {
             db = new Database(ConfigLoader.config.node.database.elements);
         }
 
-        // Look for triggers
-        //for (trigger in ConfigLoader.config.nodes.trigger) {
-        //  triggerDispatcher.addRoutesFromFast(trigger);
-        //}
-
         //Create beluga API
         api = new BelugaApi();
         api.beluga = this;
@@ -74,10 +70,12 @@ class Beluga {
         //Init every modules
         for (module in ConfigLoader.modules) {
             var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
-            if (moduleInstance != null) {
-                moduleInstance._loadConfig(this, module);
-            }
+			moduleInstance._loadConfig(this, module);
         }
+		 for (module in ConfigLoader.modules) {
+            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
+			moduleInstance.initialize(this);
+		 }
     }
 
     public function dispatch(defaultTrigger : String = "index") {
@@ -87,10 +85,11 @@ class Beluga {
 
     public function cleanup() {
         db.close();
+		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
-    public function getModuleInstance<T : Module>(clazz : Class<T>, key : String = "") : T {
-        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz), key);
+    public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
+        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
     }
 
     public function getDispatchUri() : String {

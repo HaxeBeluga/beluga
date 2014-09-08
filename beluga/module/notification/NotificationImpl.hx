@@ -9,16 +9,19 @@ import beluga.module.account.Account;
 import beluga.module.notification.model.NotificationModel;
 
 class NotificationImpl extends ModuleImpl implements NotificationInternal {
+    public var triggers = new NotificationTrigger();
 
     public function new() {
         super();
     }
 
-    override public function loadConfig(data : Fast) {}
+	override public function initialize(beluga : Beluga) : Void {
+
+	}
 
     public function getNotifications() : Array<NotificationModel> {
         var ret = new Array<NotificationModel>();
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
             for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id} ))
@@ -32,49 +35,39 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
     }
 
     public function print(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : null}]);
+            this.triggers.print.dispatch({notif: null});
             return;
         }
 
         for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id, id : args.id} )) {
             tmp.hasBeenRead = true;
             tmp.update();
-            beluga.triggerDispatcher.dispatch("beluga_notif_printx", [{notif : tmp}]);
+            this.triggers.print.dispatch({notif: tmp});
             return;
         }
     }
 
-    @bTrigger("beluga_notification_delete")
-    public static function _delete(args : {id : Int}) {
-        Beluga.getInstance().getModuleInstance(Notification).delete(args);
-    }
-
     public function delete(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
+            this.triggers.deleteFail.dispatch();
             return;
         }
         for (tmp in NotificationModel.manager.dynamicSearch( {id : args.id, user_id : user.id} )) {
             tmp.delete();
-            beluga.triggerDispatcher.dispatch("beluga_notif_delete_success", []);
+            this.triggers.deleteSuccess.dispatch();
             return;
         }
-        beluga.triggerDispatcher.dispatch("beluga_notif_delete_fail", []);
-    }
-
-    @bTrigger("beluga_notification_create")
-    public static function _create(args : {title : String, text : String, user_id: Int}) {
-        Beluga.getInstance().getModuleInstance(Notification).create(args);
+        this.triggers.deleteFail.dispatch();
     }
 
     public function create(args : {title : String, text : String, user_id: Int}) {
         if (args.title == "" || args.text == "") {
-            beluga.triggerDispatcher.dispatch("beluga_notif_create_fail", []);
+            this.triggers.createFail.dispatch();
             return;
         }
         var notif = new NotificationModel();
@@ -85,6 +78,6 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         notif.hasBeenRead = false;
         notif.creationDate = Date.now();
         notif.insert();
-        beluga.triggerDispatcher.dispatch("beluga_notif_create_success", []);
+        this.triggers.createSuccess.dispatch();
     }
 }

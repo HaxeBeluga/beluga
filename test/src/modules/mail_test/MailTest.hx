@@ -19,7 +19,7 @@ import haxe.Resource;
 import php.Web;
 #end
 
-class MailTest implements MetadataReader {
+class MailTest {
     public var beluga(default, null) : Beluga;
     public var mail(default, null) : Mail;
     private var error_msg : String;
@@ -28,6 +28,9 @@ class MailTest implements MetadataReader {
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.mail = beluga.getModuleInstance(Mail);
+        this.mail.triggers.sendFail.add(this.doSendFail);
+        this.mail.triggers.sendSuccess.add(this.doSendSuccess);
+        this.mail.triggers.create.add(this.doCreate);
         this.error_msg = "";
         this.success_msg = "";
     }
@@ -37,7 +40,7 @@ class MailTest implements MetadataReader {
     }
 
     public function doDefault() {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         var widget = mail.getWidget("mail");
         widget.context = {mails : mail.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/mailTest/"};
@@ -50,13 +53,8 @@ class MailTest implements MetadataReader {
         Sys.print(html);
     }
 
-    @bTrigger("beluga_mail_create")
-    public static function _doCreate() {
-       new MailTest(Beluga.getInstance()).subCreate({receiver : "", subject : "", message : ""});
-    }
-
     public function subCreate(args : {receiver : String, subject : String, message : String}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             this.doDefault();
@@ -78,18 +76,8 @@ class MailTest implements MetadataReader {
         this.subCreate({receiver : "", subject : "", message : ""});
     }
 
-    @bTrigger("beluga_mail_send")
-    public static function _doSend(args : {receiver : String, subject : String, message : String}) {
-        new MailTest(Beluga.getInstance()).doSend(args);
-    }
-
     public function doSend(args : {receiver : String, subject : String, message : String}) {
         this.mail.sendMail(args);
-    }
-
-    @bTrigger("beluga_mail_send_fail")
-    public static function _doSendFail(args : {error : String, receiver : String, subject : String, message : String}) {
-        new MailTest(Beluga.getInstance()).doSendFail(args);
     }
 
     public function doSendFail(args : {error : String, receiver : String, subject : String, message : String}) {
@@ -97,23 +85,13 @@ class MailTest implements MetadataReader {
         this.subCreate({receiver : args.receiver, subject : args.subject, message : args.message});
     }
 
-    // @bTrigger("beluga_mail_send_success")
-    public static function _doSendSuccess() {
-        new MailTest(Beluga.getInstance()).doSendSuccess();
-    }
-
     public function doSendSuccess() {
         success_msg = "Mail has been sent successfully";
         this.doDefault();
     }
 
-    @bTrigger("beluga_mail_print")
-    public static function _doPrint(args : {id : Int}) {
-        new MailTest(Beluga.getInstance()).doPrint(args);
-    }
-
     public function doPrint(args : {id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             error_msg = "You have to log in";

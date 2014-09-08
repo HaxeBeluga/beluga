@@ -7,6 +7,7 @@ import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
+import beluga.core.form.Object;
 
 class AccountApi  {
     public var beluga : Beluga;
@@ -19,19 +20,15 @@ class AccountApi  {
         login : String,
         password : String,
     }) {
-        beluga.triggerDispatcher.dispatch("beluga_account_login", [args]);
+		module.login(args);
     }
 
     public function doLogout() {
-        module.logout();
-    }
-
-    public function doPrintInfo() {
-        beluga.triggerDispatcher.dispatch("beluga_account_printInfo", []);
+		module.logout();
     }
 
     public function doShowUser(args: { id: Int }) {
-        beluga.triggerDispatcher.dispatch("beluga_account_show_user", [args]);
+        this.module.showUser(args);
     }
 
     public function doSubscribe(args : {
@@ -40,19 +37,17 @@ class AccountApi  {
         password_conf : String,
         email : String
     }) {
-        beluga.triggerDispatcher.dispatch("beluga_account_subscribe", [args]);
+       module.subscribe(args);
     }
 
     public function doDefault() {
-        trace("Account default page");
+        this.module.triggers.defaultPage.dispatch();
     }
 
-    public function doEdit() {
-        beluga.triggerDispatcher.dispatch("beluga_account_edit", []);
-    }
-
-    public function doSave(args : {email : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_account_save", [args]);
+    public function doEdit(args : {?email : String}) {
+        if (args.email != null) {
+			module.edit(module.loggedUser.id, args.email);
+		}
     }
 
 }

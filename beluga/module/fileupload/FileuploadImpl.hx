@@ -7,7 +7,6 @@ import sys.io.FileOutput;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
-import beluga.core.macro.MetadataReader;
 
 // Beluga mods
 import beluga.module.account.Account;
@@ -18,32 +17,25 @@ import beluga.module.fileupload.model.Extension;
 import php.Web;
 #end
 
-class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements MetadataReader {
+class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public var error: String = "";
+    public var triggers = new FileuploadTrigger();
+    public var widgets : FileuploadWidget;
 
     public function new() {
         super();
     }
 
-    override public function loadConfig(data : Fast): Void {}
-
-    /** Actions trigger **/
-
-    @bTrigger("beluga_fileupload_browse")
-    public static function _browse(): Void {
-        Beluga.getInstance().getModuleInstance(Fileupload).browse();
-    }
-
-    public function browse(): Void{
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_browse", []);
+    override public function initialize(beluga : Beluga) : Void {
+        this.widgets = new FileuploadWidget();
     }
 
     public function getBrowseContext(): Dynamic {
         var files: List<Dynamic> = new List<Dynamic>();
         var user_id: Int = 0;
 
-        if (Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            user_id = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            user_id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
             files = this.getUserFileList(user_id);
         } else {
             this.error = "You must be logged to access this page";
@@ -83,30 +75,24 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         return extensions;
     }
 
-    @bTrigger("beluga_fileupload_send")
-    public static function _send(): Void {
-        Beluga.getInstance().getModuleInstance(Fileupload).send();
-    }
-
     public function send(): Void{
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
             return;
         }
 
-        var id = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
-        var login = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().login;
+        var id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
+        var login = Beluga.getInstance().getModuleInstance(Account).loggedUser.login;
         var up = new Uploader(login, id);
         if (up.is_valid == false) {
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_upload_fail", [{reason: "Invalid file extension"}]);
+            this.triggers.uploadFail.dispatch({reason: "Invalid file extension"});
         } else {
             var notif = {
                 title: "File transfer completed !",
                 text: "Your file transfer terminate with success, you can consult your files in the file upload section !",
-                user_id: Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id
+                user_id: Beluga.getInstance().getModuleInstance(Account).loggedUser.id
             };
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success", []);
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_notify_upload_success", [notif]);
+            this.triggers.uploadSuccess.dispatch(notif);
         }
     }
 
@@ -115,36 +101,22 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         return {};
     }
 
-    @bTrigger("beluga_fileupload_delete")
-    public static function _delete(args: { id: Int }): Void {
-        Beluga.getInstance().getModuleInstance(Fileupload).delete(args);
-    }
-
     public function delete(args: { id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
-            beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
             return;
         } else {
             var file = File.manager.get(args.id);
-            var current_user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser().id;
+            var current_user = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
             if (file.fi_id_owner != current_user) {
-                beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_fail", [{reason: "You cannot access this action"}]);
+                this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
                 return;
             } else {
                 file.delete();
-                beluga.triggerDispatcher.dispatch("beluga_fileupload_delete_success");
+                this.triggers.deleteSuccess.dispatch();
             }
         }
    }
-
-   @bTrigger("beluga_fileupload_admin")
-    public static function _admin(): Void {
-        Beluga.getInstance().getModuleInstance(Fileupload).admin();
-    }
-
-    public function admin(): Void {
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_admin", []);
-    }
 
     public function getAdminContext(): Dynamic {
         var extensions = this.getExtensionsList();
@@ -154,14 +126,10 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
         };
     }
 
-    @bTrigger("beluga_fileupload_addextension")
-    public static function _addextension(args: { name: String }): Void {
-        Beluga.getInstance().getModuleInstance(Fileupload).addextension(args);
-    }
-
     public function addextension(args: { name: String }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = "You must be logged to access this section";
+            this.triggers.addExtensionFail.dispatch();
         } else if (args.name == "") {
             this.error = "The field is empty";
         } else {
@@ -173,21 +141,18 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
                 var extension = new Extension();
                 extension.ex_name = args.name;
                 extension.insert();
+                this.triggers.addExtensionSuccess.dispatch();
             } else {
                 this.error = "This extension already exist !";
+                this.triggers.addExtensionFail.dispatch();
             }
         }
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_addextension_success", []);
-    }
-
-    @bTrigger("beluga_fileupload_deleteextension")
-    public static function _deleteextension(args: { id: Int }): Void {
-        Beluga.getInstance().getModuleInstance(Fileupload).deleteextension(args);
     }
 
     public function deleteextension(args: { id: Int }): Void {
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged()) {
+        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = "You must be logged to access this section";
+            this.triggers.deleteExtensionFail.dispatch();
         } else {
             var ext = null;
             for( u in Extension.manager.search($ex_id == args.id) ) {
@@ -195,11 +160,12 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal implements
             }
             if (ext == null) {
                 this.error = "This extension doesn't exist!";
+                 this.triggers.deleteExtensionFail.dispatch();
             } else {
                 ext.delete();
+                this.triggers.deleteExtensionSuccess.dispatch();
             }
         }
-        beluga.triggerDispatcher.dispatch("beluga_fileupload_deleteextension_success", []);
     }
 
     public function extensionIsValid(name: String): Bool {

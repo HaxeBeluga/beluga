@@ -138,8 +138,8 @@
                         <img src="http://placehold.it/350x150" >
                         <div class="caption">
                             <h3>Module de porte-feuille</h3>
-                            <p>Cette page permet la Testnstration du module de porte-feuille aussi bien du cote administration que de la consultation du porte-monnaie.</p>
-                            <p><a href="::base_url::/walletTest/TestPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                            <p>Cette page permet la demonstration du module de porte-feuille aussi bien du cote administration que de la consultation du porte-monnaie.</p>
+                            <p><a href="::base_url::/walletTest/testPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
                         </div>
                     </div>
                 </div>
@@ -161,9 +161,9 @@
                     <div class="thumbnail">
                         <img src="http://placehold.it/350x150" >
                         <div class="caption">
-                            <h3>Testnstration du marche</h3>
-                            <p>Testnstration de la page d'affichage des articles.</p>
-                            <p><a href="::base_url::/marketTest/TestPage" class="btn btn-success" role="button">Depenser votre argent !</a></p>
+                            <h3>Demonstration du marche</h3>
+                            <p>Demonstration de la page d'affichage des articles.</p>
+                            <p><a href="::base_url::/marketTest/testPage" class="btn btn-success" role="button">Depenser votre argent !</a></p>
                         </div>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
                         <img src="http://placehold.it/350x150" >
                         <div class="caption">
                             <h3>Module de d'administration du marche</h3>
-                            <p>Cette page propose la Testnstration de la partie administration du module de marche, vous pouvez rajouter de nouveaux articles, les editer ou encore les supprimer depuis cette page !</p>
+                            <p>Cette page propose la Demonstration de la partie administration du module de marche, vous pouvez rajouter de nouveaux articles, les editer ou encore les supprimer depuis cette page !</p>
                             <p><a href="::base_url::/marketTest/adminPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
                         </div>
                     </div>
@@ -187,14 +187,23 @@
                     <div class="thumbnail">
                         <img src="http://placehold.it/350x150" >
                         <div class="caption">
-                            <h3>Testnstration du panier</h3>
+                            <h3>Demonstration du panier</h3>
                             <p>Cette page propose un affichage de la vue panier associee au module de marche.</p>
                             <p><a href="::base_url::/marketTest/cartPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
                         </div>
                     </div>
                 </div>
 
-
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Demonstration de la FAQ</h3>
+                            <p>Ce module permet de gerer une FAQ.</p>
+                            <p><a href="::base_url::/faqTest" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     <!-- </div> -->

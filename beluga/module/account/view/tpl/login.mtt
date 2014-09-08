@@ -6,6 +6,7 @@
 	::end::
 	::end::
 	<br/>
+	::if (!isLogged)::
 	<form action="::base_url::/beluga/account/login" class="form-horizontal" role="form" method="POST">
 		
 		<div class="form-group">
@@ -29,5 +30,12 @@
 			</div>
 		</div>
 	</form>
+	::else::
+	<div>
+		You are already logged as ::loggedUser.login::! <br/>
+		<a href="::base_url::/account/logout">Log out</a></li>
+	</div>
+	::end::
 	<br/>
+	
 </div>

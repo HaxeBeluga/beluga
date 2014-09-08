@@ -3,11 +3,11 @@
   "license": "MIT",
   "tags": ["php","neko","framework","game"],
   "description": "Beluga is a framework that helps building a site embedding a video game.",
-  "contributors": ["masadow", "regnarock"],
+  "contributors": ["masadow", "regnarock", "GuillaumeGomez"],
   "releasenote": "Initial version, not released yet",
   "version": "0.1.0",
   "url": "http://myproject.org",
   "dependencies": {
-	"session"
+	"session" : ""
   }
 }

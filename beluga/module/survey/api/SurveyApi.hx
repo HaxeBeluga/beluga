@@ -32,29 +32,27 @@ class SurveyApi {
 
         for (t in x)
             tmp.push(t);
-
-        beluga.triggerDispatcher.dispatch("beluga_survey_create",
-            [{title : args.title, description : args.description, choices : tmp}]);
+        module.create({title : args.title, description : args.description, choices : tmp});
     }
 
-    public function doVote(args : {id : Int, option : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_survey_vote", [args]);
+    public function doVote(args: {id : Int, option : Int}) {
+        module.vote({survey_id: args.id, option: args.option});
     }
 
     public function doPrint(args : {id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_survey_print", [args]);
+        module.print({survey_id: args.id});
     }
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_survey_default", []);
+        module.triggers.defaultSurvey.dispatch();
     }
 
     public function doRedirect() {
-        beluga.triggerDispatcher.dispatch("beluga_survey_redirect", []);
+        module.redirect();
     }
 
     public function doDelete(args : {id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_survey_delete", [args]);
+        module.delete({survey_id: args.id});
     }
 
 }
