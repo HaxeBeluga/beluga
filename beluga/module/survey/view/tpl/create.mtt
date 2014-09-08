@@ -1,19 +1,47 @@
 <div id="mainDiv">
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
 	<h2>Creation of new survey</h2>
 	<form action="::base_url::::path::create" class="form-horizontal" role="form" method="POST">
 		<div class="field title form-survey">
 			<label for="title">Title</label>
+			::if (title)::
+			::if (title != "")::
+			<input name="title" type="text" class="form-control" id="title" placeholder="Title of survey" value="::title::">
+			::else::
 			<input name="title" type="text" class="form-control" id="title" placeholder="Title of survey">
+			::end::
+			::else::
+			<input name="title" type="text" class="form-control" id="title" placeholder="Title of survey">
+			::end::
 		</div>
 		<div class="form-survey">
-    		<label for="description">Description</label>
-    		<textarea type="text" class="form-control" id="description" name="description"></textarea>
-  		</div>
+			<label for="description">Description</label>
+			::if (description)::
+			::if (description != "")::
+			<textarea type="text" class="form-control" id="description" name="description">::description::</textarea>
+			::else::
+			<textarea type="text" class="form-control" id="description" name="description"></textarea>
+			::end::
+			::else::
+			<textarea type="text" class="form-control" id="description" name="description"></textarea>
+			::end::
+		</div>
 		<label class="control-label">Choices :</label>
 		<div id="choice">
-			<div class="form-survey" id="1">
-			    <input type="text" class="form-control" id="choices" placeholder="New choice" name="choices">
+			::if (choices)::
+			::foreach choices::
+			::if (__current__)::
+			<div class="form-survey">
+				<input type="text" class="form-control" id="choices" placeholder="New choice" name="choices" value="::__current__::">
 			</div>
+			::end::
+			::end::
+			::end::
 		</div>
 		<a id="addEntry" type="button" class="btn btn-primary" onclick="addEntry();">Add entry</a>
 		<p id="error"></p>
@@ -25,6 +53,13 @@
 function addEntry(){
 	var nb = $("#choice").children().size();
 
+	if (nb == 0) {
+		var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + "\">";
+		
+		tmp = "<div class=\"form-survey\">" + tmp + "</div>";
+		$("#choice").append(tmp);
+		nb = 1;
+	}
 	if (nb < 20) {
 		var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + nb + "\">";
 		
@@ -32,32 +67,11 @@ function addEntry(){
 		$("#choice").append(tmp);
 	}
 }
-function sendSurvey(){
-	var arr = new Array();
-	var dataToSend = document.getElementsByName('title').item(0).value;
-	var done = 0;
-	if (dataToSend == ""){
-		$("#error").text("Missing survey's title");
-		return;
-	}
-	dataToSend = "name=" + dataToSend;
-	$("#error").text("");
-		
-	arr = document.getElementsByName('choices');
-	for (var i = 0; i < arr.length; i++){
-		var obj1 = arr.item(i);
-		
-		if (obj1.value != ""){
-			dataToSend = dataToSend + "&option " + i + "=" + obj1.value;
-			done = done + 1;
-		}
-	}
-	if (done < 2){
-		$("#error").text("Please enter at least two options");
-		return;
-	}
-	dataToSend = $("#survey_form").attr('action') + "?" + dataToSend;
-	window.location = dataToSend;
-}
+::if (choices)::
+::if (choices.length < 2)::
 addEntry();
+::end::
+::else::
+addEntry();
+::end::
 </script>

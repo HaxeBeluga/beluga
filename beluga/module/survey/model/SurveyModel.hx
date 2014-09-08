@@ -15,6 +15,6 @@ class SurveyModel extends Object {
     public var date_end : SDate;
     public var description : SText;
     public var author_id : SInt;
-    public var multiple_choice : STinyInt;
+    public var multiple_choice : SBool; // true if the survey accepts multiple answer, false otherwise
     @:relation(author_id) public var author : User;
 }
