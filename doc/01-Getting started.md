@@ -36,7 +36,14 @@ TestProject
 ## Configure project
 You need to edit beluga.xml file to set your database configuration.
 ```
-
+<database>
+	<host>localhost</host>
+	<!-- <port></port> -->
+	<user>root</user>
+	<pass></pass>
+	<database>belugaTest</database>
+	<!-- <socket></socket> -->
+</database>
 ```
 
 ## Run project
@@ -45,7 +52,8 @@ Compile haxe by running from inside TestProject folder:
 > haxe TestSetupProject.hxml
 ```
 
-Point your document root to TestProject/bin folder,
-and don't forget to activate the apache module rewrite.
+- Point your document root to TestProject/bin folder
+- Don't forget to activate the apache module rewrite.
+- And put the provided .htaccess into the bin folder.
 
 You can now access to your website with a working login form !
