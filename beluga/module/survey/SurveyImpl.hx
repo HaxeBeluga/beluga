@@ -52,14 +52,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
     }
 
     public function getCreateContext() : Dynamic {
-        var old_choices = choices;
-        var old_title = title;
-        var old_description = description;
-
-        description = "";
-        title = "";
-        choices = null;
-        return {title: old_title, description: old_description, choices: old_choices, path : "/beluga/survey/",
+        return {title: title, description: description, choices: choices, path : "/beluga/survey/",
             error : error_msg, success : success_msg};
     }
 
