@@ -2,9 +2,7 @@ package ;
 
 /**
  * Supported commands:
-	* setup project_name [-all] [-module name]
-	* remove module_name
-	* add module_name
+	* setup project_name
  * Future commands:
 	 * install module_name //Should download the module and install it in beluga
 	 * uninstall module_name //Should delete the module from the filesystem
@@ -22,10 +20,7 @@ class Main
 	public static function displayUsage() {
 		Sys.println("Usage:");
 		Sys.println("\t* help");
-		Sys.println("\t* setup project_name [-all] [-module name]");
-		Sys.println("\t* remove module_name");
-		Sys.println("\t\t* Must be run inside a beluga's project folder");
-		Sys.println("\t* add module_name");
+		Sys.println("\t* setup project_name");
 		Sys.println("\t\t* Must be run inside a beluga's project folder");
 	}
 
@@ -56,7 +51,8 @@ class Main
 		return null;
 	}
 
-	public static function setup(libDir : String, userArgs : Array<String>) : String {
+	public static function setup_project(libDir : String, userArgs : Array<String>) : String {
 		return Setup.run(libDir, userArgs);
 	}
+
 }
