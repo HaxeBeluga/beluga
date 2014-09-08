@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Prerequisite
-
+You should have those following program already installed on your computer:
 * haxe 3.1.3
 * mysql
 * php
@@ -35,6 +35,9 @@ TestProject
 
 ## Configure project
 You need to edit beluga.xml file to set your database configuration.
+```
+
+```
 
 ## Run project
 Compile haxe by running from inside TestProject folder:
@@ -42,6 +45,7 @@ Compile haxe by running from inside TestProject folder:
 > haxe TestSetupProject.hxml
 ```
 
-Point your document root to TestProject/bin folder
+Point your document root to TestProject/bin folder,
+and don't forget to activate the apache module rewrite.
 
 You can now access to your website with a working login form !
