@@ -6,7 +6,7 @@ import beluga.core.trigger.TriggerVoid;
 import sys.db.Types;
 
 class MailTrigger {
-    public var sendFail = new Trigger<{error: String, receiver: String, subject: String, message : String}>();
+    public var sendFail = new TriggerVoid();
     public var sendSuccess = new TriggerVoid();
     public var print = new Trigger<{id : Int}>();
     public var defaultMail = new TriggerVoid();
