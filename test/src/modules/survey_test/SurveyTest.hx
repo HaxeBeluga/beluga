@@ -29,6 +29,7 @@ class SurveyTest {
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.survey = beluga.getModuleInstance(Survey);
+
         this.survey.triggers.defaultSurvey.add(this.doDefault);
         this.survey.triggers.redirect.add(this.doRedirectPage);
         this.survey.triggers.createFail.add(this.doCreateFail);
@@ -39,12 +40,14 @@ class SurveyTest {
         this.survey.triggers.voteSuccess.add(this.doVoteSuccess);
         this.survey.triggers.printSurvey.add(this.doPrintPage);
         this.survey.triggers.answerNotify.add(this.doAnswerNotify);
+
         this.error_msg = "";
         this.success_msg = "";
     }
 
     public function doDefault() {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+
         if (user == null) {
             error_msg = "Please log in !";
         }
@@ -113,7 +116,7 @@ class SurveyTest {
         Sys.print(html);
     }
 
-     public function doVoteSuccess() {
+    public function doVoteSuccess() {
         success_msg = "Your vote has been registered";
         this.doDefault();
     }
@@ -169,7 +172,6 @@ class SurveyTest {
         var choices = this.survey.getResults({survey_id: args.survey_id});
         var widget = this.survey.getWidget("print_survey");
         widget.context = {survey : survey, choices : choices, path : "/beluga/survey/"};
-
         var surveyWidget = widget.render();
 
         var html = Renderer.renderDefault("page_survey", "Display survey", {
