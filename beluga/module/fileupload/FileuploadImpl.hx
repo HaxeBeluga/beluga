@@ -20,14 +20,14 @@ import php.Web;
 class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public var error: String = "";
     public var triggers = new FileuploadTrigger();
-    // public var widgets : FileuploadWidget;
+    public var widgets : FileuploadWidget;
 
     public function new() {
         super();
     }
 
     override public function initialize(beluga : Beluga) : Void {
-        // this.widgets = new FileuploadWidget();
+        this.widgets = new FileuploadWidget();
     }
 
     public function getBrowseContext(): Dynamic {

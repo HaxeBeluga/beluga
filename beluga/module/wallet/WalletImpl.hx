@@ -17,6 +17,7 @@ import beluga.module.account.Account;
 
 class WalletImpl extends ModuleImpl implements WalletInternal {
     public var triggers = new WalletTrigger();
+    public var widgets: WalletWidget;
     // two errors for admin: global -> cannot access, local -> fields errors.
     var admin_global_error = "";
     var admin_local_error = "";
@@ -29,9 +30,9 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     public function new() { super(); }
 
-	override public function initialize(beluga : Beluga) : Void {
-
-	}
+    override public function initialize(beluga : Beluga) : Void {
+        this.widgets = new WalletWidget();
+    }
 
     // pages
 
@@ -52,7 +53,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     // The main view of the widget
     public function display(): Void {}
 
-    public function getDisplayContext(): Dynamic {
+    public function getShowContext(): Dynamic {
         var user: User = null;
         var has_wallet = 1;
         var currency_name = "";
@@ -90,7 +91,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public function admin(): Void {}
 
     // Return the context to display the admin widget
-    public function getDisplayAdminContext(): Dynamic {
+    public function getAdminContext(): Dynamic {
         // Check if user is logged to display the widget, if not set the global error
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.admin_global_error = "Vous devez etres identifie pour acceder a ce widget !";

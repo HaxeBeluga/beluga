@@ -6,13 +6,13 @@ import sys.db.Types.SId;
 
 interface Account extends Module {
 
-	public var triggers : AccountTrigger;
+    public var triggers : AccountTrigger;
 
-	public var widgets : AccountWidget;
+    public var widgets : AccountWidget;
 
-	public var loggedUser(get, set) : User;
+    public var loggedUser(get, set) : User;
 
-	public var isLogged(get, never) : Bool;
+    public var isLogged(get, never) : Bool;
 
     public function subscribe(args : {
         login : String,
@@ -28,7 +28,7 @@ interface Account extends Module {
 
     public function deleteUser(args : {id : Int}) : Void;
 
-	public function getUser(userId : SId) : User;
+    public function getUser(userId : SId) : User;
 
     public function getSponsor(userId : SId) : User;
 

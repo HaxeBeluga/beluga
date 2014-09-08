@@ -19,6 +19,8 @@ import sys.db.Manager;
 
 class TicketImpl extends ModuleImpl implements TicketInternal {
     public var triggers = new TicketTrigger();
+    public var widgets: TicketWidget;
+
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
     private var error: String = "";
@@ -28,7 +30,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     }
 
     override public function initialize(beluga : Beluga) : Void {
-
+        this.widgets = new TicketWidget();
     }
 
     /** Actions trigger **/

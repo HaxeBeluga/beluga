@@ -139,7 +139,7 @@
                         <div class="caption">
                             <h3>Module de porte-feuille</h3>
                             <p>Cette page permet la demonstration du module de porte-feuille aussi bien du cote administration que de la consultation du porte-monnaie.</p>
-                            <p><a href="::base_url::/walletTest/TestPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                            <p><a href="::base_url::/walletTest/testPage" class="btn btn-success" role="button">Essayer ce widget !</a></p>
                         </div>
                     </div>
                 </div>

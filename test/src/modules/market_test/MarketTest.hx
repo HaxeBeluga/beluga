@@ -37,31 +37,22 @@ class MarketTest {
     }
 
     public function doTestPage() {
-        var marketWidget = this.market.getWidget("display");
-        marketWidget.context = this.market.getDisplayContext();
-
         var html = Renderer.renderDefault("page_market_widget", "The market", {
-            marketWidget: marketWidget.render(),
+            marketWidget: market.widgets.display.render()
         });
         Sys.print(html);
     }
 
     public function doAdminPage() {
-        var marketAdminWidget = this.market.getWidget("admin");
-        marketAdminWidget.context = this.market.getAdminContext();
-
         var html = Renderer.renderDefault("page_market_admin_widget", "Market administration", {
-            marketAdminWidget: marketAdminWidget.render(),
+            marketAdminWidget: market.widgets.admin.render()
         });
         Sys.print(html);
     }
 
     public function doCartPage() {
-        var marketCartWidget = this.market.getWidget("cart");
-        marketCartWidget.context = this.market.getCartContext();
-
         var html = Renderer.renderDefault("page_market_admin_widget", "User Cart", {
-            marketAdminWidget: marketCartWidget.render(),
+            marketAdminWidget: market.widgets.cart.render(),
         });
         Sys.print(html);
     }

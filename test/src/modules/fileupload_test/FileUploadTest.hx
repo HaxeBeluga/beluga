@@ -38,23 +38,19 @@ class FileUploadTest {
     }
 
     public function doBrowsePage() {
-        var browseWidget = file_upload.getWidget("browse");
-        browseWidget.context = file_upload.getBrowseContext();
         var html = Renderer.renderDefault("page_fileupload_widget", "Browse files", {
             context_message: "",
-            browseWidget: browseWidget.render(),
+            browseWidget: file_upload.widgets.browse.render(),
             fileUploadWidget: ""
         });
         Sys.print(html);
     }
 
     public function doSendPage() {
-        var fileUploadWidget = file_upload.getWidget("send");
-        fileUploadWidget.context = file_upload.getSendContext();
         var html = Renderer.renderDefault("page_fileupload_widget", "Send file", {
             context_message: "",
             browseWidget: "",
-            fileUploadWidget: fileUploadWidget.render()
+            fileUploadWidget: file_upload.widgets.send.render()
         });
         Sys.print(html);
     }
@@ -86,10 +82,8 @@ class FileUploadTest {
         var fileUploadWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
-            var tmpBrowse = file_upload.getWidget("browse");
-            tmpBrowse.context = file_upload.getBrowseContext();
-            browseWidget = tmpBrowse.render();
-            fileUploadWidget = file_upload.getWidget("send").render();
+            browseWidget = file_upload.widgets.browse.render();
+            fileUploadWidget = file_upload.widgets.send.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Default page", {
             context_message: contextMsg,
@@ -123,9 +117,7 @@ class FileUploadTest {
         var adminWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>";
-            var tmpWidget = file_upload.getWidget("admin");
-            tmpWidget.context = file_upload.getAdminContext();
-            adminWidget = tmpWidget.render();
+            adminWidget = file_upload.widgets.admin.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Admin page", {
             context_message: contextMsg,
@@ -145,9 +137,7 @@ class FileUploadTest {
         var adminWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>";
-            var tmpWidget = file_upload.getWidget("admin");
-            tmpWidget.context = file_upload.getAdminContext();
-            adminWidget = tmpWidget.render();
+            adminWidget = file_upload.widgets.admin.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Admin page", {
             context_message: contextMsg,
