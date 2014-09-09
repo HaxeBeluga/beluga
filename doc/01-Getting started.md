@@ -78,8 +78,7 @@ beluga.cleanup();//4
 ##Display custom page on login fail/success
 To customize your application beluga provide a trigger system. Each module as a list of trigger. When the request is dispatch to beluga several trigger may be dispatch.
 
-For exemple we are gonna configure the application to display a custom page when the user is logged. The application must be
-runned . The application must be configured before the dispatch.
+For exemple we are gonna configure the application to display a custom page when the user is logged. The application must be configured before the dispatch.
 ```
 var beluga = Beluga.getInstance();
 var acc = beluga.getModuleInstance(Account);
