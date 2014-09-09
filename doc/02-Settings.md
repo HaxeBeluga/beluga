@@ -1,6 +1,6 @@
 #Settings
 
-Here we are gonna focuse on the beluga.xml configuration file. All the available tag are listed here.
+Here we are gonna focus on beluga.xml configuration file. All the available tag are listed here.
 
 ##module
 ```html
@@ -29,4 +29,26 @@ Here we are gonna focuse on the beluga.xml configuration file. All the available
 	<base value="/mysubfolder/"/>
 </url>
 ```
+
+##Conditional configuration
+You can specify a configuration for each different haxe target (php and neko for now).
+On any tag put the attribut "if" and the value corresponding to the target.
+
+exemple:
+```html
+<url>
+	<base value="/myphpfolder/" if="php" />
+	<base value="/mynekofolder/" if="neko" />
+</url>
+```
+or even:
+```html
+<url if="php">
+	<base value="/myphpfolder/"  />
+</url>
+<url  if="neko">
+	<base value="/mynekofolder/" />
+</url>
+```
+**Warning**: If several same configuration exist the first one is concidered
 
