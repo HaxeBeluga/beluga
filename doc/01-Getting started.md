@@ -72,10 +72,9 @@ Sys.print(beluga.getModuleInstance(Account).widgets.loginForm.render());//3
 beluga.cleanup();//4
 ```
 1. First we get a beluga instance
-2. Dispatch the request to beluga. Handle widget post request
-3. Print your widget
+2. Dispatch the request to beluga. This is where beluga handle widget all post request and all the data is processed.
+3. Print your widget. The widget change according to what happened when the request is dispatched in beluga.
 4. Because destructor don't exist in haxe a cleanup fonction is required
-
 
 ##Display custom page on login fail/success
 To customize your application beluga provide a trigger system. Each module as a list of trigger. When the request is dispatch to beluga several trigger may be dispatch.
