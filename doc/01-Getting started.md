@@ -75,3 +75,39 @@ beluga.cleanup();//4
 4. Because destructor don't exist in haxe a cleanup fonction is required
 
 
+##Display custom page on login fail/success
+To customize your application beluga provide a trigger system. Each module as a list of trigger. When the request is dispatch to beluga several trigger may be dispatch.
+
+For exemple we are gonna configure the application to display a custom page when the user is logged. The application must be
+runned . The application must be configured before the dispatch.
+```
+var beluga = Beluga.getInstance();
+var acc = beluga.getModuleInstance(Account);
+
+acc.triggers.loginSuccess.add(function() {
+	trace("You are successfully logged !");
+});
+
+Dispatch.run(beluga.getDispatchUri(), Web.getParams(), beluga.api);
+
+Sys.print(acc.widgets.loginForm.render());
+
+beluga.cleanup();
+
+```
+
+but the widget always display, so a simple solution is to use a boolean to see if the default page must display.
+```
+var beluga = Beluga.getInstance();
+var acc = beluga.getModuleInstance(Account);
+var defaultPage = true;
+acc.triggers.loginSuccess.add(function() {
+	trace("You are successfully logged !");
+	defaultPage = false;
+});
+Dispatch.run(beluga.getDispatchUri(), Web.getParams(), beluga.api);
+if (defaultPage) {
+	Sys.print(acc.widgets.loginForm.render());		
+}
+beluga.cleanup();
+```
