@@ -1,6 +1,8 @@
 # Getting Started
 
-## Prerequisite
+##First use
+
+### Prerequisite
 You should have those following program already installed on your computer:
 * haxe 3.1.3
 * mysql
@@ -8,14 +10,14 @@ You should have those following program already installed on your computer:
 * apache
 * git
 
-## Beluga installation
+### Beluga installation
 
 To install beluga simply run this command:
 ```Shell
 > haxelib git beluga https://github.com/HaxeBeluga/Beluga
 ```
 
-## Generate project
+### Generate project
 To generate a default working project run:
 ```Shell
 > haxelib run beluga setup_project TestProject
@@ -33,7 +35,7 @@ TestProject
      |───Main.hx : Program entry point
 ```
 
-## Configure project
+### Configure project
 You need to edit beluga.xml file to set your database configuration.
 ```
 <database>
@@ -42,11 +44,12 @@ You need to edit beluga.xml file to set your database configuration.
 	<user>root</user>
 	<pass></pass>
 	<database>belugaTest</database>
-	<!-- <socket></socket> -->
 </database>
 ```
 
-## Run project
+In mysql create a database called "belugaTest"
+
+### Run project
 Compile haxe by running from inside TestProject folder:
 ```Shell
 > haxe TestSetupProject.hxml
@@ -57,3 +60,18 @@ Compile haxe by running from inside TestProject folder:
 - And put the provided .htaccess into the bin folder.
 
 You can now access to your website with a working login form !
+
+##Source code Analysis
+
+```haxe
+var beluga = Beluga.getInstance();//1
+Dispatch.run(beluga.getDispatchUri(), Web.getParams(), beluga.api);//2
+Sys.print(beluga.getModuleInstance(Account).widgets.loginForm.render());//3
+beluga.cleanup();//4
+```
+1. First we get a beluga instance
+2. Dispatch the request to beluga. Handle widget post request
+3. Print your widget
+4. Because destructor don't exist in haxe a cleanup fonction is required
+
+
