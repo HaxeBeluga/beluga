@@ -61,7 +61,9 @@ Compile haxe by running from inside TestProject folder:
 
 You can now access to your website with a working login form !
 
-##Source code Analysis
+##Source code analysis
+
+Open the src/Main.hx
 
 ```haxe
 var beluga = Beluga.getInstance();//1
