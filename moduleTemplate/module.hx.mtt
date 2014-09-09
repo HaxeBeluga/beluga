@@ -1,0 +1,18 @@
+package beluga.module.::moduleName::;
+
+// beluga core
+import beluga.core.module.Module;
+
+// beluga mods
+import beluga.module.::moduleName::.::className::Widgets;
+
+interface Market extends Module {
+    public var triggers: ::className::Triggers;
+    public var widgets: ::className::Widgets;
+
+    // widget functions
+    public function helloWord(): Void;
+
+    // widget context functions
+    public function get::className::HelloWordContext(): Dynamic;
+}

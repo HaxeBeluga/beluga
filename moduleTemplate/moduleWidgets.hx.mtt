@@ -1,0 +1,15 @@
+package beluga.module.::moduleName::;
+
+import beluga.module.::moduleName::.widget.LoginForm;
+import beluga.module.::moduleName::.widget.SubscribeForm;
+
+class ::className::Widgets
+{
+	public var helloWord = new ::className::HelloWord();
+
+	public function new()
+	{
+
+	}
+
+}

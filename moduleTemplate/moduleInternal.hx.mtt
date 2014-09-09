@@ -1,0 +1,7 @@
+package beluga.module.::moduleName::;
+
+import beluga.core.module.ModuleInternal;
+
+interface ::className::Internal extends ModuleInternal extends ::className:: {
+
+}

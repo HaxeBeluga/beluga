@@ -5,7 +5,7 @@ import sys.io.File;
 
 class ModuleFactory
 {
-	private static var USAGE : String = "Setup usage: create_module module_name [-path module_path] ";
+	private static var USAGE : String = "Setup usage: create_module module_name [-path module_path] [-force]";
     private static var MODULE_TEMPLATE_DIR : String = "moduleTemplate";
 
 	private static var moduleName : String;
@@ -57,7 +57,7 @@ class ModuleFactory
         }
     }
 
-    private static function replaceTemplate(path: String) {
+    private static function replaceTemplate(path: String, moduleName: String) {
         var content = File.getContent(path);
         var template = new haxe.Template(content);
         var output = template.execute({
@@ -65,20 +65,23 @@ class ModuleFactory
             moduleName: moduleName.charAt(0).toLowerCase() + moduleName.substring(1)}
         );
         FileSystem.deleteFile(path);
-        File.saveContent(path.split(".mtt")[0], output);
+        //rename mtt file to corresponding hx file. +7 is to skip "module" word.
+        File.saveContent(path.substr(0, path.lastIndexOf("\\")) + "\\" + moduleName +
+                         path.substr(path.lastIndexOf("\\") + 7).split(".mtt")[0], output);
     }
 
-    private static function recurseReplaceTemplates(currentFolder: String) {
+    private static function recurseReplaceTemplates(currentFolder: String, moduleName: String) {
         for (item in FileSystem.readDirectory(currentFolder)) {
             var path = currentFolder + "\\" + item;
             if (FileSystem.exists(path)) {
                 //recurse on any directoy
                 if (FileSystem.isDirectory(path))
-                    recurseReplaceTemplates(path);
+                    recurseReplaceTemplates(path, moduleName);
                 //replace any template file
                 else if (item.lastIndexOf(".mtt") != -1)
-                    replaceTemplate(path);
+                    replaceTemplate(path, moduleName);
             } else {
+
                 Sys.println("something's wrong: " + path);
             }
         }
@@ -104,27 +107,7 @@ class ModuleFactory
             cpDirectory(MODULE_TEMPLATE_DIR, fullModulePath);
 
             //Remplace and fill all template files
-            recurseReplaceTemplates(fullModulePath);
-            /*for (folder in FileSystem.readDirectory("moduleTemplate")) {
-
-            }
-            var str = File.getContent("moduleTemplate/api/moduleApi.hx.mtt");
-            var t = new haxe.Template(str);
-            var output = t.execute({className: moduleName.charAt(0).toUpperCase() + moduleName.substring(1),
-                                    moduleName: moduleName.charAt(0).toLowerCase() + moduleName.substring(1)});
-            File.saveContent(fullModulePath + "/api/moduleApi.hx", output);
-
-            str = File.getContent("moduleTemplate/moduleTrigger.hx.mtt");
-            t = new haxe.Template(str);
-            var output = t.execute({className: moduleName.charAt(0).toUpperCase() + moduleName.substring(1),
-                                    moduleName: moduleName.charAt(0).toLowerCase() + moduleName.substring(1)});
-            File.saveContent(fullModulePath + "/moduleTrigger.hx", output);*/
-			//Copy the whole template directory
-			//cpDirectory("template", libDir + projectName);
-
-			//Rename the config file
-			//FileSystem.rename(libDir + projectName + "/template.hxml", libDir + projectName + "/" + projectName + ".hxml");
-
+            recurseReplaceTemplates(fullModulePath, moduleName);
 			Sys.println("\nDone");
 			return null;
 		}
