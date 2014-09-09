@@ -1,16 +1,22 @@
 #Settings
 
-Here we are gonna focus on beluga.xml configuration file. All the available tag are listed here.
+Here we are gonna focus on beluga.xml configuration file. It has to be in your project root folder.
+All available tag are listed here.
 
 ##module
+
+If you want to use a module you need to declare it here. It's required to properly initialize the module, like generating its entry in the Beluga api.
 ```html
 <module name="modulename"/>
 ```
 
 ##database
+
+You can specify your database configuration here 
+
 ```html
 <database>
-  <host>localhost</host>
+  	<host>localhost</host>
 	<port>3306</port>
 	<user>root</user>
 	<pass>root</pass>
@@ -19,11 +25,17 @@ Here we are gonna focus on beluga.xml configuration file. All the available tag 
 ```
 
 ##include
+
+You may want to split your configuration file, for this you can use the include tag.
+
 ```html
 <include path="config/myconfig.xml" />
 ```
 
 ##url
+
+Beluga use default url to call action exemple "/beluga/mymodule/myaction", but sometimes you need to add a prefix to it to make it working properly, for exemple when your compiled project is in a subfolder of your web server document root.
+You can configure this prefix with the base url configuration.
 ```html
 <url>
 	<base value="/mysubfolder/"/>
