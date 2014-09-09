@@ -111,3 +111,7 @@ if (defaultPage) {
 }
 beluga.cleanup();
 ```
+
+Now if you successfully log in your message is displayed instead of the widget.
+
+You've now learned the basis of how to use beluga.
