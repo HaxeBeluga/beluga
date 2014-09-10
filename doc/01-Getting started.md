@@ -73,7 +73,7 @@ Sys.print(beluga.getModuleInstance(Account).widgets.loginForm.render()); //3
 beluga.cleanup(); //4
 ```
 1. First we get a beluga instance.
-2. We dispatch the request to beluga. This is where beluga handles the all post widget request and where all the data is processed.
+2. We dispatch the request to beluga. This is where beluga handles all post request emit by widgets and where all the data is processed.
 3. Print your widget. The widget changes according to what happened when the request is dispatched in beluga.
 4. Because destructor doesn't exist in haxe, a cleanup fonction is required.
 
