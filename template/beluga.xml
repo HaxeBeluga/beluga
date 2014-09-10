@@ -1,0 +1,12 @@
+<!-- Here you can declare any module you want to use-->
+<module name="account"/>
+
+<!-- Database configuration-->
+<database>
+	<host>localhost</host>
+	<!-- <port></port> -->
+	<user>root</user>
+	<pass>root</pass>
+	<database>belugaTest</database>
+	<!-- <socket></socket> -->
+</database>
