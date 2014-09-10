@@ -26,9 +26,12 @@ class MailTest {
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.mail = beluga.getModuleInstance(Mail);
-        this.mail.triggers.sendFail.add(this.doCreate);
+
+        this.mail.triggers.defaultMail.add(this.doDefault);
+        this.mail.triggers.sendFail.add(this.create);
         this.mail.triggers.sendSuccess.add(this.doDefault);
-        this.mail.triggers.create.add(this.doCreate);
+        this.mail.triggers.create.add(this.create);
+        this.mail.triggers.print.add(this.print);
     }
 
     public function doDefault() {
@@ -41,7 +44,7 @@ class MailTest {
         Sys.print(html);
     }
 
-    public function doCreate() {
+    public function create() {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
@@ -57,11 +60,7 @@ class MailTest {
         Sys.print(html);
     }
 
-    public function doSend(args : {receiver : String, subject : String, message : String}) {
-        this.mail.sendMail(args);
-    }
-
-    public function doPrint(args : {id : Int}) {
+    public function print(args : {id : Int}) {
         if (!mail.canPrint(args.id)) {
             this.doDefault();
         } else {

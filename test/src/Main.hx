@@ -47,6 +47,7 @@ class Main {
     public static var wallet : WalletTest;
     public static var news : NewsTest;
     public static var faq : FaqTest;
+    public static var mail : MailTest;
     public static var notification: NotificationTest;
 
     static function main()
@@ -63,6 +64,7 @@ class Main {
             wallet = new WalletTest(beluga);
             faq = new FaqTest(beluga);
             news = new NewsTest(beluga);
+            mail = new MailTest(beluga);
             notification = new NotificationTest(beluga);
             Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             beluga.cleanup();

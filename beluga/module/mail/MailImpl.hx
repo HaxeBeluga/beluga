@@ -34,20 +34,20 @@ class MailImpl extends ModuleImpl implements MailInternal {
         if (user == null && error_msg == "") {
             error_msg = "You have to be logged to use this module";
         }
-        return {mails : this.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/mailTest/"}
+        return {mails : this.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/beluga/mail/"}
     }
 
     public function getCreateContext() : Dynamic {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
-        return {user : user, error : error_msg, success : success_msg, path : "/mailTest/",
+        return {user : user, error : error_msg, success : success_msg, path : "/beluga/mail/",
                             receiver : receiver, subject : subject, message : message};
     }
 
     public function getPrintContext(mail_id: Int) : Dynamic {
         var mail = this.getMail(mail_id);
 
-        return {path : "/mailTest/", receiver : mail.receiver, subject : mail.subject, text : mail.text, date : mail.sentDate};
+        return {path : "/beluga/mail/", receiver : mail.receiver, subject : mail.subject, text : mail.text, date : mail.sentDate};
     }
 
     public function canPrint(mail_id: Int) : Bool {
