@@ -46,6 +46,7 @@ class Main {
     public static var market : MarketTest;
     public static var wallet : WalletTest;
     public static var news : NewsTest;
+    public static var faq : FaqTest;
     public static var notification: NotificationTest;
 
     static function main()
@@ -60,6 +61,7 @@ class Main {
             survey = new SurveyTest(beluga);
             market = new MarketTest(beluga);
             wallet = new WalletTest(beluga);
+            faq = new FaqTest(beluga);
             news = new NewsTest(beluga);
             notification = new NotificationTest(beluga);
             Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());

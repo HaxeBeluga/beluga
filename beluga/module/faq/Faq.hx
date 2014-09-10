@@ -13,7 +13,7 @@ interface Faq extends Module {
     public function getPrintContext(id: Int) : Dynamic;
     public function getCreateContext(parent_id: Int) : Dynamic;
     public function getCreateCategoryContext(parent_id: Int) : Dynamic;
-    public function getEditContext(category_id: Int) : Dynamic;
+    public function getEditCategoryContext(category_id: Int) : Dynamic;
     public function getEditFAQContext(faq_id: Int) : Dynamic;
 
     public function createFAQ(args : {

@@ -49,45 +49,45 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             parent_id = cat.parent_id;
         }
         if (id == -1) {
-            return {faqs : entries, categories : entries.categories, path : "/faqTest/", parent_id : parent_id,
+            return {faqs : entries, categories : entries.categories, path : "/beluga/faq/", parent_id : parent_id,
                 error : error_msg, success : success_msg, actual_id : id, user : user };
         } else {
             var cat = getCategory(id);
 
             if (cat == null) {
-                return {faqs : entries, categories : entries.categories, path : "/faqTest/", parent_id : parent_id,
+                return {faqs : entries, categories : entries.categories, path : "beluga/faq/", parent_id : parent_id,
                     error : error_msg, success : success_msg, actual_id : id, user : user };
             } else {
-                return {faqs : entries, categories : entries.categories, path : "/faqTest/", user : user, parent_id : parent_id,
+                return {faqs : entries, categories : entries.categories, path : "/beluga/faq/", user : user, parent_id : parent_id,
                     error : error_msg, success : success_msg, actual_id : id, category_name: cat.name };
             }
         }
     }
 
     public function getCreateContext(parent_id: Int) : Dynamic {
-        return {path : "/faqTest/", error : error_msg, success : success_msg, parent: parent_id,
+        return {path : "/beluga/faq/", error : error_msg, success : success_msg, parent: parent_id,
             question : question, answer: answer };
     }
 
     public function getCreateCategoryContext(parent_id: Int) : Dynamic {
-        return {path : "/faqTest/", error : error_msg, success : success_msg, parent : parent_id};
+        return {path : "/beluga/faq/", error : error_msg, success : success_msg, parent : parent_id};
     }
 
-    public function getEditContext(category_id: Int) : Dynamic {
+    public function getEditCategoryContext(category_id: Int) : Dynamic {
         var cat = this.getCategory(category_id);
 
         /*if (cat == null) {
             doEditCategoryFail({error : "Unknown category"});
             return;
         }*/
-        return {path : "/faqTest/", error : error_msg, success : success_msg, parent : category_id,
+        return {path : "/beluga/faq/", error : error_msg, success : success_msg, id : category_id,
             name: cat.name};
     }
 
     public function getEditFAQContext(faq_id: Int) : Dynamic {
         var faq = getFAQ(faq_id);
 
-        return {path : "/faqTest/", error : error_msg, success : success_msg, parent : faq.category_id, id: faq_id,
+        return {path : "/beluga/faq/", error : error_msg, success : success_msg, parent : faq.category_id, id: faq_id,
             question: faq.question, answer: faq.answer};
     }
 
@@ -296,21 +296,21 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function editCategory(args : {category_id: Int, name : String}) {
-        if (args.name == "") {
-            error_msg = "Incomplete name";
-            this.triggers.editCategoryFail.dispatch({id: args.category_id});
-            return;
-        }
-        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            error_msg = "You need to be logged";
-            this.triggers.editCategoryFail.dispatch({id: args.category_id});
-            return;
-        }
         for (tmp in CategoryModel.manager.dynamicSearch( {id : args.category_id} )) {
+            if (args.name == "") {
+                error_msg = "Incomplete name";
+                this.triggers.editCategoryFail.dispatch({id: tmp.parent_id});
+                return;
+            }
+            if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
+                error_msg = "You need to be logged";
+                this.triggers.editCategoryFail.dispatch({id: tmp.parent_id});
+                return;
+            }
             for (tmp2 in CategoryModel.manager.dynamicSearch( { parent_id: tmp.parent_id} )) {
                 if (tmp2.name == args.name) {
                     error_msg = "Another category has this name";
-                    this.triggers.editCategoryFail.dispatch({id: args.category_id});
+                    this.triggers.editCategoryFail.dispatch({id: tmp.parent_id});
                     return;
                 }
             }
@@ -321,6 +321,6 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             return;
         }
         error_msg = "Id not found";
-        this.triggers.editCategoryFail.dispatch({id: args.category_id});
+        this.triggers.editCategoryFail.dispatch({id: -1});
     }
 }

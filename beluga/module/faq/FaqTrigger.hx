@@ -22,6 +22,12 @@ class FaqTrigger {
     public var editCategoryFail = new Trigger<{id: Int}>();
     public var editCategorySuccess = new Trigger<{id: Int}>();
 
+    public var redirectCreateFAQ = new Trigger<{category_id: Int}>();
+    public var redirectCreateCategory = new Trigger<{category_id : Int}>();
+    public var print = new Trigger<{id : Int}>();
+    public var redirectEditCategory = new Trigger<{id: Int}>();
+    public var redirectEditFAQ = new Trigger<{id: Int}>();
+
     public var edit = new Trigger<{question_id : Int, question : String, answer : String}>();
     public var create = new Trigger<{question : String, answer : String}>();
     public var delete = new Trigger<{question_id: Int}>();
