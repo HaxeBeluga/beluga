@@ -161,6 +161,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
     }
 
+	#if (php || neko)	
+
     /// Just get the id of the ticket, then reopen it
     /// FIXME: Check if the user is logged then reopen else error message
     public function reopen(args: { id: Int }): Void {
@@ -220,6 +222,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             this.notifyTicketComment(args.id);
         }
     }
+	#end
 
     public function notifyTicketComment(ticket_id: Int) {
         var ticket = TicketModel.manager.search($ti_id == ticket_id).first();
@@ -231,6 +234,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
         this.triggers.assignNotify.dispatch(notify);
     }
+
+	#if (php || neko)	
 
     public function submit(args: {
         title: String,
@@ -272,6 +277,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             this.show({id: ticket_id});
         }
     }
+	#end
 
     public function admin(): Void {
         this.triggers.admin.dispatch();
@@ -286,6 +292,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         };
     }
 
+	#if (php || neko)	
     public function deletelabel(args: { id: Int }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
@@ -323,7 +330,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             }
         }
     }
-
+	#end
 
     /* Utils functions */
 

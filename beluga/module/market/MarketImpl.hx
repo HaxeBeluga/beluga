@@ -51,6 +51,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         return {};
     }
 
+	#if (php || neko)
     public function cart(): Void {}
 
     public function getCartContext(): Dynamic {
@@ -144,6 +145,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
             this.triggers.checkoutCartFail.dispatch();
         }
     }
+	#end
 
     public function getProductList(): List<Dynamic> {
         var product_list: List<Dynamic> = new List<Dynamic>();

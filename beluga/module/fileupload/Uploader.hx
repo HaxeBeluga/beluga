@@ -13,6 +13,7 @@ import neko.Web;
 #end
 
 
+#if (php || neko)
 class Uploader {
     public var user: String = "";
     public var filename: String = "";
@@ -70,3 +71,4 @@ class Uploader {
 
     }
 }
+#end

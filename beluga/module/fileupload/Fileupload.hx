@@ -6,6 +6,7 @@ interface Fileupload extends Module {
     public var triggers: FileuploadTrigger;
     public var widgets: FileuploadWidget;
 
+	#if (php || neko)
     public function send(): Void;
     public function delete(args: { id: Int }): Void;
     public function addextension(args: { name: String }): Void;
@@ -15,4 +16,5 @@ interface Fileupload extends Module {
     public function getSendContext(): Dynamic;
     public function getUserFileList(user_id: Int): List<Dynamic>;
     public function extensionIsValid(name: String): Bool;
+	#end
 }

@@ -21,6 +21,9 @@ interface Account extends Module {
         email : String
     }) : Void;
 
+    public function showUser(args: { id: Int}): Void;
+
+	#if (php || neko)
     public function login(args : {
         login : String,
         password : String
@@ -39,8 +42,6 @@ interface Account extends Module {
     public function getNotFriends(user_id: Int) : Array<User>;
 
     public function getBlackListed(user_id: Int) : Array<User>;
-
-    public function showUser(args: { id: Int}): Void;
 
     public function logout() : Void;
 
@@ -63,4 +64,6 @@ interface Account extends Module {
     public function blacklist(user_id: Int, friend_id: Int) : Void;
 
     public function unblacklist(user_id: Int, friend_id: Int) : Void;
+
+	#end
 }

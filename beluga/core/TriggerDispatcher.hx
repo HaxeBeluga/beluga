@@ -181,14 +181,20 @@ class TriggerDispatcher {
     }
 
     #if !macro
-    public function redirect(target : String, forceHeader : Bool = true) {
-        if (forceHeader) {
-            Web.redirect("index.php?trigger=" + target);
-        }
-        else {
-            dispatch(target);
-        }
-    }
+		#if cpp
+		public function redirect(target : String) {
+			dispatch(target);
+		}
+		#else
+		public function redirect(target : String, forceHeader : Bool = true) {
+			if (forceHeader) {
+				Web.redirect("index.php?trigger=" + target);
+			}
+			else {
+				dispatch(target);
+			}
+		}
+		#end
     #end
 }
 

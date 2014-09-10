@@ -9,13 +9,17 @@ interface Ticket extends Module {
     public function browse(): Void;
     public function create(): Void;
     public function show(args: { id: Int }): Void;
-    public function reopen(args: { id: Int }): Void;
+	#if (php || neko)	
+    public function reopen(args: { id: Int } ): Void;
     public function close(args: { id: Int }): Void;
-    public function comment(args: { id: Int, message: String }): Void;
-    public function submit(args: { title: String, message: String, assignee: String }): Void;
+    public function comment(args: { id: Int, message: String } ): Void;
+    public function submit(args: { title: String, message: String, assignee: String } ): Void;
+	#end
     public function admin(): Void;
+	#if (php || neko)	
     public function deletelabel(args: { id: Int }): Void;
-    public function addlabel(args: { name: String }): Void;
+    public function addlabel(args: { name: String } ): Void;
+	#end
     public function getBrowseContext(): Dynamic;
     public function getCreateContext(): Dynamic;
     public function getShowContext(): Dynamic;

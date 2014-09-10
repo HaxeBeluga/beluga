@@ -19,6 +19,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
 
 	}
 
+	#if (php || neko)
     public function getMail(id : Int) : MailModel {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
@@ -99,4 +100,5 @@ class MailImpl extends ModuleImpl implements MailInternal {
         #end
         this.triggers.sendFail.dispatch({error : "error", receiver : receiver, subject : args.subject, message : args.message});
     }
+	#end
 }

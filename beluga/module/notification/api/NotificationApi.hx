@@ -18,15 +18,19 @@ class NotificationApi {
         module.triggers.defaultNotification.dispatch();
     }
 
+	#if (php || neko)
     public function doPrint(args : {id : Int}) {
         module.print(args);
     }
+	#end
 
     public function doCreate(args : {title : String, text : String, user_id: Int}) {
         module.create(args);
     }
 
+	#if (php || neko)
     public function doDelete(args : {id : Int}) {
         module.delete(args);
     }
+	#end
 }

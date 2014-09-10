@@ -16,6 +16,7 @@ interface Wallet extends Module {
     public var widgets: WalletWidget;
 
     // widget functions
+	#if (php || neko)
     public function create(): Void;
     public function display(): Void;
     public function admin(): Void;
@@ -26,6 +27,8 @@ interface Wallet extends Module {
     // widget context functions
     public function getShowContext(): Dynamic;
     public function getAdminContext(): Dynamic;
+
+	#end
 
     // tools functions
     public function getCurrentRealFunds(user: User): Option<Float>;

@@ -17,15 +17,19 @@ interface Market extends Module {
     // widget functions
     public function display(): Void;
     public function admin(): Void;
+	#if (php || neko)
     public function cart(): Void;
     public function addProductToCart(args: { id: Int }): Void;
     public function removeProductInCart(args: { id: Int }): Void;
     public function checkoutCart(): Void;
+	#end
 
     // widget context functions
     public function getDisplayContext(): Dynamic;
     public function getAdminContext(): Dynamic;
+	#if (php || neko)
     public function getCartContext(): Dynamic;
+	#end
 
     public function getProductList(): List<Dynamic>;
     public function getProductFromId(id: Int): Option<Product>;

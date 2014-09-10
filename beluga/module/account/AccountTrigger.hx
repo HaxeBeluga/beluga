@@ -11,7 +11,7 @@ import beluga.module.account.model.User;
 class AccountTrigger
 {
     //Login
-    public var loginFail = new Trigger<{err : String}>();
+    public var loginFail = new Trigger<{err: String}>();
     public var loginSuccess = new TriggerVoid();
 
     //Logout

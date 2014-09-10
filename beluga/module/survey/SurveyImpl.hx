@@ -28,6 +28,8 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
         this.triggers.redirect.dispatch();
     }
 
+	#if (php || neko)	
+
     public function delete(args : {survey_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
         var nb = 0;
@@ -76,11 +78,13 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
         }
         return m_surveys;
     }
+	#end
 
     public function print(args : {survey_id : Int}) {
         this.triggers.printSurvey.dispatch({survey_id: args.survey_id});
     }
 
+	#if (php || neko)
     public function getChoices(args : {survey_id : Int}) : Array<Choice> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var arr = new Array<Choice>();
@@ -187,6 +191,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
         }
         return false;
     }
+	#end
 
     public function getResults(args : {survey_id : Int}) : Array<Dynamic> {
         var arr = new Array<Dynamic>();

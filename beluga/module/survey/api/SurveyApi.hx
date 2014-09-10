@@ -14,6 +14,7 @@ import php.Web;
 import neko.Web;
 #end
 
+#if (php || neko)
 class SurveyApi {
     public var beluga : Beluga;
     public var module : Survey;
@@ -57,3 +58,4 @@ class SurveyApi {
     }
 
 }
+#end

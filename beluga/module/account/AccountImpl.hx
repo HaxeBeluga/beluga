@@ -1,7 +1,9 @@
 package beluga.module.account;
 
 import haxe.xml.Fast;
+#if (php || neko)
 import haxe.Session;
+#end
 import sys.db.Types.SId;
 import sys.db.Types;
 import sys.db.Manager;
@@ -39,8 +41,9 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
 
     override public function initialize(beluga : Beluga) {
         this.widgets = new AccountWidget();
-    }
+	}
 
+	#if (php || neko)
     public function getLoggedUser() : User {
         return this.loggedUser;
     }
@@ -78,6 +81,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         }
     }
 
+	#end
+	
     private function subscribeCheckArgs(args : {
         login : String,
         password : String,
@@ -217,6 +222,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         }
     }
 
+	#if (php || neko)
     public function set_loggedUser(user : User) : User {
         Session.set(SESSION_USER, user);
         return user;
@@ -229,6 +235,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     public function get_isLogged() : Bool {
         return Session.get(SESSION_USER) != null;
     }
+	#end
 
     public function showUser(args: { id: Int}): Void {
         this.triggers.showUser.dispatch(args);
@@ -248,7 +255,9 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         } else {
             for (tmp in User.manager.dynamicSearch({id : args.id })) {
                 tmp.delete();
+				#if (php || neko)
                 Session.remove(SESSION_USER);
+				#end
                 triggers.deleteSuccess.dispatch();
                 return;
             }
@@ -256,6 +265,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         }
     }
 
+	#if (php || neko)
     public function edit(user_id: Int, email : String) : Void {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
@@ -431,4 +441,5 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
             triggers.unblacklistFail.dispatch({err : "You've not blacklisted this person !"});
         }
     }
+	#end
 }

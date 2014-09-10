@@ -23,9 +23,11 @@ class AccountApi  {
 		module.login(args);
     }
 
+	#if (php || neko)	
     public function doLogout() {
 		module.logout();
     }
+	#end
 
     public function doShowUser(args: { id: Int }) {
         this.module.showUser(args);

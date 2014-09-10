@@ -10,8 +10,10 @@ import beluga.core.Beluga;
 
 // Beluga mods
 import beluga.module.account.Account;
+#if (php || neko)
 import beluga.module.fileupload.model.File;
 import beluga.module.fileupload.model.Extension;
+#end
 
 #if php
 import php.Web;
@@ -28,7 +30,11 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new FileuploadWidget();
-    }
+	}
+
+	#if (php || neko)
+	
+    /** Actions trigger **/
 
     public function getBrowseContext(): Dynamic {
         var files: List<Dynamic> = new List<Dynamic>();
@@ -95,7 +101,6 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
             this.triggers.uploadSuccess.dispatch(notif);
         }
     }
-
 
     public function getSendContext(): Dynamic {
         return {};
@@ -175,4 +180,6 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
             return false;
         }
     }
+	
+	#end
 }

@@ -19,6 +19,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 
 	}
 
+	#if (php || neko)
     public function getNotifications() : Array<NotificationModel> {
         var ret = new Array<NotificationModel>();
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
@@ -64,6 +65,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         }
         this.triggers.deleteFail.dispatch();
     }
+	#end
 
     public function create(args : {title : String, text : String, user_id: Int}) {
         if (args.title == "" || args.text == "") {

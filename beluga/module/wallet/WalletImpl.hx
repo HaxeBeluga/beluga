@@ -28,11 +28,12 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     // ID of the unique field of SiteCurrency
     public static var WEBSITE_ID = 1;
 
-    public function new() { super(); }
-
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new WalletWidget();
     }
+    // pages
+
+	#if (php || neko)
 
     // pages
 
@@ -164,6 +165,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             }
         }
     }
+	#end
 
     private function setCurrencyAsSiteCurrency(site_currency: SiteCurrency, id: Int): Bool {
         var return_value = false;

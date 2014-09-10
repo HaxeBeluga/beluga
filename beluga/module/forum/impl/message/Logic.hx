@@ -28,7 +28,11 @@ class Logic {
         mess.title = args.title;
         mess.content = args.content;
         mess.creation_time = Date.now();
+		#if (php || neko)
         mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).loggedUser;
+		#else
+		mess.user = null;
+		#end
         mess.status = status;
         mess.tag = tag;
         mess.parent = null;
@@ -49,7 +53,11 @@ class Logic {
 
         mess.title = args.title;
         mess.content = args.content;
+		#if (php || neko)
         mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).loggedUser;
+		#else
+		mess.user = null;
+		#end
         mess.edition_time = Date.now();
 
         mess.update();

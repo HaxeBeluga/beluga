@@ -120,6 +120,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
         this.triggers.print.dispatch(args);
     }
 
+	#if (php || neko)
     public function delete(args : {news_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
@@ -157,4 +158,5 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
         news.insert();
         this.triggers.createSuccess.dispatch();
     }
+	#end
 }

@@ -1,7 +1,9 @@
 package beluga.core;
 
 import haxe.Resource;
+#if (php || neko)
 import haxe.Session;
+#end
 import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
@@ -9,7 +11,9 @@ import sys.FileSystem;
 import beluga.core.module.Module;
 import beluga.core.module.ModuleInternal;
 import beluga.core.Database;
+#if (php || neko)
 import beluga.core.api.BelugaApi;
+#end
 import beluga.core.macro.ConfigLoader;
 import beluga.core.macro.ModuleLoader;
 
@@ -24,8 +28,10 @@ class Beluga {
     public var triggerDispatcher(default, null) : TriggerDispatcher;
     // Keep an instance of beluga's database, read only
     public var db(default, null) : Database;
+	#if (php || neko)
     //Instance of beluga API, read only
     public var api : BelugaApi;
+	#end
 
     private static var instance = null;
 	
@@ -59,9 +65,16 @@ class Beluga {
             db = new Database(ConfigLoader.config.node.database.elements);
         }
 
+        // Look for triggers
+        //for (trigger in ConfigLoader.config.nodes.trigger) {
+        //  triggerDispatcher.addRoutesFromFast(trigger);
+        //}
+
+		#if (php || neko)
         //Create beluga API
         api = new BelugaApi();
         api.beluga = this;
+		#end
     }
 
     //For all initialization code that require beluga's instance
@@ -78,21 +91,13 @@ class Beluga {
 		 }
     }
 
+	#if (php || neko)
     public function dispatch(defaultTrigger : String = "index") {
         var trigger = Web.getParams().get("trigger");
         triggerDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
     }
 
-    public function cleanup() {
-        db.close();
-		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
-    }
-
-    public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
-        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
-    }
-
-    public function getDispatchUri() : String {
+	public function getDispatchUri() : String {
         #if php
         //Get the index file location
         var src : String = untyped __var__('_SERVER', 'SCRIPT_NAME');
@@ -101,5 +106,17 @@ class Beluga {
         #elseif neko
         return Web.getURI();
         #end
+    }
+	#end
+
+    public function cleanup() {
+        db.close();
+		#if (php || neko)
+		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
+		#end
+    }
+
+    public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
+        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
     }
 }
