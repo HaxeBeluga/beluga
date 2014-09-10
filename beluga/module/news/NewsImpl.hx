@@ -81,15 +81,15 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
             else
                 pos = 0;
         }
-        return {news : news, error : error_msg, success : success_msg, path : "/newsTest/", user: user};
+        return {news : news, error : error_msg, success : success_msg, path : "/beluga/news/", user: user};
     }
 
     public function getCreateContext() : Dynamic {
-        return {path : "/newsTest/", title : title, error : error_msg, data : news_text};
+        return {path : "/beluga/news/", title : title, error : error_msg, data : news_text};
     }
 
     public function getEditContext(news_id: Int) : Dynamic {
-        return {path : "/newsTest/", news : NewsModel.manager.get(news_id), error : error_msg};
+        return {path : "/beluga/news/", news : NewsModel.manager.get(news_id), error : error_msg};
     }
 
     public function getPrintContext(news_id: Int) : Dynamic {
@@ -102,7 +102,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
             comments_list.push(new NewsData(comment.text, comment.user.login, comment.creationDate, comment.id));
         }
 
-        return {news : news, comments : comments_list, path : "/newsTest/",
+        return {news : news, comments : comments_list, path : "/beluga/news/",
             user : user, error : error_msg, success : success_msg};
     }
 

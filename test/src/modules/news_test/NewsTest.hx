@@ -25,19 +25,19 @@ class NewsTest implements MetadataReader {
         this.beluga = beluga;
         this.news = beluga.getModuleInstance(News);
         this.news.triggers.defaultNews.add(this.doDefault);
-        this.news.triggers.print.add(this.doPrint);
-        this.news.triggers.redirect.add(this.doRedirect);
-        this.news.triggers.redirectEdit.add(this.doRedirectEdit);
-        this.news.triggers.deleteCommentFail.add(this.doPrint);
-        this.news.triggers.deleteCommentSuccess.add(this.doPrint);
+        this.news.triggers.print.add(this.print);
+        this.news.triggers.redirect.add(this.redirect);
+        this.news.triggers.redirectEdit.add(this.redirectEdit);
+        this.news.triggers.deleteCommentFail.add(this.print);
+        this.news.triggers.deleteCommentSuccess.add(this.print);
         this.news.triggers.createSuccess.add(this.doDefault);
-        this.news.triggers.createFail.add(this.doRedirect);
-        this.news.triggers.editSuccess.add(this.doPrint);
-        this.news.triggers.editFail.add(this.doRedirectEdit);
-        this.news.triggers.addCommentSuccess.add(this.doPrint);
-        this.news.triggers.addCommentFail.add(this.doPrint);
+        this.news.triggers.createFail.add(this.redirect);
+        this.news.triggers.editSuccess.add(this.print);
+        this.news.triggers.editFail.add(this.redirectEdit);
+        this.news.triggers.addCommentSuccess.add(this.print);
+        this.news.triggers.addCommentFail.add(this.print);
         this.news.triggers.deleteSuccess.add(this.doDefault);
-        this.news.triggers.deleteFail.add(this.doPrint);
+        this.news.triggers.deleteFail.add(this.print);
     }
 
     public function doDefault() {
@@ -51,7 +51,7 @@ class NewsTest implements MetadataReader {
     }
 
     /// FIXME : Check why page is generated twice
-    public function doPrint(args : {news_id : Int}) {
+    public function print(args : {news_id : Int}) {
         if (!news.canPrint(args.news_id)) {
             doDefault();
         } else {
@@ -65,7 +65,7 @@ class NewsTest implements MetadataReader {
         }
     }
 
-    public function doRedirect() {
+    public function redirect() {
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             doDefault();
             return;
@@ -79,7 +79,7 @@ class NewsTest implements MetadataReader {
         Sys.print(html);
     }
 
-    public function doRedirectEdit(args : {news_id : Int}) {
+    public function redirectEdit(args : {news_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         
         if (user == null) {
@@ -87,7 +87,7 @@ class NewsTest implements MetadataReader {
             return;
         }
         if (!news.canEdit(args.news_id, user.id)) {
-            doPrint(args);
+            print(args);
         } else {
             var widget = news.getWidget("edit");
             
@@ -96,25 +96,5 @@ class NewsTest implements MetadataReader {
                 newsWidget: widget.render()
             }));
         }
-    }
-
-    public function doCreate(args : {title : String, text : String}) {
-        this.news.create(args);
-    }
-
-    public function doDelete(args : {news_id : Int}) {
-        this.news.delete(args);
-    }
-
-    public function doDeleteCom(args : {com_id : Int, news_id : Int}) {
-        this.news.deleteComment({news_id : args.news_id, comment_id : args.com_id});
-    }
-
-    public function doCreateComment(args : {news_id : Int, text : String}) {
-        this.news.addComment(args);
-    }
-
-    public function doEdit(args : {news_id : Int, title : String, text : String}) {
-        this.news.edit(args);
     }
 }
