@@ -1,10 +1,10 @@
-package beluga.module.::moduleName::.api;
+package beluga.module.::packageName::.api;
 
 import haxe.web.Dispatch;
 
 import beluga.core.Beluga;
 import beluga.core.Widget;
-import beluga.module.account.Account;
+import beluga.module.::packageName::.::className::;
 
 class ::className::Api {
 	public var beluga : Beluga;

@@ -1,8 +1,10 @@
-package beluga.moduleName.account;
+package beluga.module.::packageName::;
 
 import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
 
-class ::className::Trigger {
+class ::className::Triggers {
     public var helloWord = new TriggerVoid();
+
+    public var defaultPage = new TriggerVoid();
 }

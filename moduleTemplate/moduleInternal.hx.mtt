@@ -1,4 +1,4 @@
-package beluga.module.::moduleName::;
+package beluga.module.::packageName::;
 
 import beluga.core.module.ModuleInternal;
 

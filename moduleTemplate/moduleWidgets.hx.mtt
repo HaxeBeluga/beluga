@@ -1,7 +1,6 @@
-package beluga.module.::moduleName::;
+package beluga.module.::packageName::;
 
-import beluga.module.::moduleName::.widget.LoginForm;
-import beluga.module.::moduleName::.widget.SubscribeForm;
+import beluga.module.::packageName::.widget.::className::HelloWord;
 
 class ::className::Widgets
 {
