@@ -7,8 +7,8 @@ Il vous faudra tout d'abord des outils :
 * un client [github](https://windows.github.com) approprié à votre OS (Windows, Linux ...)
 * [Haxe3](http://haxe.org/download)
 
-**Pour que le client git soit fonctionnel, recherchez les variables d’environnement de votre système avec la fonction *recherche* et modifiez la variable **Path** en ajoutant ceci à la fin :
-« ;C:\Program Files (x86)\Git\cmd » (ou le chemin d’installation de git si vous ne l’avez pas laissé par défaut)**
+*Pour que le client git soit fonctionnel, recherchez les variables d’environnement de votre système avec la fonction *recherche* et modifiez la variable **Path** en ajoutant ceci à la fin :
+« ;C:\Program Files (x86)\Git\cmd » (ou le chemin d’installation de git si vous ne l’avez pas laissé par défaut)*
 
 ![Variables d'environnement](http://imagizer.imageshack.us/v2/150x100q90/743/eG5CwO.jpg)
 
@@ -16,11 +16,11 @@ Il vous faudra d'autres outils pour faire des tests :
 
 * un serveur web (comme Apache)
 
-**Je vous conseille de télécharger le pack « wamp » si vous travaillez sous Windows (il contient tout le nécessaire)**
+*Je vous conseille de télécharger le pack « wamp » si vous travaillez sous Windows (il contient tout le nécessaire)*
 
 * une base de données « MySQL »
 
-**(allez sur http://dev.mysql.com/downloads/windows/ et cliquez sur « MySQL Installer » pour les utilisateurs de Windows)**
+*(allez sur http://dev.mysql.com/downloads/windows/ et cliquez sur « MySQL Installer » pour les utilisateurs de Windows)*
 
 ![MySQL](http://imagizer.imageshack.us/v2/150x100q90/631/jKo96F.jpg)
 
@@ -30,8 +30,8 @@ Notre projet « Beluga » est actuellement hébergé sur github, accessible à l
 
 Pour contribuer, il vous faut donc **forker** (faire une copie pour vous) le projet et le **cloner** sur votre poste de travail :
 
-**Pour cela, cliquez sur l’option « Fork » en haut à droite de la page web et choisissez votre compte.
-Allez ensuite sur le fork et cliquez sur « Clone in Desktop ». Cela va ouvrir votre client Github et vous demander l’endroit où installer le dépôt cloné.**
+*Pour cela, cliquez sur l’option « Fork » en haut à droite de la page web et choisissez votre compte.
+Allez ensuite sur le fork et cliquez sur « Clone in Desktop ». Cela va ouvrir votre client Github et vous demander l’endroit où installer le dépôt cloné.*
 
 Comment contribuer
 =================

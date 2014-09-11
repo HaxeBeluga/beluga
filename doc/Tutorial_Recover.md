@@ -8,8 +8,8 @@ You need to have :
 * [Haxe3](http://haxe.org/download)
 
 
-**If you want to have *git* functional, look for the environement variables on your system and modify the variable **Path** adding this to the end :
-« ;C:\Program Files (x86)\Git\cmd » (or any path if you changed the default one)**
+*If you want to have *git* functional, look for the environement variables on your system and modify the variable **Path** adding this to the end :
+« ;C:\Program Files (x86)\Git\cmd » (or any path if you changed the default one)*
 
 ![Variables d'environnement](http://imagizer.imageshack.us/v2/150x100q90/743/eG5CwO.jpg)
 
@@ -29,9 +29,9 @@ https://github.com/HaxeBeluga/Beluga
 
 To contribute, you have to **fork** the project and **clone** it on your desktop :
 
-**Click on "fork" and choose your account.
+*Click on "fork" and choose your account.
 Then go to the fork and click on "Clone in Desktop".
-This will open github on your desktop and you will have to choose a path to install the cloned repository.**
+This will open github on your desktop and you will have to choose a path to install the cloned repository.*
 
 How to contribute
 ===============
