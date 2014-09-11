@@ -84,10 +84,6 @@ class FaqTest {
         var widget = this.faq.getWidget("edit_category");
         var cat = faq.getCurrentCategory();
 
-        /*if (cat == null) {
-            print({id: args.id});
-            return;
-        }*/
         widget.context = faq.getEditCategoryContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
             faqWidget: widget.render()
