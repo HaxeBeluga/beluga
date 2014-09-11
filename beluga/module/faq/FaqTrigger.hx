@@ -8,19 +8,25 @@ import sys.db.Types;
 class FaqTrigger {
     public var defaultPage = new TriggerVoid();
 
-    public var createFail = new Trigger<{error: String, question: String, answer: String, id: Int}>();
-    public var createSuccess = new Trigger<{id: Int}>();
-    public var deleteFail = new Trigger<{id: Int, error : String}>();
-    public var deleteSuccess = new Trigger<{id: Int}>();
-    public var editFail = new Trigger<{error: String}>();
-    public var editSuccess = new Trigger<{id: Int}>();
+    public var createFail = new TriggerVoid();
+    public var createSuccess = new TriggerVoid();
+    public var deleteFail = new TriggerVoid();
+    public var deleteSuccess = new TriggerVoid();
+    public var editFail = new TriggerVoid();
+    public var editSuccess = new TriggerVoid();
 
-    public var createCategoryFail = new Trigger<{error : String, id: Int}>();
-    public var createCategorySuccess = new Trigger<{id: Int}>();
-    public var deleteCategoryFail = new Trigger<{id: Int, error : String}>();
-    public var deleteCategorySuccess = new Trigger<{id: Int}>();
-    public var editCategoryFail = new Trigger<{error: String}>();
-    public var editCategorySuccess = new Trigger<{id: Int}>();
+    public var createCategoryFail = new TriggerVoid();
+    public var createCategorySuccess = new TriggerVoid();
+    public var deleteCategoryFail = new TriggerVoid();
+    public var deleteCategorySuccess = new TriggerVoid();
+    public var editCategoryFail = new TriggerVoid();
+    public var editCategorySuccess = new TriggerVoid();
+
+    public var redirectCreateFAQ = new TriggerVoid();
+    public var redirectCreateCategory = new TriggerVoid();
+    public var print = new TriggerVoid();
+    public var redirectEditCategory = new TriggerVoid();
+    public var redirectEditFAQ = new TriggerVoid();
 
     public var edit = new Trigger<{question_id : Int, question : String, answer : String}>();
     public var create = new Trigger<{question : String, answer : String}>();

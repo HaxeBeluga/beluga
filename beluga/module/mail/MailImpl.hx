@@ -11,13 +11,60 @@ import beluga.module.mail.model.MailModel;
 class MailImpl extends ModuleImpl implements MailInternal {
     public var triggers = new MailTrigger();
 
+    // Context variables
+    private var error_msg : String;
+    private var success_msg : String;
+    private var receiver : String;
+    private var subject : String;
+    private var message : String;
+
     public function new() {
         super();
+        error_msg = "";
+        success_msg = "";
     }
 
 	override public function initialize(beluga : Beluga) : Void {
 
 	}
+
+    public function getDefaultContext() : Dynamic {
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+
+        if (user == null && error_msg == "") {
+            error_msg = "You have to be logged to use this module";
+        }
+        return {mails : this.getSentMails(), user : user, error : error_msg, success : success_msg, path : "/beluga/mail/"}
+    }
+
+    public function getCreateContext() : Dynamic {
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+
+        return {user : user, error : error_msg, success : success_msg, path : "/beluga/mail/",
+                            receiver : receiver, subject : subject, message : message};
+    }
+
+    public function getPrintContext(mail_id: Int) : Dynamic {
+        var mail = this.getMail(mail_id);
+
+        return {path : "/beluga/mail/", receiver : mail.receiver, subject : mail.subject, text : mail.text, date : mail.sentDate};
+    }
+
+    public function canPrint(mail_id: Int) : Bool {
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+
+        if (user == null) {
+            error_msg = "You have to log in";
+            return false;
+        }
+        var mail = this.getMail(mail_id);
+
+        if (mail == null) {
+            error_msg = "Unknown mail";
+            return false;
+        }
+        return true;
+    }
 
     public function getMail(id : Int) : MailModel {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
@@ -54,8 +101,12 @@ class MailImpl extends ModuleImpl implements MailInternal {
     public function sendMail(args : {receiver : String, subject : String, message : String}) : Void {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
+        receiver = args.receiver;
+        subject = args.subject;
+        message = args.message;
         if (user == null) {
-            this.triggers.sendFail.dispatch({error : "You must log in to send mail", receiver : args.receiver, subject : args.subject, message : args.message});
+            error_msg = "You must be logged in to send mail";
+            this.triggers.sendFail.dispatch();
             return;
         }
         var receiver:String = "";
@@ -65,7 +116,8 @@ class MailImpl extends ModuleImpl implements MailInternal {
         untyped __php__("$sender = filter_var($sender, FILTER_SANITIZE_EMAIL)");
         ret = untyped __php__("filter_var($sender, FILTER_VALIDATE_EMAIL)");
         if (!ret) {
-            this.triggers.sendFail.dispatch({error : "Error on sender email", receiver : args.receiver, subject : args.subject, message : args.message});
+            error_msg = "Error on sender email";
+            this.triggers.sendFail.dispatch();
             return;
         }
         receiver = args.receiver;
@@ -86,17 +138,22 @@ class MailImpl extends ModuleImpl implements MailInternal {
                 mail.hasBeenSent = false;
                 mail.hasBeenSent = true;
                 mail.insert();
+                success_msg = "Mail has been sent successfully";
                 this.triggers.sendSuccess.dispatch();
                 return;
             }
-            this.triggers.sendFail.dispatch({error : "Error when sending mail", receiver : receiver, subject : args.subject, message : args.message});
+            error_msg = "Error when sending mail";
+            this.triggers.sendFail.dispatch();
             return;
         }
-        this.triggers.sendFail.dispatch({error : "Error on receiver email", receiver : receiver, subject : args.subject, message : args.message});
+        error_msg = "Error on receiver email";
+        this.triggers.sendFail.dispatch();
         #else
-        this.triggers.sendFail.dispatch({error : "Only working with php", receiver : receiver, subject : args.subject, message : args.message});
+        error_msg = "Only working with php (for the moment...)";
+        this.triggers.sendFail.dispatch();
         return;
         #end
-        this.triggers.sendFail.dispatch({error : "error", receiver : receiver, subject : args.subject, message : args.message});
+        error_msg = "Unknow error...";
+        this.triggers.sendFail.dispatch();
     }
 }

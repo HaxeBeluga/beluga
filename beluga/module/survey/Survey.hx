@@ -8,6 +8,11 @@ import beluga.module.survey.model.SurveyModel;
 interface Survey extends Module {
     public var triggers: SurveyTrigger;
 
+    public function getDefaultContext() : Dynamic;
+    public function getRedirectContext() : Dynamic;
+    public function getCreateContext() : Dynamic;
+    public function getPrintContext(survey_id: Int) : Dynamic;
+    public function getVoteContext(survey_id: Int) : Dynamic;
     public function canVote(args : {survey_id : Int}) : Bool;
     public function create(args : {
         title : String,

@@ -22,7 +22,7 @@
 	          	<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="::title::" id=""></i></a></div>
 	          	<div class="timeline-panel">
 	            	<div class="timeline-heading">
-	            		<h3 class="center">::title::</h3>
+	            		<a href="::base_url::::path::print?news_id=::id::"><h3 class="center">::title::</h3></a>
 	            		<p>::creationDate::</p>
 	            	</div>
 		            <div class="timeline-body">

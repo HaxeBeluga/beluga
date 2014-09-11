@@ -12,7 +12,7 @@ class NotificationTrigger {
     public var createFail = new TriggerVoid();
     public var deleteSuccess = new TriggerVoid();
     public var deleteFail = new TriggerVoid();
-    public var print = new Trigger<{notif: NotificationModel}>();
+    public var print = new Trigger<{notif_id: Int}>();
 
     public function new() {}
 }

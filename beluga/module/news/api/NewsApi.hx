@@ -16,38 +16,38 @@ class NewsApi {
     }
 
     public function doDefault() {
-        module.triggers.defaultNews.dispatch();
+        this.module.triggers.defaultNews.dispatch();
     }
 
     public function doPrint(args : {news_id : Int}) {
-        module.triggers.print.dispatch(args);
-    }
-
-    public function doCreate(args : {title : String, text : String}) {
-        module.create(args);
-    }
-
-    public function doEdit(args : {news_id : Int, title : String, text : String}) {
-        module.edit(args);
-    }
-
-    public function doDelete(args : {news_id : Int}) {
-        module.delete(args);
-    }
-
-    public function doDeleteCom(args : {comment_id : Int, news_id : Int}) {
-        module.deleteComment(args);
+    	this.module.triggers.print.dispatch(args);
     }
 
     public function doRedirect() {
-        module.triggers.redirect.dispatch();
+    	this.module.triggers.redirect.dispatch();
+    }
+
+    public function doCreate(args : {title : String, text : String}) {
+        this.module.create(args);
+    }
+
+    public function doDelete(args : {news_id : Int}) {
+        this.module.delete(args);
+    }
+
+    public function doDeleteCom(args : {com_id : Int, news_id : Int}) {
+        this.module.deleteComment({news_id : args.news_id, comment_id : args.com_id});
     }
 
     public function doCreateComment(args : {news_id : Int, text : String}) {
-        module.addComment(args);
+        this.module.addComment(args);
+    }
+
+    public function doEdit(args : {news_id : Int, title : String, text : String}) {
+        this.module.edit(args);
     }
 
     public function doRedirectEdit(args : {news_id : Int}) {
-        module.triggers.redirectEdit.dispatch(args);
+    	this.module.triggers.redirectEdit.dispatch(args);
     }
 }

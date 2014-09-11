@@ -22,7 +22,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public var widgets: TicketWidget;
 
     private var show_id: Int = 0;
-    // FIXME: change this for an enum or whatever, just used to disply an error message if the user is no logged.
+    // FIXME: change this for an enum or whatever, just used to display an error message if the user is no logged.
     private var error: String = "";
 
     public function new() {
@@ -94,7 +94,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         this.triggers.create.dispatch();
     }
 
-    /// Return the context for the view create ticket
+    /// Returns the context for the view create ticket
     /// in the form of a List<Dynamic>
     /// { labels_list: { label_name: String }, ticket_error: String }
     public function getCreateContext(): Dynamic {
@@ -225,7 +225,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var ticket = TicketModel.manager.search($ti_id == ticket_id).first();
         var notify = {
             title: "New comment !",
-            text: "Someone post a new comment to your ticket: " + ticket.ti_title +
+            text: "Someone posted a new comment to your ticket: " + ticket.ti_title +
             " <a href=\"/beluga/ticket/show?id=" + ticket_id + "\">See</a>" +  ".",
             user_id: ticket.ti_us_id
         };
@@ -277,7 +277,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         this.triggers.admin.dispatch();
     }
 
-    /// return the context for the admin widget in the form of a List<Dynamic>
+    /// Returns the context for the admin widget in the form of a List<Dynamic>
     /// { admin_error: String, labels_list: { label_name: String, label_id: Int } }
     public function getAdminContext(): Dynamic {
         return {
