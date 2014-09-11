@@ -17,7 +17,7 @@ Beluga is also open-source and communal, contributors are encouraged to particip
 
 ## Installation ##
 
-To install this library from github, you just need to run `haxelib git https://github.com/HaxeBeluga/Beluga`
+To install this library from github, you just need to run `haxelib git beluga https://github.com/HaxeBeluga/Beluga`
 
 > Note: If you were to use Beluga as a contributor, you need to run the following command `haxelib dev beluga $HAXE_HOME/lib/beluga/git`
 > 
