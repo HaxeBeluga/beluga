@@ -14,8 +14,7 @@ If you want to use a module you need to declare it here. It's required to proper
 
 ###database
 
-You can specify your database configuration here 
-
+You can specify your database configuration here. Beluga support only mysql for now.
 ```html
 <database>
   	<host>localhost</host>
