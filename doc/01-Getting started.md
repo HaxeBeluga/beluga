@@ -10,7 +10,7 @@ You should have those following programs already installed on your computer:
 * apache
 * git
 
-Beluga support only mysql database for now. But it can target neko or php, in this getting started we are gonna use only php  for easier explanation.
+Beluga support only mysql database for now. But it can target neko or php, in this "Getting started" we are going to use only php  for simpler explanations.
 
 ### Beluga installation
 
