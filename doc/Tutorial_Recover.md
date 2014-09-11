@@ -8,8 +8,8 @@ You need to have :
 * [Haxe3](http://haxe.org/download)
 
 
-<span style="color:#fb4141">If you want to have *git* functional, look for the environement variables on your system and modify the variable **Path** adding this to the end :
-« ;C:\Program Files (x86)\Git\cmd » (or any path if you changed the default one)</span>
+**If you want to have *git* functional, look for the environement variables on your system and modify the variable **Path** adding this to the end :
+« ;C:\Program Files (x86)\Git\cmd » (or any path if you changed the default one)**
 
 ![Variables d'environnement](http://imagizer.imageshack.us/v2/150x100q90/743/eG5CwO.jpg)
 
@@ -17,7 +17,7 @@ You also need to have :
 
 * a web server (Apache)
 
-<span style="color:#fb4141">Tip : download the pack "wamp"</span>
+**Tip : download the pack "wamp"**
 
 * a database (MySQL)
 
@@ -29,20 +29,20 @@ https://github.com/HaxeBeluga/Beluga
 
 To contribute, you have to **fork** the project and **clone** it on your desktop :
 
-<span style="color:#fb4141">Click on "fork" and choose your account.
+**Click on "fork" and choose your account.
 Then go to the fork and click on "Clone in Desktop".
-This will open github on your desktop and you will have to choose a path to install the cloned repository.</span>
+This will open github on your desktop and you will have to choose a path to install the cloned repository.**
 
 How to contribute
 ===============
 
-You have to integrate your modifications (new/change file/code) on the principal repository of Beluga and consequently, use the **pull requests**.
+You have to integrate your modifications (new/change file/code) on the principal repository of Beluga and consequently, use **pull requests**.
 
 For example, to add a file, you have to :
 
 * Copy your file into your local repository
-* Open a command line and type "git add file's_name"
-* Then type "git commit -m "description_of_the_commit" file's_name"
+* Open a command line and type "git add file_name"
+* Then type "git commit -m "description_of_the_commit" file_name"
 * Finally type "git push origin BRANCHNAME"
 * Go back to your fork on github and choose your branch
 * Click on the button "Compare, review, create a pull request" to create a pull request that will be examinated !
