@@ -47,12 +47,12 @@ class FaqTest {
     }
 
     public function doDefault() {
-        print({id: -1});
+        print();
     }
 
-    public function print(args : {id : Int}) {
+    public function print() {
         var widget = this.faq.getWidget("faqs");
-        widget.context = faq.getPrintContext(args.id);
+        widget.context = faq.getPrintContext();
 
         var html = Renderer.renderDefault("page_faq", "FAQ", {
             faqWidget: widget.render()
@@ -60,48 +60,48 @@ class FaqTest {
         Sys.print(html);
     }
 
-    public function redirectCreateCategory(args : {category_id : Int}) {
+    public function redirectCreateCategory() {
         var widget = this.faq.getWidget("create_category");
 
-        widget.context = faq.getCreateCategoryContext(args.category_id);
+        widget.context = faq.getCreateCategoryContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
             faqWidget: widget.render()
         });
         Sys.print(html);
     }
 
-    public function redirectCreateFAQ(args : {category_id : Int}) {
+    public function redirectCreateFAQ() {
         var widget = this.faq.getWidget("create_faq");
 
-        widget.context = faq.getCreateContext(args.category_id);
+        widget.context = faq.getCreateContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
             faqWidget: widget.render()
         });
         Sys.print(html);
     }
 
-    public function redirectEditCategory(args : {id: Int}) {
+    public function redirectEditCategory() {
         var widget = this.faq.getWidget("edit_category");
-        var cat = faq.getCategory(args.id);
+        var cat = faq.getCurrentCategory();
 
-        if (cat == null) {
+        /*if (cat == null) {
             print({id: args.id});
             return;
-        }
-        widget.context = faq.getEditCategoryContext(args.id);
+        }*/
+        widget.context = faq.getEditCategoryContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
             faqWidget: widget.render()
         });
         Sys.print(html);
     }
 
-    public function redirectEditFAQ(args : {id: Int}) {
-        if (!faq.redirectEditFAQ(args.id))
-            print({id: -1});
+    public function redirectEditFAQ() {
+        if (!faq.redirectEditFAQ())
+            print();
         else {
             var widget = this.faq.getWidget("edit_faq");
 
-            widget.context = faq.getEditFAQContext(args.id);
+            widget.context = faq.getEditFAQContext();
             var html = Renderer.renderDefault("page_faq", "FAQ", {
                 faqWidget: widget.render()
             });
