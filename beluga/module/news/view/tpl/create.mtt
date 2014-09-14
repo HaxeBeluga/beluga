@@ -1,8 +1,8 @@
 <div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
 	<h2>Creation of news</h2>
-	<form action="::base_url::::path::create" class="form-horizontal" role="form" method="POST">
+	<form action="::base_url::::path::create" class="" role="form" method="POST">
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
-		<div class="form-group">
+		<div class="">
 			<label for="title">Title</label>
 			::if (title)::
     		::if (title != "")::
