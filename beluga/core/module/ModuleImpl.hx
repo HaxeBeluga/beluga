@@ -29,15 +29,6 @@ class ModuleImpl implements ModuleInternal
 			//Initialize all module tables
 			beluga.db.initTable(module.name, table);
 		}
-
-		var xml = Xml.parse(module.config);
-		var fast = new Fast(xml);
-
-		// Look for triggers
-		for (trigger in fast.nodes.trigger) {
-			beluga.triggerDispatcher.addRoutesFromFast(trigger);
-		}
-
 	}
 
 	public function initialize(beluga : Beluga) : Void {

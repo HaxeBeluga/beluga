@@ -2,7 +2,7 @@
 	<host>localhost</host>
 	<!-- <port></port> -->
 	<user>root</user>
-	<pass>root</pass>
+	<pass></pass>
 	<database>belugaTest</database>
 	<!-- <socket></socket> -->
 </database>
