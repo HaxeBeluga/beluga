@@ -13,7 +13,13 @@ class Database {
         for (elem in dbConfig) {
             Reflect.setField(dbInfo, elem.name, elem.innerHTML);
         }
-        Manager.cnx = sys.db.Mysql.connect(dbInfo);
+		try {
+			Manager.cnx = sys.db.Mysql.connect(dbInfo);
+		}
+		catch (e : Dynamic)
+		{
+			throw new BelugaException("Can't connect to database");
+		}
     }
 
     public function initTable(module : String, table : String) {
