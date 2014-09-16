@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/HaxeBeluga/Beluga.png?label=ready&title=Ready)](https://waffle.io/HaxeBeluga/Beluga)
 Beluga
 ======
 
