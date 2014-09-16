@@ -21,7 +21,7 @@ class Main
 		Sys.println("Usage:");
 		Sys.println("\t* help");
 		Sys.println("\t* setup_project project_name");
-		Sys.println("\t* create_module module_name)
+		Sys.println("\t* create_module module_name");
 		Sys.println("\t\t* Must be run inside a beluga's project folder");
 	}
 
