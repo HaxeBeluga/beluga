@@ -51,7 +51,7 @@ class ModuleFactory
         {
             for (file in FileSystem.readDirectory(src))
             {
-                file = "\\" + file;
+                file = "/" + file;
                 if (FileSystem.isDirectory(src + file))
                 {
                     FileSystem.createDirectory(dst + file);
