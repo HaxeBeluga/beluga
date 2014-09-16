@@ -10,7 +10,7 @@ class ModuleFactory
 
 	private static var moduleName : String;
     private static var packageName : String;
-	private static var modulePath : String = "beluga\\module\\";
+	private static var modulePath : String = "beluga/module/";
     private static var isForce = false;
 
 	private static function checkArgs(userArgs : Array<String>) : Bool {
@@ -73,14 +73,14 @@ class ModuleFactory
         });
         FileSystem.deleteFile(path);
         //rename mtt file to corresponding hx file. +7 is to skip "module" word.
-        var newName = moduleName + path.substr(path.lastIndexOf("\\") + 7);
+        var newName = moduleName + path.substr(path.lastIndexOf("/") + 7);
         newName = newName.substr(0, newName.lastIndexOf(".mtt"));
-        File.saveContent(path.substr(0, path.lastIndexOf("\\")) + "\\" + newName, output);
+        File.saveContent(path.substr(0, path.lastIndexOf("/")) + "/" + newName, output);
     }
 
     private static function recurseReplaceTemplates(currentFolder: String) {
         for (item in FileSystem.readDirectory(currentFolder)) {
-            var path = currentFolder + "\\" + item;
+            var path = currentFolder + "/" + item;
             if (FileSystem.exists(path)) {
                 //recurse on any directoy
                 if (FileSystem.isDirectory(path))
