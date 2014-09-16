@@ -5,16 +5,16 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.::packageName::.::className::;
 
-class ::className::HelloWord extends MttWidget {
+class ::className::HelloWorld extends MttWidget {
     var module: ::className::;
 
-    public function new (mttfile = "beluga_::packageName::_::className::HelloWord.mtt") {
+    public function new (mttfile = "beluga_::packageName::_::className::HelloWorld.mtt") {
         super(mttfile);
         module = Beluga.getInstance().getModuleInstance(::className::);
     }
 
     override private function getContext() {
-        var context = module.get::className::HelloWordContext();
+        var context = module.get::className::HelloWorldContext();
         context.base_url = ConfigLoader.getBaseUrl();
         context.id = MttWidget.id++;
         return context;

@@ -4,7 +4,7 @@ import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
 
 class ::className::Triggers {
-    public var helloWord = new TriggerVoid();
+    public var helloWorld = new TriggerVoid();
 
     public var defaultPage = new TriggerVoid();
 }

@@ -1,10 +1,10 @@
 package beluga.module.::packageName::;
 
-import beluga.module.::packageName::.widget.::className::HelloWord;
+import beluga.module.::packageName::.widget.::className::HelloWorld;
 
 class ::className::Widgets
 {
-	public var helloWord = new ::className::HelloWord();
+	public var helloWorld = new ::className::HelloWorld();
 
 	public function new()
 	{

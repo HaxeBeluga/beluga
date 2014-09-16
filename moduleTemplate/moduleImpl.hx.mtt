@@ -16,9 +16,9 @@ class ::className::Impl extends ModuleImpl implements ::className::Internal {
         this.widgets = new ::className::Widgets();
     }
 
-    public function get::className::HelloWordContext(): Dynamic {
+    public function get::className::HelloWorldContext(): Dynamic {
 	    return {
-            helloWordMsg: "Hello Word!"
+            helloWorldMsg: "Hello World!"
   	    };
     }
 }

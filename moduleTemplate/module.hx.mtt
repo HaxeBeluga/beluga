@@ -12,5 +12,5 @@ interface ::className:: extends Module {
     public var widgets: ::className::Widgets;
 
     // widget context functions
-    public function get::className::HelloWordContext(): Dynamic;
+    public function get::className::HelloWorldContext(): Dynamic;
 }

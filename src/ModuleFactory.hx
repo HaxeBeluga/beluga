@@ -69,7 +69,7 @@ class ModuleFactory
         var output = template.execute({
             className: moduleName,
             packageName: packageName,
-            helloWordMsg: "::helloWordMsg::"
+            helloWorldMsg: "::helloWorldMsg::"
         });
         FileSystem.deleteFile(path);
         //rename mtt file to corresponding hx file. +7 is to skip "module" word.
