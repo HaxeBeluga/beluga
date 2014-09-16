@@ -1,0 +1,24 @@
+package beluga.module.::packageName::;
+
+import beluga.core.Beluga;
+import beluga.core.module.ModuleImpl;
+
+class ::className::Impl extends ModuleImpl implements ::className::Internal {
+
+    public var triggers = new ::className::Triggers();
+    public var widgets : ::className::Widgets;
+
+    public function new() {
+        super();
+    }
+
+    override public function initialize(beluga : Beluga) {
+        this.widgets = new ::className::Widgets();
+    }
+
+    public function get::className::HelloWorldContext(): Dynamic {
+	    return {
+            helloWorldMsg: "Hello World!"
+  	    };
+    }
+}

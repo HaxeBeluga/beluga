@@ -20,7 +20,8 @@ class Main
 	public static function displayUsage() {
 		Sys.println("Usage:");
 		Sys.println("\t* help");
-		Sys.println("\t* setup project_name");
+		Sys.println("\t* setup_project project_name");
+		Sys.println("\t* create_module module_name");
 		Sys.println("\t\t* Must be run inside a beluga's project folder");
 	}
 
@@ -55,4 +56,7 @@ class Main
 		return Setup.run(libDir, userArgs);
 	}
 
+	public static function create_module(libDir : String, userArgs : Array<String>) : String {
+		return ModuleFactory.run(libDir, userArgs);
+	}
 }

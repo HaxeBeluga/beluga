@@ -1,0 +1,16 @@
+package beluga.module.::packageName::;
+
+// beluga core
+import beluga.core.module.Module;
+
+// beluga mods
+import beluga.module.::packageName::.::className::Widgets;
+import beluga.module.::packageName::.::className::Triggers;
+
+interface ::className:: extends Module {
+    public var triggers: ::className::Triggers;
+    public var widgets: ::className::Widgets;
+
+    // widget context functions
+    public function get::className::HelloWorldContext(): Dynamic;
+}
