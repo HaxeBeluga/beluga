@@ -18,14 +18,24 @@ class MttWidget implements Widget
 		var templateFileContent = Resource.getString(mttfile);
 		template = new haxe.Template(templateFileContent);
 	}
-
+	
 	public function render() : String {
-		var context = getContext();
-        return template.execute(context);
+        return template.execute( getContext(), getMacro());
 	}
 
+	private static function getI18n(resolve : String -> Dynamic, obj:Dynamic, lang : String, key : String) { 
+		var f = Reflect.field;
+		var text = f(f(obj, lang), key);
+		if (text == null) text = "key " + key + "does not exist for lang " + lang;
+        return text;
+    }
+	
 	private function getContext() {
 		return { };
+	}
+	
+	private function getMacro() {
+		return {};
 	}
 	
 }

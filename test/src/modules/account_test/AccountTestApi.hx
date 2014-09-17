@@ -59,9 +59,7 @@ class AccountTestApi {
     }
 
     public function doLoginPage() {
-        var loginWidget = acc.getWidget("login");
-        loginWidget.context = {error : ""};
-
+        var loginWidget = acc.widgets.loginForm;
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget.render()
         });
