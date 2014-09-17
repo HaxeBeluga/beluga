@@ -24,9 +24,9 @@ class MailImpl extends ModuleImpl implements MailInternal {
         success_msg = "";
     }
 
-	override public function initialize(beluga : Beluga) : Void {
+    override public function initialize(beluga : Beluga) : Void {
 
-	}
+    }
 
     public function getDefaultContext() : Dynamic {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
@@ -109,51 +109,17 @@ class MailImpl extends ModuleImpl implements MailInternal {
             this.triggers.sendFail.dispatch();
             return;
         }
-        var receiver:String = "";
         #if php
-        var sender:String = user.email;
-        var ret:Bool=false;
-        untyped __php__("$sender = filter_var($sender, FILTER_SANITIZE_EMAIL)");
-        ret = untyped __php__("filter_var($sender, FILTER_VALIDATE_EMAIL)");
-        if (!ret) {
-            error_msg = "Error on sender email";
+        if (php.Lib.mail(args.receiver, args.subject, args.message, "From: " + user.email + "\r\n")) {
+            error_msg = "Mail hasn't been sent";
             this.triggers.sendFail.dispatch();
             return;
         }
-        receiver = args.receiver;
-        untyped __php__("$receiver = filter_var($receiver, FILTER_SANITIZE_EMAIL)");
-        ret = untyped __php__("filter_var($receiver, FILTER_VALIDATE_EMAIL)");
-        if (ret) {
-            var msg = untyped __call__("wordwrap", args.text, 70);
-            ret = untyped __call__("mail", args.receiver, args.subject, msg, "From: " + sender + "\n");
-
-            if (ret) {
-                var mail = new MailModel();
-
-                mail.subject = args.subject;
-                mail.text = args.message;
-                mail.receiver = receiver;
-                mail.user_id = user.id;
-                mail.sentDate = Date.now();
-                mail.hasBeenSent = false;
-                mail.hasBeenSent = true;
-                mail.insert();
-                success_msg = "Mail has been sent successfully";
-                this.triggers.sendSuccess.dispatch();
-                return;
-            }
-            error_msg = "Error when sending mail";
-            this.triggers.sendFail.dispatch();
-            return;
-        }
-        error_msg = "Error on receiver email";
-        this.triggers.sendFail.dispatch();
         #else
         error_msg = "Only working with php (for the moment...)";
         this.triggers.sendFail.dispatch();
         return;
         #end
-        error_msg = "Unknow error...";
-        this.triggers.sendFail.dispatch();
+        this.triggers.sendSuccess.dispatch();
     }
 }
