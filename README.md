@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/HaxeBeluga/Beluga.png?label=ready&title=Ready)](https://waffle.io/HaxeBeluga/Beluga)
 Beluga
 ======
 
@@ -8,15 +7,14 @@ Acting as a toolbox, Beluga provides different services such as account system, 
 
 Beluga is also open-source and communal, contributors are encouraged to participate to its development. Then, thanks to its powerful architecture, developers have the opportunity to contributes without removing the compatibility with previous versions of the project.
 
-## Projects using it ##
+[![Build Status](https://travis-ci.org/HaxeBeluga/Beluga.png?branch=master)](https://travis-ci.org/HaxeBeluga/Beluga)
+[![Stories in progress](https://badge.waffle.io/HaxeBeluga/Beluga.svg?label=in progress&title=In Progress)](http://waffle.io/HaxeBeluga/Beluga)
+
+## Projects using it
 
 * [Dominax](https://github.com/HaxeBeluga/Dominax "dominax")
 
-## Travis status ##
-
-[![Build Status](https://travis-ci.org/HaxeBeluga/Beluga.png?branch=master)](https://travis-ci.org/HaxeBeluga/Beluga)
-
-## Installation ##
+## Installation
 
 To install this library from github, you just need to run `haxelib git beluga https://github.com/HaxeBeluga/Beluga`
 
@@ -24,7 +22,7 @@ To install this library from github, you just need to run `haxelib git beluga ht
 > 
 > Haxelib can complain that beluga dev version is not installed. If so, you must edit the `.dev` file under `$HAXE_HOME/lib/beluga` and remove the trailing slash
 
-## Project setup ##
+## Project setup
 
 To setup a new project, you can use the tool provided with haxelib.
 
@@ -32,12 +30,12 @@ To setup a new project, you can use the tool provided with haxelib.
 
 You can get more tool's commands with `haxelib run beluga help`
 
-## Supported platforms ##
+## Supported platforms
 
 The following targets are currently supported
 
 * Php
 * Neko
 
-### Credits ###
+### Credits
 Thanks to [Jonathan Pellen](http://fr.viadeo.com/fr/profile/jonathan.pellen) for our wonderful logo.
