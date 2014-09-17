@@ -110,7 +110,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
             return;
         }
         #if php
-        if (php.Lib.mail(args.receiver, args.subject, args.message, "From: " + user.email + "\r\n")) {
+        if (!php.Lib.mail(args.receiver, args.subject, args.message, "From: " + user.email + "\r\n")) {
             error_msg = "Mail hasn't been sent";
             this.triggers.sendFail.dispatch();
             return;
