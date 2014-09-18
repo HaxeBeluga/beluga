@@ -27,7 +27,13 @@ class ModuleImpl implements ModuleInternal
 
 		for (table in module.tables) {
 			//Initialize all module tables
-			beluga.db.initTable(module.name, table);
+            try {
+                beluga.db.initTable(module.name, table);
+            }
+            catch (e : Dynamic)
+            {
+                throw new BelugaException("You may have forgotten to configure your database");
+            }
 		}
 	}
 

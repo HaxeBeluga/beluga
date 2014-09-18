@@ -154,6 +154,8 @@ class ConfigLoader {
         xml = Xml.parse(builtConfigString);
         clearForTarget(xml, getCompilationTarget());
         config = new Fast(xml);
+        
+        checkConfig();
 
         return macro "DONE!";
     }
@@ -180,4 +182,12 @@ class ConfigLoader {
 			base_url = "";
 		return macro $v{base_url};
 	}
+    
+    private static function checkConfig()
+    {
+        if (!config.hasNode.database)
+        {
+            Sys.println("Warning: missing database configuration");
+        }
+    }
 }
