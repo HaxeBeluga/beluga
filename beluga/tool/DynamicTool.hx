@@ -18,7 +18,6 @@ class DynamicTool
 				}
 			}
 		}
-		Sys.print(c);
 		return c;
 	}
 	
@@ -40,7 +39,6 @@ class DynamicTool
 				}
 			}
 		}
-		Sys.print(c);
 		return c;
 	}
 
