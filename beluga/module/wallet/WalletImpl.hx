@@ -43,8 +43,8 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         } else { // get the logged user
             var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
             var wallet = new WalletModel();
-            wallet.wa_user_id = user.id;
-            wallet.wa_fund = 0.;
+            wallet.user_id = user.id;
+            wallet.fund = 0.;
             wallet.insert();
             this.triggers.creationSuccess.dispatch();
         }
@@ -71,8 +71,8 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             case Some(wallet): {
                 var site_currency = this.getSiteCurrencyOrDefault();
                 has_wallet = 0;
-                user_founds = site_currency.convertToCurrency(wallet.wa_fund);
-                currency_name = site_currency.cu_name;
+                user_founds = site_currency.convertToCurrency(wallet.fund);
+                currency_name = site_currency.name;
             };
             case None: {};
         }
@@ -110,7 +110,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     // Create a new currency using the name and the rate
     public function createCurrency(args: { name: String, rate: String }): Void {
-        var cur_list = Currency.manager.search({ cu_name: args.name });
+        var cur_list = Currency.manager.search({ name: args.name });
         // if arguments exists and are valids
         if (args.rate == "" || args.name == "" || Std.parseFloat(args.rate) == Math.NaN) {
             this.admin_local_error = "Vous devez remplir les deux champs !";
@@ -120,8 +120,8 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             this.triggers.currencyCreationFail.dispatch();
         } else { // create the currency, all the params are valid
             var cur = new Currency();
-            cur.cu_name = args.name;
-            cur.cu_rate = Std.parseFloat(args.rate);
+            cur.name = args.name;
+            cur.rate = Std.parseFloat(args.rate);
             cur.insert();
             this.triggers.currencyCreationSuccess.dispatch();
         }
@@ -170,7 +170,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
         try { // try to retrieve the currency, then delete use it...
             var currency = Currency.manager.get(id);
-            site_currency.si_cu_id = currency.cu_id;
+            site_currency.currency_id = currency.id;
             site_currency.update();
             return_value = true;
         } catch( unknown : Dynamic ) { // ... or display an error message.
@@ -183,14 +183,14 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     public function getCurrentRealFunds(user: User): Option<Float> {
         return switch (this.getUserWallet(user)) {
-            case Some(wallet): Some(wallet.wa_fund);
+            case Some(wallet): Some(wallet.fund);
             case None: None;
         };
     }
 
     public function getCurrentFunds(user: User, currency: Currency): Option<Float> {
         return switch (this.getUserWallet(user)) {
-            case Some(wallet): Some(currency.convertToCurrency(wallet.wa_fund));
+            case Some(wallet): Some(currency.convertToCurrency(wallet.fund));
             case None: None;
         };
     }
@@ -198,7 +198,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public function addRealFunds(user: User, value: Float): Bool {
         return switch (this.getUserWallet(user)) {
             case Some(wallet): {
-                wallet.wa_fund += value;
+                wallet.fund += value;
                 wallet.update();
                 true;
             };
@@ -213,8 +213,8 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public function consumeRealFunds(user: User, quantity: Float): Bool {
         return switch (this.getUserWallet(user)) {
             case Some(wallet): {
-                wallet.wa_fund -= quantity;
-                if (wallet.wa_fund >= 0.) {
+                wallet.fund -= quantity;
+                if (wallet.fund >= 0.) {
                     wallet.update();
                     true;
                 } else {
@@ -236,9 +236,9 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
         for (c in Currency.manager.dynamicSearch( {} )) {
             currencys.push({
-                currency_name: c.cu_name,
-                currency_rate: c.cu_rate,
-                currency_id: c.cu_id
+                currency_name: c.name,
+                currency_rate: c.rate,
+                currency_id: c.id
             });
         }
         return currencys;
@@ -249,11 +249,11 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
         try { // try to retrieve the SiteCurrency, then the currency
             var site_currency = SiteCurrency.manager.get(WalletImpl.WEBSITE_ID);
-            currency = Currency.manager.get(site_currency.si_cu_id);
+            currency = Currency.manager.get(site_currency.currency_id);
         } catch( unknown : Dynamic ) { // ... or return null
             currency = new Currency();
-            currency.cu_rate =  0.;
-            currency.cu_name = "No currency set for this site !";
+            currency.rate =  0.;
+            currency.name = "No currency set for this site !";
         }
 
         return currency;
@@ -261,7 +261,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     public function userHasWallet(user: User): Bool {
         if (user == null) { return false; }
-        var wallet = WalletModel.manager.search({ wa_user_id: user.id });
+        var wallet = WalletModel.manager.search({ user_id: user.id });
 
         if (wallet.isEmpty()) { return false; }
 
@@ -272,7 +272,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         // check if the user is null
         if (user == null) { return None; }
         // get the user wallet
-        var wallet = WalletModel.manager.search({ wa_user_id: user.id });
+        var wallet = WalletModel.manager.search({ user_id: user.id });
         if (wallet.isEmpty()) { return None; }
 
         return Some(wallet.first());

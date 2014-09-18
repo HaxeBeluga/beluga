@@ -50,12 +50,12 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public function getUserFileList(user_id: Int): List<Dynamic> {
         var files: List<Dynamic> = new List<Dynamic>();
 
-        for (f in File.manager.search($fi_id_owner == user_id)) {
+        for (f in File.manager.search($owner_id == user_id)) {
             files.push({
-                file_name: f.fi_name,
-                file_path: f.fi_path,
-                file_size: sys.FileSystem.stat(f.fi_path).size,
-                file_id: f.fi_id
+                file_name: f.name,
+                file_path: f.path,
+                file_size: sys.FileSystem.stat(f.path).size,
+                file_id: f.id
             });
         }
         return files;
@@ -65,10 +65,10 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     public function getExtensionsList(): List<Dynamic> {
         var extensions: List<Dynamic> = new List<Dynamic>();
 
-        for (e in Extension.manager.search($ex_id < 100)) {
+        for (e in Extension.manager.search($id < 100)) {
             extensions.push({
-                extension_name: e.ex_name,
-                extension_id: e.ex_id,
+                extension_name: e.name,
+                extension_id: e.id,
             });
         }
 
@@ -108,7 +108,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         } else {
             var file = File.manager.get(args.id);
             var current_user = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
-            if (file.fi_id_owner != current_user) {
+            if (file.owner_id != current_user) {
                 this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
                 return;
             } else {
@@ -134,12 +134,12 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
             this.error = "The field is empty";
         } else {
             var ext = null;
-            for( u in Extension.manager.search($ex_name == args.name) ) {
+            for( u in Extension.manager.search($name == args.name) ) {
                 ext = u;
             }
             if (ext == null) {
                 var extension = new Extension();
-                extension.ex_name = args.name;
+                extension.name = args.name;
                 extension.insert();
                 this.triggers.addExtensionSuccess.dispatch();
             } else {
@@ -155,7 +155,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
             this.triggers.deleteExtensionFail.dispatch();
         } else {
             var ext = null;
-            for( u in Extension.manager.search($ex_id == args.id) ) {
+            for( u in Extension.manager.search($id == args.id) ) {
                 ext = u;
             }
             if (ext == null) {
@@ -169,7 +169,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
     }
 
     public function extensionIsValid(name: String): Bool {
-        if (Extension.manager.search($ex_name == name).length != 0) {
+        if (Extension.manager.search($name == name).length != 0) {
             return true;
         } else {
             return false;

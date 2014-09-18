@@ -36,7 +36,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
     public function getDisplayContext(): Dynamic {
         var product_list = this.getProductList();
-        var currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault().cu_name;
+        var currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault().name;
         return {
             market_error: this.error,
             market_info: this.info,
@@ -55,7 +55,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
     public function getCartContext(): Dynamic {
         var user_cart: List<Dynamic> = new List<Dynamic>();
-        var currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault().cu_name;
+        var currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault().name;
         var total_price = 0;
 
         if (!beluga.getModuleInstance(Account).isLogged) {
@@ -87,15 +87,15 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
                     var user_id = beluga.getModuleInstance(Account).loggedUser.id;
                     switch (this.getCart(args.id, user_id)) {
                         case Some(cart): {
-                            cart.ca_quantity += 1;
+                            cart.quantity += 1;
                             cart.update();
                             this.info = "One More is added to the cart.";
                         }
                         case None: {
                             var cart = new Cart();
-                            cart.ca_user_id = user_id;
-                            cart.ca_quantity = 1;
-                            cart.ca_product_id = p.pr_id;
+                            cart.user_id = user_id;
+                            cart.quantity = 1;
+                            cart.product_id = p.id;
                             cart.insert();
                             this.info = "The product is add to the cart.";
                         }
@@ -143,9 +143,9 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
             var bought_items_list: List<Dynamic> = new List<Dynamic>();
             for (c in cart) {
                 bought_items_list.push({
-                    user: c.ca_user,
-                    product: c.ca_product,
-                    quantity: c.ca_quantity
+                    user: c.user,
+                    product: c.product,
+                    quantity: c.quantity
                 });
                 c.delete();
             }
@@ -162,10 +162,10 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
         for (p in Product.manager.dynamicSearch( {} )) {
             product_list.push({
-                product_name: p.pr_name,
-                product_price: site_currency.convertToCurrency(p.pr_price),
-                product_id: p.pr_id,
-                product_desc: p.pr_desc,
+                product_name: p.name,
+                product_price: site_currency.convertToCurrency(p.price),
+                product_id: p.id,
+                product_desc: p.desc,
             });
         }
 
@@ -173,13 +173,13 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
     }
 
     public function getProductFromId(id: Int): Option<Product> {
-        var products = Product.manager.search({ pr_id: id });
+        var products = Product.manager.search({ id: id });
         return if (products.isEmpty()) { None; } else { Some(products.first()); };
     }
 
     public function getCartById(id: Int): Option<Cart> {
         // get the cart
-        var cart = Cart.manager.search({ ca_id: id });
+        var cart = Cart.manager.search({ id: id });
         if (cart.isEmpty()) { return None; }
 
         return Some(cart.first());
@@ -187,7 +187,7 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
     // Get a product in the user Cart
     public function getCart(product_id: Int, user_id: Int): Option<Cart> {
-        var carts =  Cart.manager.dynamicSearch({ ca_product_id: product_id, ca_user_id: user_id });
+        var carts =  Cart.manager.dynamicSearch({ product_id: product_id, user_id: user_id });
         return if (carts.isEmpty()) { None; } else { Some(carts.first()); };
     }
 
@@ -196,15 +196,15 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
         var cart: List<Dynamic> = new List<Dynamic>();
         var site_currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault();
 
-        for (c in Cart.manager.dynamicSearch( {ca_user_id: user.id } )) {
-            switch (this.getProductFromId(c.ca_product_id)){
+        for (c in Cart.manager.dynamicSearch( { user_id: user.id } )) {
+            switch (this.getProductFromId(c.product_id)){
                 case Some(product): {
                     cart.push({
-                        product_name: product.pr_name,
-                        product_price: site_currency.convertToCurrency(product.pr_price),
-                        product_total_price: site_currency.convertToCurrency(product.pr_price) * c.ca_quantity,
-                        product_cart_id: c.ca_id,
-                        product_quantity: c.ca_quantity,
+                        product_name: product.name,
+                        product_price: site_currency.convertToCurrency(product.price),
+                        product_total_price: site_currency.convertToCurrency(product.price) * c.quantity,
+                        product_cart_id: c.id,
+                        product_quantity: c.quantity,
                     });
                 }
                 case None: {}

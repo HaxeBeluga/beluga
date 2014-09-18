@@ -46,7 +46,7 @@ class WalletTest {
             walletWidget: wallet.widgets.show.render(),
             walletAdminWidget: wallet.widgets.admin.render(),
             has_wallet: has_wallet,
-            site_currency: this.wallet.getSiteCurrencyOrDefault().cu_name
+            site_currency: this.wallet.getSiteCurrencyOrDefault().name
         });
         Sys.print(html);
     }
