@@ -51,7 +51,7 @@ class BelugaI18n
 		}
 	}
 	
-	macro public static function loadI18nFolder(folderPath : String) : Dynamic {
+	macro public static function loadI18nFolder(folderPath : String) {
 		var i18n = { };
 		for (lang in supportedLangList) {
 			Reflect.setField(i18n, lang, JsonTool.load(folderPath + lang + ".json"));
