@@ -23,11 +23,8 @@ class MttWidget implements Widget
         return template.execute( getContext(), getMacro());
 	}
 
-	private static function getI18n(resolve : String -> Dynamic, obj:Dynamic, lang : String, key : String) { 
-		var f = Reflect.field;
-		var text = f(f(obj, lang), key);
-		if (text == null) text = "key " + key + "does not exist for lang " + lang;
-        return text;
+	private static function getI18nKey(resolve : String -> Dynamic, obj:Dynamic, key : String) { 
+		return BelugaI18n.getKey(obj, key);
     }
 	
 	private function getContext() {
