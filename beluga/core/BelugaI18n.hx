@@ -2,6 +2,8 @@ package beluga.core;
 
 import beluga.core.macro.JsonTool;
 import haxe.macro.Context;
+import beluga.tool.DynamicTool;
+import haxe.macro.Expr;
 
 /**
  * ...
@@ -51,13 +53,34 @@ class BelugaI18n
 		}
 	}
 	
-	macro public static function loadI18nFolder(folderPath : String) {
+	macro public static function loadI18nFolder(folderPath : String, ?parent : Expr ) {
 		var i18n = { };
 		for (lang in supportedLangList) {
 			Reflect.setField(i18n, lang, JsonTool.load(folderPath + lang + ".json"));
 		}
-		return Context.makeExpr(i18n, Context.currentPos());
+		var expr = Context.makeExpr(i18n, Context.currentPos());
+		if (parent == null) {
+			return expr;
+		} else {
+			return macro BelugaI18n.concat($ { parent }, $ { expr } );
+		}
 	}
 	
+	public static function concatArray(i : Array<Dynamic>) {
+		var c = { };
+		for (j in i) {
+			for (lang in supportedLangList) {
+				Reflect.setField(c, lang, DynamicTool.concat(Reflect.field(c, lang), Reflect.field(j, lang)));
+			}
+		}
+		return c;
+	}
 	
+	public static function concat(a : Dynamic, b : Dynamic) {
+		var c = { };
+		for (lang in supportedLangList) {
+			Reflect.setField(c, lang, DynamicTool.concat(Reflect.field(a, lang), Reflect.field(b, lang)));
+		}
+		return c;
+	}
 }
