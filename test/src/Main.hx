@@ -55,7 +55,8 @@ class Main {
         Assets.build();
 
         try {
-            beluga = Beluga.getInstance();
+            var dbInfo = { host: "localhost", user: "root", pass: "root", database: "belugaTest"};
+            beluga = Beluga.getInstance(sys.db.Mysql.connect(dbInfo));
             account = new AccountTest(beluga);
             file_upload = new FileUploadTest(beluga);
             ticket = new TicketTest(beluga);
