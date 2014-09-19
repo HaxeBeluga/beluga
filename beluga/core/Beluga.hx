@@ -5,6 +5,7 @@ import haxe.Session;
 import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
+import sys.db.Connection;
 
 import beluga.core.module.Module;
 import beluga.core.module.ModuleInternal;
@@ -28,19 +29,19 @@ class Beluga {
     public var api : BelugaApi;
 
     private static var instance = null;
-	
-    public static function getInstance() : Beluga {
+
+    public static function getInstance(cnx: Connection = null) : Beluga {
         if (instance == null) {
-            instance = new Beluga();
+            instance = new Beluga(cnx);
             instance.initialize();
         }
         return instance;
     }
 
     #if neko
-    private function new(createSessionDirectory : Bool = true)
+    private function new(cnx: Connection  = null, createSessionDirectory : Bool = true)
     #else
-    private function new()
+    private function new(cnx: Connection = null)
     #end
     {
         #if neko
@@ -54,9 +55,12 @@ class Beluga {
         triggerDispatcher = new TriggerDispatcher();
 
         db = null;
+
         //Connect to database
-        if (ConfigLoader.config.hasNode.database) {
-            db = new Database(ConfigLoader.config.node.database.elements);
+        if (cnx != null) {
+            db = new Database(cnx);
+        } else if (ConfigLoader.config.hasNode.database) {
+            db = Database.newFromFile(ConfigLoader.config.node.database.elements);
         }
 
         //Create beluga API
@@ -70,12 +74,12 @@ class Beluga {
         //Init every modules
         for (module in ConfigLoader.modules) {
             var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
-			moduleInstance._loadConfig(this, module);
+            moduleInstance._loadConfig(this, module);
         }
-		 for (module in ConfigLoader.modules) {
+         for (module in ConfigLoader.modules) {
             var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
-			moduleInstance.initialize(this);
-		 }
+            moduleInstance.initialize(this);
+         }
     }
 
     public function dispatch(defaultTrigger : String = "index") {
@@ -85,7 +89,7 @@ class Beluga {
 
     public function cleanup() {
         db.close();
-		Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
+        Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
     public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
