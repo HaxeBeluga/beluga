@@ -10,29 +10,29 @@ import haxe.Resource;
 class MttWidget implements Widget
 {
 
-	private static var id = 0;
-	private var template : Template;
+    private static var id = 0;
+    private var template : Template;
 
-	public function new(mttfile : String) 
-	{
-		var templateFileContent = Resource.getString(mttfile);
-		template = new haxe.Template(templateFileContent);
-	}
-	
-	public function render() : String {
-        return template.execute( getContext(), getMacro());
-	}
-
-	private static function getI18nKey(resolve : String -> Dynamic, obj:Dynamic, key : String) { 
-		return BelugaI18n.getKey(obj, key);
+    public function new(mttfile : String)
+    {
+        var templateFileContent = Resource.getString(mttfile);
+        template = new haxe.Template(templateFileContent);
     }
-	
-	private function getContext() {
-		return { };
-	}
-	
-	private function getMacro() {
-		return {};
-	}
-	
+
+    public function render() : String {
+        return template.execute( getContext(), getMacro());
+    }
+
+    private static function getI18nKey(resolve : String -> Dynamic, obj:Dynamic, key : String) {
+        return BelugaI18n.getKey(obj, key);
+    }
+
+    private function getContext() {
+        return { };
+    }
+
+    private function getMacro() {
+        return {};
+    }
+
 }

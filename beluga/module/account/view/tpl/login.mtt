@@ -1,42 +1,42 @@
 <div class="beluga account login" id="beluga_::_id::">
-	<h1>Connectez vous</h1>
-	::if (error)::
-	::if (error != "")::
-		<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
-	<br/>
-	::if (!isLogged)::
-	$$i18n(moduleName)
-	<form action="::base_url::/beluga/account/login" class="form-horizontal" role="form" method="POST">
-		
-		<div class="form-group">
-			<label class="col-sm-2 control-label" for="login">$$i18n(identifier)</label>
-			<div class="col-sm-6">
-				<input type="text" name="login" class="form-control" placeholder="$$i18n(identifier)"/>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label class="col-sm-2 control-label" for="password">$$i18n(password)</label>
-			<div class="col-sm-6">
-				<input type="password" class="form-control" name="password" placeholder="$$i18n(password)"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-2">
-			</div>
-			<div class="col-sm-6">
-				<input type="submit" class="btn btn-primary form-control" value="Se connecter" />
-			</div>
-		</div>
-	</form>
-	::else::
-	<div>
-		You are already logged as ::loggedUser.login::! <br/>
-		<a href="::base_url::/account/logout">Log out</a></li>
-	</div>
-	::end::
-	<br/>
-	
+    <h1>Connectez vous</h1>
+    ::if (error)::
+    ::if (error != "")::
+        <div class="alert alert-danger">::error::</div>
+    ::end::
+    ::end::
+    <br/>
+    ::if (!isLogged)::
+    $$i18n(moduleName)
+    <form action="::base_url::/beluga/account/login" class="form-horizontal" role="form" method="POST">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="login">$$i18n(identifier)</label>
+            <div class="col-sm-6">
+                <input type="text" name="login" class="form-control" placeholder="$$i18n(identifier)"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="password">$$i18n(password)</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" name="password" placeholder="$$i18n(password)"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-6">
+                <input type="submit" class="btn btn-primary form-control" value="Se connecter" />
+            </div>
+        </div>
+    </form>
+    ::else::
+    <div>
+        You are already logged as ::loggedUser.login::! <br/>
+        <a href="::base_url::/account/logout">Log out</a></li>
+    </div>
+    ::end::
+    <br/>
+
 </div>
