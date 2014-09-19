@@ -8,25 +8,24 @@ import beluga.core.macro.ModuleLoader;
 
 class Database {
 
-    public function new(cnx: Connection, dbConfig : Iterator<Fast> = null) {
+    public function new(cnx: Connection) {
         Manager.initialize();
-
-        if (cnx != null) { // if exist use the user provided connexion
-            Manager.cnx = cnx;
-        } else { // else create the default MySQL connexion
-            var dbInfo = { host: "", user: "", pass: "", database: ""};
-            for (elem in dbConfig) {
-                Reflect.setField(dbInfo, elem.name, elem.innerHTML);
-            }
-            try {
-                Manager.cnx = sys.db.Mysql.connect(dbInfo);
-            }
-            catch (e : Dynamic) {
-                throw new BelugaException("Can't connect to database");
-            }
-        }
-
-    }
+		Manager.cnx = cnx;
+	}
+	
+	public static function newFromFile(dbConfig : Iterator<Fast>) {
+		var dbInfo = { host: "", user: "", pass: "", database: ""};
+		for (elem in dbConfig) {
+			Reflect.setField(dbInfo, elem.name, elem.innerHTML);
+		}
+		try {
+			var cnx = sys.db.Mysql.connect(dbInfo);
+			return new Database(cnx);
+		}
+		catch (e : Dynamic) {
+			throw new BelugaException("Can't connect to database");
+		}
+	}
 
     public function initTable(module : String, table : String) {
         var tableClass = ModuleLoader.resolveModel(module, table);
