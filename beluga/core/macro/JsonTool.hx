@@ -11,19 +11,19 @@ import haxe.macro.Expr;
  */
 class JsonTool
 {
-	#if macro
-	public static function exprLoad(path : String) : Expr {
-		var json = Json.parse(File.getContent(ConfigLoader.installPath+path));
-		return Context.makeExpr(json, Context.currentPos());
-	}
-	
-	public static function load(path : String) : Dynamic {
-		return Json.parse(File.getContent(ConfigLoader.installPath+path));
-	}
-	#else
-	macro public static function staticLoad(path : String) : Expr {
-		return exprLoad(path);
-	}
-	#end
+    #if macro
+    public static function exprLoad(path : String) : Expr {
+        var json = Json.parse(File.getContent(ConfigLoader.installPath+path));
+        return Context.makeExpr(json, Context.currentPos());
+    }
+
+    public static function load(path : String) : Dynamic {
+        return Json.parse(File.getContent(ConfigLoader.installPath+path));
+    }
+    #else
+    macro public static function staticLoad(path : String) : Expr {
+        return exprLoad(path);
+    }
+    #end
 
 }

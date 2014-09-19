@@ -33,8 +33,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
-	
-	public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
+
+    public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
     public function new() {
         super();
