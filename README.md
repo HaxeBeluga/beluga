@@ -26,7 +26,7 @@ To install this library from github, you just need to run `haxelib git beluga ht
 
 To setup a new project, you can use the tool provided with haxelib.
 
-`haxelib run beluga setup project_name`
+`haxelib run beluga setup_project project_name`
 
 You can get more tool's commands with `haxelib run beluga help`
 
