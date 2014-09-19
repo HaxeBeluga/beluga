@@ -39,9 +39,9 @@ class Beluga {
     }
 
     #if neko
-    private function new(cnx: Connection, createSessionDirectory : Bool = true)
+    private function new(cnx: Connection  = null, createSessionDirectory : Bool = true)
     #else
-    private function new(cnx: Connection)
+    private function new(cnx: Connection = null)
     #end
     {
         #if neko
@@ -60,7 +60,7 @@ class Beluga {
         if (cnx != null) {
             db = new Database(cnx);
         } else if (ConfigLoader.config.hasNode.database) {
-            db = new Database(null, ConfigLoader.config.node.database.elements);
+            db = Database.newFromFile(ConfigLoader.config.node.database.elements);
         }
 
         //Create beluga API
