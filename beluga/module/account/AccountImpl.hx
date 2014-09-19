@@ -14,6 +14,7 @@ import beluga.module.account.model.BlackList;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
 import beluga.core.macro.MetadataReader;
+import beluga.core.BelugaI18n;
 
 enum LastLoginErrorType {
     InternalError;
@@ -32,6 +33,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
+
+    public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
     public function new() {
         super();

@@ -33,10 +33,10 @@ class AccountTestApi {
 
         acc.triggers.deleteSuccess.add(this.deleteUserSuccess);
         acc.triggers.deleteFail.add(this.deleteUserFail);
-        
+
         acc.triggers.banFail.add(this.banFail);
         acc.triggers.banSuccess.add(this.banSuccess);
-        
+
         acc.triggers.unbanFail.add(this.unbanFail);
         acc.triggers.unbanSuccess.add(this.unbanSuccess);
 
@@ -59,9 +59,7 @@ class AccountTestApi {
     }
 
     public function doLoginPage() {
-        var loginWidget = acc.getWidget("login");
-        loginWidget.context = {error : ""};
-
+        var loginWidget = acc.widgets.loginForm;
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget.render()
         });
