@@ -32,7 +32,10 @@ class ModuleImpl implements ModuleInternal
             }
             catch (e : Dynamic)
             {
-                throw new BelugaException("You may have forgotten to configure your database");
+                if (Std.is(e, BelugaException)) //Can't catch a BelugaException, forbidden by the compiler so we have to manually check for it
+                    throw e;
+                else
+                    throw new BelugaException("Beluga was unable to connect to your database, please check your configuration.");
             }
 		}
 	}
