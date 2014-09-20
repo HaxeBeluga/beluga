@@ -21,8 +21,6 @@ import neko.Web;
 #end
 
 class Beluga {
-    //No singleton pattern allows multiple instance of Beluga
-    public var triggerDispatcher(default, null) : TriggerDispatcher;
     // Keep an instance of beluga's database, read only
     public var db(default, null) : Database;
     //Instance of beluga API, read only
@@ -52,7 +50,6 @@ class Beluga {
         #end
 
         ModuleLoader.init();
-        triggerDispatcher = new TriggerDispatcher();
 
         db = null;
 
@@ -84,7 +81,6 @@ class Beluga {
 
     public function dispatch(defaultTrigger : String = "index") {
         var trigger = Web.getParams().get("trigger");
-        triggerDispatcher.dispatch(trigger != null ? trigger : defaultTrigger);
     }
 
     public function cleanup() {

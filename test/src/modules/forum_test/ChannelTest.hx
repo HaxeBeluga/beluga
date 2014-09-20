@@ -10,7 +10,6 @@ import main_view.Renderer;
 // Beluga
 import beluga.core.Beluga;
 import beluga.core.Widget;
-import beluga.core.macro.MetadataReader;
 import beluga.module.forum.Forum;
 
 #if php
@@ -19,7 +18,7 @@ import php.Web;
 import neko.Web;
 #end
 
-class ChannelTest implements MetadataReader
+class ChannelTest
 {
   public var beluga(default, null) : Beluga;
   public var frm(default, null) : Forum;
