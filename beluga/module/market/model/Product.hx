@@ -3,12 +3,12 @@ package beluga.module.market.model;
 import sys.db.Object;
 import sys.db.Types;
 
+@:id(id)
 @:table("beluga_mar_product")
-@:id(pr_id)
 class Product extends Object {
-    public var pr_id: SId;
-    public var pr_stock: SInt;
-    public var pr_name: STinyText;
-    public var pr_price: SFloat;
-    public var pr_desc : SText;
+    public var id: SId;
+    public var stock: SInt;
+    public var name: STinyText;
+    public var price: SFloat;
+    public var desc : SText;
 }

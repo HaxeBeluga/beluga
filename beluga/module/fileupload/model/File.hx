@@ -1,14 +1,20 @@
 package beluga.module.fileupload.model;
 
+// beluga mods
+import beluga.module.account.model.User;
+
+// haxe
 import sys.db.Object;
 import sys.db.Types;
 
+@:id(id)
 @:table("beluga_fil_file")
-@:id(fi_id)
 class File extends Object {
-    public var fi_id: SId;
-    public var fi_id_owner: SInt;
-    public var fi_name: SString<32>;
-    public var fi_path: SString<32>;
-    public var fi_size: SInt;
+    public var id: SId;
+    public var owner_id: SInt;
+    public var name: SString<32>;
+    public var path: SString<32>;
+    public var size: SInt;
+    @:relation(owner_id)
+    public var user: User;
 }

@@ -1,11 +1,17 @@
 package beluga.module.wallet.model;
 
+// beluga mods
+import beluga.module.wallet.model.Currency;
+
+// haxe
 import sys.db.Object;
 import sys.db.Types;
 
+@:id(id)
 @:table("beluga_wal_sitecurrency")
-@:id(si_id)
 class SiteCurrency extends Object {
-    public var si_id: SId;
-    public var si_cu_id: SInt;
+    public var id: SId;
+    public var currency_id: SInt;
+    @:relation(currency_id)
+    public var currency: Currency;
 }

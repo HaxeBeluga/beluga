@@ -22,7 +22,7 @@ class Uploader {
 
     public function isValidFileExtension(filename: String): Bool {
         var splitString = filename.split(".");
-        if (Extension.manager.search($ex_name == splitString[splitString.length - 1]).length == 0) {
+        if (Extension.manager.search($name == splitString[splitString.length - 1]).length == 0) {
             this.is_valid = false;
             return false;
         } else {
@@ -34,10 +34,10 @@ class Uploader {
     public function insertDataInDb() {
 
         var file = new beluga.module.fileupload.model.File();
-        file.fi_path = "upload/" + user + "/" + filename;
-        file.fi_size = 0;
-        file.fi_name = this.filename;
-        file.fi_id_owner = this.id;
+        file.path = "upload/" + user + "/" + filename;
+        file.size = 0;
+        file.name = this.filename;
+        file.owner_id = this.id;
         file.insert();
     }
 
