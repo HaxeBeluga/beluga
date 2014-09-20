@@ -5,12 +5,10 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.ticket.Ticket;
 
-class Create extends MttWidget {
-    var mod : Ticket;
+class Create extends MttWidget<TicketImpl> {
 
     public function new (mttfile = "beluga_ticket_create.mtt") {
-        super(mttfile);
-        mod = Beluga.getInstance().getModuleInstance(Ticket);
+        super(Ticket, mttfile);
     }
 
     override private function getContext() {

@@ -5,12 +5,10 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.market.Market;
 
-class Admin extends MttWidget {
-    var mod : Market;
+class Admin extends MttWidget<MarketImpl> {
 
     public function new (mttfile = "beluga_market_admin.mtt") {
-        super(mttfile);
-        mod = Beluga.getInstance().getModuleInstance(Market);
+        super(Market, mttfile);
     }
 
     override private function getContext() {

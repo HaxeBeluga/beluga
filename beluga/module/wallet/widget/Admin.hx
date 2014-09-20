@@ -5,12 +5,10 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.wallet.Wallet;
 
-class Admin extends MttWidget {
-    var mod : Wallet;
+class Admin extends MttWidget<WalletImpl> {
 
     public function new (mttfile = "beluga_wallet_admin.mtt") {
-        super(mttfile);
-        mod = Beluga.getInstance().getModuleInstance(Wallet);
+        super(Wallet, mttfile);
     }
 
     override private function getContext() {
