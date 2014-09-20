@@ -6,8 +6,7 @@ import beluga.core.macro.ConfigLoader;
 import beluga.module.ticket.Ticket;
 import beluga.core.BelugaI18n;
 
-
-class Browse extends MttWidget {
+class Browse extends MttWidget<TicketImpl> {
     public var i18n : Dynamic;
 
     public function new (mttfile = "beluga_ticket_browse.mtt") {
@@ -22,8 +21,7 @@ class Browse extends MttWidget {
         return context;
     }
 
-    override function getMacro()
-    {
+    override function getMacro() {
         var m = {
             i18n: MttWidget.getI18nKey.bind(_, i18n, _)
         };
