@@ -5,5 +5,19 @@
     "closed_button": "Closed",
     "open_button": "Open",
     "comments": "comments",
-    "opened_by": "Openened by"
+    "opened_by": "Openened by",
+    "mkdown_help": "Your text will be rendered using markdown, see <a href=\"https://daringfireball.net/projects/markdown/\">here</a> for a full list of markdown commands.",
+    "everyone_label": "Everyone's issue",
+    "assigned_to_label": "Assigned to you",
+    "created_by_label": "Created by you",
+    "assign_someone_label": "Assign someone to the ticket",
+    "leave_comment": "Leave a comment",
+    "title": "Issue title",
+    "submit_ticket": "Submit new issue",
+    "add_label_label": "Add label",
+    "open_on_label": " open this issue on ",
+    "commented_on": "commented on",
+    "commented:": "commented",
+    "days_ago": "days ago",
+    "assignee": "Assignee"
 }
