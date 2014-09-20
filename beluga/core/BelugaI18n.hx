@@ -20,11 +20,11 @@ class BelugaI18n
 {
 
     public static var supportedLangList(default, null) : Array<String> = [
-        "fr",
+        "fr_FR",
         "en_US"
     ];
 
-    public static var curLang(default, set) : String = "fr";
+    public static var curLang(default, set) : String = "fr_FR";
 
     private static function set_curLang(lang : String) {
         if (Lambda.has(supportedLangList, lang)) {
