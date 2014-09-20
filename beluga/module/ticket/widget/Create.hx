@@ -7,7 +7,6 @@ import beluga.module.ticket.Ticket;
 import beluga.core.BelugaI18n;
 
 class Create extends MttWidget<TicketImpl> {
-    public var i18n : Dynamic;
 
     public function new (mttfile = "beluga_ticket_create.mtt") {
         super(mttfile);
@@ -19,12 +18,5 @@ class Create extends MttWidget<TicketImpl> {
         context.base_url = ConfigLoader.getBaseUrl();
         context.id = MttWidget.id++;
         return context;
-    }
-
-    override function getMacro() {
-        var m = {
-            i18n: MttWidget.getI18nKey.bind(_, i18n, _)
-        };
-        return m;
     }
 }

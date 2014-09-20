@@ -9,6 +9,7 @@ import haxe.Resource;
 
 class MttWidget<WImpl: ModuleImpl> implements Widget {
     public var mod: WImpl;
+    public var i18n : Dynamic;
 
     private static var id = 0;
     private var template : Template;
@@ -32,7 +33,10 @@ class MttWidget<WImpl: ModuleImpl> implements Widget {
     }
 
     private function getMacro() {
-        return {};
+        var m = {
+            i18n: MttWidget.getI18nKey.bind(_, i18n, _)
+        };
+        return m;
     }
 
 }
