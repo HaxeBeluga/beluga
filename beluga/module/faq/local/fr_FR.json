@@ -1,0 +1,18 @@
+{
+    "unknown_category": "Catégorie inconnue",
+    "incomplete_question": "Question incomplète",
+    "incomplete_answer": "Réponse incomplète",
+    "login_missing": "Vous devez être connecté",
+    "entry_already_exists": "Cette question est déjà traitée",
+    "entry_create_success": "La FAQ a été créée avec succès",
+    "missing_name": "Nom manquant",
+    "category_already_exists": "Une autre catégorie porte déjà ce nom",
+    "category_create_success": "La categorie a été créée avec succès",
+    "faq_delete_success": "La FAQ a bien été supprimée",
+    "id_not_found": "Cet id n'existe pas",
+    "category_delete_success": "La categorie a été supprimée avec succès",
+    "incomplete_answer_question": "Question et / ou réponse incomplète",
+    "faq_edit_success": "La FAQ a été éditée avec succès",
+    "incomplete_name": "Nom incomplet",
+    "category_edit_success": "La categorie a été éditée avec succès"
+}

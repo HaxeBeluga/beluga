@@ -50,42 +50,29 @@ class FaqTest {
     }
 
     public function print() {
-        var widget = this.faq.getWidget("faqs");
-        widget.context = faq.getPrintContext();
-
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.print.render()
         });
         Sys.print(html);
     }
 
     public function redirectCreateCategory() {
-        var widget = this.faq.getWidget("create_category");
-
-        widget.context = faq.getCreateCategoryContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.create_category.render()
         });
         Sys.print(html);
     }
 
     public function redirectCreateFAQ() {
-        var widget = this.faq.getWidget("create_faq");
-
-        widget.context = faq.getCreateContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.create.render()
         });
         Sys.print(html);
     }
 
     public function redirectEditCategory() {
-        var widget = this.faq.getWidget("edit_category");
-        var cat = faq.getCurrentCategory();
-
-        widget.context = faq.getEditCategoryContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.edit_category.render()
         });
         Sys.print(html);
     }
@@ -94,11 +81,8 @@ class FaqTest {
         if (!faq.redirectEditFAQ())
             print();
         else {
-            var widget = this.faq.getWidget("edit_faq");
-
-            widget.context = faq.getEditFAQContext();
             var html = Renderer.renderDefault("page_faq", "FAQ", {
-                faqWidget: widget.render()
+                faqWidget: faq.widgets.edit_faq.render()
             });
             Sys.print(html);
         }

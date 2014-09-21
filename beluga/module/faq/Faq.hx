@@ -10,13 +10,14 @@ interface Faq extends Module {
     public var triggers: FaqTrigger;
     public var faq_id : Int;
     public var category_id : Int;
+    public var widgets : FaqWidget;
 
     public function redirectEditFAQ() : Bool;
     public function getPrintContext() : Dynamic;
     public function getCreateContext() : Dynamic;
     public function getCreateCategoryContext() : Dynamic;
     public function getEditCategoryContext() : Dynamic;
-    public function getEditFAQContext() : Dynamic;
+    public function getEditFaqContext() : Dynamic;
     public function getCurrentCategory() : CategoryModel;
 
     public function createFAQ(args : {
