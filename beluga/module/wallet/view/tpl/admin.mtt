@@ -5,7 +5,7 @@
 ::else::
 ::if (wallet_admin_error != "")::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::admin_wallet_local_error::
+        <strong>Error!</strong> ::wallet_admin_error::
     </div>
 ::end::
 <div class="container wallet-add-currency-widget">
