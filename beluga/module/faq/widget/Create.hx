@@ -20,8 +20,7 @@ class Create extends MttWidget<FaqImpl> {
             success : BelugaI18n.getKey(i18n, mod.success_msg),
             parent: mod.category_id,
             question : mod.question, answer: mod.answer,
-            base_url : ConfigLoader.getBaseUrl(),
-            id : MttWidget.id++
+            base_url : ConfigLoader.getBaseUrl()
         };
         return context;
     }

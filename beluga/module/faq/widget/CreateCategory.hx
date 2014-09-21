@@ -16,12 +16,12 @@ class CreateCategory extends MttWidget<FaqImpl> {
     override private function getContext() {
         var context = {
             path : "/beluga/faq/",
-            error : BelugaI18n.getKey(i18n, mod.error_msg),
-            success : BelugaI18n.getKey(i18n, mod.success_msg),
+            error : BelugaI18n.getKey(this.i18n, mod.error_msg),
+            success : BelugaI18n.getKey(this.i18n, mod.success_msg),
             parent : mod.category_id,
-            base_url : ConfigLoader.getBaseUrl(),
-            id : MttWidget.id++
+            base_url : ConfigLoader.getBaseUrl()
         };
+        Sys.print(mod.error_msg + "<br>");
         return context;
     }
 }

@@ -133,17 +133,17 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         category_id = args.category_id;
 
         if (args.question == "") {
-            error_msg = BelugaI18n.getKey(i18n, "incomplete_question");
+            error_msg = "incomplete_question";
             this.triggers.createFail.dispatch();
             return;
         }
         if (args.answer == "") {
-            error_msg = BelugaI18n.getKey(i18n, "incomplete_answer");
+            error_msg = "incomplete_answer";
             this.triggers.createFail.dispatch();
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            error_msg = BelugaI18n.getKey(i18n, "login_missing");
+            error_msg = "login_missing";
             this.triggers.createFail.dispatch();
             return;
         }
@@ -155,7 +155,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
                 break;
             }
             if (false == found) {
-                error_msg = BelugaI18n.getKey(i18n, "unknown_category");
+                error_msg = "unknown_category";
                 category_id = -1;
                 this.triggers.createFail.dispatch();
                 return;
@@ -164,7 +164,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
 
         for (tmp in FaqModel.manager.dynamicSearch( { category_id: args.category_id } )) {
             if (tmp.question == args.question) {
-                error_msg = BelugaI18n.getKey(i18n, "entry_already_exists");
+                error_msg = "entry_already_exists";
                 this.triggers.createFail.dispatch();
                 return;
             }
@@ -175,19 +175,19 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         entry.answer = args.answer;
         entry.category_id = args.category_id;
         entry.insert();
-        success_msg = BelugaI18n.getKey(i18n, "entry_create_success");
+        success_msg = "entry_create_success";
         this.triggers.createSuccess.dispatch();
     }
 
     public function createCategory(args : {name : String, parent: Int}) {
         category_id = args.parent;
         if (args.name == "") {
-            error_msg = BelugaI18n.getKey(i18n, "missing_name");
+            error_msg = "missing_name";
             this.triggers.createCategoryFail.dispatch();
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            error_msg = BelugaI18n.getKey(i18n, "login_missing");
+            error_msg = "login_missing";
             this.triggers.createCategoryFail.dispatch();
             return;
         }
@@ -196,7 +196,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         if (args.parent != -1) {
             for (tmp in CategoryModel.manager.dynamicSearch( {id: args.parent} )) {
                 if (tmp.name == args.name) {
-                    error_msg = BelugaI18n.getKey(i18n, "category_already_exists");
+                    error_msg = "category_already_exists";
                     this.triggers.createCategoryFail.dispatch();
                     return;
                 }
@@ -207,7 +207,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             found = true;
         }
         if (found == false) {
-            error_msg = BelugaI18n.getKey(i18n, "unknown_category");
+            error_msg = "unknown_category";
             this.triggers.createCategoryFail.dispatch();
             return;
         }
@@ -216,7 +216,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         entry.name = args.name;
         entry.parent_id = args.parent;
         entry.insert();
-        success_msg = BelugaI18n.getKey(i18n, "category_create_success");
+        success_msg = "category_create_success";
         category_id = entry.parent_id;
         this.triggers.createCategorySuccess.dispatch();
     }
@@ -224,17 +224,17 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     public function deleteFAQ(args : {question_id : Int, category_id : Int}) {
         category_id = args.category_id;
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            error_msg = BelugaI18n.getKey(i18n, "login_missing");
+            error_msg = "login_missing";
             this.triggers.deleteFail.dispatch();
             return;
         }
         for (tmp in FaqModel.manager.dynamicSearch( {id : args.question_id, category_id: args.category_id} )) {
             tmp.delete();
-            success_msg = BelugaI18n.getKey(i18n, "faq_delete_success");
+            success_msg = "faq_delete_success";
             this.triggers.deleteSuccess.dispatch();
             return;
         }
-        error_msg = BelugaI18n.getKey(i18n, "id_not_found");
+        error_msg = "id_not_found";
         this.triggers.deleteFail.dispatch();
     }
 
@@ -257,15 +257,15 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     public function deleteCategory(args : {category_id : Int, parent_id: Int}) {
         category_id = args.parent_id;
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            error_msg = BelugaI18n.getKey(i18n, "login_missing");
+            error_msg = "login_missing";
             this.triggers.deleteCategoryFail.dispatch();
             return;
         }
         if (clearCategoryData(args.category_id, args.parent_id) == true) {
-            success_msg = BelugaI18n.getKey(i18n, "category_delete_success");
+            success_msg = "category_delete_success";
             this.triggers.deleteCategorySuccess.dispatch();
         } else {
-            error_msg = BelugaI18n.getKey(i18n, "id_not_found");
+            error_msg = "id_not_found";
             this.triggers.deleteCategoryFail.dispatch();
         }
     }
@@ -273,19 +273,19 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     public function editFAQ(args : {faq_id: Int, question : String, answer : String}) {
         faq_id = args.faq_id;
         if (args.question == "" || args.answer == "") {
-            error_msg = BelugaI18n.getKey(i18n, "incomplete_answer_question");
+            error_msg = "incomplete_answer_question";
             this.triggers.editFail.dispatch();
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            error_msg = BelugaI18n.getKey(i18n, "login_missing");
+            error_msg = "login_missing";
             this.triggers.editFail.dispatch();
             return;
         }
         for (tmp in FaqModel.manager.dynamicSearch( {id : args.faq_id} )) {
             for (tmp2 in FaqModel.manager.dynamicSearch( { category_id: tmp.category_id} )) {
                 if (tmp2.question == args.question) {
-                    error_msg = BelugaI18n.getKey(i18n, "entry_already_exists");
+                    error_msg = "entry_already_exists";
                     this.triggers.editFail.dispatch();
                     return;
                 }
@@ -293,12 +293,12 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             tmp.question = args.question;
             tmp.answer = args.answer;
             tmp.update();
-            success_msg = BelugaI18n.getKey(i18n, "faq_edit_success");
+            success_msg = "faq_edit_success";
             category_id = tmp.category_id;
             this.triggers.editSuccess.dispatch();
             return;
         }
-        error_msg = BelugaI18n.getKey(i18n, "id_not_found");
+        error_msg = "id_not_found";
         this.triggers.editFail.dispatch();
     }
 
@@ -306,30 +306,30 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         for (tmp in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
             category_id = tmp.parent_id;
             if (args.name == "") {
-                error_msg = BelugaI18n.getKey(i18n, "incomplete_name");
+                error_msg = "incomplete_name";
                 this.triggers.editCategoryFail.dispatch();
                 return;
             }
             if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-                error_msg = BelugaI18n.getKey(i18n, "login_missing");
+                error_msg = "login_missing";
                 this.triggers.editCategoryFail.dispatch();
                 return;
             }
             for (tmp2 in CategoryModel.manager.dynamicSearch({parent_id: tmp.parent_id})) {
                 if (tmp2.name == args.name) {
-                    error_msg = BelugaI18n.getKey(i18n, "category_already_exists");
+                    error_msg = "category_already_exists";
                     this.triggers.editCategoryFail.dispatch();
                     return;
                 }
             }
             tmp.name = args.name;
             tmp.update();
-            success_msg = BelugaI18n.getKey(i18n, "category_edit_success");
+            success_msg = "category_edit_success";
             this.triggers.editCategorySuccess.dispatch();
             return;
         }
         category_id = -1;
-        error_msg = BelugaI18n.getKey(i18n, "id_not_found");
+        error_msg = "id_not_found";
         this.triggers.editCategoryFail.dispatch();
     }
 }

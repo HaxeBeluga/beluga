@@ -26,8 +26,7 @@ class EditCategory extends MttWidget<FaqImpl> {
             success : BelugaI18n.getKey(i18n, mod.success_msg),
             category_id : mod.category_id,
             name: cat.name,
-            base_url : ConfigLoader.getBaseUrl(),
-            id : MttWidget.id++
+            base_url : ConfigLoader.getBaseUrl()
         };
         return context;
     }
