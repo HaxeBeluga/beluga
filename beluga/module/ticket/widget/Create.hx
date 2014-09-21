@@ -13,10 +13,7 @@ class Create extends MttWidget<TicketImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/create/", mod.i18n);
     }
 
-    override private function getContext() {
-        var context = mod.getCreateContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext(): Dynamic {
+        return mod.getCreateContext();
     }
 }

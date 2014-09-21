@@ -12,9 +12,6 @@ class Send extends MttWidget<FileuploadImpl> {
     }
 
     override private function getContext() {
-        var context = mod.getSendContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+        return mod.getSendContext();
     }
 }

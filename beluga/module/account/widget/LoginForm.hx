@@ -15,12 +15,10 @@ class LoginForm extends MttWidget<AccountImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/account/view/local/login/", mod.i18n);
     }
 
-    override private function getContext() {
+    override private function getContext(): Dynamic {
         var context = {
             isLogged : mod.isLogged,
-            loggedUser : mod.loggedUser,
-            base_url : ConfigLoader.getBaseUrl(),
-            id: MttWidget.id++,
+            loggedUser : mod.loggedUser
         };
         return context;
     }

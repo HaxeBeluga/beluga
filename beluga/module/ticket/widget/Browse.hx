@@ -13,10 +13,7 @@ class Browse extends MttWidget<TicketImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/browse/", mod.i18n);
     }
 
-    override private function getContext() {
-        var context = mod.getBrowseContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext(): Dynamic {
+        return mod.getBrowseContext();
     }
 }

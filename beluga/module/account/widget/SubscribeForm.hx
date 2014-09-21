@@ -11,12 +11,8 @@ class SubscribeForm extends MttWidget<AccountImpl> {
         super(Account, mttfile);
     }
 
-    override private function getContext() {
-        var context = {
-            base_url : ConfigLoader.getBaseUrl(),
-            id: MttWidget.id++,
-        };
-        return context;
+    override private function getContext(): Dynamic {
+        return {};
     }
 
 }
