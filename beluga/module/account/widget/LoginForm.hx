@@ -9,6 +9,7 @@ import beluga.core.BelugaI18n;
 import beluga.tool.DynamicTool;
 
 class LoginForm extends MttWidget<AccountImpl> {
+
     public function new (mttfile = "beluga_account_login.mtt") {
         super(Account, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/account/view/local/login/", mod.i18n);

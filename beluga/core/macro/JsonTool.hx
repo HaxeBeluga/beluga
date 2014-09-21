@@ -5,12 +5,18 @@ import haxe.Json;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
-/**
- * ...
- * @author Alexis Brissard
- */
-class JsonTool
-{
+enum JsonToolExceptionKind {
+    JTFileNotFoundException(error: String);
+    JTParseError(error: String);
+}
+
+class JsonToolException {
+    public var error_kind: JsonToolExceptionKind;
+
+    public function new(error: JsonToolExceptionKind) { this.error_kind = error; }
+}
+
+class JsonTool {
     #if macro
     public static function exprLoad(path : String) : Expr {
         var json = Json.parse(File.getContent(ConfigLoader.installPath+path));
@@ -18,7 +24,21 @@ class JsonTool
     }
 
     public static function load(path : String) : Dynamic {
-        return Json.parse(File.getContent(ConfigLoader.installPath+path));
+        var content: String;
+        var json: Dynamic;
+
+        try { // handle filesystem error, not critic, maybe we don't to fail for a non existing lang
+            content = File.getContent(ConfigLoader.installPath+path);
+        } catch (e: Dynamic) {
+            throw new JsonToolException(JTFileNotFoundException(e));
+        }
+
+        try { // here we try to parse the json file, this is more critic, we launch a different exception
+            json = Json.parse(content);
+        } catch (e: Dynamic) {
+            throw new JsonToolException(JTParseError(e));
+        }
+        return json;
     }
     #else
     macro public static function staticLoad(path : String) : Expr {

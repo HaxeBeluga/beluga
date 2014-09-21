@@ -3,5 +3,5 @@
     "no_wallet": "You have no wallet for now !",
     "create_wallet": "Create a new wallet !",
     "missing_currency": "No currency set for this site !",
-    "authenticated_error:" "You must be authenticated to do this action"
+    "authenticated_error": "You must be authenticated to do this action"
 }
