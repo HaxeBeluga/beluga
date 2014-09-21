@@ -29,7 +29,7 @@ class LoginForm extends MttWidget<AccountImpl> {
     override function getMacro()
     {
         var m = {
-            i18n: MttWidget.getI18nKey.bind(_, i18n, _)
+            i18n: MttWidget.getI18nKey.bind(_, i18n, _, getContext())
         };
         return m;
     }

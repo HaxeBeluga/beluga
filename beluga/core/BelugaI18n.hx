@@ -4,6 +4,7 @@ import beluga.core.macro.JsonTool;
 import haxe.macro.Context;
 import beluga.tool.DynamicTool;
 import haxe.macro.Expr;
+import haxe.Template;
 
 class UnknowLangException extends BelugaException
 {
@@ -34,13 +35,18 @@ class BelugaI18n
         return lang;
     }
 
-    public static function getKey(i18n, key : String) {
+    public static function getKey(i18n, key : String, ?ctx : Dynamic) {
         var f = Reflect.field;
         var textMap = f(i18n, curLang);
         if (textMap != null) {
             var textValue = f(textMap, key);
             if (textValue != null) {
-                return textValue;
+				if (ctx == null) {
+					return textValue;
+				} else {
+					var tpl = new Template(textValue);
+					return tpl.execute(ctx);
+				}
             } else {
                 return "key " + key + " does not exist for lang " + curLang;
             }
