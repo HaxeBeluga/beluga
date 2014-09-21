@@ -14,9 +14,15 @@ class Create extends MttWidget<FaqImpl> {
     }
 
     override private function getContext() {
-        var context = mod.getCreateContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
+        var context = {
+            path : "/beluga/faq/",
+            error : BelugaI18n.getKey(i18n, mod.error_msg),
+            success : BelugaI18n.getKey(i18n, mod.success_msg),
+            parent: mod.category_id,
+            question : mod.question, answer: mod.answer,
+            base_url : ConfigLoader.getBaseUrl(),
+            id : MttWidget.id++
+        };
         return context;
     }
 }

@@ -14,5 +14,6 @@
     "incomplete_answer_question": "Question et / ou réponse incomplète",
     "faq_edit_success": "La FAQ a été éditée avec succès",
     "incomplete_name": "Nom incomplet",
-    "category_edit_success": "La categorie a été éditée avec succès"
+    "category_edit_success": "La catégorie a été éditée avec succès",
+    "category_creation": "Création de catégorie"
 }

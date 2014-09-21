@@ -14,5 +14,6 @@
     "incomplete_answer_question": "Incomplete question and / or answer",
     "faq_edit_success": "FAQ has been successfully edited",
     "incomplete_name": "Incomplete name",
-    "category_edit_success": "Category has been successfully edited"
+    "category_edit_success": "Category has been successfully edited",
+    "category_creation": "Creation of category"
 }

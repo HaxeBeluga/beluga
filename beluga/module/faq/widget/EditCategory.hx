@@ -14,9 +14,21 @@ class EditCategory extends MttWidget<FaqImpl> {
     }
 
     override private function getContext() {
-        var context = mod.getEditCategoryContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
+        var cat = mod.getCategory(mod.category_id);
+
+        /*if (cat == null) {
+            doEditCategoryFail({error : "Unknown category"});
+            return;
+        }*/
+        var context = {
+            path : "/beluga/faq/",
+            error : BelugaI18n.getKey(i18n, mod.error_msg),
+            success : BelugaI18n.getKey(i18n, mod.success_msg),
+            category_id : mod.category_id,
+            name: cat.name,
+            base_url : ConfigLoader.getBaseUrl(),
+            id : MttWidget.id++
+        };
         return context;
     }
 }

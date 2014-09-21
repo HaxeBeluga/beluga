@@ -3,7 +3,7 @@
 	<form action="::base_url::::path::editCategory" class="form-horizontal" role="form" method="POST">
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group" style="display:none;">
-			<input class="form-control" id="category_id" name="category_id" value="::id::">
+			<input class="form-control" id="category_id" name="category_id" value="::category_id::">
 		</div>
 		<div class="form-group">
 			<label for="name">Name</label>
