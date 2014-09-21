@@ -252,8 +252,8 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             currency = Currency.manager.get(site_currency.currency_id);
         } catch( unknown : Dynamic ) { // ... or return null
             currency = new Currency();
-            currency.cu_rate =  0.;
-            currency.cu_name = "$$i18n(missing_currency)";
+            currency.rate =  0.;
+            currency.name = "$$i18n(missing_currency)";
         }
 
         return currency;

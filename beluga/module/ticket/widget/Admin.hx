@@ -8,7 +8,7 @@ import beluga.core.BelugaI18n;
 
 class Admin extends MttWidget<TicketImpl> {
     public function new (mttfile = "beluga_ticket_admin.mtt") {
-        super(mttfile);
+        super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/admin/", mod.i18n);
     }
 

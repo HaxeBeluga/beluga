@@ -9,7 +9,7 @@ import beluga.core.BelugaI18n;
 class Create extends MttWidget<TicketImpl> {
 
     public function new (mttfile = "beluga_ticket_create.mtt") {
-        super(mttfile);
+        super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/create/", mod.i18n);
     }
 
