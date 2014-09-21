@@ -13,8 +13,6 @@ interface Faq extends Module {
     public var widgets : FaqWidget;
 
     public function redirectEditFAQ() : Bool;
-    public function getPrintContext() : Dynamic;
-    public function getEditFaqContext() : Dynamic;
     public function getCurrentCategory() : CategoryModel;
 
     public function createFAQ(args : {

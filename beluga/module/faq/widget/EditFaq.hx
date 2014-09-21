@@ -13,10 +13,18 @@ class EditFaq extends MttWidget<FaqImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/local/edit_faq/", mod.i18n);
     }
 
-    override private function getContext() {
-        var context = mod.getEditFaqContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext() : Dynamic {
+        var faq = mod.getFAQ(mod.faq_id);
+
+        return {
+            path : "/beluga/faq/",
+            error : if (mod.error_msg != "") { BelugaI18n.getKey(this.i18n, mod.error_msg); } else { mod.error_msg; },
+            success : if (mod.success_msg != "") { BelugaI18n.getKey(this.i18n, mod.success_msg); } else {mod.success_msg; },
+            parent : mod.category_id,
+            id: mod.faq_id,
+            name: faq.question,
+            answer: faq.answer,
+            base_url : ConfigLoader.getBaseUrl()
+        };
     }
 }

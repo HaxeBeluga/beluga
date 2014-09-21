@@ -13,15 +13,14 @@ class Create extends MttWidget<FaqImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/local/create/", mod.i18n);
     }
 
-    override private function getContext() {
-        var context = {
+    override private function getContext() : Dynamic {
+        return {
             path : "/beluga/faq/",
-            error : BelugaI18n.getKey(i18n, mod.error_msg),
-            success : BelugaI18n.getKey(i18n, mod.success_msg),
+            error : if (mod.error_msg != "") { BelugaI18n.getKey(this.i18n, mod.error_msg); } else { mod.error_msg; },
+            success : if (mod.success_msg != "") { BelugaI18n.getKey(this.i18n, mod.success_msg); } else {mod.success_msg; },
             parent: mod.category_id,
             question : mod.question, answer: mod.answer,
             base_url : ConfigLoader.getBaseUrl()
         };
-        return context;
     }
 }

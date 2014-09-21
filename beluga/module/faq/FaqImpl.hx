@@ -52,37 +52,6 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         return true;
     }
 
-    public function getPrintContext() : Dynamic {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-        var entries = getAllFromCategory(category_id);
-        var cat = getCategory(category_id);
-
-        if (cat != null) {
-            parent_id = cat.parent_id;
-        }
-        if (category_id == -1) {
-            return {faqs : entries, categories : entries.categories, path : "/beluga/faq/", parent_id : parent_id,
-                error : error_msg, success : success_msg, actual_id : category_id, user : user };
-        } else {
-            var cat = getCategory(category_id);
-
-            if (cat == null) {
-                return {faqs : entries, categories : entries.categories, path : "beluga/faq/", parent_id : parent_id,
-                    error : error_msg, success : success_msg, actual_id : category_id, user : user };
-            } else {
-                return {faqs : entries, categories : entries.categories, path : "/beluga/faq/", user : user, parent_id : parent_id,
-                    error : error_msg, success : success_msg, actual_id : category_id, category_name: cat.name };
-            }
-        }
-    }
-
-    public function getEditFaqContext() : Dynamic {
-        var faq = getFAQ(faq_id);
-
-        return {path : "/beluga/faq/", error : error_msg, success : success_msg, parent : faq.category_id, id: faq_id,
-            question: faq.question, answer: faq.answer};
-    }
-
     public function getCategory(category_id : Int) : CategoryModel {
         for (tmp in CategoryModel.manager.dynamicSearch( { id: category_id} )) {
             return tmp;
@@ -97,7 +66,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         return null;
     }
 
-    private function getFAQ(faq_id : Int) : FaqModel {
+    public function getFAQ(faq_id : Int) : FaqModel {
         for (tmp in FaqModel.manager.dynamicSearch( { id: faq_id} )) {
             return tmp;
         }
@@ -113,7 +82,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         return ret;
     }
 
-    private function getAllFromCategory(category_id: Int) : CategoryData {
+    public function getAllFromCategory(category_id: Int) : CategoryData {
         var ret = new Array<FaqModel>();
         var ret2 = new Array<CategoryModel>();
 
@@ -191,25 +160,29 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             this.triggers.createCategoryFail.dispatch();
             return;
         }
-        var found = false;
 
+        // check if another category already has the same name
+        for (tmp in CategoryModel.manager.dynamicSearch( {parent_id: args.parent} )) {
+            if (tmp.name == args.name) {
+                error_msg = "category_already_exists";
+                this.triggers.createCategoryFail.dispatch();
+                return;
+            }
+        }
+
+        // check if the parent category exist
         if (args.parent != -1) {
+            var found = false;
+
             for (tmp in CategoryModel.manager.dynamicSearch( {id: args.parent} )) {
-                if (tmp.name == args.name) {
-                    error_msg = "category_already_exists";
-                    this.triggers.createCategoryFail.dispatch();
-                    return;
-                }
                 found = true;
                 break;
             }
-        } else {
-            found = true;
-        }
-        if (found == false) {
-            error_msg = "unknown_category";
-            this.triggers.createCategoryFail.dispatch();
-            return;
+            if (found == false) {
+                error_msg = "unknown_category";
+                this.triggers.createCategoryFail.dispatch();
+                return;
+            }
         }
         var entry = new CategoryModel();
 

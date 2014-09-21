@@ -13,21 +13,21 @@ class EditCategory extends MttWidget<FaqImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/local/edit_category/", mod.i18n);
     }
 
-    override private function getContext() {
+    override private function getContext() : Dynamic {
         var cat = mod.getCategory(mod.category_id);
 
         /*if (cat == null) {
             doEditCategoryFail({error : "Unknown category"});
             return;
         }*/
-        var context = {
+        return {
             path : "/beluga/faq/",
-            error : BelugaI18n.getKey(i18n, mod.error_msg),
-            success : BelugaI18n.getKey(i18n, mod.success_msg),
+            error : if (mod.error_msg != "") { BelugaI18n.getKey(this.i18n, mod.error_msg); } else { mod.error_msg; },
+            success : if (mod.success_msg != "") { BelugaI18n.getKey(this.i18n, mod.success_msg); } else {mod.success_msg; },
             category_id : mod.category_id,
             name: cat.name,
+            parent: if (cat != null) { cat.parent_id; } else { -1; },
             base_url : ConfigLoader.getBaseUrl()
         };
-        return context;
     }
 }
