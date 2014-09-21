@@ -15,13 +15,13 @@ import beluga.module.wallet.model.SiteCurrency;
 import beluga.module.wallet.model.WalletModel;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
+import beluga.module.wallet.WalletErrorKind;
 
 class WalletImpl extends ModuleImpl implements WalletInternal {
     public var triggers = new WalletTrigger();
     public var widgets: WalletWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/local/");
-    // two errors for admin: global -> cannot access, local -> fields errors.
-    var admin_local_error = "";
+    var admin_error: WalletErrorKind = None;
     // two error for user widget
     var user_authenticated = true;
 
@@ -50,73 +50,26 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
     }
 
+    public function getAdminError() {
+        return this.admin_error;
+    }
+
     // The main view of the widget
     public function display(): Void {}
 
-    public function getShowContext(): Dynamic {
-        var user: User = null;
-        var has_wallet = 1;
-        var currency_name = "";
-        var user_founds = 0.;
-
-        // check if the user is logged
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.user_authenticated = false;
-        } else { // get the logged user
-            user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-        }
-
-        // retrieve wallet informations if the user has a wallet
-        switch (this.getUserWallet(user)) {
-            case Some(wallet): {
-                var site_currency = this.getSiteCurrencyOrDefault();
-                has_wallet = 0;
-                user_founds = site_currency.convertToCurrency(wallet.fund);
-                currency_name = site_currency.name;
-            };
-            case None: {};
-        }
-
-        return {
-            user_authenticated: this.user_authenticated,
-            has_wallet: has_wallet,
-            user: user,
-            founds: user_founds,
-            currency_name: currency_name
-        };
-    }
-
     // Admin
     public function admin(): Void {}
-
-    // Return the context to display the admin widget
-    public function getAdminContext(): Dynamic {
-        // Check if user is logged to display the widget, if not set the global error
-        if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.user_authenticated = false;
-        }
-        // retrieve the currencys list
-        var currency_list = this.getCurrencys();
-        // then the site currency
-        var site_currency = this.getSiteCurrencyOrDefault();
-        return {
-            user_authenticated: this.user_authenticated,
-            admin_wallet_local_error: this.admin_local_error,
-            currency_list: currency_list,
-            site_currency: site_currency
-        };
-    }
 
     // Create a new currency using the name and the rate
     public function createCurrency(args: { name: String, rate: String }): Void {
         var cur_list = Currency.manager.search({ name: args.name });
         // if arguments exists and are valids
         if (args.rate == "" || args.name == "" || Std.parseFloat(args.rate) == Math.NaN) {
-            this.admin_local_error = "Vous devez remplir les deux champs !";
-            this.triggers.currencyCreationFail.dispatch();
+            this.admin_error = FieldEmpty;
+            this.triggers.currencyCreationFail.dispatch({error: FieldEmpty});
         } else if (!cur_list.isEmpty()) { // if the list is not empty, currency already exist
-            this.admin_local_error = "Cet monnaie existe deja !";
-            this.triggers.currencyCreationFail.dispatch();
+            this.admin_error = CurrencyAlreadyExist;
+            this.triggers.currencyCreationFail.dispatch({error: CurrencyAlreadyExist});
         } else { // create the currency, all the params are valid
             var cur = new Currency();
             cur.name = args.name;
@@ -130,23 +83,23 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public function removeCurrency(args: { id: Int }): Void {
         // Only a logged user can remove a currency
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.admin_local_error = "Vous devez etre connecte pour realiser cette action !";
-            this.triggers.currencyRemoveFail.dispatch();
+            this.user_authenticated = false;
+            this.triggers.currencyRemoveFail.dispatch({error: UserNotAuthenticate});
         } else {
             try { // try to retrieve the currency, then delete it...
                 var cur = Currency.manager.get(args.id);
                 cur.delete();
                 this.triggers.currencyRemoveSuccess.dispatch();
             } catch( unknown : Dynamic ) { // ... or display an error message.
-                this.admin_local_error = "Cette monnaie n'existe pas";
-                this.triggers.currencyRemoveFail.dispatch();
+                this.admin_error = CurrencyDontExist;
+                this.triggers.currencyRemoveFail.dispatch({error: CurrencyDontExist});
             }
         }
     }
 
     public function setSiteCurrency(args: {id: Int }): Void {
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.admin_local_error = "Vous devez etre connecte pour realiser cette action !";
+            this.user_authenticated = false;
             this.triggers.setSiteCurrencyFail.dispatch();
         } else {
             var cur;
@@ -243,8 +196,22 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         return currencys;
     }
 
+    public function getSiteCurrency(): Option<Currency> {
+        var currency: Option<Currency> = None;
+
+        try { // try to retrieve the SiteCurrency, then the currency
+            var site_currency = SiteCurrency.manager.get(WalletImpl.WEBSITE_ID);
+            currency = Some(Currency.manager.get(site_currency.currency_id));
+        } catch( unknown : Dynamic ) { // ... or return null
+
+            currency = None;
+        }
+
+        return currency;
+    }
+
     public function getSiteCurrencyOrDefault(): Currency {
-        var currency = null;
+        var currency: Currency;
 
         try { // try to retrieve the SiteCurrency, then the currency
             var site_currency = SiteCurrency.manager.get(WalletImpl.WEBSITE_ID);
@@ -252,7 +219,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         } catch( unknown : Dynamic ) { // ... or return null
             currency = new Currency();
             currency.rate =  0.;
-            currency.name = "$$i18n(missing_currency)";
+            currency.name = "";
         }
 
         return currency;

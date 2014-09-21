@@ -23,10 +23,6 @@ interface Wallet extends Module {
     public function removeCurrency(args: { id: Int }): Void;
     public function setSiteCurrency(args: {id: Int }): Void;
 
-    // widget context functions
-    public function getShowContext(): Dynamic;
-    public function getAdminContext(): Dynamic;
-
     // tools functions
     public function getCurrentRealFunds(user: User): Option<Float>;
     public function getCurrentFunds(user: User, currency: Currency): Option<Float>;
@@ -36,6 +32,7 @@ interface Wallet extends Module {
     public function consumeFunds(user: User, currency: Currency, quantity: Float): Bool;
     public function getCurrencys(): List<Dynamic>;
     public function getSiteCurrencyOrDefault(): Currency;
+    public function getSiteCurrency(): Option<Currency>;
     public function userHasWallet(user: User): Bool;
     public function getUserWallet(user: User): Option<WalletModel>;
 }
