@@ -3,5 +3,14 @@
     "no_wallet": "You have no wallet for now !",
     "create_wallet": "Create a new wallet !",
     "missing_currency": "No currency set for this site !",
-    "authenticated_error": "You must be authenticated to do this action"
+    "authenticated_error": "You must be authenticated to do this action",
+    "list_currency_title": "Here is a list of the existing currency",
+    "currency_rate": "rate: ::site_currency.rate::",
+    "create_currency_title": "Create a new Currency",
+    "submit_currency": "Submit new currency",
+    "choose_website_currency": "Set as website currency",
+    "website_currency_title": "Website currency",
+    "delete_currency": "Delete",
+    "currency_name_placeholder": "Currency's name",
+    "currency_rate_placeholder": "Currency's rate"
 }

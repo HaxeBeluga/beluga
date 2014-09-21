@@ -21,7 +21,6 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public var widgets: WalletWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/local/");
     // two errors for admin: global -> cannot access, local -> fields errors.
-    var admin_global_error = "";
     var admin_local_error = "";
     // two error for user widget
     var user_authenticated = true;
@@ -94,14 +93,14 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public function getAdminContext(): Dynamic {
         // Check if user is logged to display the widget, if not set the global error
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.admin_global_error = "Vous devez etres identifie pour acceder a ce widget !";
+            this.user_authenticated = false;
         }
         // retrieve the currencys list
         var currency_list = this.getCurrencys();
         // then the site currency
         var site_currency = this.getSiteCurrencyOrDefault();
         return {
-            admin_wallet_global_error: this.admin_global_error,
+            user_authenticated: this.user_authenticated,
             admin_wallet_local_error: this.admin_local_error,
             currency_list: currency_list,
             site_currency: site_currency
