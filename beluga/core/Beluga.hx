@@ -62,6 +62,9 @@ class Beluga {
         //Create beluga API
         api = new BelugaApi();
         api.beluga = this;
+        
+        //Compile JS assets
+        beluga.core.macro.Javascript.compile();
     }
 
     //For all initialization code that require beluga's instance

@@ -41,7 +41,7 @@ class ModuleLoader {
             // Huge constraint :
             // The module is not compiled, which means that if it has a wrong syntax, it won't work without notification
             // Only the package is added to the compile unit
-            Compiler.include(module.path); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
+            Compiler.include(module.path, true, [module.path + ".js"]); //Provisional, issue #2100 https://github.com/HaxeFoundation/haxe/issues/2100
             //Compiler.addClassPath(module.path);
         }
 
