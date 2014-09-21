@@ -32,8 +32,7 @@
         </div>
     </form>
     ::else::
-    <div>
-        $$i18n(alreadyLogged)<br/>
+    <div>$$i18n(alreadyLogged)<br/>
         <a href="::base_url::/account/logout">Log out</a></li>
     </div>
     ::end::

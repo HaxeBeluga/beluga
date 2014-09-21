@@ -6,14 +6,14 @@
         </div>
         ::end::
         <div class="col-md12 ticket-button-nav">
-            <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
-            <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button disabled">New ticket</a>
+            <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">$$i18n(browse_button)</a>
+            <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button disabled">$$i18n(new_ticket_button)</a>
         </div>
         <hr class="hr-ticket" />
         <div class="col-md-10 col-md-10-ticket">
             <form action="::base_url::/beluga/ticket/submit" method="POST">
-                <input type="text" class="ticket-area form-control" placeholder="Title" name="title">
-                <label for="ticket-assignee" class="col-md-4 control-label">Assign someone to the ticket</label>
+                <input type="text" class="ticket-area form-control" placeholder="$$i18n(title)" name="title">
+                <label for="ticket-assignee" class="col-md-4 control-label">$$i18n(assign_someone_label)</label>
                 <div class="col-md-4">
                     <select id="ticket-assignee" class="form-control" name="assignee">
                         <option>None</option>
@@ -23,16 +23,15 @@
                     </select>
                     </div>
                 <div class="col-md-12"><p class="ticket-labels-list">Labels: </p></div>
-                <textarea class="ticket-area form-control" rows="6" placeholder="Leave a comment" name="message"></textarea>
+                <textarea class="ticket-area form-control" rows="6" placeholder="$$i18n(leave_comment)" name="message"></textarea>
                 <span class="help-block">
-                    Your text will be renderer using markdown, see <a href="https://daringfireball.net/projects/markdown/">here</a> for a full
-                    list of markdown commands.
+                    $$i18n(mkdown_help)
                 </span>
-                <input type="submit" class="btn btn-success btn-sm ticket-button-submit" value="Submit new ticket"/>
+                <input type="submit" class="btn btn-success btn-sm ticket-button-submit" value="$$i18n(submit_ticket)"/>
             </form>
         </div>
         <div class="col-md-2 col-md-2-ticket">
-            <h4>Add Labels</h4>
+            <h4>$$i18n(add_label_label)</h4>
             <ul>
                 ::foreach labels_list::
                 <li class="ticket-label"><span>::label_name::</span></li>

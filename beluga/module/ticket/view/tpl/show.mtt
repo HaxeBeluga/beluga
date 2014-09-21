@@ -5,37 +5,36 @@
         </div>
         ::end::
         <div class="col-md12 ticket-button-nav">
-            <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">Browse tickets</a>
-            <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">New ticket</a>
+            <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">$$i18n(browse_button)</a>
+            <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">$$i18n(new_ticket_button)</a>
         </div>
         <hr class="hr-ticket" />
         <div class="col-md12 ticket-button-nav">
             <h3 class="list-group-item-heading">::ticket_subject::<span class="badge pull-right">#::ticket_id::</span></h3></a>
         </div>
-        ::if (ticket_status == 1):: <span class="label label-success">Open<small></span>
-        ::else:: <span class="label label-danger">Closed<small></span>
+        ::if (ticket_status == 1):: <span class="label label-success">$$i18n(open_button)<small></span>
+        ::else:: <span class="label label-danger">$$i18n(closed_button)<small></span>
         ::end::
 
-        <a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a> opened this issue on ::ticket_create_date:: - ::ticket_message_count:: comments</small>
+        <a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a>$$i18n(open_on_label)::ticket_create_date:: - ::ticket_message_count:: $$i18n(comments)</small>
         <hr class="hr-ticket" />
         <div class="col-md-10">
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a></strong> commented on ::ticket_create_date::</span>
+                <span class="list-group-item ticket-comment-head"><strong><a href="::base_url::/beluga/account/showUser?id=::ticket_owner_id::">::ticket_owner::</a></strong> $$i18n(commented_on) ::ticket_create_date::</span>
                 <span class="list-group-item ticket-comment">::ticket_message::</span>
             </div>
             ::foreach messages_list::
             <div class="list-group list-group-ticket-comment">
-                <span class="list-group-item ticket-comment-head"><strong><a href="::base_url::/beluga/account/showUser?id=::message_author_id::">::message_author::</a></strong> commented ::message_creation_date:: days ago</span>
+                <span class="list-group-item ticket-comment-head"><strong><a href="::base_url::/beluga/account/showUser?id=::message_author_id::">::message_author::</a></strong> $$i18n(commented) ::message_creation_date:: $$i18n(days_ago)</span>
                 <span class="list-group-item ticket-comment">::message_content::
                 </span>
             </div>
             ::end::
             <form action="::base_url::/beluga/ticket/comment" method="POST">
             <input type="hidden" name="id" value="::ticket_id::" />
-            <textarea class="ticket-area form-control" rows="6" placeholder="Leave a comment" name="message"></textarea>
+            <textarea class="ticket-area form-control" rows="6" placeholder="$$i18n(leave_comment)" name="message"></textarea>
             <span class="help-block">
-                Your text will be renderer using markdown, see <a href="https://daringfireball.net/projects/markdown/">here</a> for a full
-                list of markdown commands.
+                $$i18n(mkdown_help)
             </span>
             <input type="submit" class="btn btn-info btn-sm ticket-button-submit" value="Comment"/>
             ::if (ticket_status == 1)::
@@ -52,7 +51,7 @@
                 <li class="ticket-label"><span>::label_name::</span></li>
                 ::end::
             </ul>
-            <h4>Assignee</h4>
+            <h4>$$i18n(assignee)</h4>
             <ul>
                 <li class="ticket-label"><span>::ticket_assignee::</span></li>
             </ul>

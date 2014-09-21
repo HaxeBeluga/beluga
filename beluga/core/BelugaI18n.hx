@@ -5,6 +5,8 @@ import haxe.macro.Context;
 import beluga.tool.DynamicTool;
 import haxe.macro.Expr;
 import haxe.Template;
+import haxe.macro.Context;
+import haxe.Template;
 
 class UnknowLangException extends BelugaException
 {
@@ -20,11 +22,11 @@ class BelugaI18n
 {
 
     public static var supportedLangList(default, null) : Array<String> = [
-        "fr",
+        "fr_FR",
         "en_US"
     ];
 
-    public static var curLang(default, set) : String = "fr";
+    public static var curLang(default, set) : String = "fr_FR";
 
     private static function set_curLang(lang : String) {
         if (Lambda.has(supportedLangList, lang)) {
@@ -41,12 +43,12 @@ class BelugaI18n
         if (textMap != null) {
             var textValue = f(textMap, key);
             if (textValue != null) {
-				if (ctx == null) {
-					return textValue;
-				} else {
-					var tpl = new Template(textValue);
-					return tpl.execute(ctx);
-				}
+                if (ctx == null) {
+                    return textValue;
+                } else {
+                    var tpl = new Template(textValue);
+                    return tpl.execute(ctx);
+                }
             } else {
                 return "key " + key + " does not exist for lang " + curLang;
             }
@@ -61,10 +63,17 @@ class BelugaI18n
         for (lang in supportedLangList) {
             try { // try to find the local
                 Reflect.setField(i18n, lang, JsonTool.load(folderPath + lang + ".json"));
-            } catch (_: Dynamic) {
-                // nothing to do
-                // Beluga accept the list BelugaI18n::supportedLangList of language
-                // but the user don't need to provide each of them
+            } catch (e: JsonToolException) {
+                switch (e.error_kind) {
+                    case JTFileNotFoundException(_): {
+                        // nothing to do
+                        // Beluga accept the list BelugaI18n::supportedLangList of language
+                        // but the user don't need to provide each of them
+                    }
+                    case JTParseError(s): {
+                        throw new Error("invalid json file: " + folderPath + lang + " " + s, Context.currentPos());
+                    }
+                }
             }
         }
         var expr = Context.makeExpr(i18n, Context.currentPos());

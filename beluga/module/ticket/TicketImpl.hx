@@ -6,6 +6,7 @@ import haxe.xml.Fast;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.BelugaI18n;
 
 // Beluga mods
 import beluga.module.account.model.User;
@@ -20,6 +21,7 @@ import sys.db.Manager;
 class TicketImpl extends ModuleImpl implements TicketInternal {
     public var triggers = new TicketTrigger();
     public var widgets: TicketWidget;
+    public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/local/");
 
     private var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to display an error message if the user is no logged.

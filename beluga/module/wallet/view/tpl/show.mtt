@@ -1,24 +1,19 @@
-::if (wallet_global_error != "")::
+::if (!user_authenticated)::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::wallet_global_error::
+        <strong>Error !</strong> $$i18n(authenticated_error)
     </div>
 ::else::
-::if (wallet_local_error != "")::
-    <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::wallet_local_error::
-    </div>
-::end::
 ::if (has_wallet == 1)::
 <div class="container wallet-display-widget">
     <div class="container-fluid">
-        <h4>You have no wallet for now !</h4>
-        <a href="::base_url::/beluga/wallet/create" class="btn btn-success wallet-create-submit pull-right">Create a new wallet !</a>
+        <h4>$$i18n(no_wallet)</h4>
+        <a href="::base_url::/beluga/wallet/create" class="btn btn-success wallet-create-submit pull-right">$$i18n(create_wallet)</a>
     </div>
 </div>
 ::else::
 <div class="container wallet-display-widget">
     <div class="container-fluid">
-        <h4>::user.login::'s wallet !</h4>
+        <h4>$$i18n(wallet_owner)</h4>
         <ul class="list-group">
           <li class="list-group-item">::currency_name::
           <button class="btn btn-info btn-xs disabled pull-right">::founds::</button></li>

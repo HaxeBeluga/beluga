@@ -1,6 +1,6 @@
-::if (admin_wallet_global_error != "")::
+::if (!user_authenticated)::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::admin_wallet_global_error::
+        <strong>Error!</strong> $$i18n(authenticated_error)
     </div>
 ::else::
 ::if (admin_wallet_local_error != "")::
@@ -10,28 +10,28 @@
 ::end::
 <div class="container wallet-add-currency-widget">
     <div class="container-fluid">
-        <h4>Create a new Currency</h4>
+        <h4>$$i18n(create_currency_title)</h4>
         <form action="::base_url::/beluga/wallet/createCurrency" method="post"><br>
-            <input type="text" name="name" class=" form-control" placeholder="name">
-            <input type="text" name="rate" class="wallet-form-sep form-control" placeholder="rate">
-            <input type="submit" value="Submit new currency" class="btn btn-warning pull-right wallet-add-currency-submit">
+            <input type="text" name="name" class=" form-control" placeholder="$$i18n(currency_name_placeholder)">
+            <input type="text" name="rate" class="wallet-form-sep form-control" placeholder="$$i18n(currency_rate_placeholder)">
+            <input type="submit" value="$$i18n(submit_currency)" class="btn btn-warning pull-right wallet-add-currency-submit">
         </form>
     </div>
     <div class="container-fluid">
-        <h4>Website currency</h4>
+        <h4>$$i18n(website_currency_title)</h4>
         <ul class="list-group">
-          <li class="list-group-item">::site_currency.cu_name::
-          <button class="btn btn-info btn-xs disabled pull-right">rate: ::site_currency.cu_rate::</button></li>
+          <li class="list-group-item">::site_currency.name::
+          <button class="btn btn-info btn-xs disabled pull-right">$$i18n(currency_rate)</button></li>
         </ul>
     </div>
     <div class="container-fluid">
-        <h4>Here is a list of the existing currency</h4>
+        <h4>$$i18n(list_currency_title)</h4>
         <ul class="list-group">
           ::foreach currency_list::
           <li class="list-group-item">::currency_name::
-          <a href="::base_url::/beluga/wallet/removeCurrency?id=::currency_id::" class="btn btn-danger btn-xs pull-right">Delete</a>
-          <a href="::base_url::/beluga/wallet/setSiteCurrency?id=::currency_id::" class="wallet-btn-download btn btn-success btn-xs pull-right">Set as website currency</a>
-          <button class="btn btn-info btn-xs disabled pull-right wallet-btn-download">rate: ::currency_rate::</button></li>
+          <a href="::base_url::/beluga/wallet/removeCurrency?id=::currency_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete_currency)</a>
+          <a href="::base_url::/beluga/wallet/setSiteCurrency?id=::currency_id::" class="wallet-btn-download btn btn-success btn-xs pull-right">$$i18n(choose_website_currency)</a>
+          <button class="btn btn-info btn-xs disabled pull-right wallet-btn-download">$$i18n(currency_rate)</button></li>
           ::end::
         </ul>
     </div>

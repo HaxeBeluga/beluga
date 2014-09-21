@@ -7,6 +7,7 @@ import haxe.ds.Option;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.BelugaI18n;
 
 // Beluga mods
 import beluga.module.wallet.model.Currency;
@@ -18,12 +19,11 @@ import beluga.module.account.Account;
 class WalletImpl extends ModuleImpl implements WalletInternal {
     public var triggers = new WalletTrigger();
     public var widgets: WalletWidget;
+    public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/local/");
     // two errors for admin: global -> cannot access, local -> fields errors.
-    var admin_global_error = "";
     var admin_local_error = "";
     // two error for user widget
-    var global_error = "";
-    var local_error = "";
+    var user_authenticated = true;
 
     // ID of the unique field of SiteCurrency
     public static var WEBSITE_ID = 1;
@@ -38,7 +38,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     public function create(): Void {
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.global_error = "Vous devez etres identifie pour acceder au widget porte-feuille !";
+            this.user_authenticated = false;
             this.triggers.creationFail.dispatch();
         } else { // get the logged user
             var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
@@ -61,7 +61,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
         // check if the user is logged
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.global_error = "Vous devez etres identifie pour acceder au widget porte-feuille !";
+            this.user_authenticated = false;
         } else { // get the logged user
             user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         }
@@ -78,8 +78,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
 
         return {
-            wallet_local_error: this.local_error,
-            wallet_global_error: this.global_error,
+            user_authenticated: this.user_authenticated,
             has_wallet: has_wallet,
             user: user,
             founds: user_founds,
@@ -94,14 +93,14 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     public function getAdminContext(): Dynamic {
         // Check if user is logged to display the widget, if not set the global error
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.admin_global_error = "Vous devez etres identifie pour acceder a ce widget !";
+            this.user_authenticated = false;
         }
         // retrieve the currencys list
         var currency_list = this.getCurrencys();
         // then the site currency
         var site_currency = this.getSiteCurrencyOrDefault();
         return {
-            admin_wallet_global_error: this.admin_global_error,
+            user_authenticated: this.user_authenticated,
             admin_wallet_local_error: this.admin_local_error,
             currency_list: currency_list,
             site_currency: site_currency
@@ -253,7 +252,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         } catch( unknown : Dynamic ) { // ... or return null
             currency = new Currency();
             currency.rate =  0.;
-            currency.name = "No currency set for this site !";
+            currency.name = "$$i18n(missing_currency)";
         }
 
         return currency;
