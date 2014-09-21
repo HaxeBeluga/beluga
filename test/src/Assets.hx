@@ -69,7 +69,7 @@ class Assets
 		//Clean assets
 		for (file in FileSystem.readDirectory(dest))
 		{
-			if (file.charAt(0) == "." || ["dominax", "lib", "res", "temp"].indexOf(file) >= 0)
+			if (file.charAt(0) == "." || ["dominax", "lib", "res", "temp", "js"].indexOf(file) >= 0)
 				continue ;
 			if (FileSystem.isDirectory(dest + "/" + file))
 				deepDelete(dest + "/" + file);
