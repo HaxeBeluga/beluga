@@ -149,7 +149,8 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
                 });
                 c.delete();
             }
-            beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart_success", [bought_items_list]);
+            this.triggers.checkoutCartSuccess.dispatch();
+            // beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart_success", [bought_items_list]);
         } else {
             this.error = "You should be connected to remove a product from your cart.";
             this.triggers.checkoutCartFail.dispatch();

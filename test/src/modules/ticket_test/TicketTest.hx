@@ -3,7 +3,6 @@ package modules.ticket_test;
 // Beluga
 import beluga.core.Beluga;
 import beluga.core.Widget;
-import beluga.core.macro.MetadataReader;
 import beluga.module.ticket.Ticket;
 import beluga.module.notification.Notification;
 

@@ -3,7 +3,6 @@ package modules.fileupload_test;
 // Beluga
 import beluga.core.Beluga;
 import beluga.core.Widget;
-import beluga.core.macro.MetadataReader;
 import beluga.module.fileupload.Fileupload;
 import beluga.module.account.Account;
 import beluga.module.notification.Notification;

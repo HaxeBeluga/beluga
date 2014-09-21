@@ -3,7 +3,6 @@ package modules.market_test;
 // Beluga
 import beluga.core.Beluga;
 import beluga.core.Widget;
-import beluga.core.macro.MetadataReader;
 import beluga.module.market.Market;
 import beluga.module.account.Account;
 

@@ -13,7 +13,6 @@ import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
 import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
-import beluga.core.macro.MetadataReader;
 import beluga.core.BelugaI18n;
 
 enum LastLoginErrorType {
