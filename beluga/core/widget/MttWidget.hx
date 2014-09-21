@@ -12,7 +12,7 @@ class MttWidget<WImpl: ModuleImpl> implements Widget {
     public var mod: WImpl;
     public var i18n : Dynamic;
 
-    // private static var id = 0;
+    private static var id = 0;
     private var template : Template;
 
     public function new<T: Module>(clazz : Class<T>, mttfile : String) {
@@ -32,6 +32,7 @@ class MttWidget<WImpl: ModuleImpl> implements Widget {
     inline private function getContextIntern() {
         var context = getContext();
         context.base_url = ConfigLoader.getBaseUrl();
+        context.id = MttWidget.id++;
         return context;
     }
 
