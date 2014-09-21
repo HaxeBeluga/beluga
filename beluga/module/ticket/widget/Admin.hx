@@ -15,7 +15,6 @@ class Admin extends MttWidget<TicketImpl> {
     override private function getContext() {
         var context = mod.getAdminContext();
         context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
         return context;
     }
 

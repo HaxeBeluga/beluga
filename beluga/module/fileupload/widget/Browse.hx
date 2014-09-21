@@ -11,10 +11,7 @@ class Browse extends MttWidget<FileuploadImpl> {
         super(Fileupload, mttfile);
     }
 
-    override private function getContext() {
-        var context = mod.getBrowseContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext(): Dynamic {
+        return mod.getBrowseContext();
     }
 }

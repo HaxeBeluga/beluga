@@ -13,10 +13,7 @@ class Admin extends MttWidget<WalletImpl> {
         this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/show/", mod.i18n);
     }
 
-    override private function getContext() {
-        var context = mod.getAdminContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext(): Dynamic {
+        return mod.getAdminContext();
     }
 }

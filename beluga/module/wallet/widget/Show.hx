@@ -15,9 +15,6 @@ class Show extends MttWidget<WalletImpl> {
     }
 
     override private function getContext() {
-        var context = mod.getShowContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+        return mod.getShowContext();
     }
 }

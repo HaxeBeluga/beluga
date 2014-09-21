@@ -11,10 +11,7 @@ class Cart extends MttWidget<MarketImpl> {
         super(Market, mttfile);
     }
 
-    override private function getContext() {
-        var context = mod.getCartContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext(): Dynamic{
+        return mod.getCartContext();
     }
 }

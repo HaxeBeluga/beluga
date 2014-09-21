@@ -11,10 +11,7 @@ class Display extends MttWidget<MarketImpl> {
         super(Market, mttfile);
     }
 
-    override private function getContext() {
-        var context = mod.getDisplayContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
-        return context;
+    override private function getContext(): Dynamic {
+        return mod.getDisplayContext();
     }
 }
