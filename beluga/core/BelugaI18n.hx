@@ -6,6 +6,7 @@ import beluga.tool.DynamicTool;
 import haxe.macro.Expr;
 import haxe.Template;
 import haxe.macro.Context;
+import haxe.Template;
 
 class UnknowLangException extends BelugaException
 {

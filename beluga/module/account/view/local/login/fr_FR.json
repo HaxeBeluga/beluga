@@ -1,5 +1,5 @@
 ﻿{
     "identifier": "Identifiant",
     "password": "Mot de passe",
-	"alreadyLogged": "Vous êtes déja connecté en tant que ::loggedUser.login::!"
+    "alreadyLogged": "Vous êtes déja connecté en tant que ::loggedUser.login::!"
 }
