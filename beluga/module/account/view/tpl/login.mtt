@@ -33,7 +33,7 @@
     </form>
     ::else::
     <div>
-        You are already logged as ::loggedUser.login::! <br/>
+        $$i18n(alreadyLogged)<br/>
         <a href="::base_url::/account/logout">Log out</a></li>
     </div>
     ::end::
