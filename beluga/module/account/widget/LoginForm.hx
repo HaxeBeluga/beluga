@@ -8,31 +8,29 @@ import beluga.core.macro.JsonTool;
 import beluga.core.BelugaI18n;
 import beluga.tool.DynamicTool;
 
-class LoginForm extends MttWidget {
-    var acc : AccountImpl;
-	public var i18n : Dynamic;
+class LoginForm extends MttWidget<AccountImpl> {
+    public var i18n : Dynamic;
 
     public function new (mttfile = "beluga_account_login.mtt") {
-        super(mttfile);
-        acc = cast Beluga.getInstance().getModuleInstance(Account);
-		i18n = BelugaI18n.loadI18nFolder("/module/account/view/local/login/", acc.i18n);
+        super(Account, mttfile);
+        i18n = BelugaI18n.loadI18nFolder("/module/account/view/local/login/", mod.i18n);
     }
 
     override private function getContext() {
         var context = {
-            isLogged : acc.isLogged,
-            loggedUser : acc.loggedUser,
+            isLogged : mod.isLogged,
+            loggedUser : mod.loggedUser,
             base_url : ConfigLoader.getBaseUrl(),
             id: MttWidget.id++,
         };
         return context;
     }
 
-	override function getMacro() 
-	{
-		var m = {
-			i18n: MttWidget.getI18nKey.bind(_, i18n, _)
-		};
-		return m;
-	}
+    override function getMacro()
+    {
+        var m = {
+            i18n: MttWidget.getI18nKey.bind(_, i18n, _)
+        };
+        return m;
+    }
 }

@@ -1,22 +1,22 @@
 package beluga.core.widget;
 
+import beluga.core.Beluga;
+import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
+
 import haxe.Template;
 import haxe.Resource;
 
-/**
- * ...
- * @author brissa_A
- */
-class MttWidget implements Widget
-{
+class MttWidget<WImpl: ModuleImpl> implements Widget {
+    public var mod: WImpl;
 
     private static var id = 0;
     private var template : Template;
 
-    public function new(mttfile : String)
-    {
+    public function new<T: Module>(clazz : Class<T>, mttfile : String) {
         var templateFileContent = Resource.getString(mttfile);
-        template = new haxe.Template(templateFileContent);
+        this.template = new haxe.Template(templateFileContent);
+        this.mod = cast Beluga.getInstance().getModuleInstance(clazz);
     }
 
     public function render() : String {

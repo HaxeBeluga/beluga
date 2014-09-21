@@ -15,31 +15,29 @@ import beluga.core.macro.ConfigLoader.ModuleConfig;
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class ModuleImpl implements ModuleInternal
 {
-	//Hold the instance of the Beluga object that created this module
-	private var beluga : Beluga;
+    //Hold the instance of the Beluga object that created this module
+    private var beluga : Beluga;
 
-	public function new() : Void
-	{
-	}
+    public function new() : Void
+    {
+    }
 
-	public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
-		this.beluga = beluga;
+    public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
+        this.beluga = beluga;
 
-		for (table in module.tables) {
-			//Initialize all module tables
-			beluga.db.initTable(module.name, table);
-		}
-	}
+        for (table in module.tables) {
+            //Initialize all module tables
+            beluga.db.initTable(module.name, table);
+        }
+    }
 
-	public function initialize(beluga : Beluga) : Void {
-		
-	}
+    public function initialize(beluga : Beluga) : Void {}
 
-	
-	public function getWidget(name : String) : Widget {
-		//First retrieve the class path
-		var module = Type.getClassName(Type.getClass(this)).split(".")[2];
-		return new Widget(module, name);
-	}
+
+    public function getWidget(name : String) : Widget {
+        //First retrieve the class path
+        var module = Type.getClassName(Type.getClass(this)).split(".")[2];
+        return new Widget(module, name);
+    }
 
 }

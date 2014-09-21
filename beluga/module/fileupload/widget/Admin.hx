@@ -5,12 +5,10 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.fileupload.Fileupload;
 
-class Admin extends MttWidget {
-    var mod : Fileupload;
+class Admin extends MttWidget<FileuploadImpl> {
 
     public function new (mttfile = "beluga_fileupload_admin.mtt") {
-        super(mttfile);
-        mod = Beluga.getInstance().getModuleInstance(Fileupload);
+        super(Fileupload, mttfile);
     }
 
     override private function getContext() {

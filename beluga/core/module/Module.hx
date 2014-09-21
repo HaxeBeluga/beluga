@@ -5,7 +5,6 @@ import beluga.core.Widget;
  * ...
  * @author Masadow
  */
-interface Module
-{
+interface Module {
 	public function getWidget(name : String) : Widget;
 }

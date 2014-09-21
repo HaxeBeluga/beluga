@@ -5,10 +5,6 @@ import haxe.macro.Context;
 import beluga.tool.DynamicTool;
 import haxe.macro.Expr;
 
-/**
- * ...
- * @author Alexis Brissard
- */
 class UnknowLangException extends BelugaException
 {
     public var lang(default, null) : String;
@@ -55,8 +51,15 @@ class BelugaI18n
 
     macro public static function loadI18nFolder(folderPath : String, ?parent : Expr ) {
         var i18n = { };
+
         for (lang in supportedLangList) {
-            Reflect.setField(i18n, lang, JsonTool.load(folderPath + lang + ".json"));
+            try { // try to find the local
+                Reflect.setField(i18n, lang, JsonTool.load(folderPath + lang + ".json"));
+            } catch (_: Dynamic) {
+                // nothing to do
+                // Beluga accept the list BelugaI18n::supportedLangList of language
+                // but the user don't need to provide each of them
+            }
         }
         var expr = Context.makeExpr(i18n, Context.currentPos());
         if (parent == null) {
@@ -65,6 +68,7 @@ class BelugaI18n
             return macro BelugaI18n.concat($ { parent }, $ { expr } );
         }
     }
+
 
     public static function concatArray(i : Array<Dynamic>) {
         var c = { };
