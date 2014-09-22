@@ -18,8 +18,8 @@ class Print extends MttWidget<FaqImpl> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var entries = mod.getAllFromCategory(mod.category_id);
         var cat = mod.getCategory(mod.category_id);
-        var error_msg = if (mod.error_msg != "") { BelugaI18n.getKey(this.i18n, mod.error_msg); } else { mod.error_msg; };
-        var success_msg = if (mod.success_msg != "") { BelugaI18n.getKey(this.i18n, mod.success_msg); } else {mod.success_msg; };
+        var error_msg = (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg);
+        var success_msg = (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg);
         var parent_id = mod.parent_id;
 
         if (cat != null) {

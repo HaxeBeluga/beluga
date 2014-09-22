@@ -22,8 +22,8 @@ class EditCategory extends MttWidget<FaqImpl> {
         }*/
         return {
             path : "/beluga/faq/",
-            error : if (mod.error_msg != "") { BelugaI18n.getKey(this.i18n, mod.error_msg); } else { mod.error_msg; },
-            success : if (mod.success_msg != "") { BelugaI18n.getKey(this.i18n, mod.success_msg); } else {mod.success_msg; },
+            error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             category_id : mod.category_id,
             name: cat.name,
             parent: if (cat != null) { cat.parent_id; } else { -1; },

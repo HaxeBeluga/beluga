@@ -18,8 +18,8 @@ class EditFaq extends MttWidget<FaqImpl> {
 
         return {
             path : "/beluga/faq/",
-            error : if (mod.error_msg != "") { BelugaI18n.getKey(this.i18n, mod.error_msg); } else { mod.error_msg; },
-            success : if (mod.success_msg != "") { BelugaI18n.getKey(this.i18n, mod.success_msg); } else {mod.success_msg; },
+            error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             parent : mod.category_id,
             id: mod.faq_id,
             name: faq.question,
