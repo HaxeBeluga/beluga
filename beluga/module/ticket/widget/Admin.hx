@@ -12,10 +12,13 @@ class Admin extends MttWidget<TicketImpl> {
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/admin/", mod.i18n);
     }
 
+    /// Returns the context for the admin widget in the form of a List<Dynamic>
+    /// { admin_error: String, labels_list: { label_name: String, label_id: Int } }
     override private function getContext() {
-        var context = mod.getAdminContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        return context;
+      return {
+            error: mod.error,
+            labels: mod.getLabelsList()
+        };
     }
 
 }

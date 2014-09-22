@@ -23,9 +23,9 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public var widgets: TicketWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/local/");
 
-    private var show_id: Int = 0;
+    public var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to display an error message if the user is no logged.
-    private var error: String = "";
+    public var error: String = "";
 
     public function new() {
         super();
@@ -41,17 +41,12 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         this.triggers.browse.dispatch();
     }
 
-    /// Set the context informations for the browse widget:
-    /// * Tickets informations
-    /// * closed / open tickets
-    /// * Existings labels
-    public function getBrowseContext(): Dynamic {
-        var tickets: List<Dynamic> = new List<Dynamic>();
-        var labels: List<Dynamic> = new List<Dynamic>();
+    public function getTickets(): {closed: Int, open: Int, list: List<Dynamic>} {
+        var tickets = new List<Dynamic>();
+        var message_count: Int = 0;
         var open: Int = 0;
         var closed: Int = 0;
         var status: String = "open";
-        var message_count: Int = 0;
 
         // Store all tickets in a Dynamic
         var row = Manager.cnx.request("SELECT * from beluga_tic_ticket ORDER BY date DESC");
@@ -81,86 +76,21 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             message_count = 0;
         }
 
-        // Store all labels names in a dynamic
-        labels = getLabelsList();
-
         return {
-            tickets_list: tickets,
-            labels_list: labels,
-            open_tickets: open,
-            closed_tickets: closed
+            closed: closed,
+            open: open,
+            list: tickets
         };
+
     }
 
     public function create(): Void {
         this.triggers.create.dispatch();
     }
 
-    /// Returns the context for the view create ticket
-    /// in the form of a List<Dynamic>
-    /// { labels_list: { label_name: String }, ticket_error: String }
-    public function getCreateContext(): Dynamic {
-        var labels: List<Dynamic> = new List<Dynamic>();
-        var users: List<Dynamic> = new List<Dynamic>();
-
-        // Store all labels names in a dynamic
-        for (l in Label.manager.search($id < 100)) {
-            labels.push({ label_name: l.name });
-        }
-        for (u in User.manager.search($id < 100)) {
-            users.push({
-                user_name: u.login,
-                user_id: u.id
-            });
-        }
-
-        return {
-            labels_list: labels,
-            ticket_error: this.error,
-            users_list: users
-        };
-    }
-
     public function show(args: { id: Int }): Void {
         this.show_id = args.id;
         this.triggers.show.dispatch();
-    }
-
-    /// Create the context for the Show view:
-    /// * retrieve all the tickets data +
-    /// * all the comments associated to the ticket
-    /// * then all the labels associated to the tickets
-    public function getShowContext(): Dynamic {
-        var ticket = TicketModel.manager.get(this.show_id);
-        var messages: List<Dynamic> = new List<Dynamic>();
-        var labels: List<Dynamic> = new List<Dynamic>();
-        var assignee: String = "None";
-
-        // retrieve messages informations
-        messages = this.getTicketMessages(ticket.id);
-
-        // retrieve associated labels
-        labels = this.getTicketLabels(ticket.id);
-
-        var assignement = Assignement.manager.search($ticket_id == ticket.id).first();
-        if (assignement != null) {
-            assignee = User.manager.get(assignement.user_id).login;
-        }
-
-        return {
-            ticket_subject: ticket.title,
-            ticket_id: ticket.id,
-            ticket_message: ticket.content,
-            ticket_create_date: ticket.date,
-            ticket_owner: User.manager.get(ticket.user_id).login,
-            ticket_message_count: messages.length,
-            messages_list: messages,
-            labels_list: labels,
-            ticket_status: ticket.status,
-            ticket_error: this.error,
-            ticket_assignee: assignee,
-            ticket_owner_id: User.manager.get(ticket.user_id).id
-        };
     }
 
     /// Just get the id of the ticket, then reopen it
@@ -279,15 +209,6 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         this.triggers.admin.dispatch();
     }
 
-    /// Returns the context for the admin widget in the form of a List<Dynamic>
-    /// { admin_error: String, labels_list: { label_name: String, label_id: Int } }
-    public function getAdminContext(): Dynamic {
-        return {
-            admin_error: this.error,
-            labels_list: this.getLabelsList()
-        };
-    }
-
     public function deletelabel(args: { id: Int }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
@@ -331,16 +252,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     /// The dynamic content is on the form :
     /// List<{ label_name: String, label_id: Int }>
-    public function getLabelsList(): List<Dynamic> {
-        var labels: List<Dynamic> = new List<Dynamic>();
-
-        for (l in Label.manager.search($id < 100)) {
-            labels.push({
-                label_name: l.name,
-                label_id: l.id
-            });
-        }
-
+    public function getLabelsList(): List<Label> {
+        var labels: List<Label> = Label.manager.dynamicSearch({});
         return labels;
     }
 
@@ -349,7 +262,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var message_count: Int = 0;
 
         for( u in Message.manager.search($ticket_id == ticket_id) ) {
-                message_count += 1;
+            message_count += 1;
         }
 
         return message_count;

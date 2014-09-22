@@ -167,6 +167,13 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         return list;
     }
 
+    // FIXME(Someone who wrote getUsers)
+    // I don't understant the meaning of the function getUsers so i wrote this
+    // one for the moment as i just want all the list of the user in the website.
+    public function getUsers2(): List<User> {
+        return User.manager.dynamicSearch({});
+    }
+
     public function getFriends(user_id: Int) : Array<User> {
         var friends = new Array<User>();
 

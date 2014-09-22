@@ -23,5 +23,8 @@
     "labels_list_label": "Here is a list of all labels",
     "delete": "Delete",
     "submit_new_label": "Submit new label",
-    "title_add_label": "Ajouter un nouveau label"
+    "title_add_label": "Submit a new label",
+    "close_ticket": "close",
+    "reopen_ticket": "reopen",
+    "comment_ticket": "Comment"
 }
