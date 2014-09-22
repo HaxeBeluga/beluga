@@ -6,6 +6,7 @@ import beluga.core.macro.ConfigLoader;
 import beluga.core.BelugaI18n;
 import beluga.module.ticket.Ticket;
 import beluga.module.account.Account;
+import beluga.module.ticket.TicketErrorKind;
 
 class Create extends MttWidget<TicketImpl> {
 
@@ -23,9 +24,20 @@ class Create extends MttWidget<TicketImpl> {
 
         return {
             labels: labels,
-            ticket_error: mod.error,
+            ticket_error: this.getErrorString(mod.error),
             users: users
         };
     }
 
+    private function getErrorString(error: TicketErrorKind): String {
+        return switch (error) {
+            case TicketUserNotLogged: BelugaI18n.getKey(i18n, "user_not_logged");
+            case TicketMessageEmpty: BelugaI18n.getKey(i18n, "ticket_message_empty");
+            case TicketTitleEmpty: BelugaI18n.getKey(i18n, "ticket_title_empty");
+            case TicketUndefinedLabelId: BelugaI18n.getKey(i18n, "undefined_label_id");
+            case TicketLabelEmpty: BelugaI18n.getKey(i18n, "ticket_label_empty");
+            case TicketLabelAlreadyExist: BelugaI18n.getKey(i18n, "ticket_label_exist");
+            case TicketErrorNone: "";
+        };
+    }
 }

@@ -16,6 +16,8 @@ import beluga.module.ticket.model.Message;
 import beluga.module.ticket.model.TicketLabel;
 import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
+import beluga.module.ticket.TicketErrorKind;
+
 import sys.db.Manager;
 
 class TicketImpl extends ModuleImpl implements TicketInternal {
@@ -25,7 +27,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     public var show_id: Int = 0;
     // FIXME: change this for an enum or whatever, just used to display an error message if the user is no logged.
-    public var error: String = "";
+    public var error: TicketErrorKind = TicketErrorNone;
 
     public function new() {
         super();
@@ -101,7 +103,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
          // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged) {
-            this.error = "You must be logged to reopen a ticket !";
+            this.error = TicketUserNotLogged;
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.status = 1;
@@ -118,7 +120,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged) {
-            this.error = "You must be logged to close a ticket !";
+            this.error = TicketUserNotLogged;
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.status = 0;
@@ -136,11 +138,11 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged) {
-            this.error = "You must be logged to create a ticket !";
-            this.show({id: args.id});
+            this.error = TicketUserNotLogged;
+            this.triggers.commentFail.dispatch({error: TicketUserNotLogged});
         } else if (args.message.length == 0) {
-            this.error = "Your message cannot be empty !";
-            this.show({id: args.id});
+            this.error = TicketMessageEmpty;
+            this.triggers.commentFail.dispatch({error: TicketMessageEmpty});
         } else {
             var message: Message = new Message();
             message.content = args.message;
@@ -148,7 +150,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             message.creation_date = Date.now();
             message.ticket_id = args.id;
             message.insert();
-            this.show({id: args.id});
+            this.triggers.commentSuccess.dispatch({id: args.id});
             this.notifyTicketComment(args.id);
         }
     }
@@ -173,11 +175,11 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var account = Beluga.getInstance().getModuleInstance(Account);
         var ticket = new TicketModel();
         if (!account.isLogged) {
-            this.error = "You must be logged to create a ticket !";
-            this.triggers.create.dispatch();
+            this.error = TicketUserNotLogged;
+            this.triggers.submitFail.dispatch({error: TicketUserNotLogged});
         } else if (args.title.length == 0) {
-            this.error = "Your title cannot be empty !";
-            this.triggers.create.dispatch();
+            this.error = TicketTitleEmpty;
+            this.triggers.submitFail.dispatch({error: TicketTitleEmpty});
         } else {
             ticket.user_id = account.loggedUser.id;
             ticket.date = Date.now();
@@ -201,7 +203,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
                 };
                 this.triggers.assignNotify.dispatch(args);
             }
-            this.show({id: ticket_id});
+            this.show_id = ticket_id;
+            this.triggers.submitSuccess.dispatch({id: ticket_id});
         }
     }
 
@@ -213,16 +216,16 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
         if (!account.isLogged) {
-            this.error = "You must be logged to delete a label !";
-            this.triggers.deleteLabelFail.dispatch();
+            this.error = TicketUserNotLogged;
+            this.triggers.deleteLabelFail.dispatch({error: TicketUserNotLogged});
         } else {
             if (this.labelExistFromID(args.id)) {
                 var label = Label.manager.get(args.id);
                 label.delete();
             this.triggers.deleteLabelSuccess.dispatch();
             } else {
-                this.error = "There is no existing label with the given id !";
-                this.triggers.deleteLabelFail.dispatch();
+                this.error = TicketUndefinedLabelId;
+                this.triggers.deleteLabelFail.dispatch({error: TicketUndefinedLabelId});
             }
         }
     }
@@ -231,15 +234,15 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
         if (!account.isLogged) {
-            this.error = "You must be logged to add a label !";
-            this.triggers.addLabelFail.dispatch();
+            this.error = TicketUserNotLogged;
+            this.triggers.addLabelFail.dispatch({error: TicketUserNotLogged});
         } else if (args.name.length == 0) {
-            this.error = "Your label cannot be empty!";
-            this.triggers.addLabelFail.dispatch();
+            this.error = TicketLabelEmpty;
+            this.triggers.addLabelFail.dispatch({error: TicketLabelEmpty});
         } else {
             if (this.labelExist(args.name)) {
-                this.error = "This label already exist!";
-                this.triggers.addLabelFail.dispatch();
+                this.error = TicketLabelAlreadyExist;
+                this.triggers.addLabelFail.dispatch({error: TicketLabelAlreadyExist});
             } else {
                 this.createNewLabel(args.name);
                 this.triggers.addLabelSuccess.dispatch();

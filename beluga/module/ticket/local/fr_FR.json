@@ -26,5 +26,11 @@
     "title_add_label": "Ajouter un nouveau label",
     "close_ticket": "fermer",
     "reopen_ticket": "re-ouvrir",
-    "comment_ticket": "Commenter"
+    "comment_ticket": "Commenter",
+    "user_not_logged": "Vous devez etre connecte pour effectuer cette action",
+    "ticket_message_empty": "Votre ne message ne peut pas etre vide",
+    "undefined_label_id": "Aucun label n'existe pour cette id",
+    "ticket_label_empty": "Vous devez specifier un label",
+    "ticket_label_exist": "Ce label exist deja",
+    "ticket_title_empty": "Le titre du label ne peut etre vide"
 }

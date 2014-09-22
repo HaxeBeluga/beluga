@@ -5,6 +5,7 @@ import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.ticket.Ticket;
 import beluga.module.notification.Notification;
+import beluga.module.ticket.TicketErrorKind;
 
 // BelugaTest
 import main_view.Renderer;
@@ -33,9 +34,13 @@ class TicketTest {
         this.ticket.triggers.admin.add(this.doAdminPage);
         this.ticket.triggers.addLabelSuccess.add(this.doAdminPage);
         this.ticket.triggers.deleteLabelSuccess.add(this.doAdminPage);
-        this.ticket.triggers.addLabelFail.add(this.doAdminPage);
-        this.ticket.triggers.deleteLabelFail.add(this.doAdminPage);
+        this.ticket.triggers.addLabelFail.add(this.doAdminFailPage);
+        this.ticket.triggers.deleteLabelFail.add(this.doAdminFailPage);
         this.ticket.triggers.assignNotify.add(this.doNotifyAssign);
+        this.ticket.triggers.submitFail.add(this.doSubmitFailPage);
+        this.ticket.triggers.submitSuccess.add(this.doSubmitSuccessPage);
+        this.ticket.triggers.commentFail.add(this.doCommentFailPage);
+        this.ticket.triggers.commentSuccess.add(this.doCommentSuccessPage);
     }
 
     public function doBrowsePage() {
@@ -73,6 +78,26 @@ class TicketTest {
             ticketWidget: ticket.widgets.admin.render()
         });
         Sys.print(html);
+    }
+
+    public function doAdminFailPage(args: {error: TicketErrorKind}) {
+        this.doAdminPage();
+    }
+
+    public function doCommentFailPage(args: {error: TicketErrorKind}) {
+        this.doShowPage();
+    }
+
+    public function doSubmitFailPage(args: {error: TicketErrorKind}) {
+        this.doCreatePage();
+    }
+
+    public function doCommentSuccessPage(args: {id: Int}) {
+        this.doShowPage();
+    }
+
+    public function doSubmitSuccessPage(args: {id: Int}) {
+        this.doShowPage();
     }
 
     public function doNotifyAssign(args : {title : String, text : String, user_id: Int}) {

@@ -9,6 +9,7 @@ import beluga.module.ticket.model.TicketModel;
 import beluga.module.ticket.model.Assignement;
 import beluga.module.ticket.Ticket;
 import beluga.module.account.model.User;
+import beluga.module.ticket.TicketErrorKind;
 
 class Show extends MttWidget<TicketImpl> {
 
@@ -48,8 +49,21 @@ class Show extends MttWidget<TicketImpl> {
             messages_list: messages,
             labels_list: labels,
             ticket_status: ticket.status,
-            ticket_error: mod.error,
+            ticket_error: this.getErrorString(mod.error),
             ticket_assignee: assignee,
             ticket_owner_id: User.manager.get(ticket.user_id).id
-        };    }
+        };
+    }
+
+    private function getErrorString(error: TicketErrorKind): String {
+        return switch (error) {
+            case TicketUserNotLogged: BelugaI18n.getKey(i18n, "user_not_logged");
+            case TicketMessageEmpty: BelugaI18n.getKey(i18n, "ticket_message_empty");
+            case TicketTitleEmpty: BelugaI18n.getKey(i18n, "ticket_title_empty");
+            case TicketUndefinedLabelId: BelugaI18n.getKey(i18n, "undefined_label_id");
+            case TicketLabelEmpty: BelugaI18n.getKey(i18n, "ticket_label_empty");
+            case TicketLabelAlreadyExist: BelugaI18n.getKey(i18n, "ticket_label_exist");
+            case TicketErrorNone: "";
+        };
+    }
 }
