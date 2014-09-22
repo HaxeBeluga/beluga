@@ -11,7 +11,7 @@ class Print extends MttWidget<FaqImpl> {
 
     public function new (mttfile = "beluga_faq_faqs.mtt") {
         super(Faq, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/local/print/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/print/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {
@@ -26,20 +26,45 @@ class Print extends MttWidget<FaqImpl> {
             parent_id = cat.parent_id;
         }
         if (mod.category_id == -1) {
-            return {faqs : entries, categories : entries.categories, path : "/beluga/faq/", parent_id : parent_id,
-                error : error_msg, success : success_msg, actual_id : mod.category_id, user : user,
-                    base_url : ConfigLoader.getBaseUrl() };
+            return {
+                faqs : entries,
+                categories : entries.categories,
+                path : "/beluga/faq/",
+                parent_id : parent_id,
+                error : error_msg,
+                success : success_msg,
+                actual_id : mod.category_id,
+                user : user,
+                base_url : ConfigLoader.getBaseUrl()
+            };
         } else {
             var cat = mod.getCategory(mod.category_id);
 
             if (cat == null) {
-                return {faqs : entries, categories : entries.categories, path : "beluga/faq/", parent_id : parent_id,
-                    error : error_msg, success : success_msg, actual_id : mod.category_id, user : user,
-                    base_url : ConfigLoader.getBaseUrl() };
+                return {
+                    faqs : entries,
+                    categories : entries.categories,
+                    path : "beluga/faq/",
+                    parent_id : parent_id,
+                    error : error_msg,
+                    success : success_msg,
+                    actual_id : mod.category_id,
+                    user : user,
+                    base_url : ConfigLoader.getBaseUrl()
+                };
             } else {
-                return {faqs : entries, categories : entries.categories, path : "/beluga/faq/", user : user, parent_id : parent_id,
-                    error : error_msg, success : success_msg, actual_id : mod.category_id, category_name: cat.name,
-                    base_url : ConfigLoader.getBaseUrl() };
+                return {
+                    faqs : entries,
+                    categories : entries.categories,
+                    path : "/beluga/faq/",
+                    user : user,
+                    parent_id : parent_id,
+                    error : error_msg,
+                    success : success_msg,
+                    actual_id : mod.category_id,
+                    category_name: cat.name,
+                    base_url : ConfigLoader.getBaseUrl()
+                };
             }
         }
     }

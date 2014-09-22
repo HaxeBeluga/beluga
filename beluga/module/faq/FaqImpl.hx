@@ -26,7 +26,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     public var parent_id : Int;
 
     public var widgets: FaqWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/faq/local/");
+    public var i18n = BelugaI18n.loadI18nFolder("/module/faq/locale/");
 
     public function new() {
         super();
@@ -276,8 +276,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function editCategory(args : {category_id: Int, name : String}) {
-        for (tmp in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
-            category_id = tmp.parent_id;
+        for (category_to_edit in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
+            category_id = category_to_edit.parent_id;
             if (args.name == "") {
                 error_msg = "incomplete_name";
                 this.triggers.editCategoryFail.dispatch();
@@ -288,15 +288,15 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
                 this.triggers.editCategoryFail.dispatch();
                 return;
             }
-            for (tmp2 in CategoryModel.manager.dynamicSearch({parent_id: tmp.parent_id})) {
-                if (tmp2.name == args.name) {
+            for (same_level_category in CategoryModel.manager.dynamicSearch({parent_id: category_to_edit.parent_id})) {
+                if (same_level_category.name == args.name) {
                     error_msg = "category_already_exists";
                     this.triggers.editCategoryFail.dispatch();
                     return;
                 }
             }
-            tmp.name = args.name;
-            tmp.update();
+            category_to_edit.name = args.name;
+            category_to_edit.update();
             success_msg = "category_edit_success";
             this.triggers.editCategorySuccess.dispatch();
             return;

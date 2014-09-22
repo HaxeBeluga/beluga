@@ -10,7 +10,7 @@ class Create extends MttWidget<FaqImpl> {
 
     public function new (mttfile = "beluga_faq_create_faq.mtt") {
         super(Faq, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/local/create/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/create/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

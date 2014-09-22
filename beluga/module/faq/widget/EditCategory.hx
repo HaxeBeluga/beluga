@@ -10,16 +10,12 @@ class EditCategory extends MttWidget<FaqImpl> {
 
     public function new (mttfile = "beluga_faq_edit_category.mtt") {
         super(Faq, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/local/edit_category/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/edit_category/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {
         var cat = mod.getCategory(mod.category_id);
 
-        /*if (cat == null) {
-            doEditCategoryFail({error : "Unknown category"});
-            return;
-        }*/
         return {
             path : "/beluga/faq/",
             error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
