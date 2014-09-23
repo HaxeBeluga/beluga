@@ -37,5 +37,10 @@ The following targets are currently supported
 * Php
 * Neko
 
-### Credits
+## Credits
 Thanks to [Jonathan Pellen](http://fr.viadeo.com/fr/profile/jonathan.pellen) for our wonderful logo.
+
+## License
+
+Beluga is distributed under the MIT license.
+More information [here](LICENSE.md)
