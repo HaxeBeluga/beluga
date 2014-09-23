@@ -3,23 +3,25 @@ package beluga.module.faq;
 import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
 
+import beluga.module.faq.FaqErrorKind;
+
 import sys.db.Types;
 
 class FaqTrigger {
     public var defaultPage = new TriggerVoid();
 
-    public var createFail = new TriggerVoid();
+    public var createFail = new Trigger<{error: FaqErrorKind}>();
     public var createSuccess = new TriggerVoid();
-    public var deleteFail = new TriggerVoid();
+    public var deleteFail = new Trigger<{error: FaqErrorKind}>();
     public var deleteSuccess = new TriggerVoid();
-    public var editFail = new TriggerVoid();
+    public var editFail = new Trigger<{error: FaqErrorKind}>();
     public var editSuccess = new TriggerVoid();
 
-    public var createCategoryFail = new TriggerVoid();
+    public var createCategoryFail = new Trigger<{error: FaqErrorKind}>();
     public var createCategorySuccess = new TriggerVoid();
-    public var deleteCategoryFail = new TriggerVoid();
+    public var deleteCategoryFail = new Trigger<{error: FaqErrorKind}>();
     public var deleteCategorySuccess = new TriggerVoid();
-    public var editCategoryFail = new TriggerVoid();
+    public var editCategoryFail = new Trigger<{error: FaqErrorKind}>();
     public var editCategorySuccess = new TriggerVoid();
 
     public var redirectCreateFAQ = new TriggerVoid();

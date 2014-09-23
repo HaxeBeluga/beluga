@@ -8,6 +8,7 @@ import beluga.module.faq.Faq;
 import beluga.module.faq.model.FaqModel;
 import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
+import beluga.module.faq.FaqErrorKind;
 import haxe.web.Dispatch;
 import haxe.Resource;
 import main_view.Renderer;
@@ -27,17 +28,17 @@ class FaqTest {
 
         this.faq.triggers.defaultPage.add(this.doDefault);
         this.faq.triggers.createCategorySuccess.add(this.print);
-        this.faq.triggers.createCategoryFail.add(this.redirectCreateCategory);
+        this.faq.triggers.createCategoryFail.add(this.createCategoryFail);
         this.faq.triggers.deleteCategorySuccess.add(this.print);
-        this.faq.triggers.deleteCategoryFail.add(this.print);
+        this.faq.triggers.deleteCategoryFail.add(this.deleteCategoryFail);
         this.faq.triggers.editCategorySuccess.add(this.print);
-        this.faq.triggers.editCategoryFail.add(this.print);
+        this.faq.triggers.editCategoryFail.add(this.editCategoryFail);
         this.faq.triggers.createSuccess.add(this.print);
-        this.faq.triggers.createFail.add(this.redirectCreateFAQ);
+        this.faq.triggers.createFail.add(this.createFail);
         this.faq.triggers.deleteSuccess.add(this.print);
-        this.faq.triggers.deleteFail.add(this.print);
+        this.faq.triggers.deleteFail.add(this.deleteFail);
         this.faq.triggers.editSuccess.add(this.print);
-        this.faq.triggers.editFail.add(this.print);
+        this.faq.triggers.editFail.add(this.editFail);
         this.faq.triggers.redirectCreateFAQ.add(this.redirectCreateFAQ);
         this.faq.triggers.redirectCreateCategory.add(this.redirectCreateCategory);
         this.faq.triggers.print.add(this.print);
@@ -54,6 +55,30 @@ class FaqTest {
             faqWidget: faq.widgets.print.render()
         });
         Sys.print(html);
+    }
+
+    public function createCategoryFail(args: {error: FaqErrorKind}) {
+        this.redirectCreateCategory();
+    }
+
+    public function deleteCategoryFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function editCategoryFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function createFail(args: {error: FaqErrorKind}) {
+        this.redirectCreateFAQ();
+    }
+
+    public function deleteFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function editFail(args: {error: FaqErrorKind}) {
+        this.print();
     }
 
     public function redirectCreateCategory() {
