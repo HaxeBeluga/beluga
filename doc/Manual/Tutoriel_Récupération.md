@@ -9,7 +9,7 @@ Il vous faudra tout d'abord télécharger des outils :
 * un client [github](https://windows.github.com) approprié à votre OS (Windows, Linux ...)
 * [Haxe3](http://haxe.org/download)
 
-*Pour que le client git soit fonctionnel, recherchez les variables d’environnement de votre système avec la fonction *recherche* et modifiez la variable **Path** en ajoutant ceci à la fin :
+*Pour que le client git soit fonctionnel, recherchez les variables d’environnement de votre système avec la fonction **recherche** et modifiez la variable **Path** en ajoutant ceci à la fin :
 « ;C:\Program Files (x86)\Git\cmd » (ou le chemin d’installation de git si vous ne l’avez pas laissé par défaut)*
 
 ![Environement variables](img/Variables_environnement.jpg)

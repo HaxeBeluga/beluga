@@ -19,3 +19,17 @@ Le projet a été fait avec le langage **Haxe**.
 Haxe est un langage de programmation open source. Il permet de compiler vers 9 langages différents : Java, Javascript, C#, C++, Neko, PHP, Python, Actionscript 3 et Flash.
 
 Notre projet a pour le moment 2 langages cibles : PHP et Neko.
+
+## Hello World
+
+...
+
+## Récupération du projet et contribution
+
+Voir le tutoriel de Récupération (https://github.com/FassiClement/Beluga/blob/documentation/doc/Manual/Tutoriel_Récupération.md)
+
+## Création d'un module
+
+...
+
+##
