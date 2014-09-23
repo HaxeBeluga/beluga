@@ -14,14 +14,14 @@ class EditFaq extends MttWidget<FaqImpl> {
     }
 
     override private function getContext() : Dynamic {
-        var faq = mod.getFAQ(mod.faq_id);
+        var faq = mod.getFAQ(switch (mod.faq_id) { case Some(id) : id; case None : -1;});
 
         return {
             path : "/beluga/faq/",
             error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
-            parent : mod.category_id,
-            id: mod.faq_id,
+            parent : switch (mod.category_id) { case Some(id) : id; case None : -1;},
+            id: switch (mod.faq_id) { case Some(id) : id; case None : -1;},
             name: faq.question,
             answer: faq.answer,
             base_url : ConfigLoader.getBaseUrl()

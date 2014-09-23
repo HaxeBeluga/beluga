@@ -6,10 +6,12 @@ import beluga.module.faq.model.FaqModel;
 import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
 
+import haxe.ds.Option;
+
 interface Faq extends Module {
     public var triggers: FaqTrigger;
-    public var faq_id : Int;
-    public var category_id : Int;
+    public var faq_id : Option<Int>;
+    public var category_id : Option<Int>;
     public var widgets : FaqWidget;
 
     public function redirectEditFAQ() : Bool;

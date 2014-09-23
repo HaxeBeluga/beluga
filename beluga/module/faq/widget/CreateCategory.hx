@@ -18,7 +18,7 @@ class CreateCategory extends MttWidget<FaqImpl> {
             path : "/beluga/faq/",
             error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
-            parent : mod.category_id,
+            parent : switch (mod.category_id) { case Some(id) : id; case None : -1;},
             base_url : ConfigLoader.getBaseUrl()
         };
     }

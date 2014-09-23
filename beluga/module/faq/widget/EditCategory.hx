@@ -14,13 +14,13 @@ class EditCategory extends MttWidget<FaqImpl> {
     }
 
     override private function getContext() : Dynamic {
-        var cat = mod.getCategory(mod.category_id);
+        var cat = mod.getCategory(switch (mod.category_id) { case Some(id) : id; case None : -1;});
 
         return {
             path : "/beluga/faq/",
             error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
-            category_id : mod.category_id,
+            category_id : switch (mod.category_id) { case Some(id) : id; case None : -1;},
             name: cat.name,
             parent: if (cat != null) { cat.parent_id; } else { -1; },
             base_url : ConfigLoader.getBaseUrl()

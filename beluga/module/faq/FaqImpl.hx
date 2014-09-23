@@ -1,15 +1,16 @@
 package beluga.module.faq;
 
 import haxe.xml.Fast;
+import haxe.ds.Option;
 
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.BelugaI18n;
 
 import beluga.module.account.Account;
 import beluga.module.faq.model.FaqModel;
 import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
-import beluga.core.BelugaI18n;
 import beluga.module.faq.FaqErrorKind;
 
 class FaqImpl extends ModuleImpl implements FaqInternal {
@@ -18,13 +19,12 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     // Intern variables for contexts
     public var error_msg : String;
     public var success_msg : String;
-    public var faq_id : Int;
-    public var category_id : Int;
+    public var faq_id : Option<Int>;
+    public var category_id : Option<Int>;
 
     // Saved values in case of create FAQ error
     public var question : String;
     public var answer : String;
-    public var parent_id : Int;
 
     public var widgets: FaqWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/faq/locale/");
@@ -35,8 +35,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         success_msg = "";
         question = "";
         answer = "";
-        faq_id = -1;
-        category_id = -1;
+        faq_id = None;
+        category_id = None;
     }
 
     override public function initialize(beluga : Beluga) : Void {
@@ -44,7 +44,10 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function redirectEditFAQ() : Bool {
-        var faq = getFAQ(faq_id);
+        var faq = getFAQ(switch (faq_id) {
+                case Some(id) : id;
+                case None : -1;
+            });
 
         if (faq == null) {
             error_msg = "unknown_category";
@@ -61,7 +64,11 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function getCurrentCategory() : CategoryModel {
-        for (tmp in CategoryModel.manager.dynamicSearch( { id: category_id} )) {
+        var unwrap_id = switch(category_id) {
+            case Some(id) : id;
+            case None : -1;
+        };
+        for (tmp in CategoryModel.manager.dynamicSearch( { id: unwrap_id} )) {
             return tmp;
         }
         return null;
@@ -100,7 +107,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         //  Let's save values in case something goes wrong
         question = args.question;
         answer = args.answer;
-        category_id = args.category_id;
+        category_id = Some(args.category_id);
 
         if (args.question == "") {
             error_msg = "incomplete_question";
@@ -126,7 +133,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             }
             if (false == found) {
                 error_msg = "unknown_category";
-                category_id = -1;
+                category_id = None;
                 this.triggers.createFail.dispatch({error: UnknownCategory});
                 return;
             }
@@ -150,7 +157,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function createCategory(args : {name : String, parent: Int}) {
-        category_id = args.parent;
+        category_id = Some(args.parent);
         if (args.name == "") {
             error_msg = "missing_name";
             this.triggers.createCategoryFail.dispatch({error: MissingName});
@@ -191,12 +198,12 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         entry.parent_id = args.parent;
         entry.insert();
         success_msg = "category_create_success";
-        category_id = entry.parent_id;
+        category_id = Some(entry.parent_id);
         this.triggers.createCategorySuccess.dispatch();
     }
 
     public function deleteFAQ(args : {question_id : Int, category_id : Int}) {
-        category_id = args.category_id;
+        category_id = Some(args.category_id);
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             error_msg = "missing_login";
             this.triggers.deleteFail.dispatch({error: MissingLogin});
@@ -229,7 +236,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function deleteCategory(args : {category_id : Int, parent_id: Int}) {
-        category_id = args.parent_id;
+        category_id = Some(args.parent_id);
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             error_msg = "missing_login";
             this.triggers.deleteCategoryFail.dispatch({error: MissingLogin});
@@ -245,7 +252,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function editFAQ(args : {faq_id: Int, question : String, answer : String}) {
-        faq_id = args.faq_id;
+        faq_id = Some(args.faq_id);
         if (args.question == "") {
             error_msg = "incomplete_question";
             this.triggers.editFail.dispatch({error: IncompleteQuestion});
@@ -273,7 +280,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             tmp.answer = args.answer;
             tmp.update();
             success_msg = "faq_edit_success";
-            category_id = tmp.category_id;
+            category_id = Some(tmp.category_id);
             this.triggers.editSuccess.dispatch();
             return;
         }
@@ -283,7 +290,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
 
     public function editCategory(args : {category_id: Int, name : String}) {
         for (category_to_edit in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
-            category_id = category_to_edit.parent_id;
+            category_id = Some(category_to_edit.parent_id);
             if (args.name == "") {
                 error_msg = "incomplete_name";
                 this.triggers.editCategoryFail.dispatch({error: IncompleteName});
@@ -307,7 +314,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             this.triggers.editCategorySuccess.dispatch();
             return;
         }
-        category_id = -1;
+        category_id = None;
         error_msg = "id_not_found";
         this.triggers.editCategoryFail.dispatch({error: IdNotFound});
     }
