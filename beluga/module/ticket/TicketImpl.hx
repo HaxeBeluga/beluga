@@ -26,7 +26,6 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/local/");
 
     public var show_id: Int = 0;
-    // FIXME: change this for an enum or whatever, just used to display an error message if the user is no logged.
     public var error: TicketErrorKind = TicketErrorNone;
 
     public function new() {
