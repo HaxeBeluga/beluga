@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package beluga.core.macro;
 
 import haxe.macro.Compiler;
@@ -154,7 +162,7 @@ class ConfigLoader {
         xml = Xml.parse(builtConfigString);
         clearForTarget(xml, getCompilationTarget());
         config = new Fast(xml);
-        
+
         checkConfig();
 
         return macro "DONE!";
@@ -173,16 +181,16 @@ class ConfigLoader {
 
         return Context.makeExpr(path + "/beluga", Context.currentPos());
     }
-	
-	macro public static function getBaseUrl() :ExprOf<String> {
-		var base_url : String;
-		if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base && ConfigLoader.config.node.url.node.base.has.value)
-			base_url = ConfigLoader.config.node.url.node.base.att.value;
-		else
-			base_url = "";
-		return macro $v{base_url};
-	}
-    
+
+    macro public static function getBaseUrl() :ExprOf<String> {
+        var base_url : String;
+        if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base && ConfigLoader.config.node.url.node.base.has.value)
+            base_url = ConfigLoader.config.node.url.node.base.att.value;
+        else
+            base_url = "";
+        return macro $v{base_url};
+    }
+
     private static function checkConfig()
     {
         if (!config.hasNode.database)

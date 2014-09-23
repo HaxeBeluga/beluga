@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package ;
 
 import sys.FileSystem;
@@ -5,45 +13,45 @@ import sys.io.File;
 
 class ModuleFactory
 {
-	private static var USAGE : String = "Setup usage: create_module module_name [-path module_path] [-force] [-package packageName]";
+    private static var USAGE : String = "Setup usage: create_module module_name [-path module_path] [-force] [-package packageName]";
     private static var MODULE_TEMPLATE_DIR : String = "moduleTemplate";
 
-	private static var moduleName : String;
+    private static var moduleName : String;
     private static var packageName : String;
-	private static var modulePath : String = "beluga/module/";
+    private static var modulePath : String = "beluga/module/";
     private static var isForce = false;
 
-	private static function checkArgs(userArgs : Array<String>) : Bool {
-		var isNextModulePath = false;
+    private static function checkArgs(userArgs : Array<String>) : Bool {
+        var isNextModulePath = false;
         var isNextPackageName = false;
 
-		for (arg in userArgs) {
-			if (isNextModulePath) {
-				isNextModulePath = false;
-				modulePath = arg;
-			}
+        for (arg in userArgs) {
+            if (isNextModulePath) {
+                isNextModulePath = false;
+                modulePath = arg;
+            }
             if (isNextPackageName) {
                 isNextPackageName = false;
                 packageName = arg;
             }
-			else switch (arg) {
+            else switch (arg) {
                 case "-package":
                     isNextPackageName = true;
-				case "-path":
-					isNextModulePath = true;
+                case "-path":
+                    isNextModulePath = true;
                 case "-force":
                     isForce = true;
-				default:
-					if (moduleName == null) {
-						moduleName = arg.charAt(0).toUpperCase() + arg.substring(1);
-					}
-					else {
-						Sys.println("Warning: Extra or invalid parameter \"" + arg + "\" will be ignored.");
-					}
-			}
-		}
-		return moduleName != null;
-	}
+                default:
+                    if (moduleName == null) {
+                        moduleName = arg.charAt(0).toUpperCase() + arg.substring(1);
+                    }
+                    else {
+                        Sys.println("Warning: Extra or invalid parameter \"" + arg + "\" will be ignored.");
+                    }
+            }
+        }
+        return moduleName != null;
+    }
 
     private static function cpDirectory(src : String, dst : String)
     {
@@ -92,20 +100,20 @@ class ModuleFactory
         }
     }
 
-	public static function run(libDir : String, userArgs : Array<String>) : String
-	{
-		if (checkArgs(userArgs)) {
+    public static function run(libDir : String, userArgs : Array<String>) : String
+    {
+        if (checkArgs(userArgs)) {
             packageName = packageName != null ? packageName : moduleName.toLowerCase();
             var fullModulePath = modulePath + packageName;
 
-			Sys.println("Creating module \"" + moduleName + "\" in the folder:\n\"" + fullModulePath + "\"\n");
+            Sys.println("Creating module \"" + moduleName + "\" in the folder:\n\"" + fullModulePath + "\"\n");
 
-			if (FileSystem.exists(fullModulePath)) {
+            if (FileSystem.exists(fullModulePath)) {
                 if (isForce)
                     Sys.println("the folder " + fullModulePath + " already exists and will be overwritten along with its content.");
                 else
-				    return "the folder " + fullModulePath + " already exists";
-			} else {
+                    return "the folder " + fullModulePath + " already exists";
+            } else {
                 FileSystem.createDirectory(fullModulePath);
             }
 
@@ -115,9 +123,9 @@ class ModuleFactory
 
             //Remplace and fill all template files
             recurseReplaceTemplates(fullModulePath);
-			Sys.println("\nDone");
-			return null;
-		}
-		return USAGE;
-	}
+            Sys.println("\nDone");
+            return null;
+        }
+        return USAGE;
+    }
 }

@@ -1,62 +1,70 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package ;
 
 /**
  * Supported commands:
-	* setup project_name
+    * setup project_name
  * Future commands:
-	 * install module_name //Should download the module and install it in beluga
-	 * uninstall module_name //Should delete the module from the filesystem
+     * install module_name //Should download the module and install it in beluga
+     * uninstall module_name //Should delete the module from the filesystem
  * @author Masadow
  */
 class Main
 {
 
-	//Return beluga's repository URL
-	private static function getLibDir() : String {
-		var args = Sys.args();
-		return args[args.length-1];
-	}
+    //Return beluga's repository URL
+    private static function getLibDir() : String {
+        var args = Sys.args();
+        return args[args.length-1];
+    }
 
-	public static function displayUsage() {
-		Sys.println("Usage:");
-		Sys.println("\t* help");
-		Sys.println("\t* setup_project project_name");
-		Sys.println("\t* create_module module_name");
-		Sys.println("\t\t* Must be run inside a beluga's project folder");
-	}
+    public static function displayUsage() {
+        Sys.println("Usage:");
+        Sys.println("\t* help");
+        Sys.println("\t* setup_project project_name");
+        Sys.println("\t* create_module module_name");
+        Sys.println("\t\t* Must be run inside a beluga's project folder");
+    }
 
-	static function main() {
-		var args = Sys.args();
-		var errorMessage : String = null;
-		var libDir : String = getLibDir();
+    static function main() {
+        var args = Sys.args();
+        var errorMessage : String = null;
+        var libDir : String = getLibDir();
 
-		//Call the associate function to the command
-		var cmdName: String = args.length > 1 ? args[0] : "";
-		var cmd: Dynamic = Reflect.field(Main, cmdName);
-		if (Reflect.isFunction(cmd)) {
-			//arg array is sent without the first and last parameter (cmd name && lib directory)
-			errorMessage = Reflect.callMethod(Main, cmd, [libDir, args.splice(1, args.length - 2)]);
-		}
-		else if (cmdName.length > 0) {
-			errorMessage = "Invalid command: " + cmdName;
-		}
-		else
-			displayUsage();
+        //Call the associate function to the command
+        var cmdName: String = args.length > 1 ? args[0] : "";
+        var cmd: Dynamic = Reflect.field(Main, cmdName);
+        if (Reflect.isFunction(cmd)) {
+            //arg array is sent without the first and last parameter (cmd name && lib directory)
+            errorMessage = Reflect.callMethod(Main, cmd, [libDir, args.splice(1, args.length - 2)]);
+        }
+        else if (cmdName.length > 0) {
+            errorMessage = "Invalid command: " + cmdName;
+        }
+        else
+            displayUsage();
 
-		if (errorMessage != null)
-			Sys.println(errorMessage);
-	}
+        if (errorMessage != null)
+            Sys.println(errorMessage);
+    }
 
-	public static function help(_unused : String, _unused2 : Array<String>) : String {
-		displayUsage();
-		return null;
-	}
+    public static function help(_unused : String, _unused2 : Array<String>) : String {
+        displayUsage();
+        return null;
+    }
 
-	public static function setup_project(libDir : String, userArgs : Array<String>) : String {
-		return Setup.run(libDir, userArgs);
-	}
+    public static function setup_project(libDir : String, userArgs : Array<String>) : String {
+        return Setup.run(libDir, userArgs);
+    }
 
-	public static function create_module(libDir : String, userArgs : Array<String>) : String {
-		return ModuleFactory.run(libDir, userArgs);
-	}
+    public static function create_module(libDir : String, userArgs : Array<String>) : String {
+        return ModuleFactory.run(libDir, userArgs);
+    }
 }

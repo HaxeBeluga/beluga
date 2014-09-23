@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package beluga.module.news.api;
 
 import haxe.web.Dispatch;
@@ -20,11 +28,11 @@ class NewsApi {
     }
 
     public function doPrint(args : {news_id : Int}) {
-    	this.module.triggers.print.dispatch(args);
+        this.module.triggers.print.dispatch(args);
     }
 
     public function doRedirect() {
-    	this.module.triggers.redirect.dispatch();
+        this.module.triggers.redirect.dispatch();
     }
 
     public function doCreate(args : {title : String, text : String}) {
@@ -48,6 +56,6 @@ class NewsApi {
     }
 
     public function doRedirectEdit(args : {news_id : Int}) {
-    	this.module.triggers.redirectEdit.dispatch(args);
+        this.module.triggers.redirectEdit.dispatch(args);
     }
 }

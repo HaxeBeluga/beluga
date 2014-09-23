@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package beluga.core.module;
 
 import beluga.core.Beluga;
@@ -8,10 +16,6 @@ import haxe.xml.Fast;
 import sys.io.File;
 import beluga.core.macro.ConfigLoader.ModuleConfig;
 
-/**
- * ...
- * @author Masadow
- */
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class ModuleImpl implements ModuleInternal
 {
@@ -28,7 +32,7 @@ class ModuleImpl implements ModuleInternal
         for (table in module.tables) {
             //Initialize all module tables
             try {
-			beluga.db.initTable(module.name, table);
+            beluga.db.initTable(module.name, table);
             }
             catch (e : Dynamic) {
                 if (Std.is(e, BelugaException)) //Can't catch a BelugaException, forbidden by the compiler so we have to manually check for it

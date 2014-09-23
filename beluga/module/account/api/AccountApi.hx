@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package beluga.module.account.api;
 
 import haxe.web.Dispatch;
@@ -20,11 +28,11 @@ class AccountApi  {
         login : String,
         password : String,
     }) {
-		module.login(args);
+        module.login(args);
     }
 
     public function doLogout() {
-		module.logout();
+        module.logout();
     }
 
     public function doShowUser(args: { id: Int }) {
@@ -46,8 +54,8 @@ class AccountApi  {
 
     public function doEdit(args : {?email : String}) {
         if (args.email != null) {
-			module.edit(module.loggedUser.id, args.email);
-		}
+            module.edit(module.loggedUser.id, args.email);
+        }
     }
 
 }
