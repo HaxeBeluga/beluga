@@ -4,6 +4,7 @@ package modules.wallet_test;
 import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.wallet.Wallet;
+import beluga.module.wallet.WalletErrorKind;
 import beluga.module.account.Account;
 
 // BelugaTest
@@ -30,9 +31,9 @@ class WalletTest {
         this.wallet.triggers.creationSuccess.add(this.doTestPage);
         this.wallet.triggers.creationFail.add(this.doTestPage);
         this.wallet.triggers.currencyCreationSuccess.add(this.doTestPage);
-        this.wallet.triggers.currencyCreationFail.add(this.doTestPage);
+        this.wallet.triggers.currencyCreationFail.add(this.doCreationFailPage);
         this.wallet.triggers.currencyRemoveSuccess.add(this.doTestPage);
-        this.wallet.triggers.currencyRemoveFail.add(this.doTestPage);
+        this.wallet.triggers.currencyRemoveFail.add(this.doRemoveFailPage);
         this.wallet.triggers.setSiteCurrencySuccess.add(this.doTestPage);
         this.wallet.triggers.setSiteCurrencyFail.add(this.doTestPage);
     }
@@ -55,6 +56,14 @@ class WalletTest {
             this.wallet.addRealFunds(Beluga.getInstance().getModuleInstance(Account).loggedUser, 10.);
         }
 
+        this.doTestPage();
+    }
+
+    public function doCreationFailPage(args: {error: WalletErrorKind}) {
+        this.doTestPage();
+    }
+
+    public function doRemoveFailPage(args: {error: WalletErrorKind}) {
         this.doTestPage();
     }
 

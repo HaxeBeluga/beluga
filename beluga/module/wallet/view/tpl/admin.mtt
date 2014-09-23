@@ -3,9 +3,9 @@
         <strong>Error!</strong> $$i18n(authenticated_error)
     </div>
 ::else::
-::if (admin_wallet_local_error != "")::
+::if (wallet_admin_error != "")::
     <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::admin_wallet_local_error::
+        <strong>Error!</strong> ::wallet_admin_error::
     </div>
 ::end::
 <div class="container wallet-add-currency-widget">

@@ -12,5 +12,8 @@
     "website_currency_title": "Devise du site web",
     "delete_currency": "Supprimer",
     "currency_name_placeholder": "Nom de la devise",
-    "currency_rate_placeholder": "Taux de la devise"
+    "currency_rate_placeholder": "Taux de la devise",
+    "field_empty": "Vous devez remplir les deux champs !",
+    "currency_already_exist": "Cette monnaie existe deja !",
+    "currency_dont_exist": "Cette monnaie n'existe pas"
 }

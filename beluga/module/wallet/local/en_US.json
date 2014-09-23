@@ -12,5 +12,8 @@
     "website_currency_title": "Website currency",
     "delete_currency": "Delete",
     "currency_name_placeholder": "Currency's name",
-    "currency_rate_placeholder": "Currency's rate"
+    "currency_rate_placeholder": "Currency's rate",
+    "field_empty": "You must fill both field",
+    "currency_already_exist": "This currency exist already !",
+    "currency_dont_exist": "This currency doesn't exist"
 }
