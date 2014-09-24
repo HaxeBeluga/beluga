@@ -47,11 +47,21 @@ class Cart extends MttWidget<MarketImpl> {
         }
 
         return {
-            market_cart_error: cart_error,
+            market_cart_error: if (cart_error == "") { this.getErrorString(mod.error); } else { cart_error; },
             market_cart_info: cart_info,
             products_list: user_cart,
             currency: currency,
             total_price: total_cart_price
+        };
+    }
+
+    private function getErrorString(error: MarketErrorKind) {
+        return switch(error) {
+            case MarketOneMoreProductToCart(_): BelugaI18n.getKey(this.i18n, "one_more_product");
+            case MarketNewProductToCart(_): BelugaI18n.getKey(this.i18n, "product_add_to_cart");
+            case MarketUserNotLogged: BelugaI18n.getKey(this.i18n, "user_not_logged");
+            case MarketUnknownProduct(_): BelugaI18n.getKey(this.i18n, "unknown_product");
+            case MarketNone: "";
         };
     }
 }
