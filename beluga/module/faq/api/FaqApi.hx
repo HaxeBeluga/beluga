@@ -44,17 +44,17 @@ class FaqApi {
     }
 
     public function doRedirectCreateFAQ(args : {category_id : Int}) {
-        this.module.category_id = args.category_id;
+        this.module.category_id = Some(args.category_id);
         this.module.triggers.redirectCreateFAQ.dispatch();
     }
 
     public function doRedirectCreateCategory(args : {category_id : Int}) {
-        this.module.category_id = args.category_id;
+        this.module.category_id = Some(args.category_id);
         this.module.triggers.redirectCreateCategory.dispatch();
     }
 
     public function doPrint(args : {id : Int}) {
-        this.module.category_id = args.id;
+        this.module.category_id = Some(args.id);
         this.module.triggers.print.dispatch();
     }
 
@@ -75,12 +75,12 @@ class FaqApi {
     }
 
     public function doRedirectEditCategory(args : {id: Int}) {
-        this.module.category_id = args.id;
+        this.module.category_id = Some(args.id);
         this.module.triggers.redirectEditCategory.dispatch();
     }
 
     public function doRedirectEditFAQ(args : {id: Int}) {
-        this.module.faq_id = args.id;
+        this.module.faq_id = Some(args.id);
         this.module.triggers.redirectEditFAQ.dispatch();
     }
 }

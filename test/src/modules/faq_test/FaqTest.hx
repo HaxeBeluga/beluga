@@ -16,6 +16,7 @@ import beluga.module.faq.Faq;
 import beluga.module.faq.model.FaqModel;
 import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
+import beluga.module.faq.FaqErrorKind;
 import haxe.web.Dispatch;
 import haxe.Resource;
 import main_view.Renderer;
@@ -35,17 +36,17 @@ class FaqTest {
 
         this.faq.triggers.defaultPage.add(this.doDefault);
         this.faq.triggers.createCategorySuccess.add(this.print);
-        this.faq.triggers.createCategoryFail.add(this.redirectCreateCategory);
+        this.faq.triggers.createCategoryFail.add(this.createCategoryFail);
         this.faq.triggers.deleteCategorySuccess.add(this.print);
-        this.faq.triggers.deleteCategoryFail.add(this.print);
+        this.faq.triggers.deleteCategoryFail.add(this.deleteCategoryFail);
         this.faq.triggers.editCategorySuccess.add(this.print);
-        this.faq.triggers.editCategoryFail.add(this.print);
+        this.faq.triggers.editCategoryFail.add(this.editCategoryFail);
         this.faq.triggers.createSuccess.add(this.print);
-        this.faq.triggers.createFail.add(this.redirectCreateFAQ);
+        this.faq.triggers.createFail.add(this.createFail);
         this.faq.triggers.deleteSuccess.add(this.print);
-        this.faq.triggers.deleteFail.add(this.print);
+        this.faq.triggers.deleteFail.add(this.deleteFail);
         this.faq.triggers.editSuccess.add(this.print);
-        this.faq.triggers.editFail.add(this.print);
+        this.faq.triggers.editFail.add(this.editFail);
         this.faq.triggers.redirectCreateFAQ.add(this.redirectCreateFAQ);
         this.faq.triggers.redirectCreateCategory.add(this.redirectCreateCategory);
         this.faq.triggers.print.add(this.print);
@@ -58,42 +59,53 @@ class FaqTest {
     }
 
     public function print() {
-        var widget = this.faq.getWidget("faqs");
-        widget.context = faq.getPrintContext();
-
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.print.render()
         });
         Sys.print(html);
     }
 
-    public function redirectCreateCategory() {
-        var widget = this.faq.getWidget("create_category");
+    public function createCategoryFail(args: {error: FaqErrorKind}) {
+        this.redirectCreateCategory();
+    }
 
-        widget.context = faq.getCreateCategoryContext();
+    public function deleteCategoryFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function editCategoryFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function createFail(args: {error: FaqErrorKind}) {
+        this.redirectCreateFAQ();
+    }
+
+    public function deleteFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function editFail(args: {error: FaqErrorKind}) {
+        this.print();
+    }
+
+    public function redirectCreateCategory() {
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.create_category.render()
         });
         Sys.print(html);
     }
 
     public function redirectCreateFAQ() {
-        var widget = this.faq.getWidget("create_faq");
-
-        widget.context = faq.getCreateContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.create.render()
         });
         Sys.print(html);
     }
 
     public function redirectEditCategory() {
-        var widget = this.faq.getWidget("edit_category");
-        var cat = faq.getCurrentCategory();
-
-        widget.context = faq.getEditCategoryContext();
         var html = Renderer.renderDefault("page_faq", "FAQ", {
-            faqWidget: widget.render()
+            faqWidget: faq.widgets.edit_category.render()
         });
         Sys.print(html);
     }
@@ -102,11 +114,8 @@ class FaqTest {
         if (!faq.redirectEditFAQ())
             print();
         else {
-            var widget = this.faq.getWidget("edit_faq");
-
-            widget.context = faq.getEditFAQContext();
             var html = Renderer.renderDefault("page_faq", "FAQ", {
-                faqWidget: widget.render()
+                faqWidget: faq.widgets.edit_faq.render()
             });
             Sys.print(html);
         }
