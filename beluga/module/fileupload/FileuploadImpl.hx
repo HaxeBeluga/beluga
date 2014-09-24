@@ -20,15 +20,18 @@ import beluga.core.Beluga;
 import beluga.module.account.Account;
 import beluga.module.fileupload.model.File;
 import beluga.module.fileupload.model.Extension;
+import beluga.core.BelugaI18n;
+import beluga.module.fileupload.FileUploadErrorKind;
 
 #if php
 import php.Web;
 #end
 
 class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
-    public var error: String = "";
     public var triggers = new FileuploadTrigger();
     public var widgets : FileuploadWidget;
+    public var i18n = BelugaI18n.loadI18nFolder("/module/fileupload/locale/");
+    public var error: FileUploadErrorKind = FileUploadNone;
 
     public function new() {
         super();
@@ -36,22 +39,6 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new FileuploadWidget();
-    }
-
-    public function getBrowseContext(): Dynamic {
-        var files: List<Dynamic> = new List<Dynamic>();
-        var user_id: Int = 0;
-
-        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            user_id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
-            files = this.getUserFileList(user_id);
-        } else {
-            this.error = "You must be logged to access this page";
-        }
-        return {
-            file_error: this.error,
-            files_list: files,
-        };
     }
 
     /// Return: {file_name: String, file_path: String, file_size: Int, file_id: Int}
@@ -85,7 +72,8 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
 
     public function send(): Void{
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
+            this.error = FileUploadUserNotLogged;
+            this.triggers.deleteFail.dispatch({error: this.error});
             return;
         }
 
@@ -93,31 +81,23 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         var login = Beluga.getInstance().getModuleInstance(Account).loggedUser.login;
         var up = new Uploader(login, id);
         if (up.is_valid == false) {
-            this.triggers.uploadFail.dispatch({reason: "Invalid file extension"});
+            this.triggers.uploadFail.dispatch({error: FileUploadInvalidFileExtension});
         } else {
-            var notif = {
-                title: "File transfer completed !",
-                text: "Your file transfer terminate with success, you can consult your files in the file upload section !",
-                user_id: Beluga.getInstance().getModuleInstance(Account).loggedUser.id
-            };
-            this.triggers.uploadSuccess.dispatch(notif);
+            this.triggers.uploadSuccess.dispatch();
         }
-    }
-
-
-    public function getSendContext(): Dynamic {
-        return {};
     }
 
     public function delete(args: { id: Int }): Void {
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
+            this.error = FileUploadUserNotLogged;
+            this.triggers.deleteFail.dispatch({error: this.error});
             return;
         } else {
             var file = File.manager.get(args.id);
             var current_user = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
             if (file.owner_id != current_user) {
-                this.triggers.deleteFail.dispatch({reason: "You cannot access this action"});
+                this.error = FileUploadInvalidAccess;
+                this.triggers.deleteFail.dispatch({error: this.error});
                 return;
             } else {
                 file.delete();
@@ -126,20 +106,13 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
         }
    }
 
-    public function getAdminContext(): Dynamic {
-        var extensions = this.getExtensionsList();
-        return {
-            extensions_list: extensions,
-            admin_error: this.error
-        };
-    }
-
     public function addextension(args: { name: String }): Void {
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.error = "You must be logged to access this section";
-            this.triggers.addExtensionFail.dispatch();
+            this.error = FileUploadUserNotLogged;
+            this.triggers.addExtensionFail.dispatch({error: this.error});
         } else if (args.name == "") {
-            this.error = "The field is empty";
+            this.error = FileUploadEmptyField;
+            this.triggers.addExtensionFail.dispatch({error: this.error});
         } else {
             var ext = null;
             for( u in Extension.manager.search($name == args.name) ) {
@@ -151,24 +124,24 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
                 extension.insert();
                 this.triggers.addExtensionSuccess.dispatch();
             } else {
-                this.error = "This extension already exist !";
-                this.triggers.addExtensionFail.dispatch();
+                this.error = FileUploadExtensionExist;
+                this.triggers.addExtensionFail.dispatch({error: this.error});
             }
         }
     }
 
     public function deleteextension(args: { id: Int }): Void {
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
-            this.error = "You must be logged to access this section";
-            this.triggers.deleteExtensionFail.dispatch();
+            this.error = FileUploadUserNotLogged;
+            this.triggers.deleteExtensionFail.dispatch({error: this.error});
         } else {
             var ext = null;
             for( u in Extension.manager.search($id == args.id) ) {
                 ext = u;
             }
             if (ext == null) {
-                this.error = "This extension doesn't exist!";
-                 this.triggers.deleteExtensionFail.dispatch();
+                this.error = FileUploadExtensionDontExist;
+                 this.triggers.deleteExtensionFail.dispatch({error: this.error});
             } else {
                 ext.delete();
                 this.triggers.deleteExtensionSuccess.dispatch();

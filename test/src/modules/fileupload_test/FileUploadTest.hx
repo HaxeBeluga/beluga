@@ -14,6 +14,7 @@ import beluga.core.Widget;
 import beluga.module.fileupload.Fileupload;
 import beluga.module.account.Account;
 import beluga.module.notification.Notification;
+import beluga.module.fileupload.FileUploadErrorKind;
 
 // BelugaTest
 import main_view.Renderer;
@@ -67,12 +68,8 @@ class FileUploadTest {
                 <strong>Error!</strong> " + msg + "</div>";
     }
 
-    public static function _doFailRemovePage(args: { reason: String }) {
-        new FileUploadTest(Beluga.getInstance()).doFailRemovePage(args);
-    }
-
-    public function doFailRemovePage(args: { reason: String}) {
-        var contextMsg = args.reason;
+    public function doFailRemovePage(args: { error: FileUploadErrorKind}) {
+        var contextMsg = "fail remove";
         var browseWidget = "";
         var fileUploadWidget = "";
         var html = Renderer.renderDefault("page_fileupload_widget", "Default page Fail", {
@@ -106,10 +103,8 @@ class FileUploadTest {
         var fileUploadWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged) {
             contextMsg = "<h2>Gestion des fichiers de <strong>" + this.beluga.getModuleInstance(Account).loggedUser.login + "</strong></h2>";
-            var tmpBrowse = file_upload.getWidget("browse");
-            tmpBrowse.context = file_upload.getBrowseContext();
-            browseWidget = tmpBrowse.render();
-            fileUploadWidget = file_upload.getWidget("send").render();
+            browseWidget = file_upload.widgets.browse.render();
+            fileUploadWidget = file_upload.widgets.send.render();
         }
         var html = Renderer.renderDefault("page_fileupload_widget", "Default page", {
             context_message: contextMsg,
@@ -134,12 +129,7 @@ class FileUploadTest {
         Sys.print(html);
     }
 
-
-    public static function _doAdminPageFail() {
-       new FileUploadTest(Beluga.getInstance()).doAdminPageFail();
-    }
-
-    public function doAdminPageFail() {
+    public function doAdminPageFail(args: {error: FileUploadErrorKind}) {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var adminWidget = "";
         if (this.beluga.getModuleInstance(Account).isLogged) {
@@ -154,21 +144,18 @@ class FileUploadTest {
         Sys.print(html);
     }
 
-    public static function _doFailUploadPage(args: { reason: String }) {
-       new FileUploadTest(Beluga.getInstance()).doFailUploadPage(args);
-    }
 
-    public function doFailUploadPage(args: { reason: String }) {
+    public function doFailUploadPage(args: { error: FileUploadErrorKind }) {
         var contextMsg = this.createErrorMsg("Vous ne devriez pas etre ici!");
         var browseWidget = "";
         var fileUploadWidget = "";
+
         if (this.beluga.getModuleInstance(Account).isLogged) {
-            contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>" + this.createErrorMsg(args.reason);
-            var tmpBrowse = file_upload.getWidget("browse");
-            tmpBrowse.context = file_upload.getBrowseContext();
-            browseWidget = tmpBrowse.render();
-            fileUploadWidget = file_upload.getWidget("send").render();
+            contextMsg = "<h2>Manage authorized file extensions for file upload module</h2>" + this.createErrorMsg("fail upload");
+            browseWidget = file_upload.widgets.browse.render();
+            fileUploadWidget = file_upload.widgets.send.render();
         }
+
         var html = Renderer.renderDefault("page_fileupload_widget", "Admin page", {
             context_message: contextMsg,
             browseWidget: browseWidget,
@@ -177,9 +164,9 @@ class FileUploadTest {
         Sys.print(html);
     }
 
-    public function doNotifyUploadSuccess(args : {title : String, text : String, user_id: Int}) {
-        var notification = Beluga.getInstance().getModuleInstance(Notification);
-        notification.create(args);
+    public function doNotifyUploadSuccess() {
+        // var notification = Beluga.getInstance().getModuleInstance(Notification);
+        // notification.create(args);
         this.doAllPage();
     }
 }

@@ -1,0 +1,14 @@
+{
+    "send_file_title": "Select a new file to upload !",
+    "delete": "Delete",
+    "download": "Download",
+    "add_extension_title": "Add an file extension",
+    "extension_list": "Here is a list of all existing extensions",
+    "user_not_logged": "You must be logged to do this action",
+    "submit_extension": "Submit new extension",
+    "invalid_ext": "File extension not valid",
+    "invalid_access": "You cannot access this file",
+    "empty_field": "The field is empty",
+    "ext_dont_exist": "This extension doesn't exist!",
+    "extension_already_exist": "This extension already exist"
+}

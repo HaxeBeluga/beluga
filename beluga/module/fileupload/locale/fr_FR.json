@@ -1,0 +1,14 @@
+{
+    "send_file_title": "Choisissez un fichier a envoyer!",
+    "delete": "Supprimer",
+    "download": "Telecharger",
+    "add_extension_title": "Ajouter une extension de fichier",
+    "extension_list": "Voici une liste des extension disponibles",
+    "user_not_logged": "Vous devez etre connecté pour effectuer cette action",
+    "submit_extension": "Soumettre l'extension",
+    "invalid_ext": "Extension de fichier invalide",
+    "invalid_access": "Vous ne pouvez pas acceder a ce fichier",
+    "empty_field": "Ce champ est vide",
+    "ext_dont_exist": "Cette extension n'existe pas!",
+    "extension_already_exist": "Cette extension exist deja"
+}
