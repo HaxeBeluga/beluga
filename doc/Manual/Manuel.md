@@ -28,14 +28,37 @@ Notre projet a pour le moment 2 langages cibles : PHP et Neko.
 
 Voir le tutoriel de Récupération (https://github.com/FassiClement/Beluga/blob/documentation/doc/Manual/Tutoriel_Récupération.md)
 
-## Création d'un module
+## Modules
 
-...
+https://github.com/regnarock/Beluga/blob/doc/create_module/doc/03-Module.md
 
 ## Hello World
 
-...
+Voici comment afficher un "Hello World" avec Haxe :
+
+> class HelloWorld {
+
+>   static public function main():Void {
+>     trace("Hello World");
+
+> }
+
+> }
+
+On peut tester le code suivant dans un fichier **HelloWorld.hx** et faire appel au compiler de Haxe en tapant la ligne qui suit en ligne de commande :
+
+> haxe -main HelloWorld --interp
+
+On verra s'afficher ceci :
+
+> HelloWorld.hx:3: Hello world
+
+Il y a plusieurs choses à retenir en Haxe :
+
+* Les programmes sont sauvegardés dans des fichiers avec *.hx* comme extension
+* Le compiler Haxe est un outil de ligne de commande qui fonctionne avec des paramètres tels que **-main Helloworld** ou encore **--interp**.
+* Les programmes contiennent des classes (*HelloWorld*, avec majuscules) qui contiennent des fonctions (*main*, avec des minuscules).
 
 ## Partie technique
 
-...
+Reprendre les infos du TD et de l'UD pour les triggers et autres ?
