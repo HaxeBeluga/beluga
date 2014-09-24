@@ -57,8 +57,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     public function getCategory(category_id : Int) : CategoryModel {
-        for (tmp in CategoryModel.manager.dynamicSearch( { id: category_id} )) {
-            return tmp;
+        for (category in CategoryModel.manager.dynamicSearch( { id: category_id} )) {
+            return category;
         }
         return null;
     }
@@ -68,15 +68,15 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             case Some(id) : id;
             case None : -1;
         };
-        for (tmp in CategoryModel.manager.dynamicSearch( { id: unwrap_id} )) {
-            return tmp;
+        for (current_category in CategoryModel.manager.dynamicSearch( { id: unwrap_id} )) {
+            return current_category;
         }
         return null;
     }
 
     public function getFAQ(faq_id : Int) : FaqModel {
-        for (tmp in FaqModel.manager.dynamicSearch( { id: faq_id} )) {
-            return tmp;
+        for (faq in FaqModel.manager.dynamicSearch( { id: faq_id} )) {
+            return faq;
         }
         return null;
     }
@@ -84,23 +84,23 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     public function getAllCategories() : Array<CategoryModel> {
         var ret = new Array<CategoryModel>();
 
-        for (tmp in CategoryModel.manager.dynamicSearch( {} )) {
-            ret.push(tmp);
+        for (category in CategoryModel.manager.dynamicSearch( {} )) {
+            ret.push(category);
         }
         return ret;
     }
 
     public function getAllFromCategory(category_id: Int) : CategoryData {
-        var ret = new Array<FaqModel>();
-        var ret2 = new Array<CategoryModel>();
+        var faq_array = new Array<FaqModel>();
+        var category_array = new Array<CategoryModel>();
 
-        for (tmp in FaqModel.manager.dynamicSearch( { category_id: category_id} )) {
-            ret.push(tmp);
+        for (faq in FaqModel.manager.dynamicSearch( { category_id: category_id} )) {
+            faq_array.push(faq);
         }
-        for (tmp in CategoryModel.manager.dynamicSearch( { parent_id: category_id} )) {
-            ret2.push(tmp);
+        for (category in CategoryModel.manager.dynamicSearch( { parent_id: category_id} )) {
+            category_array.push(category);
         }
-        return new CategoryData(ret, ret2);
+        return new CategoryData(faq_array, category_array);
     }
 
     public function createFAQ(args : {question : String, answer : String, category_id : Int}) {
@@ -127,7 +127,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         if (args.category_id != -1) {
             var found = false;
 
-            for (tmp in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
+            for (category in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
                 found = true;
                 break;
             }
@@ -139,8 +139,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             }
         }
 
-        for (tmp in FaqModel.manager.dynamicSearch( { category_id: args.category_id } )) {
-            if (tmp.question == args.question) {
+        for (faq in FaqModel.manager.dynamicSearch( { category_id: args.category_id } )) {
+            if (faq.question == args.question) {
                 error_msg = "entry_already_exists";
                 this.triggers.createFail.dispatch({error: EntryAlreadyExists});
                 return;
@@ -170,8 +170,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         }
 
         // check if another category already has the same name
-        for (tmp in CategoryModel.manager.dynamicSearch( {parent_id: args.parent} )) {
-            if (tmp.name == args.name) {
+        for (category in CategoryModel.manager.dynamicSearch( {parent_id: args.parent} )) {
+            if (category.name == args.name) {
                 error_msg = "category_already_exists";
                 this.triggers.createCategoryFail.dispatch({error: CategoryAlreadyExists});
                 return;
@@ -182,7 +182,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         if (args.parent != -1) {
             var found = false;
 
-            for (tmp in CategoryModel.manager.dynamicSearch( {id: args.parent} )) {
+            for (category in CategoryModel.manager.dynamicSearch( {id: args.parent} )) {
                 found = true;
                 break;
             }
@@ -209,8 +209,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             this.triggers.deleteFail.dispatch({error: MissingLogin});
             return;
         }
-        for (tmp in FaqModel.manager.dynamicSearch( {id : args.question_id, category_id: args.category_id} )) {
-            tmp.delete();
+        for (faq in FaqModel.manager.dynamicSearch( {id : args.question_id, category_id: args.category_id} )) {
+            faq.delete();
             success_msg = "faq_delete_success";
             this.triggers.deleteSuccess.dispatch();
             return;
@@ -220,16 +220,16 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     }
 
     function clearCategoryData(id: Int, parent_id: Int) : Bool {
-        for (tmp in CategoryModel.manager.dynamicSearch( {id : id, parent_id: parent_id} )) {
-            var tmp_data = getAllFromCategory(tmp.id);
+        for (category in CategoryModel.manager.dynamicSearch( {id : id, parent_id: parent_id} )) {
+            var category_to_delete = getAllFromCategory(category.id);
 
-            for (f in tmp_data.faqs) {
-                f.delete();
+            for (faq in category_to_delete.faqs) {
+                faq.delete();
             }
-            for (cat in tmp_data.categories) {
-                clearCategoryData(cat.id, id);
+            for (sub_category in category_to_delete.categories) {
+                clearCategoryData(sub_category.id, id);
             }
-            tmp.delete();
+            category.delete();
             return true;
         }
         return false;
@@ -268,19 +268,19 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
             this.triggers.editFail.dispatch({error: MissingLogin});
             return;
         }
-        for (tmp in FaqModel.manager.dynamicSearch( {id : args.faq_id} )) {
-            for (tmp2 in FaqModel.manager.dynamicSearch( { category_id: tmp.category_id} )) {
-                if (tmp2.question == args.question) {
+        for (faq in FaqModel.manager.dynamicSearch( {id : args.faq_id} )) {
+            for (faq_to_compare in FaqModel.manager.dynamicSearch( { category_id: faq.category_id} )) {
+                if (faq_to_compare.question == args.question) {
                     error_msg = "entry_already_exists";
                     this.triggers.editFail.dispatch({error: EntryAlreadyExists});
                     return;
                 }
             }
-            tmp.question = args.question;
-            tmp.answer = args.answer;
-            tmp.update();
+            faq.question = args.question;
+            faq.answer = args.answer;
+            faq.update();
             success_msg = "faq_edit_success";
-            category_id = Some(tmp.category_id);
+            category_id = Some(faq.category_id);
             this.triggers.editSuccess.dispatch();
             return;
         }
