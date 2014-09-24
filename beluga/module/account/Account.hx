@@ -40,7 +40,7 @@ interface Account extends Module {
 
     public function getSponsor(userId : SId) : User;
 
-    public function getUsers() : Array<User>;
+    public function getDisconnectedUsers() : Array<User>;
     // FIXME(Someone who wrote getUsers)
     // see the implementation
     public function getUsers2(): List<User>;

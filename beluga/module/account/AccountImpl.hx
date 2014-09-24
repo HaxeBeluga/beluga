@@ -160,7 +160,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         return user.sponsor;
     }
 
-    public function getUsers() : Array<User> {
+    public function getDisconnectedUsers() : Array<User> {
         var user = this.loggedUser;
         var list = new Array<User>();
 

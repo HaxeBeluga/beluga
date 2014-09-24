@@ -95,7 +95,7 @@ class AccountTest {
         if (!user.isAdmin)
             subscribeWidget.context = {user : user, path : "/accountTest/"};
         else {
-            var users = Beluga.getInstance().getModuleInstance(Account).getUsers();
+            var users = Beluga.getInstance().getModuleInstance(Account).getDisconnectedUsers();
             subscribeWidget.context = {user : user, path : "/accountTest/"};
         }
 
