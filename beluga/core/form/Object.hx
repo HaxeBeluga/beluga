@@ -8,6 +8,7 @@
 
 package beluga.core.form;
 
+@:autoBuild(beluga.core.form.ConstructorMacro.build())
 @:autoBuild(beluga.core.form.ValidateMacro.build())
 class Object {
     public var error : Map<String, Array<String>>;

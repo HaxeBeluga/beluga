@@ -35,26 +35,25 @@ class ValidateMacro {
             }
         }
 
-        return (condition_expr);
+        return condition_expr;
     }
 
     private static function generateDataChecker(field : Field) : Array<Expr> {
-      var checker_expr = new Array<Expr>();
+        var checker_expr = new Array<Expr>();
 
-      // Concatenate all conditions
-      for (rule in field.meta) {
-          var condition = generateCondition(field.name, rule);
-          if (condition != null) {
-            checker_expr.push(condition);
-          }
-      }
-      return (checker_expr);
+        // Concatenate all conditions
+        for (rule in field.meta) {
+            var condition = generateCondition(field.name, rule);
+            if (condition != null) {
+              checker_expr.push(condition);
+            }
+        }
+        return checker_expr;
     }
 
     private static function checkTypeParameter(type : TypePath) : Void {
-        // Supported type parameter
         var supp_type_parameter = [
-          "Null"  => ["Int","Float","String","Bool"]
+          "Null" => ["Int","Float","String","Bool"]
         ];
 
         // Check type parameter
@@ -78,7 +77,6 @@ class ValidateMacro {
     }
 
     private static function checkBasicType(type : TypePath) : Void {
-        // Supported basic type
         var supp_raw_type = ["Int", "Float", "String", "Bool"];
 
         // Check if supported type
@@ -122,7 +120,7 @@ class ValidateMacro {
         var null_condition_expr = macro
         {
             if (this.$var_name != null) {
-              // TODO: Will insert generateDataChecker here!
+              // Empty because going to insert generateDataChecker here!
             }
         }
         return null_condition_expr;
@@ -140,10 +138,10 @@ class ValidateMacro {
                         expr : EIf(if_cond, data_checker, else_scope),
                         pos  : Context.currentPos()};
                     }
-                    default: // Nothing to do
+                    default: // Nothing to do. No interest.
                 }
             }
-            default: //Nothing to do
+            default: // Nothing to do. No interest.
         }
 
         return { expr : EBlock([final_if]), pos : Context.currentPos() };
@@ -178,7 +176,7 @@ class ValidateMacro {
         var return_statement = macro return (!this.error.iterator().hasNext());
         body_proto.push(return_statement);
 
-        return ({ expr : EBlock(body_proto), pos : Context.currentPos() });
+        return { expr : EBlock(body_proto), pos : Context.currentPos() };
     }
 
     private static function createValidationFunction(fields : Array<Field>) : Field {
@@ -207,19 +205,13 @@ class ValidateMacro {
           pos    : Context.currentPos()
         }
 
-        return (validation_func);
+        return validation_func;
     }
 
     macro public static function build() : Array<Field> {
-        // Get fields of form object
         var fields = Context.getBuildFields();
-
-        // Create the validation function
         var validation_function = createValidationFunction(fields);
-
-        // Add validation function to form object
         fields.push(validation_function);
-
-        return (fields);
+        return fields;
     }
 }
