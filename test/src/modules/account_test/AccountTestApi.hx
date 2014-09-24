@@ -84,7 +84,7 @@ class AccountTestApi {
             return;
         }
         var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getUsers(), friends: this.acc.getFriends(user.id),
+        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getDisconnectedUsers(), friends: this.acc.getFriends(user.id),
             not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
         var tmp = subscribeWidget.render();
 
