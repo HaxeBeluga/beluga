@@ -13,6 +13,8 @@ import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.market.Market;
 import beluga.module.account.Account;
+import beluga.module.market.MarketErrorKind;
+import beluga.module.market.model.Product;
 
 // BelugaTest
 import main_view.Renderer;
@@ -35,12 +37,12 @@ class MarketTest {
     public function new(beluga : Beluga) {
         this.beluga = beluga;
         this.market = beluga.getModuleInstance(Market);
-        this.market.triggers.addProductSuccess.add(this.doTestPage);
-        this.market.triggers.addProductFail.add(this.doTestPage);
+        this.market.triggers.addProductSuccess.add(this.doAddProductSuccess);
+        this.market.triggers.addProductFail.add(this.doAddProductFail);
         this.market.triggers.removeProductSuccess.add(this.doCartPage);
         this.market.triggers.removeProductSuccess.add(this.doCartPage);
         this.market.triggers.checkoutCartSuccess.add(this.doCartPage);
-        this.market.triggers.checkoutCartFail.add(this.doCartPage);
+        this.market.triggers.checkoutCartFail.add(this.doCheckoutCartFail);
     }
 
     public function doTestPage() {
@@ -48,6 +50,18 @@ class MarketTest {
             marketWidget: market.widgets.display.render()
         });
         Sys.print(html);
+    }
+
+    public function doAddProductSuccess(args: {product: Product}) {
+        this.doTestPage();
+    }
+
+    public function doAddProductFail(args: {error: MarketErrorKind}) {
+        this.doTestPage();
+    }
+
+    public function doCheckoutCartFail(args: {error: MarketErrorKind}) {
+        this.doCartPage();
     }
 
     public function doAdminPage() {

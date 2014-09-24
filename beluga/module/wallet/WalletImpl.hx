@@ -28,7 +28,7 @@ import beluga.module.wallet.WalletErrorKind;
 class WalletImpl extends ModuleImpl implements WalletInternal {
     public var triggers = new WalletTrigger();
     public var widgets: WalletWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/local/");
+    public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/locale/");
     var admin_error: WalletErrorKind = None;
     // two error for user widget
     var user_authenticated = true;

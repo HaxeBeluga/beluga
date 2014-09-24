@@ -22,7 +22,7 @@ class Show extends MttWidget<WalletImpl> {
 
     public function new (mttfile = "beluga_wallet_show.mtt") {
         super(Wallet, mttfile);
-        this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/show/", mod.i18n);
+        this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }
 
     override private function getContext() {

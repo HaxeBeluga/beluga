@@ -13,10 +13,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Total</th>
+                        <th>$$i18n(product)</th>
+                        <th>$$i18n(quantity)</th>
+                        <th class="text-center">$$i18n(price)</th>
+                        <th class="text-center">$$i18n(total)</th>
                         <th> </th>
                     </tr>
                 </thead>
@@ -39,7 +39,7 @@
                         <td class="col-sm-1 col-md-1 text-center"><strong>::currency:: ::product_total_price::</strong></td>
                         <td class="col-sm-1 col-md-1">
                         <a href="::base_url::/beluga/market/removeProductInCart?id=::product_cart_id::" type="button" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove"></span> Remove
+                            <span class="glyphicon glyphicon-remove"></span> $$i18n(remove)
                         </a></td>
                     </tr>
                     ::end::
@@ -57,7 +57,7 @@
                         <td>   </td>
                         <td>
                         <a href="::base_url::/beluga/market/checkoutCart" type="button" class="btn btn-success">
-                            Checkout <span class="glyphicon glyphicon-play"></span>
+                            $$i18n(checkout) <span class="glyphicon glyphicon-play"></span>
                         </a></td>
                     </tr>
                 </tbody>

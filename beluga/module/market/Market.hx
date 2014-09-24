@@ -30,11 +30,6 @@ interface Market extends Module {
     public function removeProductInCart(args: { id: Int }): Void;
     public function checkoutCart(): Void;
 
-    // widget context functions
-    public function getDisplayContext(): Dynamic;
-    public function getAdminContext(): Dynamic;
-    public function getCartContext(): Dynamic;
-
-    public function getProductList(): List<Dynamic>;
+    public function getProductList(): List<Product>;
     public function getProductFromId(id: Int): Option<Product>;
 }

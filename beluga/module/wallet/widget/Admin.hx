@@ -23,7 +23,7 @@ class Admin extends MttWidget<WalletImpl> {
 
     public function new (mttfile = "beluga_wallet_admin.mtt") {
         super(Wallet, mttfile);
-        this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/show/", mod.i18n);
+        this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {

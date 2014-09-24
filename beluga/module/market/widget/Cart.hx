@@ -12,14 +12,46 @@ import beluga.core.Beluga;
 import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.market.Market;
+import beluga.module.wallet.Wallet;
+import beluga.core.BelugaI18n;
+import beluga.module.account.Account;
 
 class Cart extends MttWidget<MarketImpl> {
 
     public function new (mttfile = "beluga_market_cart.mtt") {
         super(Market, mttfile);
+        i18n = BelugaI18n.loadI18nFolder("/module/market/view/locale/cart/", mod.i18n);
     }
 
     override private function getContext(): Dynamic{
-        return mod.getCartContext();
+        var beluga = Beluga.getInstance();
+        var user_cart = new List<Dynamic>();
+        var cart_error = "";
+        var cart_info = "";
+        var currency = switch(beluga.getModuleInstance(Wallet).getSiteCurrency()) {
+            case Some(c): c.name;
+            case None: BelugaI18n.getKey(this.i18n, "missing_currency");
+        };
+
+        var total_cart_price = 0;
+
+        if (!beluga.getModuleInstance(Account).isLogged) {
+            cart_error = BelugaI18n.getKey(this.i18n, "user_not_logged");
+        } else {
+            user_cart = mod.getUserCart(beluga.getModuleInstance(Account).loggedUser);
+            user_cart.map(function(p) {total_cart_price += p.product_total_price;});
+
+            if (user_cart.length == 0) {
+                cart_info = BelugaI18n.getKey(this.i18n, "no_product");
+            }
+        }
+
+        return {
+            market_cart_error: cart_error,
+            market_cart_info: cart_info,
+            products_list: user_cart,
+            currency: currency,
+            total_price: total_cart_price
+        };
     }
 }

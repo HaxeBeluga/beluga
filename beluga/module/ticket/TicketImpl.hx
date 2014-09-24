@@ -31,7 +31,7 @@ import sys.db.Manager;
 class TicketImpl extends ModuleImpl implements TicketInternal {
     public var triggers = new TicketTrigger();
     public var widgets: TicketWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/local/");
+    public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/locale/");
 
     public var show_id: Int = 0;
     public var error: TicketErrorKind = TicketErrorNone;

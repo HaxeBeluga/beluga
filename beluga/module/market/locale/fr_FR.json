@@ -1,0 +1,15 @@
+{
+    "missing_currency": "Aucune monnaie selectionnee pour ce site",
+    "add_product": "Ajouter",
+    "product": "Article",
+    "quantity": "Quantite",
+    "price": "Prix",
+    "total": "Total",
+    "remove": "Supprimer",
+    "checkout": "Acheter",
+    "product_add_to_cart": "Le produit a ete ajoute au panier",
+    "one_more_product": "Un produit de plus a ete ajoute au panier",
+    "unknown_product": "Ce produit n'est plus disponible",
+    "user_not_logged": "Voud devez etre connecté pour effectuer cette action",
+    "no_product": "Vous n'avez ni panier, ni produit pour le moment"
+}
