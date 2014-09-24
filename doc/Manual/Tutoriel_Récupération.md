@@ -50,10 +50,15 @@ Bien sûr, inutile de proposer des fichiers de code non testés.
 Par exemple pour ajouter un fichier en utilisant un **pull request**, voici la marche à suivre :
 * Copiez votre fichier dans votre dépôt **local**
 * Ouvrez une ligne de commande (la petite fenêtre noire) et tapez
+
 > git add votre_fichier
+
 * Tapez ensuite
+
 > git commit -m "description_du_changement"
+
 * Tapez enfin
+
 > git push origin nom_de_votre_branche_locale_de_travail
 
 (que vous aurez préalablement créé afin de ne pas travailler sur la branche principale et qui portera le nom que vous voulez)
