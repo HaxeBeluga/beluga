@@ -1,6 +1,6 @@
-::if (admin_error != "")::
+::if (error != "")::
   <div class="alert alert-danger alert-dismissable ticket-alert-error">
-    <strong>Error!</strong> ::admin_error::
+    <strong>Error!</strong> ::error::
   </div>
 ::end::
 <div class="container ticket-label-widget">
@@ -14,9 +14,9 @@
     <div class="container-fluid">
         <h4>$$i18n(labels_list_label)</h4>
         <ul class="list-group">
-          ::foreach labels_list::
-          <li class="list-group-item">::label_name::
-          <a href="::base_url::/beluga/ticket/deletelabel?id=::label_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
+          ::foreach labels::
+          <li class="list-group-item">::name::
+          <a href="::base_url::/beluga/ticket/deletelabel?id=::id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
           ::end::
         </ul>
     </div>

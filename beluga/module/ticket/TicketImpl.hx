@@ -24,6 +24,8 @@ import beluga.module.ticket.model.Message;
 import beluga.module.ticket.model.TicketLabel;
 import beluga.module.ticket.model.Assignement;
 import beluga.module.account.Account;
+import beluga.module.ticket.TicketErrorKind;
+
 import sys.db.Manager;
 
 class TicketImpl extends ModuleImpl implements TicketInternal {
@@ -31,9 +33,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
     public var widgets: TicketWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/local/");
 
-    private var show_id: Int = 0;
-    // FIXME: change this for an enum or whatever, just used to display an error message if the user is no logged.
-    private var error: String = "";
+    public var show_id: Int = 0;
+    public var error: TicketErrorKind = TicketErrorNone;
 
     public function new() {
         super();
@@ -49,17 +50,12 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         this.triggers.browse.dispatch();
     }
 
-    /// Set the context informations for the browse widget:
-    /// * Tickets informations
-    /// * closed / open tickets
-    /// * Existings labels
-    public function getBrowseContext(): Dynamic {
-        var tickets: List<Dynamic> = new List<Dynamic>();
-        var labels: List<Dynamic> = new List<Dynamic>();
+    public function getTickets(): {closed: Int, open: Int, list: List<Dynamic>} {
+        var tickets = new List<Dynamic>();
+        var message_count: Int = 0;
         var open: Int = 0;
         var closed: Int = 0;
         var status: String = "open";
-        var message_count: Int = 0;
 
         // Store all tickets in a Dynamic
         var row = Manager.cnx.request("SELECT * from beluga_tic_ticket ORDER BY date DESC");
@@ -89,86 +85,21 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             message_count = 0;
         }
 
-        // Store all labels names in a dynamic
-        labels = getLabelsList();
-
         return {
-            tickets_list: tickets,
-            labels_list: labels,
-            open_tickets: open,
-            closed_tickets: closed
+            closed: closed,
+            open: open,
+            list: tickets
         };
+
     }
 
     public function create(): Void {
         this.triggers.create.dispatch();
     }
 
-    /// Returns the context for the view create ticket
-    /// in the form of a List<Dynamic>
-    /// { labels_list: { label_name: String }, ticket_error: String }
-    public function getCreateContext(): Dynamic {
-        var labels: List<Dynamic> = new List<Dynamic>();
-        var users: List<Dynamic> = new List<Dynamic>();
-
-        // Store all labels names in a dynamic
-        for (l in Label.manager.search($id < 100)) {
-            labels.push({ label_name: l.name });
-        }
-        for (u in User.manager.search($id < 100)) {
-            users.push({
-                user_name: u.login,
-                user_id: u.id
-            });
-        }
-
-        return {
-            labels_list: labels,
-            ticket_error: this.error,
-            users_list: users
-        };
-    }
-
     public function show(args: { id: Int }): Void {
         this.show_id = args.id;
         this.triggers.show.dispatch();
-    }
-
-    /// Create the context for the Show view:
-    /// * retrieve all the tickets data +
-    /// * all the comments associated to the ticket
-    /// * then all the labels associated to the tickets
-    public function getShowContext(): Dynamic {
-        var ticket = TicketModel.manager.get(this.show_id);
-        var messages: List<Dynamic> = new List<Dynamic>();
-        var labels: List<Dynamic> = new List<Dynamic>();
-        var assignee: String = "None";
-
-        // retrieve messages informations
-        messages = this.getTicketMessages(ticket.id);
-
-        // retrieve associated labels
-        labels = this.getTicketLabels(ticket.id);
-
-        var assignement = Assignement.manager.search($ticket_id == ticket.id).first();
-        if (assignement != null) {
-            assignee = User.manager.get(assignement.user_id).login;
-        }
-
-        return {
-            ticket_subject: ticket.title,
-            ticket_id: ticket.id,
-            ticket_message: ticket.content,
-            ticket_create_date: ticket.date,
-            ticket_owner: User.manager.get(ticket.user_id).login,
-            ticket_message_count: messages.length,
-            messages_list: messages,
-            labels_list: labels,
-            ticket_status: ticket.status,
-            ticket_error: this.error,
-            ticket_assignee: assignee,
-            ticket_owner_id: User.manager.get(ticket.user_id).id
-        };
     }
 
     /// Just get the id of the ticket, then reopen it
@@ -179,7 +110,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
          // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged) {
-            this.error = "You must be logged to reopen a ticket !";
+            this.error = TicketUserNotLogged;
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.status = 1;
@@ -196,7 +127,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged) {
-            this.error = "You must be logged to close a ticket !";
+            this.error = TicketUserNotLogged;
         } else {
             var ticket = TicketModel.manager.get(args.id);
             ticket.status = 0;
@@ -214,11 +145,11 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         // first check if the user is logged
         var account = Beluga.getInstance().getModuleInstance(Account);
         if (!account.isLogged) {
-            this.error = "You must be logged to create a ticket !";
-            this.show({id: args.id});
+            this.error = TicketUserNotLogged;
+            this.triggers.commentFail.dispatch({error: TicketUserNotLogged});
         } else if (args.message.length == 0) {
-            this.error = "Your message cannot be empty !";
-            this.show({id: args.id});
+            this.error = TicketMessageEmpty;
+            this.triggers.commentFail.dispatch({error: TicketMessageEmpty});
         } else {
             var message: Message = new Message();
             message.content = args.message;
@@ -226,7 +157,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
             message.creation_date = Date.now();
             message.ticket_id = args.id;
             message.insert();
-            this.show({id: args.id});
+            this.triggers.commentSuccess.dispatch({id: args.id});
             this.notifyTicketComment(args.id);
         }
     }
@@ -251,11 +182,11 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var account = Beluga.getInstance().getModuleInstance(Account);
         var ticket = new TicketModel();
         if (!account.isLogged) {
-            this.error = "You must be logged to create a ticket !";
-            this.triggers.create.dispatch();
+            this.error = TicketUserNotLogged;
+            this.triggers.submitFail.dispatch({error: TicketUserNotLogged});
         } else if (args.title.length == 0) {
-            this.error = "Your title cannot be empty !";
-            this.triggers.create.dispatch();
+            this.error = TicketTitleEmpty;
+            this.triggers.submitFail.dispatch({error: TicketTitleEmpty});
         } else {
             ticket.user_id = account.loggedUser.id;
             ticket.date = Date.now();
@@ -279,7 +210,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
                 };
                 this.triggers.assignNotify.dispatch(args);
             }
-            this.show({id: ticket_id});
+            this.show_id = ticket_id;
+            this.triggers.submitSuccess.dispatch({id: ticket_id});
         }
     }
 
@@ -287,29 +219,20 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         this.triggers.admin.dispatch();
     }
 
-    /// Returns the context for the admin widget in the form of a List<Dynamic>
-    /// { admin_error: String, labels_list: { label_name: String, label_id: Int } }
-    public function getAdminContext(): Dynamic {
-        return {
-            admin_error: this.error,
-            labels_list: this.getLabelsList()
-        };
-    }
-
     public function deletelabel(args: { id: Int }): Void {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
         if (!account.isLogged) {
-            this.error = "You must be logged to delete a label !";
-            this.triggers.deleteLabelFail.dispatch();
+            this.error = TicketUserNotLogged;
+            this.triggers.deleteLabelFail.dispatch({error: TicketUserNotLogged});
         } else {
             if (this.labelExistFromID(args.id)) {
                 var label = Label.manager.get(args.id);
                 label.delete();
             this.triggers.deleteLabelSuccess.dispatch();
             } else {
-                this.error = "There is no existing label with the given id !";
-                this.triggers.deleteLabelFail.dispatch();
+                this.error = TicketUndefinedLabelId;
+                this.triggers.deleteLabelFail.dispatch({error: TicketUndefinedLabelId});
             }
         }
     }
@@ -318,15 +241,15 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var account = Beluga.getInstance().getModuleInstance(Account);
 
         if (!account.isLogged) {
-            this.error = "You must be logged to add a label !";
-            this.triggers.addLabelFail.dispatch();
+            this.error = TicketUserNotLogged;
+            this.triggers.addLabelFail.dispatch({error: TicketUserNotLogged});
         } else if (args.name.length == 0) {
-            this.error = "Your label cannot be empty!";
-            this.triggers.addLabelFail.dispatch();
+            this.error = TicketLabelEmpty;
+            this.triggers.addLabelFail.dispatch({error: TicketLabelEmpty});
         } else {
             if (this.labelExist(args.name)) {
-                this.error = "This label already exist!";
-                this.triggers.addLabelFail.dispatch();
+                this.error = TicketLabelAlreadyExist;
+                this.triggers.addLabelFail.dispatch({error: TicketLabelAlreadyExist});
             } else {
                 this.createNewLabel(args.name);
                 this.triggers.addLabelSuccess.dispatch();
@@ -339,16 +262,8 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     /// The dynamic content is on the form :
     /// List<{ label_name: String, label_id: Int }>
-    public function getLabelsList(): List<Dynamic> {
-        var labels: List<Dynamic> = new List<Dynamic>();
-
-        for (l in Label.manager.search($id < 100)) {
-            labels.push({
-                label_name: l.name,
-                label_id: l.id
-            });
-        }
-
+    public function getLabelsList(): List<Label> {
+        var labels: List<Label> = Label.manager.dynamicSearch({});
         return labels;
     }
 
@@ -357,7 +272,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
         var message_count: Int = 0;
 
         for( u in Message.manager.search($ticket_id == ticket_id) ) {
-                message_count += 1;
+            message_count += 1;
         }
 
         return message_count;

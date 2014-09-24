@@ -24,11 +24,8 @@ interface Ticket extends Module {
     public function admin(): Void;
     public function deletelabel(args: { id: Int }): Void;
     public function addlabel(args: { name: String }): Void;
-    public function getBrowseContext(): Dynamic;
-    public function getCreateContext(): Dynamic;
-    public function getShowContext(): Dynamic;
-    public function getAdminContext(): Dynamic;
 
+    public function getTickets(): {closed: Int, open: Int, list: List<Dynamic>};
     public function getLabelsList(): List<Dynamic>;
     public function getTicketMessageCount(ticket_id: Int): Int;
     public function labelExist(label_name: String): Bool;

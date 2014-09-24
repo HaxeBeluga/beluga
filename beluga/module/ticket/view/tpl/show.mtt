@@ -36,11 +36,11 @@
             <span class="help-block">
                 $$i18n(mkdown_help)
             </span>
-            <input type="submit" class="btn btn-info btn-sm ticket-button-submit" value="Comment"/>
+            <input type="submit" class="btn btn-info btn-sm ticket-button-submit" value="$$i18n(comment_ticket)"/>
             ::if (ticket_status == 1)::
-            <a href="::base_url::/beluga/ticket/close?id=::ticket_id::" type="button" class="btn btn-danger btn-sm ticket-button-submit">Close</a>
+            <a href="::base_url::/beluga/ticket/close?id=::ticket_id::" type="button" class="btn btn-danger btn-sm ticket-button-submit">$$i18n(close_ticket)</a>
             ::else::
-            <a href="::base_url::/beluga/ticket/reopen?id=::ticket_id::" type="button" class="btn btn-success btn-sm ticket-button-submit">Reopen</a>
+            <a href="::base_url::/beluga/ticket/reopen?id=::ticket_id::" type="button" class="btn btn-success btn-sm ticket-button-submit">$$i18n(reopen_ticket)</a>
             ::end::
             </form>
         </div>
