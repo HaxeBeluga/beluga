@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package beluga.core;
 import beluga.core.BelugaException;
 import haxe.xml.Fast;
@@ -10,22 +18,22 @@ class Database {
 
     public function new(cnx: Connection) {
         Manager.initialize();
-		Manager.cnx = cnx;
-	}
-	
-	public static function newFromFile(dbConfig : Iterator<Fast>) {
-		var dbInfo = { host: "", user: "", pass: "", database: ""};
-		for (elem in dbConfig) {
-			Reflect.setField(dbInfo, elem.name, elem.innerHTML);
-		}
-		try {
-			var cnx = sys.db.Mysql.connect(dbInfo);
-			return new Database(cnx);
-		}
-		catch (e : Dynamic) {
-			throw new BelugaException("Can't connect to database");
-		}
-	}
+        Manager.cnx = cnx;
+    }
+
+    public static function newFromFile(dbConfig : Iterator<Fast>) {
+        var dbInfo = { host: "", user: "", pass: "", database: ""};
+        for (elem in dbConfig) {
+            Reflect.setField(dbInfo, elem.name, elem.innerHTML);
+        }
+        try {
+            var cnx = sys.db.Mysql.connect(dbInfo);
+            return new Database(cnx);
+        }
+        catch (e : Dynamic) {
+            throw new BelugaException("Can't connect to database");
+        }
+    }
 
     public function initTable(module : String, table : String) {
         var tableClass = ModuleLoader.resolveModel(module, table);

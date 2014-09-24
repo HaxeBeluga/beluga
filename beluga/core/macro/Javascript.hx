@@ -1,3 +1,11 @@
+// Copyright 2014 The Beluga Project Developers. See the LICENCE.md
+// file at the top-level directory of this distribution and at
+// http://haxebeluga.github.io/licence.html.
+//
+// Licensed under the MIT License.
+// This file may not be copied, modified, or distributed
+// except according to those terms.
+
 package beluga.core.macro;
 
 import haxe.macro.Compiler;
@@ -8,23 +16,19 @@ import sys.io.Process;
 
 using StringTools;
 
-/**
- * ...
- * @author Masadow
- */
 class Javascript
 {
-    
+
     private static var entryPoint = "BelugaTmpMainJavascript";
 
     macro public static function compile() : Expr
     {
         ConfigLoader.forceBuild();
-        
+
         var realOutput = Compiler.getOutput();
         if (realOutput.endsWith(".n")) //Trick for neko output
             realOutput = realOutput.substr(0, realOutput.lastIndexOf("/"));
-        
+
         Sys.println("Generating Beluga javascript");
 
         var fileContent = "package ;\nclass "+ entryPoint +" {\n    public static function main() {\n";
@@ -50,18 +54,18 @@ class Javascript
             "-cp", ConfigLoader.installPath + "/../",
             "-main", entryPoint,
             "-js", realOutput + "/js/beluga.js"]).stderr);
-        
+
 
         //Remove the temporary file
         FileSystem.deleteFile(ConfigLoader.installPath + "/../" + entryPoint + ".hx");
-        
+
         return macro "Done !";
     }
-    
+
     public static function haveInit(file : String)
     {
         var content = File.getContent(file);
         return content.indexOf("public static function init()") != -1;
     }
-    
+
 }
