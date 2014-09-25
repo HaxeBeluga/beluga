@@ -13,8 +13,10 @@ import beluga.core.trigger.TriggerVoid;
 
 import sys.db.Types;
 
+import beluga.module.mail.MailErrorKind;
+
 class MailTrigger {
-    public var sendFail = new TriggerVoid();
+    public var sendFail = new Trigger<{error : MailErrorKind}>();
     public var sendSuccess = new TriggerVoid();
     public var print = new Trigger<{id : Int}>();
     public var defaultMail = new TriggerVoid();

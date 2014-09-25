@@ -1,0 +1,22 @@
+{
+    "missing_login": "Vous devez être connecté",
+    "missing_receiver": "Il manque le destinataire de ce mail",
+    "missing_subject": "Il manque l'objet de ce mail",
+    "missing_message": "Il manque le message",
+    "mail_not_sent": "Le mail n'a pas été envoyé",
+    "id_not_found": "Cet id n'existe pas",
+    "not_supported": "Ne fonctionne qu'avec PHP (pour le moment...)",
+    "mails_list_for": "Liste des mails de <b>::user.login::</b>",
+    "send_mail": "Envoyer nouveau mail",
+    "go_back": "Revenir à la liste des mails",
+    "to": "A : ::receiver::",
+    "subject": "Objet : ::subject::",
+    "sent": "Date d'envoi : ::date::",
+    "send_mail_from": "Adresse utilisée pour envoyer le mail : ::user.email::",
+    "send_to": "Envoyer à",
+    "mail_subject": "Objet",
+    "message": "Message",
+    "send": "Envoyer",
+    "enter_receiver": "Entrer le destinataire du mail",
+    "enter_subject": "Entrer l'objet du mail"
+}

@@ -12,6 +12,7 @@ package modules.mail_test;
 import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.mail.Mail;
+import beluga.module.mail.MailErrorKind;
 import beluga.module.account.Account;
 
 // BelugaTest
@@ -35,47 +36,43 @@ class MailTest {
         this.mail = beluga.getModuleInstance(Mail);
 
         this.mail.triggers.defaultMail.add(this.doDefault);
-        this.mail.triggers.sendFail.add(this.create);
+        this.mail.triggers.sendFail.add(this.sendFail);
         this.mail.triggers.sendSuccess.add(this.doDefault);
         this.mail.triggers.create.add(this.create);
         this.mail.triggers.print.add(this.print);
     }
 
     public function doDefault() {
-        var widget = mail.getWidget("mail");
-
-        widget.context = mail.getDefaultContext();
         var html = Renderer.renderDefault("page_mail", "Mails list", {
-            mailWidget: widget.render()
+            mailWidget: mail.widgets.mail.render()
         });
         Sys.print(html);
     }
 
     public function create() {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-
-        if (user == null) {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
             this.doDefault();
-            return;
+        } else {
+            var html = Renderer.renderDefault("page_mail", "Mails list", {
+                mailWidget: mail.widgets.create.render()
+            });
+            Sys.print(html);
         }
-        var widget = mail.getWidget("sendMail");
+    }
 
-        widget.context = mail.getCreateContext();
-        var html = Renderer.renderDefault("page_mail", "Mails list", {
-            mailWidget: widget.render()
-        });
-        Sys.print(html);
+    public function sendFail(args : {error : MailErrorKind}) {
+        this.create();
     }
 
     public function print(args : {id : Int}) {
         if (!mail.canPrint(args.id)) {
             this.doDefault();
         } else {
-            var widget = this.mail.getWidget("print");
+            // important to print wanted mail
+            this.mail.setActualMail(args.id);
 
-            widget.context = mail.getPrintContext(args.id);
             var html = Renderer.renderDefault("page_mail", "Mails list", {
-                mailWidget: widget.render()
+                mailWidget: mail.widgets.print.render()
             });
             Sys.print(html);
         }

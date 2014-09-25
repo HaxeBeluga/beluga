@@ -13,11 +13,12 @@ import beluga.module.mail.model.MailModel;
 
 interface Mail extends Module {
     public var triggers: MailTrigger;
+    public var widgets : MailWidget;
 
     // Context methods
-    public function getDefaultContext() : Dynamic;
-    public function getCreateContext() : Dynamic;
-    public function getPrintContext(mail_id: Int) : Dynamic;
+    public function createDefaultContext() : Void;
+    public function setActualMail(mail_id : Int) : Void;
+    public function getActualMail() : MailModel;
 
     // Helpful methods
     public function canPrint(mail_id: Int) : Bool;

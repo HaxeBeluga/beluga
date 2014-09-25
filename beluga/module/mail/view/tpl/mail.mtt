@@ -1,6 +1,6 @@
 <div style="margin-top:50px;width:800px;">
 	::if (user)::
-	<h1>Mails list for <b>::user.login::</b> user</h1><br/>
+	<h1>$$i18n(mails_list_for)</h1><br/>
 	::if (error)::
 	::if (error != "")::
 	<div class="alert alert-danger">::error::</div>
@@ -20,8 +20,8 @@
 		::end::
 		</ul>
 	</div>
-	<a href="::base_url::::path::create" class="btn btn-primary">Send new mail</a>
+	<a href="::base_url::::path::create" class="btn btn-primary">$$i18n(send_mail)</a>
 	::else::
-	<div class="alert alert-danger">Please log in</div>
+	<div class="alert alert-danger">$$i18n(missing_login)</div>
 	::end::
 </div>

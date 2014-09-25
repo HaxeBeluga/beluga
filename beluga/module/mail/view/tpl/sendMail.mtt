@@ -1,37 +1,37 @@
 <div style="width:800px;">
-	<h2>Send email from ::user.email::</h2><br/>
+	<h2>$$i18n(send_mail_from)</h2><br/>
 	<form action="::base_url::::path::send" class="form" role="form" method="POST">
 		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group">
-			<label for="receiver">Send to</label>
+			<label for="receiver">$$i18n(send_to)</label>
 			::if (receiver)::
 			::if (receiver != "")::
-			<input type="email" class="form-control" id="receiver" name="receiver" placeholder="Enter receiver's email" value="::receiver::">
+			<input type="email" class="form-control" id="receiver" name="receiver" placeholder="$$i18n(enter_receiver)" value="::receiver::">
 			::else::
-			<input type="email" class="form-control" id="receiver" name="receiver" placeholder="Enter receiver's email">
+			<input type="email" class="form-control" id="receiver" name="receiver" placeholder="$$i18n(enter_receiver)">
 			::end::
 			::else::
-			<input type="email" class="form-control" id="receiver" name="receiver" placeholder="Enter receiver's email">
+			<input type="email" class="form-control" id="receiver" name="receiver" placeholder="$$i18n(enter_receiver)">
 			::end::
 		</div>
 		<div class="form-group">
-			<label for="subject">Subject</label>
+			<label for="subject">$$i18n(mail_subject)</label>
 			::if (subject)::
 			::if (subject != "")::
-			<input class="form-control" id="subject" name="subject" placeholder="Enter email's subject" value="::subject::">
+			<input class="form-control" id="subject" name="subject" placeholder="$$i18n(enter_subject)" value="::subject::">
 			::else::
-			<input class="form-control" id="subject" name="subject" placeholder="Enter email's subject">
+			<input class="form-control" id="subject" name="subject" placeholder="$$i18n(enter_subject)">
 			::end::
 			::else::
-			<input class="form-control" id="subject" name="subject" placeholder="Enter email's subject">
+			<input class="form-control" id="subject" name="subject" placeholder="$$i18n(enter_subject)">
 			::end::
 		</div>
 		<div class="form-group">
-			<label for="message">Message</label>
+			<label for="message">$$i18n(message)</label>
 			<textarea class="form-control" id="message" name="message">::if (message)::::message::::end::</textarea>
 		</div>
-		<button type="submit" class="btn btn-default">Send</button>
+		<button type="submit" class="btn btn-default">$$i18n(send)</button>
 	</form>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::">Go back to mail list</a>
+	<a class="btn btn-primary" href="::base_url::::path::">$$i18n(go_back)</a>
 </div>
