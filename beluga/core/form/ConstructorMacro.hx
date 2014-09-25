@@ -12,19 +12,6 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.macro.ComplexTypeTools;
 
-import haxe.macro.ExprTools;
-
-//[{  name => args,
-//    type => TAnonymous([{
-//                      kind => FVar(TPath({ name => String, pack => [], params => [] }), null),
-//                      meta => [],
-//                      name => name,
-//                      doc => null,
-//                      pos => #pos(src/MyForm.hx:7: characters 33-48),
-//                      access => [] }]),
-//    opt => false,
-//    value => null }]
-
 class ConstructorMacro {
 
     private static function generateAssignement(field : Field) : Expr {
