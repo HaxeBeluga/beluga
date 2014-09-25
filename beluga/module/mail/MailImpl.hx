@@ -77,8 +77,8 @@ class MailImpl extends ModuleImpl implements MailInternal {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
-            for (tmp in MailModel.manager.dynamicSearch( {user_id : user.id, id : id} )) {
-                return tmp;
+            for (mail in MailModel.manager.dynamicSearch( {user_id : user.id, id : id} )) {
+                return mail;
             }
             error_msg = "id_not_found";
         } else {
@@ -88,25 +88,25 @@ class MailImpl extends ModuleImpl implements MailInternal {
     }
 
     public function getDraftMails() : Array<MailModel> {
-        var ret = new Array<MailModel>();
+        var draft_mails = new Array<MailModel>();
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
-            for (tmp in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : false} ))
-                ret.push(tmp);
+            for (draft_mail in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : false} ))
+                draft_mails.push(draft_mail);
         }
-        return ret;
+        return draft_mails;
     }
 
     public function getSentMails() : Array<MailModel> {
-        var ret = new Array<MailModel>();
+        var sent_mails = new Array<MailModel>();
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
-            for (tmp in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : true} ))
-                ret.push(tmp);
+            for (sent_mail in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : true} ))
+                sent_mails.push(sent_mail);
         }
-        return ret;
+        return sent_mails;
     }
 
     public function sendMail(args : {receiver : String, subject : String, message : String}) : Void {
