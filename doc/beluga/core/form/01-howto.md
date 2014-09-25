@@ -34,7 +34,7 @@ You can make one or several parameters optional by specifying that its type is
 
 Now we have our form, we have to define the requirements (or rules) that our
 data need to validate. In order to achieve it, our form should inherit from
-`beluga.form.Object`. and then, we can prefixe each variables with metadata. 
+`beluga.form.Object`. and then, we can prefixe each variables with metadata.
 
 ```Haxe
 class MyFrom extends beluga.form.Object
@@ -88,9 +88,11 @@ value will be lost! This rule always return true.
 ## Validation process
 
 At this point, we define our form and its requirements so, now, it's time to
-talk about its validation. Actually, this is really simple. You just have to
-call the function `validate`. If error occurred, then you can access it by the
-public variable `error`; which is a `Map` with the data name as key and the 
+talk about its validation. Actually, this is really simple. Firstly, you have
+to create your form object passing the anonymous structure as parameter. It avoids
+to manually assign the content of the structure albeit possible. Once it's done,
+you just have to call the function `validate`. If error occurred, then you can access
+it by the public variable `error`; which is a `Map` with the data name as key and the
 requirement name as value.
 
 ```Haxe
@@ -110,11 +112,12 @@ class MyFrom extends beluga.form.Object
 
 // ...
 
+public function doSomething(args : {name : String, age : Int, genre : Null<String>})
 {
-  var my_form = new MyForm(); 
+  // Init the form object with form data
+  var my_form = new MyForm(args);
 
-  // Init form object with GET/POST data
-
+  // Check correctness of data
   var is_correct = my_form.validate();
   if (is_correct == true)
   {
