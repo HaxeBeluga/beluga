@@ -4,6 +4,7 @@ import beluga.core.Beluga;
 import beluga.core.api.BelugaApi;
 import beluga.core.Widget;
 import beluga.core.BelugaException;
+import beluga.tool.Log;
 import beluga.module.account.Account;
 import haxe.web.Dispatch;
 import haxe.Resource;
@@ -68,6 +69,7 @@ class Main {
             notification = new NotificationTest(beluga);
             Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             beluga.cleanup();
+            Log.flush();
         } catch (e: BelugaException) {
             trace(e);
         }
