@@ -132,6 +132,5 @@ public function doSomething(args : {name : String, age : Int, genre : Null<Strin
 
 ## Limitations
 
-We miss a system that can take the WebDispatcher data and automatically
-initialize the form object with it. So, for now, we have to do it manually, but
-it will change.
+We miss a system that can automatically bind the Beluga error system to the validate process. We still need to check
+by ourselves creating huge `if/else` statements. It MUST change.
