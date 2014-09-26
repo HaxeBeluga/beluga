@@ -89,9 +89,9 @@ value will be lost! This rule always return true.
 
 At this point, we define our form and its requirements so, now, it's time to
 talk about its validation. Actually, this is really simple. Firstly, you have
-to create your form object passing the anonymous structure as parameter. It avoids
+to create your form object by passing the anonymous structure as a parameter. It avoids
 to manually assign the content of the structure albeit possible. Once it's done,
-you just have to call the function `validate`. If error occurred, then you can access
+you just have to call the function `validate`. If an error occurred, then you can access
 it by the public variable `error`; which is a `Map` with the data name as key and the
 requirement name as value.
 
