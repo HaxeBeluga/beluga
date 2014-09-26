@@ -16,6 +16,9 @@ class Create extends MttWidget<MailImpl> {
     }
 
     override private function getContext() : Dynamic {
+        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
+            return mod.widgets.mail.render();
+        }
         return {
             mails : mod.getSentMails(),
             user : Beluga.getInstance().getModuleInstance(Account).loggedUser,

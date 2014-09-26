@@ -16,6 +16,9 @@ class Print extends MttWidget<MailImpl> {
     }
 
     override private function getContext() : Dynamic {
+        if (!mod.canPrint()) {
+            return mod.widgets.mail.render();
+        }
         var mail = mod.getActualMail();
 
         if (mail != null) {

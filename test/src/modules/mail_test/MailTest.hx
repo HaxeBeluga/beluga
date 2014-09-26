@@ -50,14 +50,10 @@ class MailTest {
     }
 
     public function create() {
-        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            this.doDefault();
-        } else {
-            var html = Renderer.renderDefault("page_mail", "Mails list", {
-                mailWidget: mail.widgets.create.render()
-            });
-            Sys.print(html);
-        }
+        var html = Renderer.renderDefault("page_mail", "Mails list", {
+            mailWidget: mail.widgets.create.render()
+        });
+        Sys.print(html);
     }
 
     public function sendFail(args : {error : MailErrorKind}) {
@@ -65,13 +61,9 @@ class MailTest {
     }
 
     public function print() {
-        if (!mail.canPrint()) {
-            this.doDefault();
-        } else {
-            var html = Renderer.renderDefault("page_mail", "Mails list", {
-                mailWidget: mail.widgets.print.render()
-            });
-            Sys.print(html);
-        }
+        var html = Renderer.renderDefault("page_mail", "Mails list", {
+            mailWidget: mail.widgets.print.render()
+        });
+        Sys.print(html);
     }
 }
