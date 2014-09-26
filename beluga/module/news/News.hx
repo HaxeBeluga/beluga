@@ -12,17 +12,15 @@ import beluga.core.module.Module;
 
 import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
+import beluga.module.news.NewsWidget;
 
 interface News extends Module {
     public var triggers: NewsTrigger;
+    public var widgets : NewsWidget;
 
-    // get context methods
-    public function getDefaultContext() : Dynamic;
-    public function getCreateContext() : Dynamic;
-    public function getEditContext(news_id: Int) : Dynamic;
-    public function getPrintContext(news_id: Int) : Dynamic;
+    // context method
+    public function setActualNewsId(news_id : Int) : Void;
 
-    public function print(args : {news_id : Int}) : Void;
     public function create(args : {title : String, text : String}) : Void;
     public function delete(args : {news_id : Int}) : Void;
     public function edit(args : {news_id : Int, title : String, text : String}) : Void;

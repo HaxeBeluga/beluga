@@ -28,7 +28,8 @@ class NewsApi {
     }
 
     public function doPrint(args : {news_id : Int}) {
-        this.module.triggers.print.dispatch(args);
+        this.module.setActualNewsId(args.news_id);
+        this.module.triggers.print.dispatch();
     }
 
     public function doRedirect() {
@@ -56,6 +57,7 @@ class NewsApi {
     }
 
     public function doRedirectEdit(args : {news_id : Int}) {
-        this.module.triggers.redirectEdit.dispatch(args);
+        this.module.setActualNewsId(args.news_id);
+        this.module.triggers.redirectEdit.dispatch();
     }
 }

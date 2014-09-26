@@ -8,6 +8,12 @@
 
 package modules.news_test;
 
+import haxe.web.Dispatch;
+import haxe.Resource;
+import haxe.CallStack;
+
+import main_view.Renderer;
+
 import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.account.model.User;
@@ -15,10 +21,7 @@ import beluga.module.account.Account;
 import beluga.module.news.News;
 import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
-import haxe.web.Dispatch;
-import haxe.Resource;
-import main_view.Renderer;
-import haxe.CallStack;
+import beluga.module.news.NewsErrorKind;
 
 #if php
 import php.Web;
@@ -35,73 +38,65 @@ class NewsTest {
         this.news.triggers.print.add(this.print);
         this.news.triggers.redirect.add(this.redirect);
         this.news.triggers.redirectEdit.add(this.redirectEdit);
-        this.news.triggers.deleteCommentFail.add(this.print);
+        this.news.triggers.deleteCommentFail.add(this.deleteCommentFail);
         this.news.triggers.deleteCommentSuccess.add(this.print);
         this.news.triggers.createSuccess.add(this.doDefault);
-        this.news.triggers.createFail.add(this.redirect);
+        this.news.triggers.createFail.add(this.createFail);
         this.news.triggers.editSuccess.add(this.print);
-        this.news.triggers.editFail.add(this.redirectEdit);
+        this.news.triggers.editFail.add(this.editFail);
         this.news.triggers.addCommentSuccess.add(this.print);
-        this.news.triggers.addCommentFail.add(this.print);
+        this.news.triggers.addCommentFail.add(this.addCommentFail);
         this.news.triggers.deleteSuccess.add(this.doDefault);
-        this.news.triggers.deleteFail.add(this.print);
+        this.news.triggers.deleteFail.add(this.deleteFail);
     }
 
     public function doDefault() {
-        var widget = news.getWidget("news");
-
-        widget.context = news.getDefaultContext();
         var html = Renderer.renderDefault("page_news", "News list", {
-            newsWidget: widget.render()
+            newsWidget: news.widgets.news.render()
         });
         Sys.print(html);
     }
 
     /// FIXME : Check why page is generated twice
-    public function print(args : {news_id : Int}) {
-        if (!news.canPrint(args.news_id)) {
-            doDefault();
-        } else {
-            var widget = this.news.getWidget("print");
-
-            widget.context = news.getPrintContext(args.news_id);
-            var html = Renderer.renderDefault("page_news", "News", {
-                newsWidget: widget.render()
-            });
-            Sys.print(html);
-        }
-    }
-
-    public function redirect() {
-        if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            doDefault();
-            return;
-        }
-        var widget = news.getWidget("create");
-
-        widget.context = news.getCreateContext();
-        var html = Renderer.renderDefault("page_news", "Create news", {
-            newsWidget: widget.render()
+    public function print() {
+        var html = Renderer.renderDefault("page_news", "News list", {
+            newsWidget: news.widgets.print.render()
         });
         Sys.print(html);
     }
 
-    public function redirectEdit(args : {news_id : Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+    public function redirect() {
+        var html = Renderer.renderDefault("page_news", "Create news", {
+            newsWidget: news.widgets.create.render()
+        });
+        Sys.print(html);
+    }
 
-        if (user == null) {
-            doDefault();
-            return;
-        }
-        if (!news.canEdit(args.news_id, user.id)) {
-            print(args);
-        } else {
-            var widget = news.getWidget("edit");
+    public function redirectEdit() {
+        var html = Renderer.renderDefault("page_news", "Create news", {
+            newsWidget: news.widgets.edit.render()
+        });
+        Sys.print(html);
+    }
 
-            widget.context = news.getEditContext(args.news_id);
-            Sys.print(Renderer.renderDefault("page_news", "Create news", {
-                newsWidget: widget.render()
-            }));
-        }
+    public function deleteCommentFail(args : {error : NewsErrorKind}) {
+        this.print();
+    }
+
+    public function addCommentFail(args : {error : NewsErrorKind}) {
+        this.print();
+    }
+
+    public function deleteFail(args : {error : NewsErrorKind}) {
+        this.print();
+    }
+
+    public function createFail(args : {error : NewsErrorKind}) {
+        this.redirect();
+    }
+
+
+    public function editFail(args : {error : NewsErrorKind}) {
+        this.redirectEdit();
     }
 }
