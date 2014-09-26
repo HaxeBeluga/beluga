@@ -18,17 +18,9 @@ It is **open source**, that means everyone can access to the source code of the 
 
 As I said before, the project was done with the Haxe language.
 
-## What is Haxe ?
-
-Haxe consists of a high-level, open source programming language and a compiler. It allows compilation of programs, to multiple target languages. 	Employing proper abstraction, it is possible to maintain a single code-base which compiles to multiple targets.
-
-Currently, there are nine supported target languages which allow for different use-cases : Java, Javascript, C#, C++, Neko, PHP, Python, Actionscript 3 and Flash.
-
-Our project uses 2 of them : PHP and Neko.
-
 ## Recovery of the project and contribution
 
-See the Tutorial
+See the tutorial : https://github.com/FassiClement/Beluga/blob/documentation/doc/Manual/Tutorial_Recover.md
 
 ## Modules
 
