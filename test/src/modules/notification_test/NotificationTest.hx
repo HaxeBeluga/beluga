@@ -8,15 +8,19 @@
 
 package modules.notification_test;
 
+import haxe.web.Dispatch;
+import haxe.Resource;
+
+import main_view.Renderer;
+
 import beluga.core.Beluga;
 import beluga.core.Widget;
+
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import beluga.module.notification.Notification;
+import beluga.module.notification.NotificationErrorKind;
 import beluga.module.notification.model.NotificationModel;
-import haxe.web.Dispatch;
-import haxe.Resource;
-import main_view.Renderer;
 
 #if php
 import php.Web;
@@ -32,34 +36,32 @@ class NotificationTest {
         this.beluga = beluga;
         this.notif = beluga.getModuleInstance(Notification);
         this.notif.triggers.defaultNotification.add(this.doDefault);
-        this.notif.triggers.createFail.add(this.doDefault);
+        this.notif.triggers.createFail.add(this.createFail);
         //this.notif.triggers.createSuccess.add(this.doCreateSuccess);
-        this.notif.triggers.deleteFail.add(this.doDefault);
+        this.notif.triggers.deleteFail.add(this.deleteFail);
         this.notif.triggers.deleteSuccess.add(this.doDefault);
         this.notif.triggers.print.add(this.doPrint);
     }
 
     public function doDefault() {
-        var widget = notif.getWidget("notification");
-
-        widget.context = notif.getDefaultContext();
         var html = Renderer.renderDefault("page_notification", "Notifications list", {
-            notificationWidget: widget.render()
+            notificationWidget: notif.widgets.notification.render()
         });
         Sys.print(html);
     }
 
-    public function doPrint(args : {notif_id : Int}) {
-        if (notif.canPrint(args.notif_id)) {
-            var widget = notif.getWidget("print_notif");
+    public function doPrint() {
+        var html = Renderer.renderDefault("page_notification", "Notifications list", {
+            notificationWidget: notif.widgets.print.render()
+        });
+        Sys.print(html);
+    }
 
-            widget.context = notif.getPrintContext(args.notif_id);
-            var html = Renderer.renderDefault("page_notification", "Notification", {
-                notificationWidget: widget.render()
-            });
-            Sys.print(html);
-        } else {
-            doDefault();
-        }
+    public function createFail(args : {error : NotificationErrorKind}) {
+        this.doDefault();
+    }
+
+    public function deleteFail(args : {error : NotificationErrorKind}) {
+        this.doDefault();
     }
 }

@@ -1,6 +1,6 @@
 <div style="width:800px;" class="container">
 	::if (user)::
-	<h1>Notifications list for <b>::user.login::</b> user</h1><br/>
+	<h1>$$i18n(notifications_list)</h1><br/>
 	::end::
 	::if (error != "")::
 	<div class="alert alert-danger">::error::</div>
@@ -13,7 +13,7 @@
 		::if (notifs)::
 		::foreach notifs::
 			<li class="list-group-item">
-				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::delete?id=::id::">Delete</a>
+				<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::delete?id=::id::">$$i18n(delete)</a>
 				<a href="::base_url::::path::print?id=::id::" class="btn">::title::</a>
 			</li>
 		::end::

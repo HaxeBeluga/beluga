@@ -61,6 +61,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
         }
         var news = NewsModel.manager.get(news_id);
         if (news.user_id != user_id && !user.isAdmin) {
+            error_id = NotAllowed;
             return false;
         }
         return true;
@@ -70,6 +71,7 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
         var news = NewsModel.manager.get(news_id);
 
         if (news == null) {
+            error_id = NewsNotFound;
             return false;
         }
         return true;

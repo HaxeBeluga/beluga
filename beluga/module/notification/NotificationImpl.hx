@@ -12,41 +12,35 @@ import haxe.xml.Fast;
 
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.BelugaI18n;
 
 import beluga.module.account.Account;
 import beluga.module.notification.model.NotificationModel;
+import beluga.module.notification.NotificationErrorKind;
 
 class NotificationImpl extends ModuleImpl implements NotificationInternal {
     public var triggers = new NotificationTrigger();
+    public var widgets: NotificationWidget;
+    public var i18n = BelugaI18n.loadI18nFolder("/module/notification/locale/");
 
     // Interval variables for contexts
-    private var error_msg : String;
-    private var success_msg : String;
+    public var error_id : NotificationErrorKind;
+    public var success_msg : String;
+    public var actual_notif_id : Int;
 
     public function new() {
         super();
-        error_msg = "";
+        error_id = None;
+        actual_notif_id = -1;
         success_msg = "";
     }
 
     override public function initialize(beluga : Beluga) : Void {
-
+        this.widgets = new NotificationWidget();
     }
 
-    public function getDefaultContext() : Dynamic {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-
-        if (user == null) {
-            error_msg = "Please log in !";
-        }
-        return {notifs : getNotifications(), user : user, error : error_msg, success : success_msg,
-            path : "/beluga/notification/"};
-    }
-
-    public function getPrintContext(notif_id: Int) : Dynamic {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-
-        return {notif : getNotification(notif_id, user.id), path : "/beluga/notification/"}
+    public function setActualNotificationId(notif_id : Int) : Void {
+        this.actual_notif_id = notif_id;
     }
 
     public function canPrint(notif_id: Int) : Bool {
@@ -56,7 +50,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         }
         var notif = getNotification(notif_id, user.id);
         if (notif == null) {
-            error_msg = "Notification hasn't been found...";
+            error_id = IdNotFound;
             return false;
         }
         return true;
@@ -69,12 +63,13 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         return null;
     }
 
+    // Returns all notifications for logged user
     public function getNotifications() : Array<NotificationModel> {
         var ret = new Array<NotificationModel>();
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
-            for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id} ))
+            for (tmp in NotificationModel.manager.dynamicSearch({user_id : user.id}))
                 ret.push(tmp);
         }
         return ret;
@@ -83,16 +78,16 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
     public function print(args : {id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
-        if (user == null) {
-            this.triggers.print.dispatch({notif_id: -1});
-            return;
-        }
-
-        for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id, id : args.id} )) {
-            tmp.hasBeenRead = true;
-            tmp.update();
-            this.triggers.print.dispatch({notif_id: tmp.id});
-            return;
+        // Will be considered as an Error
+        this.actual_notif_id = -1;
+        if (user != null) {
+            for (tmp in NotificationModel.manager.dynamicSearch( {user_id : user.id, id : args.id} )) {
+                this.actual_notif_id = args.id;
+                tmp.hasBeenRead = true;
+                tmp.update();
+                this.triggers.print.dispatch();
+                return;
+            }
         }
     }
 
@@ -100,29 +95,29 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            error_msg = "You have to be logged !";
-            this.triggers.deleteFail.dispatch();
+            error_id = MissingLogin;
+            this.triggers.deleteFail.dispatch({error : error_id});
             return;
         }
         for (tmp in NotificationModel.manager.dynamicSearch( {id : args.id, user_id : user.id} )) {
             tmp.delete();
-            success_msg = "Notification has been successfully deleted !";
+            success_msg = "delete_success";
             this.triggers.deleteSuccess.dispatch();
             return;
         }
-        error_msg = "Unknown notification id";
-        this.triggers.deleteFail.dispatch();
+        error_id = IdNotFound;
+        this.triggers.deleteFail.dispatch({error : error_id});
     }
 
     public function create(args : {title : String, text : String, user_id: Int}) {
         if (args.title == "") {
-            error_msg = "Error : missing title";
-            this.triggers.createFail.dispatch();
+            error_id = MissingTitle;
+            this.triggers.createFail.dispatch({error : error_id});
             return;
         }
         if (args.text == "") {
-            error_msg = "Error : missing text";
-            this.triggers.createFail.dispatch();
+            error_id = MissingMessage;
+            this.triggers.createFail.dispatch({error : error_id});
             return;
         }
         var notif = new NotificationModel();
@@ -134,5 +129,15 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
         notif.creationDate = Date.now();
         notif.insert();
         this.triggers.createSuccess.dispatch();
+    }
+
+    public function getErrorString(error: NotificationErrorKind) {
+        return switch(error) {
+            case MissingLogin: BelugaI18n.getKey(this.i18n, "missing_login");
+            case MissingMessage: BelugaI18n.getKey(this.i18n, "missing_message");
+            case MissingTitle: BelugaI18n.getKey(this.i18n, "missing_title");
+            case IdNotFound: BelugaI18n.getKey(this.i18n, "id_not_found");
+            case None: "";
+        };
     }
 }
