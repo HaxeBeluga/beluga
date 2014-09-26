@@ -18,7 +18,7 @@ import beluga.module.ticket.TicketErrorKind;
 class Admin extends MttWidget<TicketImpl> {
     public function new (mttfile = "beluga_ticket_admin.mtt") {
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/admin/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/admin/", mod.i18n);
     }
 
     /// Returns the context for the admin widget in the form of a List<Dynamic>

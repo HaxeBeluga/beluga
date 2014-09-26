@@ -10,16 +10,16 @@
 ::end::
 <div class="row">
   <ul class="media-list">
-      ::foreach product_list::
+      ::foreach products::
         <li class="media">
             <a class="pull-left" href="#">
                 <img class="media-object" src="http://placehold.it/65x65" alt="">
             </a>
               <div class="media-body">
-                  <h4 class="media-heading">::product_name::</h4>
-                  <span class="label label-warning pull-right">::product_price:: ::currency::</span>
-                  <p>::product_desc::</p>
-                  <p><a href="::base_url::/beluga/market/addProductToCart?id=::product_id::" class="btn btn-info btn-xs pull-right" role="button">Add</a></p>
+                  <h4 class="media-heading">::name::</h4>
+                  <span class="label label-warning pull-right">::price:: ::currency::</span>
+                  <p>::desc::</p>
+                  <p><a href="::base_url::/beluga/market/addProductToCart?id=::id::" class="btn btn-info btn-xs pull-right" role="button">$$i18n(add_product)</a></p>
               </div>
         </li>
       ::end::

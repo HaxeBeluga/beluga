@@ -11,6 +11,7 @@ package beluga.module.market;
 // Beluga core
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
+import beluga.core.BelugaI18n;
 
 // Beluga mods
 import beluga.module.wallet.Wallet;
@@ -18,6 +19,7 @@ import beluga.module.market.model.Product;
 import beluga.module.market.model.Cart;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
+import beluga.module.market.MarketErrorKind;
 
 // Haxe
 import haxe.xml.Fast;
@@ -26,11 +28,10 @@ import haxe.ds.Option;
 class MarketImpl extends ModuleImpl implements MarketInternal {
     public var triggers = new MarketTrigger();
     public var widgets: MarketWidget;
+    public var i18n = BelugaI18n.loadI18nFolder("/module/market/locale/");
 
-    var error = "";
-    var info = "";
-    var cart_error = "";
-    var cart_info = "";
+    public var error: MarketErrorKind = MarketNone;
+    public var info: MarketErrorKind = MarketNone;
 
     public function new() { super(); }
 
@@ -42,50 +43,9 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
 
     public function display(): Void {}
 
-    public function getDisplayContext(): Dynamic {
-        var product_list = this.getProductList();
-        var currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault().name;
-        return {
-            market_error: this.error,
-            market_info: this.info,
-            product_list: product_list,
-            currency: currency
-        };
-    }
-
     public function admin(): Void {}
 
-    public function getAdminContext(): Dynamic {
-        return {};
-    }
-
     public function cart(): Void {}
-
-    public function getCartContext(): Dynamic {
-        var user_cart: List<Dynamic> = new List<Dynamic>();
-        var currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault().name;
-        var total_price = 0;
-
-        if (!beluga.getModuleInstance(Account).isLogged) {
-            this.cart_error = "You must be logged to access your cart";
-        } else {
-            user_cart = this.getUserCart(beluga.getModuleInstance(Account).loggedUser);
-            for( c in user_cart ) {
-                total_price += c.product_total_price;
-            }
-            if (user_cart.length == 0) {
-                this.cart_info = "You have no cart and no products at this time !";
-            }
-        }
-
-        return {
-            market_cart_error: this.cart_error,
-            market_cart_info: this.cart_info,
-            products_list: user_cart,
-            currency: currency,
-            total_price: total_price
-        };
-    }
 
     public function addProductToCart(args: { id: Int }): Void {
         // Check if the user is connected
@@ -93,11 +53,11 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
             switch (this.getProductFromId(args.id)) {
                 case Some(p): { // Le produit existe on l'insert dans le cart
                     var user_id = beluga.getModuleInstance(Account).loggedUser.id;
-                    switch (this.getCart(args.id, user_id)) {
+                    switch (this.isProductInCart(p, user_id)) {
                         case Some(cart): {
                             cart.quantity += 1;
                             cart.update();
-                            this.info = "One More is added to the cart.";
+                            this.info = MarketOneMoreProductToCart(p);
                         }
                         case None: {
                             var cart = new Cart();
@@ -105,19 +65,19 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
                             cart.quantity = 1;
                             cart.product_id = p.id;
                             cart.insert();
-                            this.info = "The product is add to the cart.";
+                            this.info = MarketNewProductToCart(p);
                         }
                     };
-                    this.triggers.addProductSuccess.dispatch();
+                    this.triggers.addProductSuccess.dispatch({product: p});
                 };
                 case None: { // le produit n'existe pas on lance une erreur par trigger
-                    this.error = "This product doesn't exist or is not available.";
-                    this.triggers.addProductFail.dispatch();
+                    this.error = MarketUnknownProduct(args.id);
+                    this.triggers.addProductFail.dispatch({error: this.error});
                 }
             }
         } else { // User is not connected, we throw an error by trigger
-            this.error = "You should be connected to add a product to the cart.";
-            this.triggers.addProductFail.dispatch();
+            this.error = MarketUserNotLogged;
+            this.triggers.addProductFail.dispatch({error: this.error});
         }
     }
 
@@ -129,12 +89,13 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
                     this.triggers.removeProductSuccess.dispatch();
                 }
                 case None: {
-                    this.triggers.removeProductFail.dispatch();
+                    this.error = MarketUnknownProduct(args.id);
+                    this.triggers.removeProductFail.dispatch({error: this.error});
                 }
             }
         } else { // User is not connected, we throw an error by trigger
-            this.error = "You should be connected to remove a product from your cart.";
-            this.triggers.removeProductFail.dispatch();
+            this.error = MarketUserNotLogged;
+            this.triggers.removeProductFail.dispatch({error: this.error});
         }
     }
 
@@ -160,25 +121,24 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
             this.triggers.checkoutCartSuccess.dispatch();
             // beluga.triggerDispatcher.dispatch("beluga_market_checkout_cart_success", [bought_items_list]);
         } else {
-            this.error = "You should be connected to remove a product from your cart.";
-            this.triggers.checkoutCartFail.dispatch();
+            this.error = MarketUserNotLogged;
+            this.triggers.checkoutCartFail.dispatch({error: MarketUserNotLogged});
         }
     }
 
-    public function getProductList(): List<Dynamic> {
-        var product_list: List<Dynamic> = new List<Dynamic>();
+    public function getProductList(): List<Product> {
         var site_currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault();
+        var products = Product.manager.dynamicSearch({}).map(function(p) {
+            var product = new Product();
+            product.name = p.name;
+            product.price = site_currency.convertToCurrency(p.price);
+            product.id = p.id;
+            product.desc = p.desc;
+            product.stock = p.stock;
+            return product;
+        });
 
-        for (p in Product.manager.dynamicSearch( {} )) {
-            product_list.push({
-                product_name: p.name,
-                product_price: site_currency.convertToCurrency(p.price),
-                product_id: p.id,
-                product_desc: p.desc,
-            });
-        }
-
-        return product_list;
+        return products;
     }
 
     public function getProductFromId(id: Int): Option<Product> {
@@ -195,14 +155,14 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
     }
 
     // Get a product in the user Cart
-    public function getCart(product_id: Int, user_id: Int): Option<Cart> {
-        var carts =  Cart.manager.dynamicSearch({ product_id: product_id, user_id: user_id });
+    public function isProductInCart(product: Product, user_id: Int): Option<Cart> {
+        var carts =  Cart.manager.dynamicSearch({ product_id: product.id, user_id: user_id });
         return if (carts.isEmpty()) { None; } else { Some(carts.first()); };
     }
 
     // Get te complete cart of an User
     public function getUserCart(user: User): List<Dynamic> {
-        var cart: List<Dynamic> = new List<Dynamic>();
+        var cart = new List<Dynamic>();
         var site_currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault();
 
         for (c in Cart.manager.dynamicSearch( { user_id: user.id } )) {

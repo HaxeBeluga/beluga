@@ -20,6 +20,6 @@ class Admin extends MttWidget<MarketImpl> {
     }
 
     override private function getContext(): Dynamic {
-        return mod.getAdminContext();
+        return {};
     }
 }

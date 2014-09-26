@@ -20,7 +20,7 @@ class Create extends MttWidget<TicketImpl> {
 
     public function new (mttfile = "beluga_ticket_create.mtt") {
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/create/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/create/", mod.i18n);
     }
 
     /// Returns the context for the view create ticket

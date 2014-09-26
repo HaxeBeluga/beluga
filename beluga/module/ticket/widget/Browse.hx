@@ -18,7 +18,7 @@ class Browse extends MttWidget<TicketImpl> {
 
     public function new (mttfile = "beluga_ticket_browse.mtt") {
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/local/browse/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/browse/", mod.i18n);
     }
 
     /// Set the context informations for the browse widget:
