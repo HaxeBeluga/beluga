@@ -18,7 +18,7 @@ import beluga.module.mail.MailErrorKind;
 class MailTrigger {
     public var sendFail = new Trigger<{error : MailErrorKind}>();
     public var sendSuccess = new TriggerVoid();
-    public var print = new Trigger<{id : Int}>();
+    public var print = new TriggerVoid();
     public var defaultMail = new TriggerVoid();
     public var create = new TriggerVoid();
 

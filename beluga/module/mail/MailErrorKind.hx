@@ -7,5 +7,6 @@ enum MailErrorKind {
     MissingReceiver;
     MissingSubject;
     MissingMessage;
+    UnknownId;
     None;
 }

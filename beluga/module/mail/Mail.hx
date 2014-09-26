@@ -21,7 +21,7 @@ interface Mail extends Module {
     public function getActualMail() : MailModel;
 
     // Helpful methods
-    public function canPrint(mail_id: Int) : Bool;
+    public function canPrint() : Bool;
     public function getSentMails() : Array<MailModel>;
     public function getMail(id : Int) : MailModel;
     public function getDraftMails() : Array<MailModel>;

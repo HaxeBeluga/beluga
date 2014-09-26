@@ -20,7 +20,7 @@ class Default extends MttWidget<MailImpl> {
 
         return {
             mails : mod.getSentMails(),
-            error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
+            error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             user : Beluga.getInstance().getModuleInstance(Account).loggedUser,
             path : "/beluga/mail/"

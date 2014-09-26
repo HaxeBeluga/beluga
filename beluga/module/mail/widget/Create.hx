@@ -19,7 +19,7 @@ class Create extends MttWidget<MailImpl> {
         return {
             mails : mod.getSentMails(),
             user : Beluga.getInstance().getModuleInstance(Account).loggedUser,
-            error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
+            error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             path : "/beluga/mail/",
             receiver : mod.receiver,

@@ -35,6 +35,7 @@ class MailApi {
     }
 
     public function doPrint(args : {id : Int}) {
-        this.module.triggers.print.dispatch(args);
+        this.module.setActualMail(args.id);
+        this.module.triggers.print.dispatch();
     }
 }

@@ -64,13 +64,10 @@ class MailTest {
         this.create();
     }
 
-    public function print(args : {id : Int}) {
-        if (!mail.canPrint(args.id)) {
+    public function print() {
+        if (!mail.canPrint()) {
             this.doDefault();
         } else {
-            // important to print wanted mail
-            this.mail.setActualMail(args.id);
-
             var html = Renderer.renderDefault("page_mail", "Mails list", {
                 mailWidget: mail.widgets.print.render()
             });

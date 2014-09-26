@@ -23,7 +23,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
     public var triggers = new MailTrigger();
 
     // Context variables
-    public var error_msg : String;
+    public var error_id : MailErrorKind;
     public var success_msg : String;
     public var receiver : String;
     public var subject : String;
@@ -36,7 +36,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
 
     public function new() {
         super();
-        error_msg = "";
+        error_id = None;
         success_msg = "";
     }
 
@@ -47,8 +47,8 @@ class MailImpl extends ModuleImpl implements MailInternal {
     public function createDefaultContext() : Void {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
-        if (user == null && error_msg == "") {
-            error_msg = "missing_login";
+        if (user == null && error_id == None) {
+            error_id = MissingLogin;
         }
     }
 
@@ -60,14 +60,14 @@ class MailImpl extends ModuleImpl implements MailInternal {
         return this.getMail(this.actual_mail_id);
     }
 
-    public function canPrint(mail_id: Int) : Bool {
+    public function canPrint() : Bool {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            error_msg = "missing_login";
+            error_id = MissingLogin;
             return false;
         }
-        if (this.getMail(mail_id) == null) {
+        if (this.getActualMail() == null) {
             return false;
         }
         return true;
@@ -80,9 +80,9 @@ class MailImpl extends ModuleImpl implements MailInternal {
             for (mail in MailModel.manager.dynamicSearch( {user_id : user.id, id : id} )) {
                 return mail;
             }
-            error_msg = "id_not_found";
+            error_id = UnknownId;
         } else {
-            error_msg = "missing_login";
+            error_id= MissingLogin;
         }
         return null;
     }
@@ -92,7 +92,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
-            for (draft_mail in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : false} ))
+            for (draft_mail in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : 0} ))
                 draft_mails.push(draft_mail);
         }
         return draft_mails;
@@ -103,7 +103,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user != null) {
-            for (sent_mail in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : true} ))
+            for (sent_mail in MailModel.manager.dynamicSearch( {user_id : user.id, hasBeenSent : 1} ))
                 sent_mails.push(sent_mail);
         }
         return sent_mails;
@@ -116,36 +116,49 @@ class MailImpl extends ModuleImpl implements MailInternal {
         subject = args.subject;
         message = args.message;
         if (user == null) {
-            error_msg = "missing_login";
+            error_id = MissingLogin;
             this.triggers.sendFail.dispatch({error : MissingLogin});
             return;
         }
         if (args.receiver == "") {
-            error_msg = "missing_receiver";
+            error_id = MissingReceiver;
             this.triggers.sendFail.dispatch({error : MissingReceiver});
             return;
         }
         if (args.subject == "") {
-            error_msg = "missing_subject";
+            error_id = MissingSubject;
             this.triggers.sendFail.dispatch({error : MissingSubject});
             return;
         }
         if (args.message == "") {
-            error_msg = "missing_message";
+            error_id = MissingMessage;
             this.triggers.sendFail.dispatch({error : MissingMessage});
             return;
         }
         #if php
         if (!php.Lib.mail(args.receiver, args.subject, args.message, "From: " + user.email + "\r\n")) {
-            error_msg = "mail_not_sent";
+            error_id = MailNotSent;
             this.triggers.sendFail.dispatch({error : MailNotSent});
             return;
         }
         #else
-        error_msg = "not_supported";
+        error_id = OnlyPHP;
         this.triggers.sendFail.dispatch({error : OnlyPHP});
         return;
         #end
         this.triggers.sendSuccess.dispatch();
+    }
+
+    public function getErrorString(error: MailErrorKind) {
+        return switch(error) {
+            case MissingLogin: BelugaI18n.getKey(this.i18n, "missing_login");
+            case MailNotSent: BelugaI18n.getKey(this.i18n, "mail_not_sent");
+            case OnlyPHP: BelugaI18n.getKey(this.i18n, "not_supported");
+            case MissingReceiver: BelugaI18n.getKey(this.i18n, "missing_receiver");
+            case MissingSubject: BelugaI18n.getKey(this.i18n, "missing_subject");
+            case MissingMessage: BelugaI18n.getKey(this.i18n, "missing_message");
+            case UnknownId: BelugaI18n.getKey(this.i18n, "id_not_found");
+            case None: "";
+        };
     }
 }
