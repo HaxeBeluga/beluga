@@ -19,14 +19,8 @@ import beluga.core.module.ModuleImpl;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
-import beluga.module.account.exception.LoginAlreadyExistException;
-import beluga.module.account.ESubscribeFailCause;
 import beluga.core.BelugaI18n;
 
-enum LastLoginErrorType {
-    InternalError;
-    WrongLogin;
-}
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
 
@@ -34,8 +28,6 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
-
-    public var lastLoginError : Null<LastLoginErrorType> = null;
 
     public var loggedUser(get, set) : User;
 
@@ -64,8 +56,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         login : String,
         password : String
     }) {
-        var user : List<User> = User.manager.dynamicSearch({login : args.login});
 
+        var user : List<User> = User.manager.dynamicSearch({login : args.login});
         if (user.length > 1) {
             //Somethings wrong in database
             triggers.loginFail.dispatch({err: "Something's wrong in database"});

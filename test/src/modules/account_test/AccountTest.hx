@@ -11,7 +11,6 @@ package modules.account_test;
 import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.account.model.User;
-import beluga.module.account.ESubscribeFailCause;
 import beluga.module.account.Account;
 import haxe.Resource;
 import main_view.Renderer;

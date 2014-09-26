@@ -13,7 +13,6 @@ import haxe.web.Dispatch;
 import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.account.model.User;
-import beluga.module.account.ESubscribeFailCause;
 import beluga.module.account.Account;
 import modules.account_test.AccountTest;
 import main_view.Renderer;
