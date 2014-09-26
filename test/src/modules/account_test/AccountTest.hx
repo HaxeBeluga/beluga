@@ -44,10 +44,8 @@ class AccountTest {
         Sys.print(html);
     }
 
-    public function loginFail(args : {err : String}) {
-        var widget = acc.getWidget("login");
-        widget.context = {error : args.err};
-
+    public function loginFail(args : {err : LoginFailCause}) {
+        var widget = acc.widgets.loginForm;
         var loginWidget = widget.render();
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget

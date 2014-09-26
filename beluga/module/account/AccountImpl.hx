@@ -20,7 +20,7 @@ import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
-
+import beluga.module.account.Account;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
 
@@ -35,6 +35,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
 
     public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
+	public var lastLoginError : LoginFailCause;
+	
     public function new() {
         super();
     }
@@ -60,18 +62,22 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         var user : List<User> = User.manager.dynamicSearch({login : args.login});
         if (user.length > 1) {
             //Somethings wrong in database
-            triggers.loginFail.dispatch({err: "Something's wrong in database"});
+			lastLoginError = InternalError;
+            triggers.loginFail.dispatch({err: InternalError});
         } else if (user.length == 0) {
             //login wrong
-            triggers.loginFail.dispatch({err: "Unknown user"});
+			lastLoginError = UnknowUser;
+            triggers.loginFail.dispatch({err: UnknowUser});
         } else {
             var tmp = user.first();
             if (tmp.hashPassword != haxe.crypto.Md5.encode(args.password)) {
-                triggers.loginFail.dispatch({err: "Invalid login and / or password"});
+				lastLoginError = WrongPassword;
+                triggers.loginFail.dispatch({err: WrongPassword});
             } else {
                 // you cannot compare like this : tmp.isBan == true, it will always return false !
                 if (tmp.isBan) {
-                    triggers.loginFail.dispatch({err: "Your account as been bannished"});
+					lastLoginError = UserBanned;
+                    triggers.loginFail.dispatch({err: UserBanned});
                 } else {
                     loggedUser = tmp;
                     triggers.loginSuccess.dispatch();
@@ -440,4 +446,5 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
             triggers.unblacklistFail.dispatch({err : "You've not blacklisted this person !"});
         }
     }
+	
 }

@@ -12,6 +12,13 @@ import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import sys.db.Types.SId;
 
+enum LoginFailCause {
+	InternalError;
+	UnknowUser;
+	WrongPassword;
+	UserBanned;
+}
+
 interface Account extends Module {
 
     public var triggers : AccountTrigger;
@@ -21,6 +28,8 @@ interface Account extends Module {
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
+	
+	public var lastLoginError : LoginFailCause;
 
     public function subscribe(args : {
         login : String,

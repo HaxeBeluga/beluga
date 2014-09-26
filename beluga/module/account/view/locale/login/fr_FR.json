@@ -1,5 +1,8 @@
 {
     "identifier": "Identifiant",
     "password": "Mot de passe",
-    "alreadyLogged": "Vous etes deja connecte en tant que ::loggedUser.login::!"
+    "alreadyLogged": "Vous etes deja connecte en tant que ::loggedUser.login::!",
+	"err_UnknowUser": "Login et/ou mot de passe invalide",
+	"err_WrongPassword": "Login et/ou mot de passe invalide",
+	"err_UserBanned": "Votre compte a été banni"
 }
