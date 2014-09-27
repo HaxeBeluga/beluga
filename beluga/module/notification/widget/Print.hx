@@ -24,8 +24,10 @@ class Print extends MttWidget<NotificationImpl> {
                 notif : mod.getNotification(mod.actual_notif_id, user.id),
                 path : "/beluga/notification/"
             };
-        } else {
-            return mod.widgets.notification.render();
         }
+        var ret = mod.widgets.notification.getContext();
+
+        ret.other = mod.widgets.notification.render();
+        return ret;
     }
 }

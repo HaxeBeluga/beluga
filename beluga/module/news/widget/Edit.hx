@@ -20,10 +20,16 @@ class Edit extends MttWidget<NewsImpl> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
-            return mod.widgets.news.render();
+            var ret = mod.widgets.news.getContext();
+
+            ret.other = mod.widgets.news.render();
+            return ret;
         }
         if (!mod.canEdit(mod.actual_news_id, user.id)) {
-            return mod.widgets.print.render();
+            var ret = mod.widgets.print.getContext();
+
+            ret.other = mod.widgets.print.render();
+            return ret;
         } else {
             return {
                 path : "/beluga/news/",

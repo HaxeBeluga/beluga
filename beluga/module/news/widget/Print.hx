@@ -34,7 +34,10 @@ class Print extends MttWidget<NewsImpl> {
 
     override private function getContext() : Dynamic {
         if (!mod.canPrint(mod.actual_news_id)) {
-            return mod.widgets.news.render();
+            var ret = mod.widgets.news.getContext();
+
+            ret.other = mod.widgets.news.render();
+            return ret;
         }
         var all_comments = mod.getComments(mod.actual_news_id);
         var comments_list = new Array<NewsData>();

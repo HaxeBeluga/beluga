@@ -1,3 +1,6 @@
+::if other::
+::other::
+::else::
 <div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
 	<h2>$$i18n(news_creation)</h2>
 	<form action="::base_url::::path::create" class="" role="form" method="POST">
@@ -23,3 +26,4 @@
 	<br/>
 	<a class="btn btn-primary" href="::base_url::::path::">$$i18n(go_back)</a>
 </div>
+::end::

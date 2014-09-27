@@ -17,7 +17,10 @@ class Create extends MttWidget<NewsImpl> {
 
     override private function getContext() : Dynamic {
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
-            return mod.widgets.news.render();
+            var ret = mod.widgets.news.getContext();
+
+            ret.other = mod.widgets.news.render();
+            return ret;
         }
         return {
             path : "/beluga/news/",
