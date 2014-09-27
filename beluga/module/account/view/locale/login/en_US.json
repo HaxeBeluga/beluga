@@ -2,7 +2,7 @@
     "identifier": "ID",
     "password": "Password",
     "alreadyLogged": "You are already logged as ::loggedUser.login::!",
-	"err_UnknowUser": "Invalid login and / or password",
-	"err_WrongPassword": "Invalid login and / or password",
-	"err_UserBanned": "Your account as been bannished"
+    "err_UnknowUser": "Invalid login and / or password",
+    "err_WrongPassword": "Invalid login and / or password",
+    "err_UserBanned": "Your account as been bannished"
 }

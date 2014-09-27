@@ -22,7 +22,7 @@ class AccountTrigger {
     public var afterLogout = new TriggerVoid();
 
     //subscribe
-    public var subscribeFail = new Trigger<{err : String}>();
+    public var subscribeFail = new Trigger<{validations : Dynamic}>();
     public var subscribeSuccess = new Trigger<{user : User}>();
 
     //delete

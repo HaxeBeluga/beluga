@@ -1,0 +1,21 @@
+{
+    "identifier": "ID",
+    "password": "Password",
+    "passwordBis": "Confirmation Password",
+    "email": "Email",
+
+    "err_login_mandatory": "This field is mandatory",
+    "err_login_maxLength": "Login can not exceed 255 characters",
+    "err_login_unique": "An account already exist with this login",
+    
+    "err_password_mandatory": "This field is mandatory",
+    "err_password_confirm": "Password and confirmation must be same",
+    "err_password_minLength": "Your password must be at least 6 characters",
+    "err_password_maxLength": "Your password  can not exceed 255 characters",
+    
+    "err_email_mandatory": "this field is mandatory",
+    "err_email_maxLength": "Your email can not exceed 255 characters",
+    "err_email_isemail": "this is not a valid email format",
+    
+    "subscribe": "Subscribe"
+}

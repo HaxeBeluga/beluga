@@ -66,10 +66,9 @@ class AccountTest {
         Sys.print(html);
     }
 
-    public function subscribeFail(args : {err : String}) {
+    public function subscribeFail(args : {validations : Dynamic}) {
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
             subscribeWidget: acc.widgets.subscribeForm.render(),
-            error : args.err
         });
         Sys.print(html);
     }

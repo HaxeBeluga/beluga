@@ -67,7 +67,7 @@ class AccountTestApi {
     }
 
     public function doSubscribePage() {
-        var subscribeWidget = acc.getWidget("subscribe").render();
+        var subscribeWidget = acc.widgets.subscribeForm.render();
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
             subscribeWidget: subscribeWidget
         });

@@ -21,6 +21,7 @@ import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
+import beluga.core.form.Validator;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
 
@@ -35,8 +36,10 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
 
     public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
-	public var lastLoginError : LoginFailCause;
-	
+    public var lastLoginError : LoginFailCause;
+    public var lastSubscribeError : Dynamic;
+    public var lastSubscribeValue : Dynamic;
+
     public function new() {
         super();
     }
@@ -62,21 +65,21 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         var user : List<User> = User.manager.dynamicSearch({login : args.login});
         if (user.length > 1) {
             //Somethings wrong in database
-			lastLoginError = InternalError;
+            lastLoginError = InternalError;
             triggers.loginFail.dispatch({err: InternalError});
         } else if (user.length == 0) {
             //login wrong
-			lastLoginError = UnknowUser;
+            lastLoginError = UnknowUser;
             triggers.loginFail.dispatch({err: UnknowUser});
         } else {
             var tmp = user.first();
             if (tmp.hashPassword != haxe.crypto.Md5.encode(args.password)) {
-				lastLoginError = WrongPassword;
+                lastLoginError = WrongPassword;
                 triggers.loginFail.dispatch({err: WrongPassword});
             } else {
                 // you cannot compare like this : tmp.isBan == true, it will always return false !
                 if (tmp.isBan) {
-					lastLoginError = UserBanned;
+                    lastLoginError = UserBanned;
                     triggers.loginFail.dispatch({err: UserBanned});
                 } else {
                     loggedUser = tmp;
@@ -86,31 +89,9 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         }
     }
 
-    private function subscribeCheckArgs(args : {
-        login : String,
-        password : String,
-        password_conf : String,
-        email : String
-    }) : String {
-
-        if (args.login == "") {
-            return "invalid login";
-        }
-        if (args.password == "" || args.password_conf == "") {
-            return "missing password";
-        }
-        if (args.password != args.password_conf) {
-            return "passwords don't match";
-        }
-
-        for (tmp in User.manager.dynamicSearch( {login : args.login} )) {
-            return "login already used";
-        }
-        //TODO: place user form validation here
-        //Also validate that the user is unique with something like this
-        //User.manager.dynamicSearch({login : args.login, hashPassword: ahaxe.crypto.Md5.encode(args.password).first() != null;
-
-        return "";
+    public function loginUnique(login : String) {
+        var user : List<User> = User.manager.dynamicSearch( { login: login } );
+        return user.length == 0;
     }
 
     public function subscribe(args : {
@@ -119,13 +100,31 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         password_conf : String,
         email : String
     }) {
-        var error = subscribeCheckArgs(args);
-
-        if (error == "") {
+        var validations = {
+            login: {
+                mandatory: Validator.notBlanckOrNull(args.login),
+                maxLength: Validator.maxLength(args.login, 255),
+                unique: loginUnique(args.login)
+            },
+            password: {
+                mandatory: Validator.notBlanckOrNull(args.password),
+                confirm: Validator.equalTo(args.password, args.password_conf),
+                minLength: Validator.minLength(args.password, 6),
+                maxLength: Validator.maxLength(args.password, 255)
+            },
+            email: {
+                mandatory: Validator.notBlanckOrNull(args.email),
+                isemail: Validator.match(args.email, ~/[A-Z0-9._%-]+@[A-Z0-9.-]+.[A-Z][A-Z][A-Z]?/i),
+                maxLength: Validator.maxLength(args.password, 255)
+            }
+        }
+        
+        lastSubscribeValue = args;
+        if (Validator.validate(validations)) {
+            //Save user in db
             var user = new User();
             user.login = args.login;
             user.setPassword(args.password);
-            //Save user in db
             user.emailVerified = true;//TODO AB Change when activation mail sended.
             user.subscribeDateTime = Date.now();
             user.email = args.email;
@@ -135,7 +134,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
             //TODO AB Send activation mail
             triggers.subscribeSuccess.dispatch({user: user});
         } else {
-            triggers.subscribeFail.dispatch({err : error});
+            lastSubscribeError = validations;
+            triggers.subscribeFail.dispatch({validations : validations});
         }
     }
 

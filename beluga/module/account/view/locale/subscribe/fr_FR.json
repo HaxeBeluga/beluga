@@ -1,0 +1,21 @@
+{
+    "identifier": "Identifiant",
+    "password": "Mot de passe",
+    "passwordBis": "Confirmation de mot de passe",
+    "email": "Email",
+
+    "err_login_mandatory": "Ce champ est obligatoire",
+    "err_login_maxLength": "Le login ne peut-etre plus long que 255 caractères",
+    "err_login_unique": "Un compte éxiste déja utilisant ce login",
+    
+    "err_password_mandatory": "Ce champ est obligatoire",
+    "err_password_confirm": "Le mot de passe et la confirmation doivent être identique",
+    "err_password_minLength": "Le mot de passe doit faire au moin 6 caratères",
+    "err_password_maxLength": "Le mot de passe ne peut-etre plus long que 255 caractères",
+    
+    "err_email_mandatory": "Ce champ est obligatoire",
+    "err_email_maxLength": "L'email ne peut-etre plus long que 255 caractères",
+    "err_email_isemail": "L'email n'a pas un format valide",
+    
+    "subscribe": "S'inscrire"
+}
