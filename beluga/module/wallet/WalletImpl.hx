@@ -121,38 +121,24 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
     }
 
-    // private function setCurrencyAsSiteCurrency(site_currency: SiteCurrency, id: Int): Bool {
-    //     var return_value = false;
-
-    //     try { // try to retrieve the currency, then delete it...
-    //         var currency = Currency.manager.get(id);
-    //         site_currency.currency_id = currency.id;
-    //         site_currency.update();
-    //         return_value = true;
-    //     } catch( unknown : Dynamic ) { // ... or display an error message.
-    //         return_value = false;
-    //     }
-    //     return return_value;
-    // }
-
     // tools
 
     public function getCurrentRealFunds(user: User): Option<Float> {
-        return switch (this.getUserWallet(user)) {
+        return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): Some(wallet.fund);
             case None: None;
         };
     }
 
     public function getCurrentFunds(user: User, currency: Currency): Option<Float> {
-        return switch (this.getUserWallet(user)) {
+        return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): Some(currency.convertToCurrency(wallet.fund));
             case None: None;
         };
     }
 
     public function addRealFunds(user: User, value: Float): Bool {
-        return switch (this.getUserWallet(user)) {
+        return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): {
                 wallet.fund += value;
                 wallet.update();
@@ -167,7 +153,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     }
 
     public function consumeRealFunds(user: User, quantity: Float): Bool {
-        return switch (this.getUserWallet(user)) {
+        return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): {
                 wallet.fund -= quantity;
                 if (wallet.fund >= 0.) {
@@ -188,24 +174,5 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
 
     public function getSiteCurrencyOrDefault(): Currency {
         return this.currency_repository.getSiteCurrencyOrDefault();
-    }
-
-    public function userHasWallet(user: User): Bool {
-        if (user == null) { return false; }
-        var wallet = WalletModel.manager.search({ user_id: user.id });
-
-        if (wallet.isEmpty()) { return false; }
-
-        return true;
-    }
-
-    public function getUserWallet(user: User): Option<WalletModel> {
-        // check if the user is null
-        if (user == null) { return None; }
-        // get the user wallet
-        var wallet = WalletModel.manager.search({ user_id: user.id });
-        if (wallet.isEmpty()) { return None; }
-
-        return Some(wallet.first());
     }
 }

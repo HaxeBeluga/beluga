@@ -31,6 +31,4 @@ interface Wallet extends Module {
     public function consumeRealFunds(user: User, quantity: Float): Bool;
     public function consumeFunds(user: User, currency: Currency, quantity: Float): Bool;
     public function getSiteCurrencyOrDefault(): Currency;
-    public function userHasWallet(user: User): Bool;
-    public function getUserWallet(user: User): Option<WalletModel>;
 }

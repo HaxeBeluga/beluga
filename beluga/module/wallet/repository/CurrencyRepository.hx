@@ -33,15 +33,6 @@ class CurrencyRepository extends SpodRepository<Currency> {
 
     // Get the complete list of all currencys
     public function getCurrencys(): List<Currency> {
-        // var currencys = new List<Dynamic>();
-        // for (c in Currency.manager.dynamicSearch( {} )) {
-        //     currencys.push({
-        //         name: c.name,
-        //         rate: c.rate,
-        //         id: c.id
-        //     });
-        // }
-        // return currencys;
         return Currency.manager.dynamicSearch({});
     }
 

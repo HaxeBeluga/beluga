@@ -16,6 +16,7 @@ import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
 import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.repository.CurrencyRepository;
+import beluga.module.wallet.repository.WalletRepository;
 
 import beluga.module.wallet.Wallet;
 
@@ -28,6 +29,7 @@ class Show extends MttWidget<WalletImpl> {
 
     override private function getContext() {
         var currency_repository = new CurrencyRepository();
+        var wallet_repository = new WalletRepository();
         var user: User = null;
         var has_wallet = 1;
         var currency_name = "";
@@ -42,7 +44,7 @@ class Show extends MttWidget<WalletImpl> {
         }
 
         // retrieve wallet informations if the user has a wallet
-        switch (mod.getUserWallet(user)) {
+        switch (wallet_repository.getUserWallet(user)) {
             case Some(wallet): {
                 var site_currency = switch (currency_repository.getSiteCurrency()) {
                     case Some(c): c;

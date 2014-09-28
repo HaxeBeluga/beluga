@@ -10,6 +10,7 @@ package beluga.module.wallet.model;
 
 // beluga mods
 import beluga.module.account.model.User;
+import haxe.ds.Option;
 
 //haxe
 import sys.db.Object;
