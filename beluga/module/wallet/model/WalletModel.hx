@@ -23,4 +23,15 @@ class WalletModel extends Object {
     public var fund: SFloat;
     @:relation(user_id)
     public var user: User;
+
+    public function new() { super(); }
+
+    public static function newInit(user_id: Int, fund: Float) {
+        var wallet = new WalletModel();
+
+        wallet.user_id = user_id;
+        wallet.fund = fund;
+
+        return wallet;
+    }
 }

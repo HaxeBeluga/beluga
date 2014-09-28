@@ -17,6 +17,7 @@ import beluga.module.account.Account;
 import beluga.module.account.model.User;
 import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.WalletErrorKind;
+import beluga.module.wallet.repository.CurrencyRepository;
 
 
 class Admin extends MttWidget<WalletImpl> {
@@ -27,6 +28,7 @@ class Admin extends MttWidget<WalletImpl> {
     }
 
     override private function getContext(): Dynamic {
+        var currency_repository = new CurrencyRepository();
         var user_authenticated = true;
 
         // Check if user is logged to display the widget, if not set the global error
@@ -34,14 +36,12 @@ class Admin extends MttWidget<WalletImpl> {
             user_authenticated = false;
         }
         // retrieve the currencys list
-        var currency_list = mod.getCurrencys();
+        var currency_list = currency_repository.getCurrencys();
         // then the site currency
-        var site_currency = switch (mod.getSiteCurrency()) {
+        var site_currency = switch (currency_repository.getSiteCurrency()) {
             case Some(c): c;
             case None: {
-                var currency = new Currency();
-                currency.rate =  0.;
-                currency.name = BelugaI18n.getKey(this.i18n, "missing_currency");
+                var currency = Currency.newInit(BelugaI18n.getKey(this.i18n, "missing_currency"), 0., false);
                 currency;
             };
         };

@@ -6,20 +6,18 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
-package beluga.module.wallet.model;
+package beluga.module.wallet.repository;
+
+// beluga core
+import beluga.core.module.SpodRepository;
 
 // beluga mods
-import beluga.module.wallet.model.Currency;
+import beluga.module.wallet.model.WalletModel;
 
-// haxe
+//haxe
 import sys.db.Object;
 import sys.db.Types;
 
-@:id(id)
-@:table("beluga_wal_sitecurrency")
-class SiteCurrency extends Object {
-    public var id: SId;
-    public var currency_id: SInt;
-    @:relation(currency_id)
-    public var currency: Currency;
+class WalletRepository extends SpodRepository<WalletModel> {
+    public function new() { super(); }
 }

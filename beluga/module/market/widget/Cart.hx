@@ -15,6 +15,7 @@ import beluga.module.market.Market;
 import beluga.module.wallet.Wallet;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
+import beluga.module.wallet.repository.CurrencyRepository;
 
 class Cart extends MttWidget<MarketImpl> {
 
@@ -24,11 +25,12 @@ class Cart extends MttWidget<MarketImpl> {
     }
 
     override private function getContext(): Dynamic{
+        var currency_repository = new CurrencyRepository();
         var beluga = Beluga.getInstance();
         var user_cart = new List<Dynamic>();
         var cart_error = "";
         var cart_info = "";
-        var currency = switch(beluga.getModuleInstance(Wallet).getSiteCurrency()) {
+        var currency = switch(currency_repository.getSiteCurrency()) {
             case Some(c): c.name;
             case None: BelugaI18n.getKey(this.i18n, "missing_currency");
         };

@@ -21,17 +21,17 @@
         <h4>$$i18n(website_currency_title)</h4>
         <ul class="list-group">
           <li class="list-group-item">::site_currency.name::
-          <button class="btn btn-info btn-xs disabled pull-right">$$i18n(currency_rate)</button></li>
+          <button class="btn btn-info btn-xs disabled pull-right">$$i18n(site_currency_rate)</button></li>
         </ul>
     </div>
     <div class="container-fluid">
         <h4>$$i18n(list_currency_title)</h4>
         <ul class="list-group">
           ::foreach currency_list::
-          <li class="list-group-item">::currency_name::
-          <a href="::base_url::/beluga/wallet/removeCurrency?id=::currency_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete_currency)</a>
-          <a href="::base_url::/beluga/wallet/setSiteCurrency?id=::currency_id::" class="wallet-btn-download btn btn-success btn-xs pull-right">$$i18n(choose_website_currency)</a>
-          <button class="btn btn-info btn-xs disabled pull-right wallet-btn-download">$$i18n(currency_rate)</button></li>
+          <li class="list-group-item">::name::
+          <a href="::base_url::/beluga/wallet/removeCurrency?id=::id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete_currency)</a>
+          <a href="::base_url::/beluga/wallet/setSiteCurrency?id=::id::" class="wallet-btn-download btn btn-success btn-xs pull-right">$$i18n(choose_website_currency)</a>
+          <button class="btn btn-info btn-xs disabled pull-right wallet-btn-download">$$i18n(currency_rate)::rate::</button></li>
           ::end::
         </ul>
     </div>

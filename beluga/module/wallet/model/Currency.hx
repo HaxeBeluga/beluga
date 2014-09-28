@@ -17,6 +17,19 @@ class Currency extends Object {
     public var id: SId;
     public var name: SString<32>;
     public var rate: SFloat;
+    public var site_currency: SBool;
+
+    public function new() { super(); }
+
+    public static function newInit(name: String, rate: Float, site_currency: Bool) {
+        var curr = new Currency();
+
+        curr.name = name;
+        curr.rate = rate;
+        curr.site_currency = site_currency;
+
+        return curr;
+    }
 
     public function convertToReal(value: Float): Float {
         return value / this.rate;
