@@ -71,6 +71,15 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
         }
         for (survey in SurveyModel.manager.dynamicSearch({id : survey_id})) {
             if (survey.author_id == user.id || user.isAdmin) {
+                // We remove all the choices fields
+                for (choice in Choice.manager.dynamicSearch({survey_id : survey_id})) {
+                    choice.delete();
+                }
+                // Then we remove all the results
+                for (result in Result.manager.dynamicSearch({survey_id : survey_id})) {
+                    result.delete();
+                }
+                // And we finally remove the survey
                 survey.delete();
                 success_msg = "survey_delete_success";
                 this.triggers.deleteSuccess.dispatch();
