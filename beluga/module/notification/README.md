@@ -3,39 +3,53 @@ Notification module's doc
 
 The __notification__ module allows you to create and handle notifications easily. It depends on the __account__ module provided by Beluga so you won't be able to use the __notification__ module without it.
 
-This module offers a few numbers of method to easily integrate this module inside your project.
+This module offers a few numbers of method to easily integrate it inside your project.
 
-Here is the methods list :
+Here are the methods provided by this module :
 
 ```Haxe
 public function print(args : {id : Int}) : Void
 public function create(args : {
-		title : String,
-		text : String,
-		user_id : Int
-	}) : Void
-public function delete(args : {
-		id : Int}) : Void
+    title : String,
+    text : String,
+    user_id : Int
+}) : Void
+public function delete(args : {id : Int}) : Void
 public function getNotifications() : Array<NotificationModel>
+public function getNotification(notif_id: Int, user_id: Int) : NotificationModel
+public function canPrint(notif_id: Int) : Bool
 ```
 
-These functions are handled by the Beluga webdispatcher and throw respectively these triggers :
+##Triggers
 
-* beluga_notif_printx
-* beluga_notif_delete_success
-* beluga_notif_delete_fail
-* beluga_notif_create_success
-* beluga_notif_create_fail
+This module can send back the following triggers :
 
-which suggest to the developer what widget to use.
+* defaultNotification
+* createSuccess
+* createFail
+* deleteSuccess
+* deleteFail
+* print
 
-For example, the vote method sends back the `beluga_notif_delete_success` trigger or the `beluga_notif_delete_fail` trigger. Then you just have to handle them and display according to the one you will receive.
+##Errors
+
+In case of failure, just check the error code to know what's wrong. Here is the full errors list for the notification module :
+
+ * __MissingLogin__ : You need to be logged in.
+ * __MissingTitle__ : The title is missing.
+ * __MissingMessage__ : The message is missing.
+ * __IdNotFound__ : The given id doesn't exist.
+ * __None__ : No error occured.
+
+##Methods description
+
+For example, the `vote` method sends back the `deleteSuccess` trigger or the `deleteFail` trigger. Then you just have to handle them and display according to the one you will receive.
 
 ```Haxe
 public function print(args : {id : Int}) : Void
 ```
 
-This method takes the notification's id in paramater. Calling it throws this trigger `beluga_notif_printx` with the the notification in parameter.
+This method takes the notification's id in paramater. Calling it throws this trigger `print`. Then you just have to call the Print widget.
 
 ```Haxe
 public function create(args : {
@@ -45,17 +59,28 @@ public function create(args : {
 	}) : Void
 ```
 
-This method creates a new notification by taking its title, a text to describe it and an user id. Depending on its success, it will throw the `beluga_notif_create_success` trigger or `beluga_notif_create_fail`.
+This method creates a new notification by taking its title, a text to describe it and an user id. Depending on its success, it will throw the `createSuccess` trigger or the `createFail` trigger.
 
 ```Haxe
-public function delete(args : {
-		id : Int}) : Void
+public function delete(args : {id : Int}) : Void
 ```
 
-The delete method takes the notification id and throw back the trigger `beluga_notif_delete_success` or `beluga_notif_delete_fail` if it succeeds or fails.
+The delete method takes the notification's id and throw back the trigger `deleteSuccess` or `deleteFail` if it succeeds or fails.
 
 ```Haxe
 public function getNotifications() : Array<NotificationModel>
 ```
 
 This method returns the notifications list for the current user (if there is no current user, it returns an empty list).
+
+```Haxe
+public function getNotification(notif_id: Int, user_id: Int) : NotificationModel
+```
+
+Returns the given notification if it belongs to the given user. Otherwise, it returns null.
+
+```Haxe
+public function canPrint(notif_id: Int) : Bool
+```
+
+This methods returns true or false, depending if the given notification belongs to the logged user.
