@@ -2,7 +2,7 @@
     "send_file_title": "Select a new file to upload !",
     "delete": "Delete",
     "download": "Download",
-    "add_extension_title": "Add an file extension",
+    "add_extension_title": "Add a file extension",
     "extension_list": "Here is a list of all existing extensions",
     "user_not_logged": "You must be logged to do this action",
     "submit_extension": "Submit new extension",
