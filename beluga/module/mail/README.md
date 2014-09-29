@@ -69,4 +69,4 @@ public function getActualMail() : MailModel
 public function canPrint() : Bool
 ```
 
-These tree methods are only used inside the mail module. Using one of them can create undefined behavior.
+These four methods are only used inside the mail module. Using one of them can create undefined behavior.
