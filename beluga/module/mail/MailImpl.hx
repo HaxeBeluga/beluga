@@ -82,7 +82,7 @@ class MailImpl extends ModuleImpl implements MailInternal {
             }
             error_id = UnknownId;
         } else {
-            error_id= MissingLogin;
+            error_id = MissingLogin;
         }
         return null;
     }
