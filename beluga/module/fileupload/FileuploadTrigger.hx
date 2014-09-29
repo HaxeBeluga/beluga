@@ -10,21 +10,22 @@ package beluga.module.fileupload;
 
 import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
+import beluga.module.fileupload.FileUploadErrorKind;
 
 import sys.db.Types;
 
 class FileuploadTrigger {
     public var send = new TriggerVoid();
     public var delete = new Trigger<{id: Int}>();
-    public var deleteFail = new Trigger<{reason: String}>();
+    public var deleteFail = new Trigger<{error: FileUploadErrorKind}>();
     public var deleteSuccess = new TriggerVoid();
-    public var uploadFail = new Trigger<{reason: String}>();
-    public var uploadSuccess = new Trigger<{title: String, text: String, user_id: SId}>();
+    public var uploadFail = new Trigger<{error: FileUploadErrorKind}>();
+    public var uploadSuccess = new TriggerVoid();
 
     public var addExtensionSuccess = new TriggerVoid();
-    public var addExtensionFail = new TriggerVoid();
+    public var addExtensionFail = new Trigger<{error: FileUploadErrorKind}>();
     public var deleteExtensionSuccess = new TriggerVoid();
-    public var deleteExtensionFail = new TriggerVoid();
+    public var deleteExtensionFail = new Trigger<{error: FileUploadErrorKind}>();
 
     public function new() {}
 
