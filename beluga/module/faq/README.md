@@ -1,129 +1,126 @@
 Faq module's doc
 ===================
 
-The __faq__ module allows you to create and handle faqs easily. It depends on the __account__ module provided by Beluga so you won't be able to use the __survey__ module without it.
+The __faq__ module allows you to create and handle faqs easily. If you want to administrate category and / or faq's entries, you will need the __account__ module provided by Beluga.
 
 This module offers a few numbers of methods to easily integrate it inside your project.
 
 Here are the methods provided by this module :
 
 ```Haxe
-public function canVote(survey_id : Int) : Bool
-public function create(args : {
-    title : String,
-    description : String,
-    choices : Array<String>
+public function redirectEditFAQ() : Bool
+public function getCurrentCategory() : CategoryModel
+public function createFAQ(args : {
+    question : String,
+    answer : String,
+    category_id : Int
 }) : Void
-public function vote(args : {
-    survey_id : Int,
-    option : Int
-}) : Void
-public function getSurvey(survey_id: Int) : SurveyModel
-public function getSurveysList() : Array<SurveyData>
-public function redirect() : Void
-public function delete(survey_id : Int) : Void
-public function getChoices(survey_id : Int) : Array<Choice>
-public function getResults(survey_id : Int) : Array<Dynamic>
-public function print(survey_id : Int): Void
-public function getActualSurveyId() : Int
+public function createCategory(args : {name : String, parent: Int}) : Void
+public function deleteFAQ(args : {question_id : Int, category_id : Int}) : Void
+public function deleteCategory(args : {category_id : Int, parent_id: Int}) : Void
+public function editCategory(args : {category_id: Int, name : String}) : Void
+public function editFAQ(args : {faq_id: Int, question : String, answer : String}) : Void
+public function getAllCategories() : Array<CategoryModel>
 ```
 
 ##Triggers
 
 This module can send back the following triggers :
 
- * redirect
+ * defaultPage
  * deleteFail
  * deleteSuccess
- * printSurvey
  * createFail
  * createSuccess
- * voteFail
- * voteSuccess
- * answerNotify
- * defaultSurvey
+ * editFail
+ * editSuccess
+ * createCategoryFail
+ * createCategorySuccess
+ * deleteCategoryFail
+ * deleteCategorySuccess
+ * editCategoryFail
+ * editCategorySuccess
+ * redirectCreateFAQ
+ * redirectCreateCategory
+ * print
+ * redirectEditCategory
+ * redirectEditFAQ
+ * edit
+ * create
+ * delete
 
 ##Errors
 
-In case of failure, just check the error code to know what's wrong. Here is the full errors list for the survey module :
+In case of failure, just check the error code to know what's wrong. Here is the full errors list for the faq module :
 
+ * __UnknownCategory__ : The requested category doesn't exist.
+ * __MissingQuestion__ : The question is missing.
  * __MissingLogin__ : You need to be logged in.
- * __NotAllowed__ : You can't do this action.
- * __MissingDescription__ : The description of the survey is missing.
- * __MissingTitle__ : The title of the survey is missing.
- * __MissingChoices__ : Two choices minimum are needed.
- * __NotFound__ : The requested survey doesn't exist.
- * __AlreadyVoted__ : You have already voted for this survey.
+ * __MissingAnswer__ : The answer is missing.
+ * __MissingName__ : The name is missing.
+ * __EntryAlreadyExists__ : This FAQ already exists.
+ * __CategoryAlreadyExists__ : This category already exists.
+ * __IdNotFound__ : The requested faq doesn't exist.
  * __None__ : No error occured.
 
 ##Methods description
 
-For example, the vote method sends back the `voteSuccess` trigger or the `voteSuccess` trigger. Then you just have to handle them and display according to the one you will receive.
+For example, the createFAQ method sends back the `createSuccess` trigger or the `createFail` trigger. Then you just have to handle them and display according to the one you will receive.
 
 ```Haxe
-public function canVote(survey_id : Int) : Bool
+public function redirectEditFAQ() : Bool
 ```
 
-The can vote method returns false if there is no logged user or if the current logged user already has voted for the given survey.
+This method is used to check if the current faq does exist. This method will change in a next version.
 
 ```Haxe
-public function create(args : {
-    title : String,
-    description : String,
-    choices : Array<String>
+public function getCurrentCategory() : CategoryModel
+```
+
+This method returns the current category or null if it doesn't exist.
+
+```Haxe
+public function createFAQ(args : {
+    question : String,
+    answer : String,
+    category_id : Int
 }) : Void
 ```
 
-This method creates a new survey by taking its title, its description and its choices. Depending on its success, it will throw the `createFail` trigger or the `createSuccess` trigger.
+The createFAQ method takes the question, the answer and the category in which it will be created as parameters. It sends back the `createSuccess` trigger or the `createFail` trigger. If it fails, please check the error code returned to know the reason.
 
 ```Haxe
-public function vote(args : {
-	survey_id : Int,
-	option : Int
-}) : Void
+public function createCategory(args : {name : String, parent: Int}) : Void
 ```
 
-The vote method takes the survey id and the choice id in parameter and throws back the `voteSuccess` trigger or the `voteFail` trigger depending on its success.
+The createCategory method takes a name and the parent id (-1 if the parent is the root) as parameters. It sends back the `createCategoryFail` trigger or the `createCategorySuccess` trigger. If it fails, please check the error code returned to know the reason.
 
 ```Haxe
-public function getSurvey(survey_id: Int) : SurveyModel
+public function deleteFAQ(args : {question_id : Int, category_id : Int}) : Void
 ```
 
-Returns the Survey corresponding to the id given in parameters. Returns null if the survey doesn't exist.
+The deleteFAQ method takes the FAQ id to delete and the category id in which it belongs. It sends back the `deleteFail` trigger or the `deleteSuccess` trigger. If it fails, please check the error code returned to know the reason.
 
 ```Haxe
-public function getSurveysList() : Array<SurveyData>
+public function deleteCategory(args : {category_id : Int, parent_id: Int}) : Void
 ```
 
-Returns all the surveys created by the current logged user.
+The deleteCategory method takes the category id to delete and its parent id. It sends back the `deleteCategoryFail` trigger or the `deleteCategorySuccess` trigger. If it fails, please check the error code returned to know the reason.
 
 ```Haxe
-public function redirect() : Void
+public function editCategory(args : {category_id: Int, name : String}) : Void
 ```
 
-Sends back the `redirect` trigger.
+The editCategory method takes the category id to edit and the new name. It sends back the `editCategoryFail` trigger or the `editCategorySuccess` trigger. If it fails, please check the error code returned to know the reason.
 
 ```Haxe
-public function delete(args : {survey_id : Int}) : Void
+public function editFAQ(args : {faq_id: Int, question : String, answer : String}) : Void
 ```
 
-The delete method remove the given survey from the database and all the data linked to it. It takes a survey id in parameter. It throws back the `deleteFail` trigger or the `deleteSuccess` trigger depending on its success.
+The editFAQ method takes the faq id to edit, the new question and the new answer. It sends back the `editFail` trigger or the `editSuccess` trigger. If it fails, please check the error code returned to know the reason.
 
 ```Haxe
-public function getChoices(args : {survey_id : Int}) : Array<Choice>
+public function getAllCategories() : Array<CategoryModel>
 ```
 
-This method returns the choices' list for the specified survey. If the returned array is empty, you should check if your survey does exist.
-
-```Haxe
-public function getResults(args : {survey_id : Int}) : Array<Dynamic>
-```
-
-This method returns an array containing stats of the specified survey.
-
-```Haxe
-public function print(survey_id : Int): Void
-public function getActualSurveyId() : Int
-```
-
-These two methods are called internally by the survey module.
+The getAllcategories method returns the list of all the existing categories. It can returns an empty Array.
