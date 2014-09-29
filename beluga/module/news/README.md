@@ -5,7 +5,7 @@ The __news__ module allows you to create and handle news easily. If you want to 
 
 This module offers a few numbers of method to easily integrate it inside your project.
 
-Here are the methods provided by this module
+Here are the methods provided by this module :
 
 ```Haxe
 public function create(args : {title : String, text : String}) : Void
