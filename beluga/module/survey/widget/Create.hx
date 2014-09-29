@@ -18,6 +18,7 @@ class Create extends MttWidget<SurveyImpl> {
 
     override private function getContext() : Dynamic {
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
+            // here is a trick to replace the Create widget by the Default widget
             var ret = mod.widgets.survey.getContext();
 
             ret.other = mod.widgets.survey.render();

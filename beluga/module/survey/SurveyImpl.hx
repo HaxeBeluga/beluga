@@ -180,7 +180,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 
         if (args.choices != null)
             for (choice in args.choices)
-                if (choice != null && choice != "")
+                if (choice != "")
                     choices_array.push(choice);
 
         if (choices_array.length < 2) {

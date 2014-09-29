@@ -19,6 +19,7 @@ class Vote extends MttWidget<SurveyImpl> {
 
     override private function getContext() : Dynamic {
         if (Beluga.getInstance().getModuleInstance(Account).isLogged == false || !mod.canVote(mod.actual_survey_id)) {
+            // here is a trick to replace the Vote widget by the Print widget
             var ret = mod.widgets.print.getContext();
 
             ret.vote = mod.widgets.print.render();

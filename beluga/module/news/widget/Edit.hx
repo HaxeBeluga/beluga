@@ -20,6 +20,7 @@ class Edit extends MttWidget<NewsImpl> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
+            // here is a trick to replace the Edit widget by the Default widget
             var ret = mod.widgets.news.getContext();
 
             ret.other = mod.widgets.news.render();

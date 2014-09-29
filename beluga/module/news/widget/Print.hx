@@ -17,11 +17,11 @@ class NewsData {
     public var date : SDateTime;
     public var com_id : Int;
 
-    public function new(t : String, l : String, d : SDateTime, c : Int) {
-        text = t;
-        login = l;
-        date = d;
-        com_id = c;
+    public function new(text : String, login : String, date : SDateTime, comment_id : Int) {
+        this.text = text;
+        this.login = login;
+        this.date = date;
+        this.com_id = comment_id;
     }
 }
 
@@ -34,6 +34,7 @@ class Print extends MttWidget<NewsImpl> {
 
     override private function getContext() : Dynamic {
         if (!mod.canPrint(mod.actual_news_id)) {
+            // here is a trick to replace the Print widget by the Default widget
             var ret = mod.widgets.news.getContext();
 
             ret.other = mod.widgets.news.render();

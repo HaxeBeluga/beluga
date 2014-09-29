@@ -51,6 +51,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         this.widgets = new FaqWidget();
     }
 
+    // change this function name or remove/replace it
     public function redirectEditFAQ() : Bool {
         var faq = getFAQ(switch (faq_id) {
                 case Some(id) : id;
