@@ -1,0 +1,10 @@
+{
+    "missing_login": "You need to be logged",
+    "not_found": "Unknown notification",
+    "delete_success": "Notification has been successfully deleted !",
+    "missing_message": "Missing message",
+    "missing_title": "Missing title",
+    "notifications_list": "Notifications list for <b>::user.login::</b> user",
+    "delete": "Delete",
+    "back": "Back to notifications list"
+}

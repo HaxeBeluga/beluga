@@ -1,0 +1,22 @@
+{
+    "missing_login": "You need to be logged",
+    "missing_receiver": "Missing receiver",
+    "missing_subject": "Missing subject",
+    "missing_message": "Missing message",
+    "mail_not_sent": "Mail hasn't been sent",
+    "id_not_found": "Id not found",
+    "not_supported": "Only working with php (for the moment...)",
+    "mails_list_for": "Mails list for <b>::user.login::</b>",
+    "send_mail": "Send new mail",
+    "go_back": "Go back to mail list",
+    "to": "To : ::receiver::",
+    "subject": "Subject : ::subject::",
+    "sent": "Sent : ::date::",
+    "send_mail_from": "Send email from ::user.email::",
+    "send_to": "Send to",
+    "mail_subject": "Subject",
+    "message": "Message",
+    "send": "Send",
+    "enter_receiver": "Enter receiver's email",
+    "enter_subject": "Enter email's subject"
+}
