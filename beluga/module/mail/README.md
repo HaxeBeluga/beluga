@@ -3,44 +3,70 @@ Mail module's doc
 
 The __mail__ module allows you to create and handle mails easily. It depends on the __account__ module provided by Beluga so you won't be able to use the __mail__ module without it.
 
-This module offers a few numbers of method to easily integrate this module inside your project.
+This module offers a few numbers of method to easily integrate it inside your project.
 
-Here is the method provided by this module :
+Here are the methods provided by this module :
 
 ```Haxe
+public function createDefaultContext() : Void
+public function setActualMail(mail_id : Int) : Void
+public function getActualMail() : MailModel
+public function canPrint() : Bool
 public function getSentMails() : Array<MailModel>
 public function getMail(id : Int) : MailModel
 public function getDraftMails() : Array<MailModel>
 public function sendMail(args : {receiver : String, subject : String, message : String}) : Void
 ```
 
-Those functions are handled by the Beluga webdispatcher and throw these triggers :
+##Triggers
 
-* beluga_mail_send_success
-* beluga_mail_send_fail
+This modules can send back the following triggers :
+ * sendFail
+ * sendSuccess
 
-which suggest to the developer what widget to display.
+##Errors
+
+In case of failure, just check the error code to know what's wrong. Here is the full errors list for the mail module :
+ * __MissingLogin__ : You're not logged in.
+ * __MailNotSent__ : An error occured when trying to send the mail.
+ * __OnlyPHP__ : The only language supported by the mail module is currently PHP, any other will fail and throw back this error.
+ * __MissingReceiver__ : The receiver is missing.
+ * __MissingSubject__ : The subject is missing.
+ * __MissingMessage__ : The message is missing.
+ * __UnknownId__ : The given id doesn't exist in the database.
+ * __None__ : No error detected.
+
+## Methods description
 
 ```Haxe
 public function sendMail(args : {receiver : String, subject : String, message : String}) : Void
 ```
 
-This method takes the receiver's email, the mail's subject and the the mail's message. It throws back `beluga_mail_send_success` or `beluga_mail_send_fail`, depending on the result of the method's execution.
+This method takes the receiver's address, the mail's subject and the the mail's message. It throws back `sendSuccess` or `sendFail`, depending on the result of the method's execution. Please refer to the described errors above.
 
 ```Haxe
 public function getSentMails() : Array<MailModel>;
 ```
 
-This method returns the list of the sent mails (which can be empty of course).
+This method returns the list of the sent mails for the current logged user (which can be empty of course).
 
 ```Haxe
 public function getMail(id : Int) : MailModel;
 ```
 
-This methods returns the Mail referred by the id or null if it cannot be found.
+This methods returns the Mail referred by the id or null if it cannot be found. If it fails, the error_id is set to the error.
 
 ```Haxe
 public function getDraftMails() : Array<MailModel>;
 ```
 
-This methods returns the draft mails list (which can be empty of course).
+This methods returns the draft mails list for the current logged user (which can be empty of course).
+
+```Haxe
+public function createDefaultContext() : Void
+public function setActualMail(mail_id : Int) : Void
+public function getActualMail() : MailModel
+public function canPrint() : Bool
+```
+
+These tree methods are only used inside the mail module. Using one of them can create undefined behavior.
