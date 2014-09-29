@@ -3,7 +3,7 @@ Notification module's doc
 
 The __notification__ module allows you to create and handle notifications easily. It depends on the __account__ module provided by Beluga so you won't be able to use the __notification__ module without it.
 
-This module offers a few numbers of method to easily integrate it inside your project.
+This module offers a few numbers of methods to easily integrate it inside your project.
 
 Here are the methods provided by this module :
 
