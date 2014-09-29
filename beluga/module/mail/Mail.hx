@@ -15,16 +15,14 @@ interface Mail extends Module {
     public var triggers: MailTrigger;
     public var widgets : MailWidget;
 
-    // Context methods
-    public function createDefaultContext() : Void;
-    public function setActualMail(mail_id : Int) : Void;
-    public function getActualMail() : MailModel;
-
     // Helpful methods
     public function canPrint() : Bool;
     public function getSentMails() : Array<MailModel>;
     public function getMail(id : Int) : MailModel;
     public function getDraftMails() : Array<MailModel>;
+    public function createDefaultContext() : Void;
+    public function setActualMail(mail_id : Int) : Void;
+    public function getActualMail() : MailModel;
 
     public function sendMail(args : {receiver : String, subject : String, message : String}) : Void;
 }
