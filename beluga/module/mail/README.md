@@ -27,7 +27,7 @@ This module can send back the following triggers :
 ##Errors
 
 In case of failure, just check the error code to know what's wrong. Here is the full errors list for the __mail__ module :
- * __MissingLogin__ : You're not logged in.
+ * __MissingLogin__ : You need to be logged in.
  * __MailNotSent__ : An error occured when trying to send the mail.
  * __OnlyPHP__ : The only language supported by the mail module is currently PHP, any other will fail and throw back this error.
  * __MissingReceiver__ : The receiver is missing.
