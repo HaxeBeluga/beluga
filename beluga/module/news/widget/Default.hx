@@ -18,12 +18,13 @@ class NewsList {
     public var pos : Int;
     public var creationDate : SDateTime;
 
-    public function new(t : String, te : String, i : Int, p : Int, d: SDateTime) {
-        title = t;
-        text = te;
-        id = i;
-        pos = p;
-        creationDate = d;
+    public function new(title : String, text : String, id : Int, position : Int, creationDate: SDateTime) {
+        this.title = title;
+        this.text = text;
+        this.id = id;
+        this.pos = position;
+        this.creationDate = creationDate;
+        // 200 is the number of characters, used as preview for display
         if (text.length > 200) {
             text = text.substr(0, 200) + "...";
         }
@@ -46,10 +47,7 @@ class Default extends MttWidget<NewsImpl> {
 
         for (news in all_news) {
             news_array.push(new NewsList(news.title, news.text, news.id, pos, news.creationDate));
-            if (pos == 0)
-                pos = 1;
-            else
-                pos = 0;
+            pos = pos ^ 1;
         }
         return {
             news : news_array,
