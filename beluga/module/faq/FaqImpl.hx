@@ -118,13 +118,13 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         category_id = Some(args.category_id);
 
         if (args.question == "") {
-            error_msg = "incomplete_question";
-            this.triggers.createFail.dispatch({error: IncompleteQuestion});
+            error_msg = "missing_question";
+            this.triggers.createFail.dispatch({error: MissingQuestion});
             return;
         }
         if (args.answer == "") {
-            error_msg = "incomplete_answer";
-            this.triggers.createFail.dispatch({error: IncompleteAnswer});
+            error_msg = "missing_answer";
+            this.triggers.createFail.dispatch({error: MissingAnswer});
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
@@ -262,13 +262,13 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
     public function editFAQ(args : {faq_id: Int, question : String, answer : String}) {
         faq_id = Some(args.faq_id);
         if (args.question == "") {
-            error_msg = "incomplete_question";
-            this.triggers.editFail.dispatch({error: IncompleteQuestion});
+            error_msg = "missing_question";
+            this.triggers.editFail.dispatch({error: MissingQuestion});
             return;
         }
         if (args.answer == "") {
-            error_msg = "incomplete_answer";
-            this.triggers.editFail.dispatch({error: IncompleteAnswer});
+            error_msg = "missing_answer";
+            this.triggers.editFail.dispatch({error: MissingAnswer});
             return;
         }
         if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
@@ -300,8 +300,8 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
         for (category_to_edit in CategoryModel.manager.dynamicSearch({id: args.category_id})) {
             category_id = Some(category_to_edit.parent_id);
             if (args.name == "") {
-                error_msg = "incomplete_name";
-                this.triggers.editCategoryFail.dispatch({error: IncompleteName});
+                error_msg = "missing_name";
+                this.triggers.editCategoryFail.dispatch({error: MissingName});
                 return;
             }
             if (Beluga.getInstance().getModuleInstance(Account).loggedUser == null) {
