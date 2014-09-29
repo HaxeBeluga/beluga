@@ -20,7 +20,7 @@ public function sendMail(args : {receiver : String, subject : String, message : 
 
 ##Triggers
 
-This modules can send back the following triggers :
+This module can send back the following triggers :
  * sendFail
  * sendSuccess
 
