@@ -24,8 +24,8 @@ interface Wallet extends Module {
     public function setSiteCurrency(args: {id: Int }): Void;
 
     // tools functions
-    public function getCurrentRealFunds(user: User): Option<Float>;
-    public function getCurrentFunds(user: User, currency: Currency): Option<Float>;
+    public function getRealFunds(user: User): Option<Float>;
+    public function getFunds(user: User, currency: Currency): Option<Float>;
     public function addRealFunds(user: User, value: Float): Bool;
     public function addFunds(user: User, currency: Currency, value: Float): Bool;
     public function consumeRealFunds(user: User, quantity: Float): Bool;

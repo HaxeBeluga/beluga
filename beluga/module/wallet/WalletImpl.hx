@@ -121,16 +121,14 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         }
     }
 
-    // tools
-
-    public function getCurrentRealFunds(user: User): Option<Float> {
+    public function getRealFunds(user: User): Option<Float> {
         return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): Some(wallet.fund);
             case None: None;
         };
     }
 
-    public function getCurrentFunds(user: User, currency: Currency): Option<Float> {
+    public function getFunds(user: User, currency: Currency): Option<Float> {
         return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): Some(currency.convertToCurrency(wallet.fund));
             case None: None;
@@ -141,7 +139,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
         return switch (this.wallet_repository.getUserWallet(user)) {
             case Some(wallet): {
                 wallet.fund += value;
-                wallet.update();
+                this.wallet_repository.update(wallet);
                 true;
             };
             case None: false;
@@ -157,7 +155,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             case Some(wallet): {
                 wallet.fund -= quantity;
                 if (wallet.fund >= 0.) {
-                    wallet.update();
+                    this.wallet_repository.update(wallet);
                     true;
                 } else {
                     false;
