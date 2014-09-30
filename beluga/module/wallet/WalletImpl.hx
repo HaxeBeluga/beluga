@@ -56,7 +56,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             this.triggers.creationFail.dispatch();
         } else { // get the logged user
             var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-            this.wallet_repository.save(WalletModel.newInit(user.id, 0.));
+            this.wallet_repository.save(new WalletModel().init(user.id, 0.));
             this.triggers.creationSuccess.dispatch();
         }
     }
@@ -82,7 +82,7 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
             this.admin_error = CurrencyAlreadyExist;
             this.triggers.currencyCreationFail.dispatch({error: CurrencyAlreadyExist});
         } else { // create the currency, all the params are valid
-            this.currency_repository.save(Currency.newInit(args.name, Std.parseFloat(args.rate), false));
+            this.currency_repository.save(new Currency().init(args.name, Std.parseFloat(args.rate), false));
             this.triggers.currencyCreationSuccess.dispatch();
         }
     }

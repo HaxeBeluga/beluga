@@ -27,12 +27,10 @@ class WalletModel extends Object {
 
     public function new() { super(); }
 
-    public static function newInit(user_id: Int, fund: Float) {
-        var wallet = new WalletModel();
+    public function init(user_id: Int, fund: Float) {
+        this.user_id = user_id;
+        this.fund = fund;
 
-        wallet.user_id = user_id;
-        wallet.fund = fund;
-
-        return wallet;
+        return this;
     }
 }

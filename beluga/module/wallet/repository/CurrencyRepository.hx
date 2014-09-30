@@ -47,7 +47,7 @@ class CurrencyRepository extends SpodRepository<Currency> {
     public function getSiteCurrencyOrDefault(): Currency {
         return switch (this.getSiteCurrency()) {
             case Some(c): c;
-            case None: Currency.newInit("", 0., false);
+            case None: new Currency().init("", 0., false);
         };
     }
 

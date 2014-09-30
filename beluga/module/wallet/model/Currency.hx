@@ -21,14 +21,12 @@ class Currency extends Object {
 
     public function new() { super(); }
 
-    public static function newInit(name: String, rate: Float, site_currency: Bool) {
-        var curr = new Currency();
+    public function init(name: String, rate: Float, site_currency: Bool) {
+        this.name = name;
+        this.rate = rate;
+        this.site_currency = site_currency;
 
-        curr.name = name;
-        curr.rate = rate;
-        curr.site_currency = site_currency;
-
-        return curr;
+        return this;
     }
 
     public function convertToReal(value: Float): Float {

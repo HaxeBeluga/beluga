@@ -49,7 +49,7 @@ class Show extends MttWidget<WalletImpl> {
                 var site_currency = switch (currency_repository.getSiteCurrency()) {
                     case Some(c): c;
                     case None: {
-                        var currency = Currency.newInit(BelugaI18n.getKey(this.i18n, "missing_currency"), 0., false);
+                        var currency = new Currency().init(BelugaI18n.getKey(this.i18n, "missing_currency"), 0., false);
                         currency;
                     };
                 };
