@@ -10,6 +10,7 @@ package beluga.module.wallet.model;
 
 // beluga mods
 import beluga.module.account.model.User;
+import haxe.ds.Option;
 
 //haxe
 import sys.db.Object;
@@ -23,4 +24,13 @@ class WalletModel extends Object {
     public var fund: SFloat;
     @:relation(user_id)
     public var user: User;
+
+    public function new() { super(); }
+
+    public function init(user_id: Int, fund: Float) {
+        this.user_id = user_id;
+        this.fund = fund;
+
+        return this;
+    }
 }

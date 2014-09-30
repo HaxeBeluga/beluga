@@ -7,8 +7,9 @@
 // except according to those terms.
 
 package beluga.core.module;
-import beluga.core.Widget;
 
-interface Module {
-    public function getWidget(name : String) : Widget;
+interface Repository<Model> {
+    public function save(model: Model): Void;
+    public function delete(model: Model): Void;
+    public function update(model: Model): Void;
 }

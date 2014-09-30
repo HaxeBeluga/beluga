@@ -24,15 +24,11 @@ interface Wallet extends Module {
     public function setSiteCurrency(args: {id: Int }): Void;
 
     // tools functions
-    public function getCurrentRealFunds(user: User): Option<Float>;
-    public function getCurrentFunds(user: User, currency: Currency): Option<Float>;
+    public function getRealFunds(user: User): Option<Float>;
+    public function getFunds(user: User, currency: Currency): Option<Float>;
     public function addRealFunds(user: User, value: Float): Bool;
     public function addFunds(user: User, currency: Currency, value: Float): Bool;
     public function consumeRealFunds(user: User, quantity: Float): Bool;
     public function consumeFunds(user: User, currency: Currency, quantity: Float): Bool;
-    public function getCurrencys(): List<Dynamic>;
     public function getSiteCurrencyOrDefault(): Currency;
-    public function getSiteCurrency(): Option<Currency>;
-    public function userHasWallet(user: User): Bool;
-    public function getUserWallet(user: User): Option<WalletModel>;
 }
