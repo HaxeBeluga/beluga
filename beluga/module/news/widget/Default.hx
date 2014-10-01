@@ -33,7 +33,7 @@ class NewsList {
 
 class Default extends MttWidget<NewsImpl> {
 
-    public function new(mttfile = "beluga_news_news.mtt") {
+    public function new(mttfile = "beluga_news_default.mtt") {
         super(News, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/default/", mod.i18n);
     }
