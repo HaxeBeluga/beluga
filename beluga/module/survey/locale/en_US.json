@@ -1,4 +1,5 @@
 {
+    "missing_login": "You need to be logged",
     "survey_delete_success": "Survey has been successfully deleted !",
     "not_allowed": "You can't do that",
     "not_found": "Unknown Survey",

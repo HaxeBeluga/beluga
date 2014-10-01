@@ -1,4 +1,5 @@
 {
+    "missing_login": "Vous devez être connecté",
     "survey_delete_success": "Le sondage a été supprimée avec succès !",
     "not_allowed": "Vous ne pouvez pas effectuer cette action",
     "not_found": "Ce sondage n'existe pas",
