@@ -13,6 +13,7 @@ import haxe.macro.Expr;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
+import beluga.tool.Html;
 
 using StringTools;
 
@@ -20,6 +21,12 @@ class Javascript
 {
 
     private static var entryPoint = "BelugaTmpMainJavascript";
+    
+    private static var jsList : Array<String> = [
+        "https://code.jquery.com/jquery-2.1.1.min.js",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js",
+        ConfigLoader.getBaseUrl() + "/beluga/js/beluga.js"
+    ];
 
     macro public static function compile() : Expr
     {
@@ -29,7 +36,7 @@ class Javascript
         if (realOutput.endsWith(".n")) //Trick for neko output
             realOutput = realOutput.substr(0, realOutput.lastIndexOf("/"));
 
-        Sys.println("Generating Beluga javascript");
+        Sys.println("Generating " + realOutput + "/beluga/js/beluga.js");
 
         var fileContent = "package ;\nclass "+ entryPoint +" {\n    public static function main() {\n";
         var classes : Array<String> = [];
@@ -45,21 +52,19 @@ class Javascript
 
         //Create a temporary file to compile our javascript
         File.saveContent(ConfigLoader.installPath + "/../" + entryPoint + ".hx", fileContent + "    }\n}\n");
-
         //Make sure the output dir exists for our js file
-        FileSystem.createDirectory(realOutput + "/js");
-
+        FileSystem.createDirectory(realOutput + "/beluga/js");
         //Compile the actual javascript
         Sys.stderr().writeInput(new Process("haxe", [
             "-cp", ConfigLoader.installPath + "/../",
             "-main", entryPoint,
-            "-js", realOutput + "/js/beluga.js"]).stderr);
+            "-js", realOutput + "/beluga/js/beluga.js"]).stderr);
 
 
         //Remove the temporary file
         FileSystem.deleteFile(ConfigLoader.installPath + "/../" + entryPoint + ".hx");
 
-        return macro "Done !";
+        return macro null;
     }
 
     public static function haveInit(file : String)
@@ -68,4 +73,11 @@ class Javascript
         return content.indexOf("public static function init()") != -1;
     }
 
+    public static function getHtmlInclude() : String {
+        var html = "";
+        for (js in Javascript.jsList) { 
+            html += Html.tag("script", ["src" => js], "");
+        }
+        return html;
+    }
 }

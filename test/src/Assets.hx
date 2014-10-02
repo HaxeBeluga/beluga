@@ -72,7 +72,7 @@ class Assets {
         //Clean assets
         for (file in FileSystem.readDirectory(dest))
         {
-            if (file.charAt(0) == "." || ["dominax", "lib", "res", "temp", "js"].indexOf(file) >= 0)
+            if (file.charAt(0) == "." || ["dominax", "lib", "res", "temp", "beluga"].indexOf(file) >= 0)
                 continue ;
             if (FileSystem.isDirectory(dest + "/" + file))
                 deepDelete(dest + "/" + file);
@@ -125,7 +125,7 @@ class Assets {
         //#----FaqTest Pages----#
         Context.addResource("page_faq", File.getBytes("src/modules/faq_test/tpl/faq_page.mtt"));
 
-        return macro "Done";
+        return macro null;
     }
 
 }

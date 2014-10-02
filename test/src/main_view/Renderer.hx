@@ -13,6 +13,8 @@ import haxe.macro.Context;
 import haxe.Resource;
 import beluga.module.account.Account;
 import beluga.core.Beluga;
+import beluga.core.macro.Javascript;
+import beluga.core.macro.Css;
 
 class Renderer {
 
@@ -40,7 +42,9 @@ class Renderer {
         var bodyhtml = (new haxe.Template(Resource.getString("html_body"))).execute({
             base_url: ctx.base_url,
             content: templatelayout,
-            title: title
+            title: title,
+            js: Javascript.getHtmlInclude(),
+            css: Css.getHtmlInclude()
         });
         return bodyhtml;
     }
