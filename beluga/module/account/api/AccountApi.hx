@@ -60,8 +60,8 @@ class AccountApi  {
         }
     }
 
-    public function doUser(d : Dispatch) {
-        REST.resolve(new UserRest());
+    public function doUser(d : Dispatch, ?id : Int) {
+        REST.resolve(new UserRest(), id);
     }
 
 }
