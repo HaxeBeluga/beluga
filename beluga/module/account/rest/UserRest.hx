@@ -1,28 +1,24 @@
 package beluga.module.account.rest;
 
-import beluga.core.rest.IResource;
+import beluga.core.rest.Resource;
 
 /**
  * ...
  * @author Masadow
  */
-class UserRest implements IResource
+class UserRest extends Resource
 {
-    public function new() {
-        
-    }
-    
-    public function delete(?id : Int) : Dynamic {
+    override public function delete(?id : Int) : Dynamic {
         return "DELETE";
     }
-    public function put(?id : Int) : Dynamic {
+    override public function put(?id : Int) : Dynamic {
         return "PUT";
     }
-    public function post(?id : Int) : Dynamic {
+    override public function post(?id : Int) : Dynamic {
         return "POST";        
     }
-    public function get(?id : Int) : Dynamic {
-        trace("GET");
+    override public function get(?id : Int) : Dynamic {
+        trace(id);
         return "GET";
     }
 }

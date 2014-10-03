@@ -1,6 +1,6 @@
 package beluga.core.rest;
 
-import beluga.core.rest.IResource;
+import beluga.core.BelugaException;
 
 /**
  * ...
@@ -9,26 +9,25 @@ import beluga.core.rest.IResource;
 class REST
 {
 
-    public static function resolve(resource : IResource) {
+    public static function resolve(resource : Resource, ?id : Int) {
         #if neko
         var method = neko.Web.getMethod();
         #elseif php
         var method = php.Web.getMethod();
         #end
-        
 
         switch (method)
         {
             case "GET":
-                resource.get();
+                resource.get(id);
             case "DELETE":
-                resource.delete();
+                resource.delete(id);
             case "POST":
-                resource.post();
+                resource.post(id);
             case "PUT":
-                resource.put();
+                resource.put(id);
             default:
-                //response = "Invalid request type";
+                throw(new BelugaException("Invalid request type"));
         }        
     }
 }
