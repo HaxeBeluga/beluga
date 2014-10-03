@@ -8,6 +8,8 @@
 
 package beluga.module.account.api;
 
+import beluga.core.rest.REST;
+import beluga.module.account.rest.UserRest;
 import haxe.web.Dispatch;
 
 import beluga.core.Beluga;
@@ -56,6 +58,10 @@ class AccountApi  {
         if (args.email != null) {
             module.edit(module.loggedUser.id, args.email);
         }
+    }
+
+    public function doUser(d : Dispatch) {
+        REST.resolve(new UserRest());
     }
 
 }

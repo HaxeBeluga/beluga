@@ -29,7 +29,7 @@ class BelugaApi implements IAPI<String> {
     public function doBeluga(d : Dispatch) {
         d.dispatch(this);
     }
-
+    
     /*
      * Modules API are generated like:
          * public function doModule(d : Dispatch) {
