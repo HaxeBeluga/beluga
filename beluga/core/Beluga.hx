@@ -16,7 +16,7 @@ import sys.FileSystem;
 import sys.db.Connection;
 
 import beluga.core.module.Module;
-import beluga.core.module.ModuleInternal;
+import beluga.core.module.ModuleImpl;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
@@ -81,11 +81,11 @@ class Beluga {
     private function initialize() {
         //Init every modules
         for (module in ConfigLoader.modules) {
-            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
+            var moduleInstance : ModuleImpl = cast ModuleLoader.getModuleInstanceByName(module.name);
             moduleInstance._loadConfig(this, module);
         }
          for (module in ConfigLoader.modules) {
-            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
+            var moduleInstance : ModuleImpl = cast ModuleLoader.getModuleInstanceByName(module.name);
             moduleInstance.initialize(this);
          }
     }

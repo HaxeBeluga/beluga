@@ -10,7 +10,7 @@ import beluga.module.forum.impl.channel.Logic;
 
 // TODO: create a system of action depending on right / user level. add channel == admin || post message == user, admin
 
-class ForumImpl extends ModuleImpl implements ForumInternal{
+class ForumImpl extends ModuleImpl {
 
     private var key : Null<String> = null;
 

@@ -52,7 +52,7 @@ class NewsData {
     }
 }
 
-class NewsImpl extends ModuleImpl implements NewsInternal {
+class NewsImpl extends ModuleImpl {
     public var triggers = new NewsTrigger();
 
     // Context variables

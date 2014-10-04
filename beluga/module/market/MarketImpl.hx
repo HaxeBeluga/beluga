@@ -25,7 +25,7 @@ import beluga.module.market.MarketErrorKind;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-class MarketImpl extends ModuleImpl implements MarketInternal {
+class MarketImpl extends ModuleImpl {
     public var triggers = new MarketTrigger();
     public var widgets: MarketWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/market/locale/");

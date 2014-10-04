@@ -16,7 +16,7 @@ import beluga.core.Beluga;
 import beluga.module.account.Account;
 import beluga.module.notification.model.NotificationModel;
 
-class NotificationImpl extends ModuleImpl implements NotificationInternal {
+class NotificationImpl extends ModuleImpl {
     public var triggers = new NotificationTrigger();
 
     // Interval variables for contexts

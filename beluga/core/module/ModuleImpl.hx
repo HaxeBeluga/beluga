@@ -17,8 +17,7 @@ import sys.io.File;
 import beluga.core.macro.ConfigLoader.ModuleConfig;
 
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
-class ModuleImpl implements ModuleInternal
-{
+class ModuleImpl {
     //Hold the instance of the Beluga object that created this module
     private var beluga : Beluga;
 
