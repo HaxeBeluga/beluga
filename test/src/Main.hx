@@ -74,7 +74,9 @@ class Main {
             news = new NewsTest(beluga);
             mail = new MailTest(beluga);
             notification = new NotificationTest(beluga);
-            Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
+            if (!beluga.handleRequest()) {
+                Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
+            }
             beluga.cleanup();
             Log.flush();
         } catch (e: BelugaException) {
@@ -84,22 +86,14 @@ class Main {
 
     public function new() {
     }
-
-    public function doBeluga(d : Dispatch) {
-        d.dispatch(beluga.api);
+    
+    public function doDefault(d : Dispatch) {
+        doAccueil();
     }
 
     public function doDebug(d : Dispatch) {
         Web.setHeader("Content-Type", "text/plain");
         trace(Web.getParamsString());
-    }
-
-    public function doDefault(d : Dispatch) {
-        if (d.parts[0] != "" ) {
-            d.dispatch(beluga.api);
-        } else {
-            doAccueil();
-        }
     }
 
     public function doAccountTest(d : Dispatch) {
