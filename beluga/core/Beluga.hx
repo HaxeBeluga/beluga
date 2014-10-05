@@ -10,6 +10,7 @@ package beluga.core;
 
 import haxe.Resource;
 import haxe.Session;
+import haxe.web.Dispatch;
 import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
@@ -28,6 +29,8 @@ import php.Web;
 import neko.Web;
 #end
 
+using StringTools;
+
 class Beluga {
     // Keep an instance of beluga's database, read only
     public var db(default, null) : Database;
@@ -35,6 +38,8 @@ class Beluga {
     public var api : BelugaApi;
 
     private static var instance = null;
+    
+    public static var remotingCtx;
 
     public static function getInstance(cnx: Connection = null) : Beluga {
         if (instance == null) {
@@ -50,32 +55,34 @@ class Beluga {
     private function new(cnx: Connection = null)
     #end
     {
+        ModuleLoader.init();
         #if neko
         if (createSessionDirectory) {
             FileSystem.createDirectory(Web.getCwd() + "/temp");
             FileSystem.createDirectory(Web.getCwd() + "/temp/sessions");
         }
         #end
-
-        ModuleLoader.init();
-
+        initDatabase(cnx);
+        //Create beluga API
+        api = new BelugaApi();
+        api.beluga = this;
+        remotingCtx = new haxe.remoting.Context();
+        
+        //Compile JS assets
+        beluga.core.macro.Javascript.compile();
+    }
+    
+    inline private function initDatabase(cnx) {
         db = null;
-
         //Connect to database
         if (cnx != null) {
             db = new Database(cnx);
         } else if (ConfigLoader.config.hasNode.database) {
             db = Database.newFromFile(ConfigLoader.config.node.database.elements);
         }
-
-        //Create beluga API
-        api = new BelugaApi();
-        api.beluga = this;
-
-        //Compile JS assets
-        beluga.core.macro.Javascript.compile();
     }
-
+    
+    
     //For all initialization code that require beluga's instance
     // -> called once by getInstance
     private function initialize() {
@@ -113,4 +120,28 @@ class Beluga {
         return Web.getURI();
         #end
     }
+    
+    public function handleRequest() : Bool {
+        var isBelugaRequest = false;
+        Dispatch.run(this.getDispatchUri(), Web.getParams(), {
+            doBeluga: function ( d : Dispatch) {// url: /beluga
+                isBelugaRequest = true;
+                d.dispatch( {
+                    doRest: function (d : Dispatch) {// url: /beluga/rest
+                        throw new BelugaException("Beluga Rest Api not yet supported");
+                    },
+                    doDefault: function(d : Dispatch) {
+                        if (!haxe.remoting.HttpConnection.handleRequest(remotingCtx)) {
+                              d.dispatch(api);
+                        }
+                    } 
+                });   
+            },
+            doDefault: function(d : Dispatch) {
+                //Let user do what he wants.
+            }
+        });
+        return isBelugaRequest;
+    }
+
 }
