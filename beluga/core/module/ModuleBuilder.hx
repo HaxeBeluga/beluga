@@ -27,8 +27,8 @@ class ModuleBuilder
 {
     public static var modules : Array<ModuleEntry> = new Array<ModuleEntry>();
 
-    //List all modules resources availables
-    macro public static function listModules() : ExprOf<Array<{instance: Module, ident: Class<Dynamic>}>> {
+    //build all modules availables
+    macro public static function buildModules() : ExprOf<Array<{instance: Module, ident: Class<Dynamic>}>> {
         //Generate all declaration lines
         var modulesInstance = new Array<Expr>();
         for (module in modules) {
