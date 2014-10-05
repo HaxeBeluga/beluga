@@ -42,13 +42,13 @@ class Javascript
         var classes : Array<String> = [];
 
         //First get all classes containing a "public static function init()" method
-        for (module in ConfigLoader.modules) {
-            var jsFolder = ConfigLoader.installPath + "/module/" + module.name + "/js";
-            if (FileSystem.exists(jsFolder))
-                for (file in FileSystem.readDirectory(jsFolder))
-                    if (haveInit(jsFolder + "/" + file))
-                        fileContent += "           " + module.path + ".js." + file.substr(0, file.length - 3) + ".init();\n"; //Remove the file extension ".hx"
-        }
+        //for (module in ConfigLoader.modules) {
+            //var jsFolder = ConfigLoader.installPath + "/module/" + module.name + "/js";
+            //if (FileSystem.exists(jsFolder))
+                //for (file in FileSystem.readDirectory(jsFolder))
+                    //if (haveInit(jsFolder + "/" + file))
+                        //fileContent += "           " + module.path + ".js." + file.substr(0, file.length - 3) + ".init();\n"; //Remove the file extension ".hx"
+        //}
 
         //Create a temporary file to compile our javascript
         File.saveContent(ConfigLoader.installPath + "/../" + entryPoint + ".hx", fileContent + "    }\n}\n");

@@ -8,7 +8,6 @@
 
 package beluga.core.api;
 
-import beluga.module.account.api.AccountApi;
 import beluga.core.Beluga;
 
 /**

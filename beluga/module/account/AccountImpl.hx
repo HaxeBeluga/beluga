@@ -15,7 +15,7 @@ import sys.db.Types;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
@@ -25,7 +25,8 @@ import beluga.core.form.Validator;
 import beluga.core.FlashData;
 import haxe.Session;
 
-class AccountImpl extends ModuleImpl implements AccountInternal {
+@:ident(beluga.module.account.Account)
+class AccountImpl extends Module implements Account {
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
@@ -50,7 +51,11 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     }
 
     override public function initialize(beluga : Beluga) {
+        i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
         this.widgets = new AccountWidget();
+        beluga.db.initTable(BlackList);
+        beluga.db.initTable(Friend);
+        beluga.db.initTable(User);
     }
 
     public function getLoggedUser() : User {

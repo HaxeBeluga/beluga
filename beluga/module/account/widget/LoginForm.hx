@@ -16,7 +16,7 @@ import beluga.core.macro.JsonTool;
 import beluga.core.BelugaI18n;
 import beluga.tool.DynamicTool;
 
-class LoginForm extends MttWidget<AccountImpl> {
+class LoginForm extends MttWidget<Account> {
 
     public function new (mttfile = "beluga_account_login.mtt") {
         super(Account, mttfile);
