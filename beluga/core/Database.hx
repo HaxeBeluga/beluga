@@ -12,7 +12,6 @@ import haxe.xml.Fast;
 import sys.db.Manager;
 import sys.db.Connection;
 import sys.db.TableCreate;
-import beluga.core.macro.ModuleLoader;
 
 class Database {
 
