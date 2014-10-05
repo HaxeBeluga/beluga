@@ -15,7 +15,7 @@ import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
 
-typedef ModuleConfig = { name : String, path : String, tables : Array<String> };
+//typedef ModuleConfig = { name : String, path : String, tables : Array<String> };
 
 #if !macro
 @:build(beluga.core.macro.ConfigLoader.build())
@@ -27,7 +27,7 @@ class ConfigLoader {
 
     public static var config(default, default) : Fast;
     public static var installPath(default, null) : String = getInstallPath();
-    public static var modules(default, default) : Array<ModuleConfig>;
+    //public static var modules(default, default) : Array<ModuleConfig>;
 
     //Read only property to check if the macro has been executed or not. Useless outside of the macro context
     public static var isReady(get, never) : Bool;
@@ -53,8 +53,8 @@ class ConfigLoader {
                     if (field.name == "config") {
                         field.kind = FProp("get", "null", t, null);
                     }
-                    else if (field.name == "modules")
-                        field.kind = FProp("default", "null", t, Context.makeExpr(modules, Context.currentPos()));
+                    //else if (field.name == "modules")
+                        //field.kind = FProp("default", "null", t, Context.makeExpr(modules, Context.currentPos()));
                 default:
             }
         }
@@ -89,8 +89,8 @@ class ConfigLoader {
     }
     #end
 
-    private static function loadModuleConfigurations(fast : Fast) {
-        // Look for active modules
+    private static function rebuildConfigFile(fast : Fast) {
+         //Look for active modules
         for (module in fast.elements) {
             //Not fully supported, it can leads to mistakes
             if (module.name == "include") {
@@ -99,30 +99,30 @@ class ConfigLoader {
                 var file = File.getContent(path);
                 var xml = Xml.parse(file);
                 clearForTarget(xml, getCompilationTarget());
-                loadModuleConfigurations(new Fast(xml));
+                rebuildConfigFile(new Fast(xml));
 
                 //Concat the content of the xml to the main config
                 builtConfigString += xml.toString();
             }
-            else if (module.name == "module") {
-                var name : String = module.att.name;
-                var modulePath = installPath + "/module/" + name.toLowerCase();
-                var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
-
+            //else if (module.name == "module") {
+                //var name : String = module.att.name;
+                //var modulePath = installPath + "/module/" + name.toLowerCase();
+                //var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
+//
                 //Get every single models from the current module
-                var tables = new Array<String>();
-                if (!FileSystem.isDirectory(modulePath + "/model")) {
-                    throw new BelugaException("Missing model directory from the module " + name);
-                }
-                else {
-                    for (model in FileSystem.readDirectory(modulePath + "/model")) {
+                //var tables = new Array<String>();
+                //if (!FileSystem.isDirectory(modulePath + "/model")) {
+                    //throw new BelugaException("Missing model directory from the module " + name);
+                //}
+                //else {
+                    //for (model in FileSystem.readDirectory(modulePath + "/model")) {
                         //Do not forget to remove the .hx extension to get the model name
-                        tables.push(model.substr(0, model.length - 3));
-                    }
-                }
-
-                modules.push({name: name, path: module, tables: tables});
-            }
+                        //tables.push(model.substr(0, model.length - 3));
+                    //}
+                //}
+//
+                //modules.push({name: name, path: module, tables: tables});
+            //}
         }
     }
 
@@ -155,10 +155,11 @@ class ConfigLoader {
         var xml = Xml.parse(builtConfigString);
         clearForTarget(xml, getCompilationTarget());
 
-        modules = new Array<ModuleConfig>();
+//        modules = new Array<ModuleConfig>();
 
         //Parse the configuration file
-        loadModuleConfigurations(new Fast(xml));
+        rebuildConfigFile(new Fast(xml)); //Create a new builtConfigString with all included files
+        
         xml = Xml.parse(builtConfigString);
         clearForTarget(xml, getCompilationTarget());
         config = new Fast(xml);

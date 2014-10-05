@@ -11,10 +11,10 @@ package beluga.core.api;
 import haxe.web.Dispatch;
 import haxe.Session;
 
-import beluga.core.macro.ModuleLoader;
+//import beluga.core.macro.ModuleLoader;
 
-class BelugaApi implements IAPI<String> {
-    public var beluga : Beluga;
+class BelugaApi {
+    public var belugaInstance : Beluga;
     public var module : String;
 
     private function handleSessionPath() {}

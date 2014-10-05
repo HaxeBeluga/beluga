@@ -11,12 +11,12 @@ package beluga.module.account.widget;
 import beluga.core.Beluga;
 import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
-import beluga.module.account.Account;
+import beluga.module.account.AccountImpl;
 
 class SubscribeForm extends MttWidget<AccountImpl> {
 
     public function new (mttfile = "beluga_account_subscribe.mtt") {
-        super(Account, mttfile);
+        super(AccountImpl, mttfile);
     }
 
     override private function getContext(): Dynamic {
