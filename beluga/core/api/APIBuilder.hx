@@ -8,6 +8,7 @@
 
 package beluga.core.api;
 
+import beluga.core.module.ModuleBuilder;
 import haxe.macro.Expr.Field;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -25,20 +26,27 @@ class APIBuilder {
         if (!ConfigLoader.isReady)
             ConfigLoader.forceBuild();
 
-        for (module in ConfigLoader.modules) {
-            var apiDecl = {
-                pos: Context.currentPos(),
-                expr: ENew( {
+        for (module in ModuleBuilder.modules) {
+            var apiTypePath = {
                     sub: null,
                     params: [],
-                    pack: ["beluga", "module", module.name.toLowerCase(), "api"],
-                    name: module.name.charAt(0).toUpperCase() + module.name.substr(1) + "Api"
-                },
-                [])
+                    pack: module.type.pack,
+                    name: module.type.name + "Api"
+                };
+            var moduleName = module.type.name;
+            var apiAssign = { //_api.module = $i{moduleName}.instance;
+                pos: Context.currentPos(),
+                expr: EBinop(OpAssign, macro _api.module, {
+                    pos: Context.currentPos(),
+                    expr: EField( {
+                        pos: Context.currentPos(),
+                        expr:EConst(CIdent(module.type.pack.join(".")  + "."  + module.type.name))
+                    }, "instance")
+                })
             };
             fields.push({
                 pos: pos,
-                name: "do" + module.name.charAt(0).toUpperCase() + module.name.substr(1).toLowerCase(),
+                name: "do" + moduleName,
                 meta: null,
                 kind: FFun( {
                     ret: null,
@@ -47,15 +55,16 @@ class APIBuilder {
                         //Make sure temp/session exists if beluga handle session
                         handleSessionPath();
                         Session.start();
-                        var _api = $ { apiDecl };
-                        _api.module = cast ModuleLoader.getModuleInstanceByName($v { module.name } );
-                        _api.beluga = beluga;
-                        d.dispatch( _api);
+                        var _api = $ { module.api };
+//                        $apiAssign;
+                        _api.module = beluga.module.account.AccountImpl.instance;
+                        _api.beluga = belugaInstance;
+                        d.dispatch(_api);
                         Session.close();
                     },
                     args: [ {
                         value: null,
-                        type: macro : Dispatch,
+                        type: macro : haxe.web.Dispatch,
                         opt: false,
                         name: "d"
                     }]
