@@ -92,12 +92,13 @@ class Beluga {
     //For all initialization code that require beluga's instance
     // -> called once by getInstance
     private function initialize() {
+        var modules = cast(beluga.core.module.ModuleBuilder.buildModules(), Array<Dynamic>); //
         //Make sure all modules are registered to Beluga before initializing them, dependencies could cause serious problemes otherwise
-        for (module in cast(beluga.core.module.ModuleBuilder.listModules(), Array<Dynamic>)) {
+        for (module in modules) {
             var key = module.ident != null ? module.ident : Type.getClass(module.instance);
-            modules.set(key, module.instance);
+            this.modules.set(key, module.instance);
         }
-        for (module in cast(beluga.core.module.ModuleBuilder.listModules(), Array<Dynamic>)) {
+        for (module in modules) {
             module.instance.initialize(this);
         }
     }
