@@ -15,7 +15,8 @@ class Javascript {
     public static function init() {
     	var jq = JQueryHelper.get_JTHIS();
 
-    	addEntry();
+    	if (jq.find("#choice").children().size() < 2)
+    		addEntry();
     	jq.find("#addEntry").click(function() {
 		  	addEntry();
 		});

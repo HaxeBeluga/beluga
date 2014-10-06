@@ -9,6 +9,16 @@ import beluga.module.survey.Survey;
 import beluga.module.survey.SurveyErrorKind;
 import beluga.module.account.Account;
 
+class MttObject {
+    public var name: String;
+    public var choice: String;
+
+    public function new(name: String, choice: String) {
+        this.name = name;
+        this.choice = choice;
+    }
+}
+
 class Create extends MttWidget<SurveyImpl> {
 
     public function new(mttfile = "beluga_survey_create.mtt") {
@@ -24,10 +34,23 @@ class Create extends MttWidget<SurveyImpl> {
             ret.other = mod.widgets.survey.render();
             return ret;
         }
+        var names_and_choices = new Array<MttObject>();
+
+        if (mod.choices != null) {
+            var pos = 0;
+
+            for (choice in mod.choices) {
+                if (pos > 0)
+                    names_and_choices.push(new MttObject("choices" + pos, choice));
+                else
+                    names_and_choices.push(new MttObject("choices", choice));
+                pos += 1;
+            }
+        }
         return {
             title: mod.title,
             description: mod.description,
-            choices: mod.choices,
+            choices: names_and_choices,
             path : "/beluga/survey/",
             error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg)

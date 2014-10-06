@@ -38,8 +38,10 @@ class SurveyApi {
         x.remove("description");
         x.remove("title");
 
-        for (t in x)
-            tmp.push(t);
+        for (t in x) {
+            if (t != "")
+                tmp.push(t);
+        }
         module.create({title : args.title, description : args.description, choices : tmp});
     }
 

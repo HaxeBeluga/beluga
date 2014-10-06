@@ -40,7 +40,7 @@
 			::foreach choices::
 			::if (__current__)::
 			<div class="form-survey">
-				<input type="text" class="form-control" id="choices" placeholder="$$i18n(new_choice)" name="choices" value="::__current__::">
+				<input type="text" class="form-control" id="choices" placeholder="$$i18n(new_choice)" name="::name::" value="::choice::">
 			</div>
 			::end::
 			::end::
