@@ -97,6 +97,7 @@ class Beluga {
         for (module in modules) {
             var key : Class<Dynamic> = module.ident != null ? module.ident : Type.getClass(module.instance);
             this.modules.set(key, module.instance);
+            module.api.module = module.instance; //Will be available inside a Dispatch config object
             api.modules.set(Type.getClassName(key).split(".").pop().toLowerCase(), module.api);
         }
         for (module in modules) {
