@@ -9,21 +9,20 @@
 package beluga.core.widget;
 
 import beluga.core.Beluga;
-import beluga.core.module.ModuleImpl;
-import beluga.core.module.Module;
+import beluga.core.module.IModule;
 import beluga.core.macro.ConfigLoader;
 
 import haxe.Template;
 import haxe.Resource;
 
-class MttWidget<WImpl: ModuleImpl> implements Widget {
+class MttWidget<WImpl: IModule> implements Widget {
     public var mod: WImpl;
     public var i18n : Dynamic;
 
     private static var id = 0;
     private var template : Template;
 
-    public function new<T: Module>(clazz : Class<T>, mttfile : String) {
+    public function new<T: IModule>(clazz : Class<T>, mttfile : String) {
         var templateFileContent = Resource.getString(mttfile);
         this.template = new haxe.Template(templateFileContent);
         this.mod = cast Beluga.getInstance().getModuleInstance(clazz);

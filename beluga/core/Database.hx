@@ -12,7 +12,6 @@ import haxe.xml.Fast;
 import sys.db.Manager;
 import sys.db.Connection;
 import sys.db.TableCreate;
-import beluga.core.macro.ModuleLoader;
 
 class Database {
 
@@ -35,8 +34,8 @@ class Database {
         }
     }
 
-    public function initTable(module : String, table : String) {
-        var tableClass = ModuleLoader.resolveModel(module, table);
+    public function initTable(tableClass : Class<Dynamic>) {
+//        var tableClass = ModuleLoader.resolveModel(module, table);
 
         if (Reflect.hasField(tableClass, "manager")) {
             var manager = Reflect.field(tableClass, "manager");
@@ -44,7 +43,7 @@ class Database {
                 TableCreate.create(manager);
         }
         else
-            throw new BelugaException(table + " is not a valid database object");
+            throw new BelugaException(tableClass + " is not a valid database object");
     }
 
     public function close() {

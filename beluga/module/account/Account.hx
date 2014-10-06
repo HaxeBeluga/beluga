@@ -8,11 +8,12 @@
 
 package beluga.module.account;
 
+import beluga.core.module.IModule;
 import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import sys.db.Types.SId;
 
-interface Account extends Module {
+interface Account extends IModule {
 
     public var triggers : AccountTrigger;
 
@@ -21,6 +22,8 @@ interface Account extends Module {
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
+
+    public var i18n : Dynamic;
 
     public function subscribe(args : {
         login : String,

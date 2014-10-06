@@ -15,7 +15,7 @@ import sys.db.Types;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
@@ -28,7 +28,8 @@ enum LastLoginErrorType {
     WrongLogin;
 }
 
-class AccountImpl extends ModuleImpl implements AccountInternal {
+@:ident(beluga.module.account.Account)
+class AccountImpl extends Module implements Account {
 
     private static inline var SESSION_USER = "session_user";
 
@@ -40,15 +41,19 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
-
-    public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
+    
+    public var i18n : Dynamic;
 
     public function new() {
         super();
     }
 
     override public function initialize(beluga : Beluga) {
+        i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
         this.widgets = new AccountWidget();
+        beluga.db.initTable(BlackList);
+        beluga.db.initTable(Friend);
+        beluga.db.initTable(User);
     }
 
     public function getLoggedUser() : User {
