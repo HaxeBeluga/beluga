@@ -93,8 +93,9 @@ class Beluga {
         var modules = cast(beluga.core.module.ModuleBuilder.buildModules(), Array<Dynamic>); //
         //Make sure all modules are registered to Beluga before initializing them, dependencies could cause serious problemes otherwise
         for (module in modules) {
-            var key = module.ident != null ? module.ident : Type.getClass(module.instance);
+            var key : Class<Dynamic> = module.ident != null ? module.ident : Type.getClass(module.instance);
             this.modules.set(key, module.instance);
+            api.modules.set(Type.getClassName(key).split(".").pop().toLowerCase(), module.api);
         }
         for (module in modules) {
             module.instance.initialize(this);
@@ -120,7 +121,7 @@ class Beluga {
         Dispatch.run(URI.getDispatchUri(), Web.getParams(), {
             doBeluga: function ( d : Dispatch) {// url: /beluga
                 isBelugaRequest = true;
-                d.dispatch( {
+                d.dispatch({
                     doRest: function (d : Dispatch) {// url: /beluga/rest
                         throw new BelugaException("Beluga Rest Api not yet supported");
                     },
