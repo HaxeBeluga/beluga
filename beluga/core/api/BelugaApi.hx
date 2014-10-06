@@ -15,25 +15,15 @@ import haxe.Session;
 
 class BelugaApi {
     public var belugaInstance : Beluga;
-    public var module : String;
-
-    private function handleSessionPath() {}
+    public var modules = new Map<String, Dynamic>();
 
     public function new() {}
 
     //Handle url like www.beluga.fr?trigger=login
     public function doDefault(d : Dispatch) {
-        Sys.print("Welcome !");
+        var module = d.parts.shift();
+        var api = modules.get(module);
+        d.runtimeDispatch(api);
     }
 
-    public function doBeluga(d : Dispatch) {
-        d.dispatch(this);
-    }
-
-    /*
-     * Modules API are generated like:
-         * public function doModule(d : Dispatch) {
-            * d.dispatch(new ModuleApi(beluga));
-         * }
-     */
 }

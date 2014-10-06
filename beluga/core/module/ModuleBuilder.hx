@@ -28,20 +28,22 @@ class ModuleBuilder
     public static var modules : Array<ModuleEntry> = new Array<ModuleEntry>();
 
     //build all modules availables
-    macro public static function buildModules() : ExprOf<Array<{instance: Module, ident: Class<Dynamic>}>> {
+    macro public static function buildModules() : ExprOf<Array<{instance: Module, api: Dynamic, ident: Class<Dynamic>}>> {
         //Generate all declaration lines
         var modulesInstance = new Array<Expr>();
         for (module in modules) {
             var m = module.type;
             var ident = module.ident;
+            var api = module.api;
             modulesInstance.push(macro modules.push({
                 instance: new $m(),
+                api: $api,
                 ident: $ident
             }));
         }
         //Generate the final array of modules instances declaration
-        return macro function () : Array<{instance: Module, ident: Class<Dynamic>}> {
-            var modules = new Array<{instance: Module, ident: Class<Dynamic>}>();
+        return macro function () : Array<{instance: Module, api: Dynamic, ident: Class<Dynamic>}> {
+            var modules = new Array<{instance: Module, api: Dynamic, ident: Class<Dynamic>}>();
             $b { modulesInstance };
             return modules;
         }();
@@ -116,8 +118,8 @@ class ModuleBuilder
         });
         
         var api = makeApi(classtype, fields, Context.currentPos());
-        Context.defineType(api.typeDefinition);
-        var apiType = api.typePath;
+        //Context.defineType(api.typeDefinition);
+        //var apiType = api.typePath;
         
         var ident : Expr = macro null;
         
@@ -131,7 +133,7 @@ class ModuleBuilder
         
         modules.push( {
             type: classtype,
-            api: macro new $apiType(),
+            api: api,
             ident: ident
         });
 
@@ -146,28 +148,29 @@ class ModuleBuilder
     
     private static function makeApi(from : TypePath, fields : Array<Field>, pos: Position) : Dynamic {
         
-        var ct = TPath(from);
-        var type : TypeDefinition = macro class Test {
-            public var beluga : beluga.core.Beluga;
-            public var module : $ct;
-            public function new() { }
-        };
+        var obj = [ {
+            field: "doDefault",
+            expr: macro function(d : haxe.web.Dispatch) { /* Error ? */ }
+        }];
+        var rules = [{
+            field: "default",
+            expr: macro DRMatch(MRDispatch)
+        }];
         
-        type.name = from.name + "Api";
-        type.pack = from.pack;
-
         //Loop through every fields to add them to the api
         for (field in fields) {
+            
         }
         
-        return {
-            typePath : {
-                sub: from.sub,
-                params: from.params,
-                pack: from.pack,
-                name: type.name
-            },
-            typeDefinition: type
+        return macro {
+            obj: ${{
+                pos: pos,
+                expr: EObjectDecl(obj)
+            }},
+            rules: ${{
+                pos: pos,
+                expr: EObjectDecl(rules)
+            }}
         };
     }
 }
