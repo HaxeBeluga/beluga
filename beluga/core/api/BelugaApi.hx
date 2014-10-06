@@ -21,8 +21,8 @@ class BelugaApi {
 
     //Handle url like www.beluga.fr?trigger=login
     public function doDefault(d : Dispatch) {
-        var module = d.parts.shift();
-        var api = modules.get(module);
+        var apiName = d.parts.shift();
+        var api = modules.get(apiName);
         d.runtimeDispatch(api);
     }
 

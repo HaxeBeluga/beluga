@@ -159,7 +159,26 @@ class ModuleBuilder
         
         //Loop through every fields to add them to the api
         for (field in fields) {
-            
+            //Check if it's a public non static function
+            var isStatic = false;
+            var isPublic = false;
+            for (access in field.access) {
+                if (access == APublic)
+                    isPublic = true;
+                else if (access == AStatic)
+                    isStatic = true;
+            }
+            if (!isStatic && isPublic) {
+                //valid field
+                obj.push( {
+                    field: "do" + field.name.charAt(0).toUpperCase() + field.name.substr(1),
+                    expr: macro function(d : haxe.web.Dispatch) { trace("Good"); }
+                });
+                rules.push( {
+                    field: field.name,
+                    expr: macro DRMatch(MRDispatch)
+                });
+            }
         }
         
         return macro {
