@@ -38,8 +38,10 @@ class SurveyApi {
         x.remove("description");
         x.remove("title");
 
-        for (t in x)
-            tmp.push(t);
+        for (t in x) {
+            if (t != "")
+                tmp.push(t);
+        }
         module.create({title : args.title, description : args.description, choices : tmp});
     }
 
@@ -48,7 +50,7 @@ class SurveyApi {
     }
 
     public function doPrint(args : {id : Int}) {
-        module.print({survey_id: args.id});
+        module.print(args.id);
     }
 
     public function doDefault() {
@@ -60,7 +62,7 @@ class SurveyApi {
     }
 
     public function doDelete(args : {id : Int}) {
-        module.delete({survey_id: args.id});
+        module.delete(args.id);
     }
 
 }

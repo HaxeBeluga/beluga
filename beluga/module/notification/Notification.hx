@@ -11,12 +11,11 @@ package beluga.module.notification;
 import beluga.core.module.Module;
 
 import beluga.module.notification.model.NotificationModel;
+import beluga.module.notification.NotificationWidget;
 
 interface Notification extends Module {
     public var triggers: NotificationTrigger;
-
-    public function getDefaultContext() : Dynamic;
-    public function getPrintContext(notif_id: Int) : Dynamic;
+    public var widgets : NotificationWidget;
 
     public function print(args : {id : Int}) : Void;
     public function create(args : {

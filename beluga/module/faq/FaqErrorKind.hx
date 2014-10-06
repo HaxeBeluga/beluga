@@ -2,13 +2,12 @@ package beluga.module.faq;
 
 enum FaqErrorKind {
     UnknownCategory;
-    IncompleteQuestion;
-    IncompleteAnswer;
-    IncompleteName;
+    MissingQuestion;
+    MissingAnswer;
+    MissingName;
     MissingLogin;
     EntryAlreadyExists;
     CategoryAlreadyExists;
-    MissingName;
     IdNotFound;
     None;
 }

@@ -1,7 +1,7 @@
 {
     "unknown_category": "Unknown category",
-    "incomplete_question": "Incomplete question",
-    "incomplete_answer": "Incomplete answer",
+    "missing_question": "Incomplete question",
+    "missing_answer": "Incomplete answer",
     "missing_login": "You need to be logged",
     "entry_already_exists": "Another entry already treats this question",
     "entry_create_success": "FAQ entry has been created successfully",
@@ -12,7 +12,6 @@
     "id_not_found": "Id not found",
     "category_delete_success": "Category has been successfully deleted",
     "faq_edit_success": "FAQ has been successfully edited",
-    "incomplete_name": "Incomplete name",
     "category_edit_success": "Category has been successfully edited",
     "category_creation": "Creation of category",
     "name": "Name",

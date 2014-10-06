@@ -1,3 +1,6 @@
+::if other::
+::other::
+::else::
 <div>
 	::if (success)::
     ::if (success != "")::
@@ -27,38 +30,39 @@
 	<div style="text-align:justify;margin-left:auto;margin-right:auto;border-style:solid;border-radius:2px;border-width:2px;padding:10px;">::news.text::</div>
 	<div>
 		<div style="text-align:center;padding-top: 20px;">
-			<h1>Comments</h1><br/>
+			<h1>$$i18n(comments)</h1><br/>
 		</div>
 		::if (comments.length > 0)::
 		::foreach comments::
 		<div class="panel panel-primary">
 			::if (user)::
 			::if (login == user.login)::
-			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
+			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">$$i18n(delete)</a>
 			::elseif (user.id == news.user_id)::
-			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">Delete</a>
+			<a class="btn btn-danger btn-xs pull-right" href="::base_url::::path::deleteCom?com_id=::com_id::&news_id=::news.id::" style="margin-top:6px;margin-right:4px;">$$i18n(delete)</a>
 			::end::
 			::end::
 
 			<div class="panel-heading"><h3 class="panel-title">::login::</h3></div>
 			<div class="panel-body">::text::</div>
-			<div class="panel-footer">Posted on ::date::</div>
+			<div class="panel-footer">$$i18n(posted_on)</div>
 		</div>
 		::end::
 		::else::
-		<h4 style="text-align:center;">No comment on this news</h4>
+		<h4 style="text-align:center;">$$i18n(no_comment)</h4>
 		::end::
 		::if (user)::
 		<form action="::base_url::::path::createComment" class="" role="form" method="POST">
 			<input name="news_id" value="::news.id::" type="hidden"/>
 			<div class="form-group">
-				<label for="text">Comment this news :</label>
-				<textarea class="form-control" id="text" name="text" placeholder="Enter comment">::if (data)::::if (data != "")::::data::::end::::end::</textarea>
+				<label for="text">$$i18n(comment_this_news)</label>
+				<textarea class="form-control" id="text" name="text" placeholder="$$i18n(enter_comment)">::if (data)::::if (data != "")::::data::::end::::end::</textarea>
 			</div>
-			<input type="submit" class="btn btn-primary" value="Post comment"/>
+			<input type="submit" class="btn btn-primary" value="$$i18n(post_comment)"/>
 		</form>
 		::end::
 	</div>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::">Go back to news list</a>
+	<a class="btn btn-primary" href="::base_url::::path::">$$i18n(go_back)</a>
 </div>
+::end::

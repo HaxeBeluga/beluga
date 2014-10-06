@@ -8,19 +8,21 @@
 
 package beluga.module.survey;
 
+import sys.db.Types;
+
 import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
 
-import sys.db.Types;
+import beluga.module.survey.SurveyErrorKind;
 
 class SurveyTrigger {
     public var redirect = new TriggerVoid();
-    public var deleteFail = new TriggerVoid();
+    public var deleteFail = new Trigger<{error : SurveyErrorKind}>();
     public var deleteSuccess = new TriggerVoid();
-    public var printSurvey = new Trigger<{survey_id : Int}>();
-    public var createFail = new TriggerVoid();
+    public var printSurvey = new TriggerVoid();
+    public var createFail = new Trigger<{error : SurveyErrorKind}>();
     public var createSuccess = new TriggerVoid();
-    public var voteFail = new Trigger<{survey : Int}>();
+    public var voteFail = new Trigger<{error : SurveyErrorKind}>();
     public var voteSuccess = new TriggerVoid();
     public var answerNotify = new Trigger<{title: String, text: String, user_id: SId}>();
     public var defaultSurvey = new TriggerVoid();
