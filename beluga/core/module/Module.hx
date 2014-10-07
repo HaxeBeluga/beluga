@@ -10,11 +10,10 @@ package beluga.core.module;
 
 import beluga.core.Beluga;
 import beluga.core.BelugaException;
-import beluga.core.Widget;
 import haxe.Resource;
 import haxe.xml.Fast;
 import sys.io.File;
-//import beluga.core.macro.ConfigLoader.ModuleConfig;
+import beluga.core.widget.Widget;
 
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class Module implements IModule
@@ -27,31 +26,7 @@ class Module implements IModule
     {
     }
 
-    //public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
-        //this.beluga = beluga;
-//
-        //for (table in module.tables) {
-            //Initialize all module tables
-            //try {
-            //beluga.db.initTable(module.name, table);
-            //}
-            //catch (e : Dynamic) {
-                //if (Std.is(e, BelugaException)) //Can't catch a BelugaException, forbidden by the compiler so we have to manually check for it
-                    //throw e;
-                //else
-                    //throw new BelugaException("Beluga was unable to connect to your database, please check your configuration.");
-            //}
-        //}
-    //}
-
     @:allow(beluga.core.Beluga) //Only Beluga object can call this method
     private function initialize(beluga : Beluga) : Void {}
-
-
-    public function getWidget(name : String) : Widget {
-        //First retrieve the class path
-        var module = Type.getClassName(Type.getClass(this)).split(".")[2];
-        return new Widget(module, name);
-    }
 
 }

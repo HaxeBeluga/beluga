@@ -172,7 +172,18 @@ class ModuleBuilder
                 //valid field
                 obj.push( {
                     field: "do" + field.name.charAt(0).toUpperCase() + field.name.substr(1),
-                    expr: macro function(d : haxe.web.Dispatch) { trace("Good"); }
+                    expr: macro function(d : haxe.web.Dispatch) {
+                        var module = Reflect.field(d.cfg, "module"); //Infinite macro loop if accessed directly
+                        var method = $ {{
+                            pos: pos,
+                            expr: EConst(CString(field.name))
+                        }};
+                        var p = { };
+                        for (key in d.params) {
+                            Reflect.setField(p, key, d.params.get(key));
+                        }
+                        Reflect.callMethod(module, method, [p]);
+                    }
                 });
                 rules.push( {
                     field: field.name,
