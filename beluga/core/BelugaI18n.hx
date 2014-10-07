@@ -45,7 +45,7 @@ class BelugaI18n
         return lang;
     }
 
-    public static function getKey(i18n, key : String, ?ctx : Dynamic) {
+    public static function getKey(i18n : Dynamic, key : String, ?ctx : Dynamic) {
         var f = Reflect.field;
         var textMap = f(i18n, curLang);
         if (textMap != null) {

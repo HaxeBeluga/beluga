@@ -11,11 +11,11 @@ package modules.account_test;
 import haxe.Resource;
 import haxe.web.Dispatch;
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import modules.account_test.AccountTest;
 import main_view.Renderer;
+import beluga.core.widget.Widget;
 
 #if php
 import php.Web;
@@ -31,8 +31,8 @@ class AccountTestApi {
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
 
-        acc.triggers.deleteSuccess.add(this.deleteUserSuccess);
-        acc.triggers.deleteFail.add(this.deleteUserFail);
+        //acc.triggers.deleteSuccess.add(this.deleteUserSuccess);
+        //acc.triggers.deleteFail.add(this.deleteUserFail);
 
         acc.triggers.banFail.add(this.banFail);
         acc.triggers.banSuccess.add(this.banSuccess);
@@ -75,22 +75,22 @@ class AccountTestApi {
     }
 
     public function doPrintInfo() {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "You need to be logged"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getDisconnectedUsers(), friends: this.acc.getFriends(user.id),
-            not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
-        var tmp = subscribeWidget.render();
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: tmp
-        });
-        Sys.print(html);
+        //var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+//
+        //if (user == null) {
+            //var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "You need to be logged"});
+            //Sys.print(html);
+            //return;
+        //}
+        //var subscribeWidget = acc.getWidget("info");
+        //subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getDisconnectedUsers(), friends: this.acc.getFriends(user.id),
+            //not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
+        //var tmp = subscribeWidget.render();
+//
+        //var html = Renderer.renderDefault("page_subscribe", "Information", {
+            //subscribeWidget: tmp
+        //});
+        //Sys.print(html);
     }
 
     public function doLogout() {
@@ -107,48 +107,48 @@ class AccountTestApi {
         new AccountTestApi(Beluga.getInstance()).doEdit();
     }*/
 
-    public function doEdit() {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+    //public function doEdit() {
+        //var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+//
+        //if (user == null) {
+            //var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
+            //Sys.print(html);
+            //return;
+        //}
+        //var subscribeWidget = acc.widgets.getWidget("edit");
+        //subscribeWidget.context = {user : user, path : "/accountTest/"};
+//
+        //var html = Renderer.renderDefault("page_subscribe", "Edit", {
+            //subscribeWidget: subscribeWidget.render()
+        //});
+        //Sys.print(html);
+    //}
 
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("edit");
-        subscribeWidget.context = {user : user, path : "/accountTest/"};
-
-        var html = Renderer.renderDefault("page_subscribe", "Edit", {
-            subscribeWidget: subscribeWidget.render()
-        });
-        Sys.print(html);
-    }
-
-    public function doDelete(args : {id: Int}) {
-        this.acc.deleteUser(args);
-    }
-
-    public function deleteUserFail(args : {err: String}) {
-        var user = this.acc.getLoggedUser();
-
-        if (user == null) {
-            var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
-            Sys.print(html);
-            return;
-        }
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: subscribeWidget.render()
-        });
-        Sys.print(html);
-    }
-
-    public function deleteUserSuccess() {
-        var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Your account has been deleted successfully", login: ""});
-        Sys.print(html);
-    }
+    //public function doDelete(args : {id: Int}) {
+        //this.acc.deleteUser(args);
+    //}
+//
+    //public function deleteUserFail(args : {err: String}) {
+        //var user = this.acc.getLoggedUser();
+//
+        //if (user == null) {
+            //var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : "Please log in"});
+            //Sys.print(html);
+            //return;
+        //}
+        //var subscribeWidget = acc.getWidget("info");
+        //subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
+//
+        //var html = Renderer.renderDefault("page_subscribe", "Information", {
+            //subscribeWidget: subscribeWidget.render()
+        //});
+        //Sys.print(html);
+    //}
+//
+    //public function deleteUserSuccess() {
+        //var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "Your account has been deleted successfully", login: ""});
+        //Sys.print(html);
+    //}
 
     public function doBan(args : {id: Int}) {
         this.acc.ban(args.id);

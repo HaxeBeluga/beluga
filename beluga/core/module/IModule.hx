@@ -1,6 +1,6 @@
 package beluga.core.module;
 
-import beluga.core.Widget;
+import beluga.core.widget.Widget;
 
 /**
  * ...
@@ -8,5 +8,4 @@ import beluga.core.Widget;
  */
 interface IModule
 {
-    public function getWidget(name : String) : Widget;
 }
