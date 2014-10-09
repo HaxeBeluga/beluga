@@ -1,9 +1,5 @@
 package beluga.tool;
 
-/**
- * ...
- * @author Alexis Brissard
- */
 class Html
 {
 

@@ -8,10 +8,6 @@ import beluga.tool.Html;
 
 using StringTools;
 
-/**
- * ...
- * @author Alexis Brissard
- */
 class Css
 {
 
@@ -43,6 +39,12 @@ class Css
         return macro null;
     }
 
+    /*
+     * Return a string containing the HTML code to include all css file specified in Css.cssList like:
+     * <link rel="stylesheet" href="css1"/>
+     * <link rel="stylesheet" href="css2"/>
+     * etc...
+     */
     public static function getHtmlInclude() : String {
         var html = "";
         for (css in Css.cssList) {

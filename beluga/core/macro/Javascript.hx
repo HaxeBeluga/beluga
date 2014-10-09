@@ -73,6 +73,13 @@ class Javascript
         return content.indexOf("public static function init()") != -1;
     }
 
+    /*
+     * Return a string containing the HTML code to include all js file specified in JS.jsList like:
+     * <script src="js1"></script>
+     * <script src="js2"></script>
+     * etc...
+     */
+
     public static function getHtmlInclude() : String {
         var html = "";
         for (js in Javascript.jsList) { 
