@@ -8,6 +8,7 @@
 
 package beluga.module.account.api;
 
+import beluga.module.faq.widget.Print;
 import haxe.web.Dispatch;
 
 import beluga.core.Beluga;
@@ -57,5 +58,5 @@ class AccountApi  {
             module.edit(module.loggedUser.id, args.email);
         }
     }
-
+    
 }

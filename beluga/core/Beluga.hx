@@ -74,6 +74,8 @@ class Beluga {
 
         //Compile JS assets
         beluga.core.macro.Javascript.compile();
+        //Compile CSS assets
+        beluga.core.macro.Css.compile();
     }
 
     //For all initialization code that require beluga's instance
