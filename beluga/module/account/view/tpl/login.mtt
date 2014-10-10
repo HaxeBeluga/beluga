@@ -7,7 +7,7 @@
     ::end::
     <br/>
     ::if (!isLogged)::
-    $$i8n(moduleName)
+    $$i18n(moduleName)
     <form action="::base_url::/beluga/account/login" class="form-horizontal" role="form" method="POST">
 
         <div class="form-group">

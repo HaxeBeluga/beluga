@@ -8,12 +8,22 @@
 
 package beluga.module.account.js;
 
-class Javascript {
+//Must implements Javascript interface to be built as a script
+class Javascript implements beluga.core.macro.Javascript {
 
-    // Every files containing this method inside a js folder will be compiled to beluga javascript
-    public static function init()
-    {
-        //Insert your js here
-    }
+	public function new() {
+		#if js
+		//Called when the script is loaded
+		js.Browser.window.console.log("Account script started");
+		#end
+	}
+	
+    public function ready()
+	{
+		#if js
+		//Called when the DOM is ready
+		js.Browser.window.console.log("DOM Ready");		
+		#end
+	}
 
 }

@@ -23,6 +23,9 @@ import beluga.module.account.exception.LoginAlreadyExistException;
 import beluga.module.account.ESubscribeFailCause;
 import beluga.core.BelugaI18n;
 
+//Compile JS
+import beluga.module.account.js.Javascript;
+
 enum LastLoginErrorType {
     InternalError;
     WrongLogin;
