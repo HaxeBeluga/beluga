@@ -25,6 +25,14 @@ import beluga.core.form.Validator;
 import beluga.core.FlashData;
 import haxe.Session;
 
+//Compile JS
+import beluga.module.account.js.Javascript;
+
+enum LastLoginErrorType {
+    InternalError;
+    WrongLogin;
+}
+
 @:ident(beluga.module.account.Account)
 class AccountImpl extends Module implements Account {
 

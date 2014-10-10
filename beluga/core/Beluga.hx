@@ -73,10 +73,10 @@ class Beluga {
         api.belugaInstance = this;
         remotingCtx = new haxe.remoting.Context();
 
-        //Compile JS assets
-        beluga.core.macro.Javascript.compile();
         //Compile CSS assets
         beluga.core.macro.Css.compile();
+        //Compile JS assets
+        beluga.core.macro.JavascriptBuilder.compile();
     }
     
     inline private function initDatabase(cnx) {

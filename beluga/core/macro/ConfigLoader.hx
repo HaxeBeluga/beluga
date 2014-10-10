@@ -15,8 +15,6 @@ import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
 
-//typedef ModuleConfig = { name : String, path : String, tables : Array<String> };
-
 #if !macro
 @:build(beluga.core.macro.ConfigLoader.build())
 #end
@@ -27,7 +25,6 @@ class ConfigLoader {
 
     public static var config(default, default) : Fast;
     public static var installPath(default, null) : String = getInstallPath();
-    //public static var modules(default, default) : Array<ModuleConfig>;
 
     //Read only property to check if the macro has been executed or not. Useless outside of the macro context
     public static var isReady(get, never) : Bool;
@@ -92,7 +89,6 @@ class ConfigLoader {
     private static function rebuildConfigFile(fast : Fast) {
          //Look for active modules
         for (module in fast.elements) {
-            //Not fully supported, it can leads to mistakes
             if (module.name == "include") {
                 var path : String = module.att.path;
                 //Load subconfiguration
@@ -104,25 +100,6 @@ class ConfigLoader {
                 //Concat the content of the xml to the main config
                 builtConfigString += xml.toString();
             }
-            //else if (module.name == "module") {
-                //var name : String = module.att.name;
-                //var modulePath = installPath + "/module/" + name.toLowerCase();
-                //var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
-//
-                //Get every single models from the current module
-                //var tables = new Array<String>();
-                //if (!FileSystem.isDirectory(modulePath + "/model")) {
-                    //throw new BelugaException("Missing model directory from the module " + name);
-                //}
-                //else {
-                    //for (model in FileSystem.readDirectory(modulePath + "/model")) {
-                        //Do not forget to remove the .hx extension to get the model name
-                        //tables.push(model.substr(0, model.length - 3));
-                    //}
-                //}
-//
-                //modules.push({name: name, path: module, tables: tables});
-            //}
         }
     }
 
@@ -154,8 +131,6 @@ class ConfigLoader {
         builtConfigString = File.getContent(configFilePath);
         var xml = Xml.parse(builtConfigString);
         clearForTarget(xml, getCompilationTarget());
-
-//        modules = new Array<ModuleConfig>();
 
         //Parse the configuration file
         rebuildConfigFile(new Fast(xml)); //Create a new builtConfigString with all included files
