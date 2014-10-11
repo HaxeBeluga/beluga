@@ -11,13 +11,7 @@ package beluga.module.account;
 import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import sys.db.Types.SId;
-
-enum LoginFailCause {
-    InternalError;
-    UnknowUser;
-    WrongPassword;
-    UserBanned;
-}
+import beluga.module.account.LoginFailCause;
 
 interface Account extends Module {
 
