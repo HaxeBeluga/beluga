@@ -11,8 +11,8 @@ package modules.account_test;
 import beluga.core.Beluga;
 import beluga.core.Widget;
 import beluga.module.account.model.User;
-import beluga.module.account.ESubscribeFailCause;
 import beluga.module.account.Account;
+import beluga.module.account.LoginFailCause;
 import haxe.Resource;
 import main_view.Renderer;
 
@@ -45,10 +45,8 @@ class AccountTest {
         Sys.print(html);
     }
 
-    public function loginFail(args : {err : String}) {
-        var widget = acc.getWidget("login");
-        widget.context = {error : args.err};
-
+    public function loginFail(args : {err : LoginFailCause}) {
+        var widget = acc.widgets.loginForm;
         var loginWidget = widget.render();
         var html = Renderer.renderDefault("page_login", "Authentification", {
             loginWidget: loginWidget
@@ -69,10 +67,9 @@ class AccountTest {
         Sys.print(html);
     }
 
-    public function subscribeFail(args : {err : String}) {
+    public function subscribeFail(args : {validations : Dynamic}) {
         var html = Renderer.renderDefault("page_subscribe", "Inscription", {
             subscribeWidget: acc.widgets.subscribeForm.render(),
-            error : args.err
         });
         Sys.print(html);
     }

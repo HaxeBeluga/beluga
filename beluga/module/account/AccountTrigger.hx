@@ -11,17 +11,19 @@ package beluga.module.account;
 import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
 import beluga.module.account.model.User;
+import beluga.module.account.Account;
+import beluga.module.account.LoginFailCause;
 
 class AccountTrigger {
     //Login
-    public var loginFail = new Trigger<{err : String}>();
+    public var loginFail = new Trigger<{err : LoginFailCause}>();
     public var loginSuccess = new TriggerVoid();
 
     //Logout
     public var afterLogout = new TriggerVoid();
 
     //subscribe
-    public var subscribeFail = new Trigger<{err : String}>();
+    public var subscribeFail = new Trigger<{validations : Dynamic}>();
     public var subscribeSuccess = new Trigger<{user : User}>();
 
     //delete

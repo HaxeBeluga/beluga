@@ -20,14 +20,18 @@ class LoginForm extends MttWidget<AccountImpl> {
 
     public function new (mttfile = "beluga_account_login.mtt") {
         super(Account, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/account/view/local/login/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/login/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {
         var context = {
             isLogged : mod.isLogged,
-            loggedUser : mod.loggedUser
+            loggedUser : mod.loggedUser,
+            error: null
         };
+        if (mod.lastLoginError != null) {
+            context.error =  BelugaI18n.getKey(i18n, "err_" + Std.string(mod.lastLoginError));
+        }
         return context;
     }
 }

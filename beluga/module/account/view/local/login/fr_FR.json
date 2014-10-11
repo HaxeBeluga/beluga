@@ -1,5 +1,0 @@
-{
-    "identifier": "Identifiant",
-    "password": "Mot de passe",
-    "alreadyLogged": "Vous etes deja connecte en tant que ::loggedUser.login::!"
-}

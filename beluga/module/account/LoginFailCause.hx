@@ -5,9 +5,11 @@
 // Licensed under the MIT License.
 // This file may not be copied, modified, or distributed
 // except according to those terms.
-
 package beluga.module.account;
 
-enum ESubscribeFailCause {
-    LoginAlreadyExist;
+enum LoginFailCause {
+    InternalError;
+    UnknowUser;
+    WrongPassword;
+    UserBanned;
 }
