@@ -5,8 +5,9 @@
 // Licensed under the MIT License.
 // This file may not be copied, modified, or distributed
 // except according to those terms.
-
 package beluga.tool;
+
+import haxe.ds.Option;
 
 class DynamicTool {
     public static function concatArray(i : Array<Dynamic>) {
@@ -43,6 +44,40 @@ class DynamicTool {
             }
         }
         return c;
+    }
+    
+    /*
+     * 
+     * var o = {
+     *      attr1: {
+     *          attr2: "Value !"
+     *      }
+     * }
+     * 
+     * print(getField(o, "attr1.attr2"); //Print "Value !"
+     * 
+     */
+    public static function getField(o : Dynamic, s : String, delimiter = ".") : Option<Dynamic> {
+        return getFieldArray(o, s.split(delimiter));
+    }
+
+    /*
+     * 
+     * var o = {
+     *      attr1: {
+     *          attr2: "Value !"
+     *      }
+     * }
+     * 
+     * print(getField(o, ["attr1", "attr2"]); //Print "Value !"
+     * 
+     */
+    public static function getFieldArray(o : Dynamic, attrList : Array<String>) {
+        for (attr in attrList) {
+            o = Reflect.field(o, attr);
+            if (o == null) return None;
+        }
+        return Some(o);
     }
 
 }
