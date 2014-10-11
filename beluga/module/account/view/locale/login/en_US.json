@@ -1,4 +1,4 @@
-﻿{
+{
     "identifier": "ID",
     "password": "Password",
     "alreadyLogged": "You are already logged as ::loggedUser.login::!",

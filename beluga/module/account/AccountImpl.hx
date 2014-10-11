@@ -114,7 +114,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
             },
             email: {
                 mandatory: Validator.notEmpty(args.email),
-                isemail: Validator.match(args.email, ~/[A-Z0-9._%-]+@[A-Z0-9.-]+.[A-Z][A-Z][A-Z]?/i),
+                isemail: Validator.match(args.email, ~/.+@.+/i),
                 maxLength: Validator.maxLength(args.password, 255)
             }
         }

@@ -11,7 +11,8 @@ package beluga.module.account;
 import beluga.core.trigger.Trigger;
 import beluga.core.trigger.TriggerVoid;
 import beluga.module.account.model.User;
-import beluga.module.account.Account.LoginFailCause;
+import beluga.module.account.Account;
+import beluga.module.account.LoginFailCause;
 
 class AccountTrigger {
     //Login
