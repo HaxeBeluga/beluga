@@ -7,7 +7,7 @@ package beluga.core.form;
 class Validator
 {
 
-     /*
+    /*
     * Browse an object recursivly to check that each bool is true; 
     */
     public static function validate(validations : Dynamic) : Bool {
@@ -78,39 +78,39 @@ class Validator
     }
 
     public static function minLength(form_value : String, min_length : Int) : Bool {
-	return (form_value.length >= min_length) || blanckOrNull(form_value);
+	return (form_value.length >= min_length) || empty(form_value);
     }
 
     public static function maxLength(form_value : String, max_length : Int) : Bool {
-        return (form_value.length <= max_length) || blanckOrNull(form_value);
+        return (form_value.length <= max_length) || empty(form_value);
     }
 
     public static function rangeLength(form_value : String, min_length : Int, max_length : Int) : Bool {
-        return (minLength(form_value, min_length) == true && maxLength(form_value, max_length) == true) || blanckOrNull(form_value);
+        return (minLength(form_value, min_length) == true && maxLength(form_value, max_length) == true) || empty(form_value);
     }
 
     public static function equalLength(form_value : String, length : Int) : Bool {
-        return (form_value.length == length) || blanckOrNull(form_value);
+        return (form_value.length == length) || empty(form_value);
     }
 
     public static function match(form_value : String, pattern : EReg) : Bool {
-        return (pattern.match(form_value)) || blanckOrNull(form_value);
+        return (pattern.match(form_value)) || empty(form_value);
     }
 
     @generic
     public static function equalTo<FormDataType>(field : FormDataType, field_bis : FormDataType) : Bool {
-        return (field == field_bis) || blanckOrNull(field);
+        return (field == field_bis) || empty(field);
     }
 
-    public static function notBlanckOrNull(o : Dynamic) {
+    public static function notEmpty(o : Dynamic) {
         if (Std.is(o, String)) {
             return o != null && o.length != 0;
         }
         return o != null;
     }
 
-    public static function blanckOrNull(o : Dynamic) {
-        return !notBlanckOrNull(o);
+    public static function empty(o : Dynamic) {
+        return !notEmpty(o);
     }
 
 }

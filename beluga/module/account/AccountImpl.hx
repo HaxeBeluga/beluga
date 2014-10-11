@@ -102,18 +102,18 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     }) {
         var validations = {
             login: {
-                mandatory: Validator.notBlanckOrNull(args.login),
+                mandatory: Validator.notEmpty(args.login),
                 maxLength: Validator.maxLength(args.login, 255),
                 unique: loginUnique(args.login)
             },
             password: {
-                mandatory: Validator.notBlanckOrNull(args.password),
+                mandatory: Validator.notEmpty(args.password),
                 confirm: Validator.equalTo(args.password, args.password_conf),
                 minLength: Validator.minLength(args.password, 6),
                 maxLength: Validator.maxLength(args.password, 255)
             },
             email: {
-                mandatory: Validator.notBlanckOrNull(args.email),
+                mandatory: Validator.notEmpty(args.email),
                 isemail: Validator.match(args.email, ~/[A-Z0-9._%-]+@[A-Z0-9.-]+.[A-Z][A-Z][A-Z]?/i),
                 maxLength: Validator.maxLength(args.password, 255)
             }
@@ -446,5 +446,5 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
             triggers.unblacklistFail.dispatch({err : "You've not blacklisted this person !"});
         }
     }
-	
+
 }
