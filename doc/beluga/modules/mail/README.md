@@ -47,7 +47,7 @@ This method takes the receiver's address, the mail's subject and the the mail's 
 public function getSentMails() : Array<MailModel>;
 ```
 
-This method returns the list of the mails sned by the current logged user (which can be empty of course).
+This method returns the list of the mails sent by the current logged user (which can be empty of course).
 
 ```Haxe
 public function getMail(id : Int) : MailModel;
