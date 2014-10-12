@@ -22,21 +22,40 @@ import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
 import beluga.core.form.Validator;
+import beluga.core.FlashData;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
 
-    private static inline var SESSION_USER = "session_user";
+
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
 
+    //See Github #247
+    private static var FLASHDATA_LAST_LOGIN_ERROR = "flashdata_last_login_error";
+    public var lastLoginError(get, set) : Null<LoginFailCause>;
+    public function get_lastLoginError() {
+        return FlashData.get(FLASHDATA_LAST_LOGIN_ERROR);
+    }
+    public function set_lastLoginError(lastLoginError : Null<LoginFailCause>) {
+        FlashData.set(FLASHDATA_LAST_LOGIN_ERROR, lastLoginError);
+        return lastLoginError;
+    }
+
+    private static inline var SESSION_USER = "session_user";
     public var loggedUser(get, set) : User;
+    public function set_loggedUser(user : User) : User {
+        Session.set(SESSION_USER, user);
+        return user;
+    }
+    public function get_loggedUser() : User {
+        return Session.get(SESSION_USER);
+    }
 
     public var isLogged(get, never) : Bool;
 
     public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
-    public var lastLoginError : LoginFailCause;
     public var lastSubscribeError : Dynamic;
     public var lastSubscribeValue : Dynamic;
 
@@ -230,15 +249,6 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
             user.emailVerified = true;
             user.update();
         }
-    }
-
-    public function set_loggedUser(user : User) : User {
-        Session.set(SESSION_USER, user);
-        return user;
-    }
-
-    public function get_loggedUser() : User {
-        return Session.get(SESSION_USER);
     }
 
     public function get_isLogged() : Bool {
