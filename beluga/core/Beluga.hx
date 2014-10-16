@@ -22,6 +22,7 @@ import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
 import beluga.core.macro.ModuleLoader;
+import beluga.core.data.FlashData;
 
 #if php
 import php.Web;
@@ -104,6 +105,7 @@ class Beluga {
     }
 
     public function cleanup() {
+        FlashData.updateTtl();
         db.close();
         Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }

@@ -1,4 +1,4 @@
-package beluga.core ;
+package beluga.core.data ;
 
 import haxe.Session;
 

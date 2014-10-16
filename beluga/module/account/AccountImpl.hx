@@ -8,8 +8,8 @@
 
 package beluga.module.account;
 
+import beluga.core.data.ScopedData;
 import haxe.xml.Fast;
-import haxe.Session;
 import sys.db.Types.SId;
 import sys.db.Types;
 import sys.db.Manager;
@@ -22,42 +22,28 @@ import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
 import beluga.core.form.Validator;
-import beluga.core.FlashData;
+import beluga.core.data.FlashData;
+import haxe.Session;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
-
-
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
 
-    //See Github #247
-    private static var FLASHDATA_LAST_LOGIN_ERROR = "flashdata_last_login_error";
+    @:FlashData
     public var lastLoginError(get, set) : Null<LoginFailCause>;
-    public function get_lastLoginError() {
-        return FlashData.get(FLASHDATA_LAST_LOGIN_ERROR);
-    }
-    public function set_lastLoginError(lastLoginError : Null<LoginFailCause>) {
-        FlashData.set(FLASHDATA_LAST_LOGIN_ERROR, lastLoginError);
-        return lastLoginError;
-    }
-
-    private static inline var SESSION_USER = "session_user";
+    
+    @:Session
     public var loggedUser(get, set) : User;
-    public function set_loggedUser(user : User) : User {
-        Session.set(SESSION_USER, user);
-        return user;
-    }
-    public function get_loggedUser() : User {
-        return Session.get(SESSION_USER);
-    }
 
     public var isLogged(get, never) : Bool;
-
+    
     public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
-    public var lastSubscribeError : Dynamic;
-    public var lastSubscribeValue : Dynamic;
+    @:FlashData
+    public var lastSubscribeError(get, set) : Dynamic;
+    @:FlashData
+    public var lastSubscribeValue(get, set) : Dynamic;
 
     public function new() {
         super();
@@ -72,7 +58,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     }
 
     public function logout() : Void {
-        Session.remove(SESSION_USER);
+        this.loggedUser = null;
         triggers.afterLogout.dispatch();
     }
 
@@ -252,7 +238,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     }
 
     public function get_isLogged() : Bool {
-        return Session.get(SESSION_USER) != null;
+        return this.loggedUser != null;
     }
 
     public function showUser(args: { id: Int}): Void {
@@ -273,7 +259,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         } else {
             for (tmp in User.manager.dynamicSearch({id : args.id })) {
                 tmp.delete();
-                Session.remove(SESSION_USER);
+                logout();
                 triggers.deleteSuccess.dispatch();
                 return;
             }
