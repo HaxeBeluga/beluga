@@ -8,7 +8,7 @@
 
 package beluga.module.account;
 
-import beluga.core.data.ScopedData;
+import beluga.core.metadata.Session;
 import haxe.xml.Fast;
 import sys.db.Types.SId;
 import sys.db.Types;
@@ -22,7 +22,7 @@ import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
 import beluga.core.form.Validator;
-import beluga.core.data.FlashData;
+import beluga.core.FlashData;
 import haxe.Session;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {

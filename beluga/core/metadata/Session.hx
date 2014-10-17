@@ -1,15 +1,15 @@
-package beluga.core.data ;
+package beluga.core.metadata ;
 
 import haxe.ds.Option;
 import haxe.macro.Context;
 import haxe.macro.Expr;
-import beluga.core.data.FlashData;
+import beluga.core.FlashData;
 import haxe.Session;
 #if macro
 import tink.macro.Member;
 #end
 
-class ScopedData
+class Session
 {
     macro public static function build() :Array<Field> {
         var fieldList = Context.getBuildFields();

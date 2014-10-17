@@ -1,4 +1,4 @@
-package beluga.core.data ;
+package beluga.core ;
 
 import haxe.Session;
 
@@ -10,6 +10,7 @@ class FlashData
         }
         return cast Session.get("__flashdata__");
     }
+
     public static function set(key : String, value : Dynamic, ttl = 1) {
         getFlashDataMap().set(key, { value: value, ttl: ttl } );
     }
@@ -18,11 +19,11 @@ class FlashData
         var data = getFlashDataMap().get(key);
         return data != null ? data.value : null;
     }
-    
+
     public static function remove(key : String) {
         getFlashDataMap().remove(key);
     }
-    
+
     public static function updateTtl() {
         var flashDataMap = getFlashDataMap();
         for (key in flashDataMap.keys()) {

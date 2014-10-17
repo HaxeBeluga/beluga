@@ -22,7 +22,7 @@ import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
 import beluga.core.macro.ModuleLoader;
-import beluga.core.data.FlashData;
+import beluga.core.FlashData;
 
 #if php
 import php.Web;
