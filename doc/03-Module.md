@@ -1,6 +1,14 @@
+@(Beluga)[ModuleDoc, En]
 # Module
 
-In here we will go throughout everything that covers the modules of Beluga. First, we will see what they _are_ and how they are organized. Then, we will look at how they integrate inside Beluga. Once this will be covered, we will learn how to add your owns.
+In here we will go throughout everything that covers the modules of Beluga. First, we will see what they _are_ and _how_ they are organized. Then, we will look at how they integrate inside Beluga. Once this will be covered, we will learn how to add your owns.
+
+## Philosophy
+
+Modules, in Beluga, are the containers of the features the developer wants to provide his users. Those features are grouped around their dependency.
+>  **e.g:** The two functionnalities `login user` and `register user` are gathered in the `account`module.
+
+This modular structure allows developers to always compile with the slightiest Beluga sources possible. As only used modules are detected and compiled within your modules.
 
 ## Prerequisites
 
@@ -8,9 +16,9 @@ Before starting this tutorial, you need to make sure you have a proper Beluga se
 
 ## Structure
 
-In Beluga, we chose to make it easier for developers to add modules. For this reason, we follow the _convention over configuration_ paradigm and we try to make it as simple as possible to implement new modules. Concretly, it means some folders, files and functions are needed for beluga to recognize modules and load them. Furthermore, we try to follow a very strict convention to make it easier to go from a module to another. To help you make the difference between simple convention and _necessary_ convention, required things will be preceed by a strong typed **word**.
+In Beluga, we chose to make it easier for developers to add modules. For this reason, we follow the _convention over configuration_ paradigm. Concretly, it means some folders, files and functions are needed for beluga to recognize modules and load them. Furthermore, we try to follow a very strict convention to make it easier to go from a module to another. To help you make the difference between *simple* convention and _necessary_ convention, required things will be preceed by a strong typed **word**.
 
-The only inconvenient is that it makes it harder, at first, to find why your new module is not recognized by Beluga. To solve this, we made a [script](#add-your-own-module) to generate new modules automaticaly. 
+> **Note**: the only inconvenient is that it makes it harder, at first, to find why your new module is not recognized by Beluga. To solve this, we made a [script](#add-your-own-module) and integrated it to the haxelib access command in order to generate new modules automaticaly.
 
 ### Filesystem
 
@@ -63,9 +71,16 @@ In the `api` folder, there **must** be a file providing an api for the dispatche
 
 #### Js
 
+Here, every module **must** provide 
+
 #### Locale
 
 #### View
+
+All content relatives to the different widgets contained in each module is *usually* placed in in the `view` folder
+- `css`: all css files.
+- `locale`: all language files (regarding only widgets)
+- `tpl`: all template(.mtt) files describing each widget's html.
 
 #### Widget
 
@@ -77,6 +92,22 @@ In the `api` folder, there **must** be a file providing an api for the dispatche
 
 ### Errors
 
-//TODO: speak about enums + triggers
+When errors are raised inside module are all handled the same way. They are brought back to the developer using both the trigger system and the language system. Instead of entirely breaking his website with an exception or force him to have a heavy try/catch code everywhere.
+Once captured, those triggers give a `enum` code corresponding to the error. This `enum` is *usually* named: name of module + "Error" + "Kind".
+All modules *should* also provide a method allowing the developer to turn this `enum` into a human readable `string`.
+*e.g.:*
 
+```haxe
+    private function getErrorString(error: ModuleErrorKind): String {
+        return switch (error) {
+            case ErrorTrigger1: BelugaI18n.getKey(i18n, "erreur1");
+    }
+```
 ## Add your own module
+
+Beluga also provide a neko binary (run.n) allowing it's integration within `haxelib`. This tool provide, amongs other things, a way to entirely generate a module with all minimal requirements and default architecture.
+It can be used thw following way:
+
+> haxeliv run beluga create_module "module_name"
+
+It will meet all minimal requirements explained throughouth this file and will install the newly created module directly under `beluga/module` folder.
