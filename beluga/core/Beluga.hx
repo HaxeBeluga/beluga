@@ -148,4 +148,7 @@ class Beluga {
         return isBelugaRequest;
     }
 
+    public static function redirect(url : String) {
+        Web.redirect(url);
+    }
 }

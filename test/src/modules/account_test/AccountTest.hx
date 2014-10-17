@@ -43,27 +43,27 @@ class AccountTest {
      * Logination
      */
     public function loginFail(args : {err : LoginFailCause}) {
-        Web.redirect("/accountTest/loginPage");
+        Beluga.redirect("/accountTest/loginPage");
     }
 
     public function loginSuccess() {
-        Web.redirect("/");
+        Beluga.redirect("/");
     }
     
     public function logout() {
-        Web.redirect("/");
+        Beluga.redirect("/");
     }
 
     /*
      *  Subscription
      */
     public function subscribeFail(args : {validations : Dynamic}) {
-        Web.redirect("/accountTest/subscribePage");
+        Beluga.redirect("/accountTest/subscribePage");
     }
 
     public function subscribeSuccess(args : {user : User}) {
         acc.loggedUser = args.user;
-        Web.redirect("/");
+        Beluga.redirect("/");
     }
 
     @bTrigger("beluga_account_show_user")
