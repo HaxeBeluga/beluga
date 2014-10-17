@@ -23,7 +23,7 @@ interface Account extends Module {
 
     public var isLogged(get, never) : Bool;
     
-    public var lastLoginError : LoginFailCause;
+    public var lastLoginError(get, set) : Null<LoginFailCause>;
 
     public function subscribe(args : {
         login : String,

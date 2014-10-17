@@ -8,8 +8,8 @@
 
 package beluga.module.account;
 
+import beluga.core.metadata.Session;
 import haxe.xml.Fast;
-import haxe.Session;
 import sys.db.Types.SId;
 import sys.db.Types;
 import sys.db.Manager;
@@ -22,23 +22,28 @@ import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
 import beluga.core.form.Validator;
+import beluga.core.FlashData;
+import haxe.Session;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
-
-    private static inline var SESSION_USER = "session_user";
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
 
+    @:FlashData
+    public var lastLoginError(get, set) : Null<LoginFailCause>;
+    
+    @:Session
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
-
+    
     public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
 
-    public var lastLoginError : LoginFailCause;
-    public var lastSubscribeError : Dynamic;
-    public var lastSubscribeValue : Dynamic;
+    @:FlashData
+    public var lastSubscribeError(get, set) : Dynamic;
+    @:FlashData
+    public var lastSubscribeValue(get, set) : Dynamic;
 
     public function new() {
         super();
@@ -53,7 +58,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     }
 
     public function logout() : Void {
-        Session.remove(SESSION_USER);
+        this.loggedUser = null;
         triggers.afterLogout.dispatch();
     }
 
@@ -232,17 +237,8 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         }
     }
 
-    public function set_loggedUser(user : User) : User {
-        Session.set(SESSION_USER, user);
-        return user;
-    }
-
-    public function get_loggedUser() : User {
-        return Session.get(SESSION_USER);
-    }
-
     public function get_isLogged() : Bool {
-        return Session.get(SESSION_USER) != null;
+        return this.loggedUser != null;
     }
 
     public function showUser(args: { id: Int}): Void {
@@ -263,7 +259,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
         } else {
             for (tmp in User.manager.dynamicSearch({id : args.id })) {
                 tmp.delete();
-                Session.remove(SESSION_USER);
+                logout();
                 triggers.deleteSuccess.dispatch();
                 return;
             }
