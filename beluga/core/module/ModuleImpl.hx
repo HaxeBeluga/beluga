@@ -16,6 +16,7 @@ import haxe.xml.Fast;
 import sys.io.File;
 import beluga.core.macro.ConfigLoader.ModuleConfig;
 
+@:autoBuild(beluga.core.metadata.Session.build())
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class ModuleImpl implements ModuleInternal
 {
