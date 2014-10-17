@@ -22,6 +22,8 @@ import php.Web;
 import neko.Web;
 #end
 
+using beluga.core.trigger.TriggerRedirect;
+
 class AccountTest {
 
     public var beluga(default, null) : Beluga;
@@ -31,8 +33,7 @@ class AccountTest {
         this.beluga = beluga;
         this.acc = beluga.getModuleInstance(Account);
         acc.triggers.loginFail.add(this.loginFail);
-        acc.triggers.loginSuccess.add(this.loginSuccess);
-
+        acc.triggers.loginSuccess.redirect("/"); //Equivalent to acc.triggers.loginSuccess.add(Beluga.redirect.bind("/"));
         acc.triggers.subscribeFail.add(this.subscribeFail);
         acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
 
@@ -46,14 +47,10 @@ class AccountTest {
         Beluga.redirect("/accountTest/loginPage");
     }
 
-    public function loginSuccess() {
-        Beluga.redirect("/");
-    }
-    
     public function logout() {
         Beluga.redirect("/");
     }
-
+    
     /*
      *  Subscription
      */
