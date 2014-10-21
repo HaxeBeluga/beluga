@@ -22,7 +22,6 @@ import beluga.core.module.IModule;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
-import beluga.core.macro.ModuleLoader;
 import beluga.core.FlashData;
 import beluga.tool.URI;
 

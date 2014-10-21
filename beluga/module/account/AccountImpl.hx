@@ -47,7 +47,7 @@ class AccountImpl extends Module implements Account {
 
     public var isLogged(get, never) : Bool;
     
-    public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
+    public var i18n : Dynamic = BelugaI18n.loadI18nFolder("/module/account/local/");
 
     @:FlashData
     public var lastSubscribeError(get, set) : Dynamic;

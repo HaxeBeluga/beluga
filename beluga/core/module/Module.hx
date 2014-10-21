@@ -15,6 +15,7 @@ import haxe.xml.Fast;
 import sys.io.File;
 import beluga.core.widget.Widget;
 
+@:autoBuild(beluga.core.metadata.Session.build())
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class Module implements IModule
 {
