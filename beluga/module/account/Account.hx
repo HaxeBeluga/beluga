@@ -14,6 +14,8 @@ import beluga.module.account.model.User;
 import sys.db.Types.SId;
 import beluga.module.account.LoginFailCause;
 
+import beluga.module.account.AccountImpl;
+
 interface Account extends IModule {
 
     public var triggers : AccountTrigger;
@@ -25,6 +27,8 @@ interface Account extends IModule {
     public var isLogged(get, never) : Bool;
     
     public var lastLoginError(get, set) : Null<LoginFailCause>;
+    public var lastSubscribeError(get, set) : Dynamic;
+    public var lastSubscribeValue(get, set) : Dynamic;
 
     public var i18n : Dynamic;
 

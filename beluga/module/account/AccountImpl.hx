@@ -41,12 +41,12 @@ class AccountImpl extends Module implements Account {
 
     @:FlashData
     public var lastLoginError(get, set) : Null<LoginFailCause>;
-    
+
     @:Session
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
-    
+
     public var i18n : Dynamic = BelugaI18n.loadI18nFolder("/module/account/local/");
 
     @:FlashData
