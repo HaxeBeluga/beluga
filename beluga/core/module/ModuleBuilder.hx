@@ -19,7 +19,6 @@ import beluga.core.macro.ConfigLoader;
 
 typedef ModuleEntry = {
     type : TypePath,
-    api : Expr,
     ident: Expr
 };
 
@@ -28,22 +27,20 @@ class ModuleBuilder
     public static var modules : Array<ModuleEntry> = new Array<ModuleEntry>();
 
     //build all modules availables
-    macro public static function buildModules() : ExprOf<Array<{instance: Module, api: Dynamic, ident: Class<Dynamic>}>> {
+    macro public static function buildModules() : ExprOf<Array<{instance: Module, ident: Class<Dynamic>}>> {
         //Generate all declaration lines
         var modulesInstance = new Array<Expr>();
         for (module in modules) {
             var m = module.type;
             var ident = module.ident;
-            var api = module.api;
             modulesInstance.push(macro modules.push({
                 instance: new $m(),
-                api: $api,
                 ident: $ident
             }));
         }
         //Generate the final array of modules instances declaration
-        return macro function () : Array<{instance: Module, api: Dynamic, ident: Class<Dynamic>}> {
-            var modules = new Array<{instance: Module, api: Dynamic, ident: Class<Dynamic>}>();
+        return macro function () : Array<{instance: Module, ident: Class<Dynamic>}> {
+            var modules = new Array<{instance: Module, ident: Class<Dynamic>}>();
             $b { modulesInstance };
             return modules;
         }();
@@ -117,10 +114,6 @@ class ModuleBuilder
             access: [APublic, AStatic]
         });
         
-        var api = makeApi(classtype, fields, Context.currentPos());
-        //Context.defineType(api.typeDefinition);
-        //var apiType = api.typePath;
-        
         var ident : Expr = macro null;
         
         if (clazz.meta.has(":ident")) {
@@ -133,7 +126,6 @@ class ModuleBuilder
         
         modules.push( {
             type: classtype,
-            api: api,
             ident: ident
         });
 
@@ -144,63 +136,5 @@ class ModuleBuilder
         Sys.println("Module " + classtype.name + " loaded !");
         
         return fields;
-    }
-    
-    private static function makeApi(from : TypePath, fields : Array<Field>, pos: Position) : Dynamic {
-        
-        var obj = [ {
-            field: "doDefault",
-            expr: macro function(d : haxe.web.Dispatch) { /* Error ? */ }
-        }];
-        var rules = [{
-            field: "default",
-            expr: macro DRMatch(MRDispatch)
-        }];
-        
-        //Loop through every fields to add them to the api
-        for (field in fields) {
-            //Check if it's a public non static function
-            var isStatic = false;
-            var isPublic = false;
-            for (access in field.access) {
-                if (access == APublic)
-                    isPublic = true;
-                else if (access == AStatic)
-                    isStatic = true;
-            }
-            if (!isStatic && isPublic) {
-                //valid field
-                obj.push( {
-                    field: "do" + field.name.charAt(0).toUpperCase() + field.name.substr(1),
-                    expr: macro function(d : haxe.web.Dispatch) {
-                        var module = Reflect.field(d.cfg, "module"); //Infinite macro loop if accessed directly
-                        var method = $ {{
-                            pos: pos,
-                            expr: EConst(CString(field.name))
-                        }};
-                        var p = { };
-                        for (key in d.params) {
-                            Reflect.setField(p, key, d.params.get(key));
-                        }
-                        Reflect.callMethod(module, method, [p]);
-                    }
-                });
-                rules.push( {
-                    field: field.name,
-                    expr: macro DRMatch(MRDispatch)
-                });
-            }
-        }
-        
-        return macro {
-            obj: ${{
-                pos: pos,
-                expr: EObjectDecl(obj)
-            }},
-            rules: ${{
-                pos: pos,
-                expr: EObjectDecl(rules)
-            }}
-        };
     }
 }

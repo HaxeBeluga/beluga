@@ -15,15 +15,24 @@ import haxe.Session;
 
 class BelugaApi {
     public var belugaInstance : Beluga;
-    public var modules = new Map<String, Dynamic>();
+	private var apis = new Map<String, Dynamic>();
 
-    public function new() {}
 
+    public function new() { }
+	
     //Handle url like www.beluga.fr?trigger=login
     public function doDefault(d : Dispatch) {
         var apiName = d.parts.shift();
-        var api = modules.get(apiName);
-        d.runtimeDispatch(api);
+		if (apis.exists(apiName)) {
+			var api = apis.get(apiName);
+			d.runtimeDispatch(api);
+		}
+		else
+			throw new BelugaException("Can't find " + apiName + " api.");
     }
+	
+	public function register(apiKey : String, api : Dynamic) {
+		apis.set(apiKey, api);
+	}
 
 }

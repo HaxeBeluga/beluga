@@ -24,6 +24,7 @@ import beluga.module.account.Account;
 import beluga.core.form.Validator;
 import beluga.core.FlashData;
 import haxe.Session;
+import beluga.module.account.api.AccountApi;
 
 //Compile JS
 import beluga.module.account.js.Javascript;
@@ -64,6 +65,7 @@ class AccountImpl extends Module implements Account {
         beluga.db.initTable(BlackList);
         beluga.db.initTable(Friend);
         beluga.db.initTable(User);
+		beluga.api.register("account", new AccountApi(beluga, this));
     }
 
     public function getLoggedUser() : User {

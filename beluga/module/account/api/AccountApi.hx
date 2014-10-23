@@ -8,11 +8,9 @@
 
 package beluga.module.account.api;
 
-import beluga.module.faq.widget.Print;
 import haxe.web.Dispatch;
 
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
@@ -22,7 +20,9 @@ class AccountApi  {
     public var beluga : Beluga;
     public var module : Account;
 
-    public function new() {
+    public function new(beluga : Beluga, module : Account) {
+		this.beluga = beluga;
+		this.module = module;
     }
 
     public function doLogin(args : {

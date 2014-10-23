@@ -11,7 +11,7 @@ package beluga.module.faq;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
 import beluga.core.Beluga;
 import beluga.core.BelugaI18n;
 
@@ -21,7 +21,7 @@ import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
 import beluga.module.faq.FaqErrorKind;
 
-class FaqImpl extends ModuleImpl implements FaqInternal {
+class FaqImpl extends Module implements Faq {
     public var triggers = new FaqTrigger();
 
     // Intern variables for contexts
