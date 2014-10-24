@@ -15,7 +15,7 @@ import haxe.Session;
 
 class BelugaApi {
     public var belugaInstance : Beluga;
-	private var apis = new Map<String, Dynamic>();
+	private var config = new Map<String, DispatchConfig>();
 
 
     public function new() { }
@@ -23,16 +23,16 @@ class BelugaApi {
     //Handle url like www.beluga.fr?trigger=login
     public function doDefault(d : Dispatch) {
         var apiName = d.parts.shift();
-		if (apis.exists(apiName)) {
-			var api = apis.get(apiName);
-			d.runtimeDispatch(api);
-		}
+		if (config.exists(apiName)) {
+            var cfg = config.get(apiName);
+            d.runtimeDispatch(cfg);
+        }
 		else
 			throw new BelugaException("Can't find " + apiName + " api.");
     }
 	
-	public function register(apiKey : String, api : Dynamic) {
-		apis.set(apiKey, api);
+	public function register(apiKey : String, api : DispatchConfig) {
+		config.set(apiKey, api);
 	}
 
 }
