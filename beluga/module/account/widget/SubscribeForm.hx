@@ -15,7 +15,7 @@ import beluga.module.account.Account;
 import beluga.core.form.Validator;
 import beluga.core.BelugaI18n;
 
-class SubscribeForm extends MttWidget<AccountImpl> {
+class SubscribeForm extends MttWidget<Account> {
 
     public function new (mttfile = "beluga_account_subscribe.mtt") {
         super(Account, mttfile);

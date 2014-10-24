@@ -8,6 +8,7 @@
 
 package beluga.core;
 
+import haxe.ds.ObjectMap;
 import haxe.Resource;
 import haxe.Session;
 import haxe.web.Dispatch;
@@ -17,12 +18,12 @@ import sys.FileSystem;
 import sys.db.Connection;
 
 import beluga.core.module.Module;
-import beluga.core.module.ModuleInternal;
+import beluga.core.module.IModule;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
-import beluga.core.macro.ModuleLoader;
 import beluga.core.FlashData;
+import beluga.tool.URI;
 
 #if php
 import php.Web;
@@ -37,6 +38,8 @@ class Beluga {
     public var db(default, null) : Database;
     //Instance of beluga API, read only
     public var api : BelugaApi;
+    
+    private var modules : ObjectMap<Dynamic, Module> = new ObjectMap<Dynamic, Module>();
 
     private static var instance = null;
     
@@ -56,23 +59,23 @@ class Beluga {
     private function new(cnx: Connection = null)
     #end
     {
-        ModuleLoader.init();
         #if neko
         if (createSessionDirectory) {
             FileSystem.createDirectory(Web.getCwd() + "/temp");
             FileSystem.createDirectory(Web.getCwd() + "/temp/sessions");
         }
         #end
+
         initDatabase(cnx);
         //Create beluga API
         api = new BelugaApi();
-        api.beluga = this;
+        api.belugaInstance = this;
         remotingCtx = new haxe.remoting.Context();
-        
-        //Compile JS assets
-        beluga.core.macro.Javascript.compile();
+
         //Compile CSS assets
         beluga.core.macro.Css.compile();
+        //Compile JS assets
+        beluga.core.macro.JavascriptBuilder.compile();
     }
     
     inline private function initDatabase(cnx) {
@@ -89,48 +92,38 @@ class Beluga {
     //For all initialization code that require beluga's instance
     // -> called once by getInstance
     private function initialize() {
-        //Init every modules
-        for (module in ConfigLoader.modules) {
-            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
-            moduleInstance._loadConfig(this, module);
+        var modules = cast(beluga.core.module.ModuleBuilder.buildModules(), Array<Dynamic>); //
+        //Make sure all modules are registered to Beluga before initializing them, dependencies could cause serious problemes otherwise
+        for (module in modules) {
+            var key : Class<Dynamic> = module.ident != null ? module.ident : Type.getClass(module.instance);
+            this.modules.set(key, module.instance);
         }
-         for (module in ConfigLoader.modules) {
-            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
-            moduleInstance.initialize(this);
-         }
+        for (module in modules) {
+            module.instance.initialize(this);
+        }
     }
-
-    public function dispatch(defaultTrigger : String = "index") {
-        var trigger = Web.getParams().get("trigger");
+    
+    public function registerModule(module : Module, key : Class<Dynamic>) {
+        modules.set(key, module);
     }
 
     public function cleanup() {
         FlashData.updateTtl();
-        db.close();
+        if (db != null) //Import check if the db could not setup properly
+            db.close();
         Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
-    public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
-        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
+    public function getModuleInstance < T : IModule > (clazz : Class<T>) : T {
+        return cast modules.get(cast clazz);
     }
 
-    public function getDispatchUri() : String {
-        #if php
-        //Get the index file location
-        var src : String = untyped __var__('_SERVER', 'SCRIPT_NAME');
-        //Remove server subfolders from URI
-        return StringTools.replace(Web.getURI(), src.substr(0, src.length - "/index.php".length), "");
-        #elseif neko
-        return Web.getURI();
-        #end
-    }
-    
     public function handleRequest() : Bool {
         var isBelugaRequest = false;
-        Dispatch.run(this.getDispatchUri(), Web.getParams(), {
+        Dispatch.run(URI.getDispatchUri(), Web.getParams(), {
             doBeluga: function ( d : Dispatch) {// url: /beluga
                 isBelugaRequest = true;
-                d.dispatch( {
+                d.dispatch({
                     doRest: function (d : Dispatch) {// url: /beluga/rest
                         throw new BelugaException("Beluga Rest Api not yet supported");
                     },

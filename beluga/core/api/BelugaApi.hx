@@ -11,29 +11,28 @@ package beluga.core.api;
 import haxe.web.Dispatch;
 import haxe.Session;
 
-import beluga.core.macro.ModuleLoader;
+//import beluga.core.macro.ModuleLoader;
 
-class BelugaApi implements IAPI<String> {
-    public var beluga : Beluga;
-    public var module : String;
+class BelugaApi {
+    public var belugaInstance : Beluga;
+	private var config = new Map<String, DispatchConfig>();
 
-    private function handleSessionPath() {}
 
-    public function new() {}
-
+    public function new() { }
+	
     //Handle url like www.beluga.fr?trigger=login
     public function doDefault(d : Dispatch) {
-        Sys.print("Welcome !");
+        var apiName = d.parts.shift();
+		if (config.exists(apiName)) {
+            var cfg = config.get(apiName);
+            d.runtimeDispatch(cfg);
+        }
+		else
+			throw new BelugaException("Can't find " + apiName + " api.");
     }
+	
+	public function register(apiKey : String, api : DispatchConfig) {
+		config.set(apiKey, api);
+	}
 
-    public function doBeluga(d : Dispatch) {
-        d.dispatch(this);
-    }
-
-    /*
-     * Modules API are generated like:
-         * public function doModule(d : Dispatch) {
-            * d.dispatch(new ModuleApi(beluga));
-         * }
-     */
 }

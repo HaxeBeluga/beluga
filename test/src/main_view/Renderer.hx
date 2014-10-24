@@ -13,7 +13,7 @@ import haxe.macro.Context;
 import haxe.Resource;
 import beluga.module.account.Account;
 import beluga.core.Beluga;
-import beluga.core.macro.Javascript;
+import beluga.core.macro.JavascriptBuilder;
 import beluga.core.macro.Css;
 
 class Renderer {
@@ -43,7 +43,7 @@ class Renderer {
             base_url: ctx.base_url,
             content: templatelayout,
             title: title,
-            js: Javascript.getHtmlInclude(),
+            js: JavascriptBuilder.getHtmlInclude(),
             css: Css.getHtmlInclude()
         });
         return bodyhtml;

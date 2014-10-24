@@ -15,7 +15,7 @@ import sys.db.Types;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
@@ -24,21 +24,32 @@ import beluga.module.account.Account;
 import beluga.core.form.Validator;
 import beluga.core.FlashData;
 import haxe.Session;
+import beluga.module.account.api.AccountApi;
+import haxe.web.Dispatch;
 
-class AccountImpl extends ModuleImpl implements AccountInternal {
+//Compile JS
+import beluga.module.account.js.Javascript;
+
+enum LastLoginErrorType {
+    InternalError;
+    WrongLogin;
+}
+
+@:ident(beluga.module.account.Account)
+class AccountImpl extends Module implements Account {
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;
 
     @:FlashData
     public var lastLoginError(get, set) : Null<LoginFailCause>;
-    
+
     @:Session
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
-    
-    public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
+
+    public var i18n : Dynamic = BelugaI18n.loadI18nFolder("/module/account/local/");
 
     @:FlashData
     public var lastSubscribeError(get, set) : Dynamic;
@@ -50,7 +61,12 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
     }
 
     override public function initialize(beluga : Beluga) {
+        i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
         this.widgets = new AccountWidget();
+        beluga.db.initTable(BlackList);
+        beluga.db.initTable(Friend);
+        beluga.db.initTable(User);
+		beluga.api.register("account", Dispatch.make(new AccountApi(beluga, this)));
     }
 
     public function getLoggedUser() : User {

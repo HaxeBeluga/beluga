@@ -8,7 +8,7 @@
 
 package beluga.module.faq;
 
-import beluga.core.module.Module;
+import beluga.core.module.IModule;
 
 import beluga.module.faq.model.FaqModel;
 import beluga.module.faq.model.CategoryModel;
@@ -16,7 +16,7 @@ import beluga.module.faq.CategoryData;
 
 import haxe.ds.Option;
 
-interface Faq extends Module {
+interface Faq extends IModule {
     public var triggers: FaqTrigger;
     public var faq_id : Option<Int>;
     public var category_id : Option<Int>;

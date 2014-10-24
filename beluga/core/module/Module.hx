@@ -7,8 +7,27 @@
 // except according to those terms.
 
 package beluga.core.module;
-import beluga.core.Widget;
 
-interface Module {
-    public function getWidget(name : String) : Widget;
+import beluga.core.Beluga;
+import beluga.core.BelugaException;
+import haxe.Resource;
+import haxe.xml.Fast;
+import sys.io.File;
+import beluga.core.widget.Widget;
+
+@:autoBuild(beluga.core.metadata.Session.build())
+@:autoBuild(beluga.core.module.ModuleBuilder.build())
+class Module implements IModule
+{
+    //Hold the instance of the Beluga object that created this module
+    private var beluga : Beluga;
+    
+    @:allow(beluga.core.Beluga)
+    private function new() : Void
+    {
+    }
+
+    @:allow(beluga.core.Beluga) //Only Beluga object can call this method
+    private function initialize(beluga : Beluga) : Void {}
+
 }
