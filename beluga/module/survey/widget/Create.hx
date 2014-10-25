@@ -8,6 +8,7 @@ import beluga.core.BelugaI18n;
 import beluga.module.survey.Survey;
 import beluga.module.survey.SurveyErrorKind;
 import beluga.module.account.Account;
+import beluga.core.ResourceManager;
 
 class MttObject {
     public var name: String;
@@ -21,7 +22,8 @@ class MttObject {
 
 class Create extends MttWidget<SurveyImpl> {
 
-    public function new(mttfile = "beluga_survey_create.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/create.mtt");
         super(Survey, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/create/", mod.i18n);
     }

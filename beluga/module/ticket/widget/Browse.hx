@@ -13,10 +13,12 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.ticket.Ticket;
 import beluga.core.BelugaI18n;
+import beluga.core.ResourceManager;
 
 class Browse extends MttWidget<TicketImpl> {
 
-    public function new (mttfile = "beluga_ticket_browse.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/browse.mtt");
         super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/browse/", mod.i18n);
     }

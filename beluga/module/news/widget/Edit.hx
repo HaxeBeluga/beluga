@@ -8,10 +8,12 @@ import beluga.core.BelugaI18n;
 import beluga.module.news.News;
 import beluga.module.account.Account;
 import beluga.module.news.model.NewsModel;
+import beluga.core.ResourceManager;
 
 class Edit extends MttWidget<NewsImpl> {
 
-    public function new(mttfile = "beluga_news_edit.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/edit.mtt");
         super(News, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/edit/", mod.i18n);
     }

@@ -17,12 +17,14 @@ import beluga.module.account.Account;
 import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.repository.CurrencyRepository;
 import beluga.module.wallet.repository.WalletRepository;
+import beluga.core.ResourceManager;
 
 import beluga.module.wallet.Wallet;
 
 class Show extends MttWidget<WalletImpl> {
 
-    public function new (mttfile = "beluga_wallet_show.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/show.mtt");
         super(Wallet, mttfile);
         this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }

@@ -7,10 +7,12 @@ import beluga.core.BelugaI18n;
 
 import beluga.module.news.News;
 import beluga.module.account.Account;
+import beluga.core.ResourceManager;
 
 class Create extends MttWidget<NewsImpl> {
 
-    public function new(mttfile = "beluga_news_create.mtt") {
+    public function new (?mttfile : String) {
+        if (mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/create.mtt");
         super(News, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/create/", mod.i18n);
     }

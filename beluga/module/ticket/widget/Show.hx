@@ -18,10 +18,12 @@ import beluga.module.ticket.model.Assignement;
 import beluga.module.ticket.Ticket;
 import beluga.module.account.model.User;
 import beluga.module.ticket.TicketErrorKind;
+import beluga.core.ResourceManager;
 
 class Show extends MttWidget<TicketImpl> {
 
-    public function new (mttfile = "beluga_ticket_show.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/create.mtt");
         super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }

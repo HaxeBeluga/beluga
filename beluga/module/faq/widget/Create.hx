@@ -5,10 +5,12 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.faq.Faq;
 import beluga.core.BelugaI18n;
+import beluga.core.ResourceManager;
 
 class Create extends MttWidget<FaqImpl> {
 
-    public function new (mttfile = "beluga_faq_create_faq.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/create_faq.mtt");
         super(Faq, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/create/", mod.i18n);
     }

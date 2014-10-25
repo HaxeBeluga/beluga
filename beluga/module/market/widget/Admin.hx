@@ -12,10 +12,12 @@ import beluga.core.Beluga;
 import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.market.Market;
+import beluga.core.ResourceManager;
 
 class Admin extends MttWidget<MarketImpl> {
 
-    public function new (mttfile = "beluga_market_admin.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/admin.mtt");
         super(Market, mttfile);
     }
 

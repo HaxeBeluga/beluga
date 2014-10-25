@@ -14,9 +14,12 @@ import beluga.core.macro.ConfigLoader;
 import beluga.module.ticket.Ticket;
 import beluga.core.BelugaI18n;
 import beluga.module.ticket.TicketErrorKind;
+import beluga.core.ResourceManager;
 
 class Admin extends MttWidget<TicketImpl> {
-    public function new (mttfile = "beluga_ticket_admin.mtt") {
+
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/admin.mtt");
         super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/admin/", mod.i18n);
     }

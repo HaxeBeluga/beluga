@@ -55,4 +55,15 @@ class ExprUtils {
         return constructor;
     }
     #end
+    //if expr is String EConst return the value else return null
+    public static function getCString(expr : Expr) : Null<String>{
+        return switch(expr.expr) {
+            case EConst(c):
+                switch (c) {
+                    case CString(str): str;
+                    default : null;
+                }
+            default: null;
+        }
+    }
 }

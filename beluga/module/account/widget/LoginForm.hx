@@ -15,10 +15,12 @@ import beluga.module.account.Account;
 import beluga.core.macro.JsonTool;
 import beluga.core.BelugaI18n;
 import beluga.tool.DynamicTool;
+import beluga.core.ResourceManager;
 
 class LoginForm extends MttWidget<AccountImpl> {
 
-    public function new (mttfile = "beluga_account_login.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/login.mtt");
         super(Account, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/login/", mod.i18n);
     }

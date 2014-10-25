@@ -25,8 +25,7 @@ class MttWidget<WImpl: ModuleImpl> implements Widget {
     private static var id = 0;
     private var template : Template;
 
-    public function new<T: Module>(clazz : Class<T>, mttfile : String) {
-        var templateFileContent = Resource.getString(mttfile);
+    public function new<T: Module>(clazz : Class<T>, templateFileContent : String) {
         this.template = new haxe.Template(templateFileContent);
         this.mod = cast Beluga.getInstance().getModuleInstance(clazz);
     }

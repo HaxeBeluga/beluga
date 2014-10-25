@@ -10,6 +10,7 @@ import beluga.core.BelugaI18n;
 import beluga.module.news.News;
 import beluga.module.account.Account;
 import beluga.module.news.model.NewsModel;
+import beluga.core.ResourceManager;
 
 class NewsData {
     public var text : String;
@@ -27,7 +28,8 @@ class NewsData {
 
 class Print extends MttWidget<NewsImpl> {
 
-    public function new(mttfile = "beluga_news_print.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/print.mtt");
         super(News, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/print/", mod.i18n);
     }

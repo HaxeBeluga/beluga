@@ -8,10 +8,12 @@ import beluga.core.BelugaI18n;
 import beluga.module.survey.Survey;
 import beluga.module.survey.SurveyErrorKind;
 import beluga.module.account.Account;
+import beluga.core.ResourceManager;
 
 class Default extends MttWidget<SurveyImpl> {
 
-    public function new(mttfile = "beluga_survey_surveys_list.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/surveys_list.mtt");
         super(Survey, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/default/", mod.i18n);
     }

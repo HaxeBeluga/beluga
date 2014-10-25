@@ -8,10 +8,13 @@ import beluga.core.BelugaI18n;
 import beluga.module.notification.Notification;
 import beluga.module.notification.NotificationErrorKind;
 import beluga.module.account.Account;
+import beluga.core.ResourceManager;
+import beluga.core.ResourceManager;
 
 class Print extends MttWidget<NotificationImpl> {
 
-    public function new(mttfile = "beluga_notification_print_notif.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/notification/view/tpl/print_notif.mtt");
         super(Notification, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/notification/view/locale/print/", mod.i18n);
     }

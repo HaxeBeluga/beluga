@@ -14,10 +14,12 @@ import beluga.core.macro.ConfigLoader;
 import beluga.module.fileupload.Fileupload;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
+import beluga.core.ResourceManager;
 
 class Browse extends MttWidget<FileuploadImpl> {
 
-    public function new (mttfile = "beluga_fileupload_browse.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/browse.mtt");
         super(Fileupload, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/fileupload/view/locale/browse/", mod.i18n);
     }

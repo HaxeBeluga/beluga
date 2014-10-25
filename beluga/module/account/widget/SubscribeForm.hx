@@ -14,10 +14,12 @@ import beluga.core.macro.ConfigLoader;
 import beluga.module.account.Account;
 import beluga.core.form.Validator;
 import beluga.core.BelugaI18n;
+import beluga.core.ResourceManager;
 
 class SubscribeForm extends MttWidget<AccountImpl> {
 
-    public function new (mttfile = "beluga_account_subscribe.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/subscribe.mtt");
         super(Account, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/subscribe/", mod.i18n);
     }

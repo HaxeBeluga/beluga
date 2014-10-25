@@ -9,10 +9,12 @@ import beluga.module.account.Account;
 import beluga.module.survey.Survey;
 import beluga.module.survey.SurveyErrorKind;
 import beluga.module.survey.model.Choice;
+import beluga.core.ResourceManager;
 
 class Vote extends MttWidget<SurveyImpl> {
 
-    public function new(mttfile = "beluga_survey_vote.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/vote.mtt");
         super(Survey, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/vote/", mod.i18n);
     }

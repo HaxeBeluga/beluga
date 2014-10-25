@@ -13,10 +13,12 @@ import beluga.core.widget.MttWidget;
 import beluga.core.macro.ConfigLoader;
 import beluga.module.fileupload.Fileupload;
 import beluga.core.BelugaI18n;
+import beluga.core.ResourceManager;
 
 class Admin extends MttWidget<FileuploadImpl> {
 
-    public function new (mttfile = "beluga_fileupload_admin.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/admin.mtt");
         super(Fileupload, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/fileupload/view/locale/admin/", mod.i18n);
     }

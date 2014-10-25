@@ -18,11 +18,13 @@ import beluga.module.account.model.User;
 import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.WalletErrorKind;
 import beluga.module.wallet.repository.CurrencyRepository;
+import beluga.core.ResourceManager;
 
 
 class Admin extends MttWidget<WalletImpl> {
 
-    public function new (mttfile = "beluga_wallet_admin.mtt") {
+    public function new (?mttfile : String) {
+        if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/admin.mtt");
         super(Wallet, mttfile);
         this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }
