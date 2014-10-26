@@ -23,7 +23,7 @@ import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
 import beluga.module.news.NewsErrorKind;
 
-class NewsImpl extends ModuleImpl implements NewsInternal {
+class NewsImpl extends ModuleImpl {
     public var triggers = new NewsTrigger();
     public var widgets: NewsWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/news/locale/");

@@ -27,7 +27,7 @@ import beluga.module.wallet.WalletErrorKind;
 import beluga.module.wallet.repository.WalletRepository;
 import beluga.module.wallet.repository.CurrencyRepository;
 
-class WalletImpl extends ModuleImpl implements WalletInternal {
+class WalletImpl extends ModuleImpl {
     public var triggers = new WalletTrigger();
     public var widgets: WalletWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/locale/");

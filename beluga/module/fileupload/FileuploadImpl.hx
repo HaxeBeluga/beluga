@@ -28,7 +28,7 @@ import beluga.module.fileupload.FileUploadErrorKind;
 import php.Web;
 #end
 
-class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
+class FileuploadImpl extends ModuleImpl {
     public var triggers = new FileuploadTrigger();
     public var widgets : FileuploadWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/fileupload/locale/");

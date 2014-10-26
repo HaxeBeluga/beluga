@@ -22,7 +22,7 @@ import beluga.module.faq.model.CategoryModel;
 import beluga.module.faq.CategoryData;
 import beluga.module.faq.FaqErrorKind;
 
-class FaqImpl extends ModuleImpl implements FaqInternal {
+class FaqImpl extends ModuleImpl {
     public var triggers = new FaqTrigger();
 
     // Intern variables for contexts

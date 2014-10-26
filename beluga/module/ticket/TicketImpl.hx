@@ -29,7 +29,7 @@ import beluga.module.ticket.TicketErrorKind;
 
 import sys.db.Manager;
 
-class TicketImpl extends ModuleImpl implements TicketInternal {
+class TicketImpl extends ModuleImpl {
     public var triggers = new TicketTrigger();
     public var widgets: TicketWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/locale/");

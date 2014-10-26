@@ -17,7 +17,7 @@ import beluga.core.BelugaI18n;
 import beluga.tool.DynamicTool;
 import beluga.core.ResourceManager;
 
-class LoginForm extends MttWidget<AccountImpl> {
+class LoginForm extends MttWidget<Account> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/login.mtt");

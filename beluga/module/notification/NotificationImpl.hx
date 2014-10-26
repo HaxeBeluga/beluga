@@ -19,7 +19,7 @@ import beluga.module.account.Account;
 import beluga.module.notification.model.NotificationModel;
 import beluga.module.notification.NotificationErrorKind;
 
-class NotificationImpl extends ModuleImpl implements NotificationInternal {
+class NotificationImpl extends ModuleImpl {
     public var triggers = new NotificationTrigger();
     public var widgets: NotificationWidget;
     public var i18n = BelugaI18n.loadI18nFolder("/module/notification/locale/");

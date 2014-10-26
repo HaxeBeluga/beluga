@@ -20,7 +20,7 @@ import beluga.module.mail.model.MailModel;
 import beluga.module.mail.MailErrorKind;
 import beluga.module.mail.MailWidget;
 
-class MailImpl extends ModuleImpl implements MailInternal {
+class MailImpl extends ModuleImpl {
     public var triggers = new MailTrigger();
 
     // Context variables

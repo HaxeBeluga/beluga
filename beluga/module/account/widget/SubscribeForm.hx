@@ -16,7 +16,7 @@ import beluga.core.form.Validator;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 
-class SubscribeForm extends MttWidget<AccountImpl> {
+class SubscribeForm extends MttWidget<Account> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/subscribe.mtt");

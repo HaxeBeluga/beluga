@@ -19,13 +19,12 @@ import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import beluga.module.survey.model.Choice;
 import beluga.module.survey.model.Result;
-import beluga.module.survey.SurveyInternal;
 import beluga.module.survey.SurveyData;
 import beluga.module.survey.model.SurveyModel;
 import beluga.module.survey.SurveyWidget;
 import beluga.module.survey.SurveyErrorKind;
 
-class SurveyImpl extends ModuleImpl implements SurveyInternal {
+class SurveyImpl extends ModuleImpl {
     public var triggers = new SurveyTrigger();
     public var error_id : SurveyErrorKind;
     public var success_msg : String;

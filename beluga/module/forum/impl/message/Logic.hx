@@ -3,7 +3,7 @@ package beluga.module.forum.impl.message;
 import beluga.core.Beluga;
 import beluga.tool.IDGenerator;
 
-import beluga.module.account.AccountImpl;
+import beluga.module.account.Account;
 import beluga.module.forum.model.Status;
 import beluga.module.account.model.User;
 import beluga.module.forum.model.Tag;
@@ -28,7 +28,7 @@ class Logic {
         mess.title = args.title;
         mess.content = args.content;
         mess.creation_time = Date.now();
-        mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).loggedUser;
+        mess.user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         mess.status = status;
         mess.tag = tag;
         mess.parent = null;
@@ -49,7 +49,7 @@ class Logic {
 
         mess.title = args.title;
         mess.content = args.content;
-        mess.user = Beluga.getInstance().getModuleInstance(AccountImpl).loggedUser;
+        mess.user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         mess.edition_time = Date.now();
 
         mess.update();
