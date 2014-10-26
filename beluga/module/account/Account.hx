@@ -16,7 +16,7 @@ import sys.db.Types;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
@@ -27,7 +27,7 @@ import beluga.core.FlashData;
 import haxe.Session;
 import beluga.core.api.BelugaApi;
 
-class Account extends ModuleImpl {
+class Account extends Module {
 
     public var triggers = new AccountTrigger();
     public var widgets : AccountWidget;

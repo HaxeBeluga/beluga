@@ -32,7 +32,7 @@ class NewsList {
     }
 }
 
-class Default extends MttWidget<NewsImpl> {
+class Default extends MttWidget<News> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/default.mtt");

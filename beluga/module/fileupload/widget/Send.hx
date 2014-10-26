@@ -15,7 +15,7 @@ import beluga.module.fileupload.Fileupload;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 
-class Send extends MttWidget<FileuploadImpl> {
+class Send extends MttWidget<Fileupload> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/send.mtt");

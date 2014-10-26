@@ -16,13 +16,12 @@ import sys.io.File;
 import sys.FileSystem;
 import sys.db.Connection;
 
-import beluga.core.module.Module;
-import beluga.core.module.ModuleInternal;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
 import beluga.core.macro.ModuleLoader;
 import beluga.core.FlashData;
+import beluga.core.module.Module;
 
 #if php
 import php.Web;
@@ -90,11 +89,11 @@ class Beluga {
     private function initialize() {
         //Init every modules
         for (module in ConfigLoader.modules) {
-            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
+            var moduleInstance : Module = cast ModuleLoader.getModuleInstanceByName(module.name);
             moduleInstance._loadConfig(this, module);
         }
          for (module in ConfigLoader.modules) {
-            var moduleInstance : ModuleInternal = cast ModuleLoader.getModuleInstanceByName(module.name);
+            var moduleInstance : Module = cast ModuleLoader.getModuleInstanceByName(module.name);
             moduleInstance.initialize(this);
          }
     }

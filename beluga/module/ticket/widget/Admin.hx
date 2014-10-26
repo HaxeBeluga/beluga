@@ -16,7 +16,7 @@ import beluga.core.BelugaI18n;
 import beluga.module.ticket.TicketErrorKind;
 import beluga.core.ResourceManager;
 
-class Admin extends MttWidget<TicketImpl> {
+class Admin extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/admin.mtt");

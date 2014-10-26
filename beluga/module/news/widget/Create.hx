@@ -9,7 +9,7 @@ import beluga.module.news.News;
 import beluga.module.account.Account;
 import beluga.core.ResourceManager;
 
-class Create extends MttWidget<NewsImpl> {
+class Create extends MttWidget<News> {
 
     public function new (?mttfile : String) {
         if (mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/create.mtt");

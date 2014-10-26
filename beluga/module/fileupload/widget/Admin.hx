@@ -15,7 +15,7 @@ import beluga.module.fileupload.Fileupload;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 
-class Admin extends MttWidget<FileuploadImpl> {
+class Admin extends MttWidget<Fileupload> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/admin.mtt");

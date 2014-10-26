@@ -7,7 +7,7 @@ import beluga.module.faq.Faq;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 
-class EditCategory extends MttWidget<FaqImpl> {
+class EditCategory extends MttWidget<Faq> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/edit_category.mtt");

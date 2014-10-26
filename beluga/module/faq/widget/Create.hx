@@ -7,7 +7,7 @@ import beluga.module.faq.Faq;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 
-class Create extends MttWidget<FaqImpl> {
+class Create extends MttWidget<Faq> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/create_faq.mtt");

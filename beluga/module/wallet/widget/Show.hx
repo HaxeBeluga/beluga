@@ -21,7 +21,7 @@ import beluga.core.ResourceManager;
 
 import beluga.module.wallet.Wallet;
 
-class Show extends MttWidget<WalletImpl> {
+class Show extends MttWidget<Wallet> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/show.mtt");

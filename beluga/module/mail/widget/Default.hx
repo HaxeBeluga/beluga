@@ -9,7 +9,7 @@ import beluga.module.mail.Mail;
 import beluga.module.account.Account;
 import beluga.core.ResourceManager;
 
-class Default extends MttWidget<MailImpl> {
+class Default extends MttWidget<Mail> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/mail/view/tpl/mail.mtt");

@@ -20,7 +20,7 @@ class MttObject {
     }
 }
 
-class Create extends MttWidget<SurveyImpl> {
+class Create extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/create.mtt");

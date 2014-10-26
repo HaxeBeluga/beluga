@@ -16,7 +16,7 @@ import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
 import beluga.core.ResourceManager;
 
-class Browse extends MttWidget<FileuploadImpl> {
+class Browse extends MttWidget<Fileupload> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/browse.mtt");

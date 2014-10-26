@@ -21,7 +21,7 @@ import beluga.module.wallet.repository.CurrencyRepository;
 import beluga.core.ResourceManager;
 
 
-class Admin extends MttWidget<WalletImpl> {
+class Admin extends MttWidget<Wallet> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/admin.mtt");

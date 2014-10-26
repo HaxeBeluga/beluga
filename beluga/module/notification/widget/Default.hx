@@ -10,7 +10,7 @@ import beluga.module.notification.NotificationErrorKind;
 import beluga.module.account.Account;
 import beluga.core.ResourceManager;
 
-class Default extends MttWidget<NotificationImpl> {
+class Default extends MttWidget<Notification> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/notification/view/tpl/notification.mtt");

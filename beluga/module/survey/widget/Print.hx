@@ -10,7 +10,7 @@ import beluga.module.survey.SurveyErrorKind;
 import beluga.module.account.Account;
 import beluga.core.ResourceManager;
 
-class Print extends MttWidget<SurveyImpl> {
+class Print extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/print_survey.mtt");

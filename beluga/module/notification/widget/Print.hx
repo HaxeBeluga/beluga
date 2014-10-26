@@ -11,7 +11,7 @@ import beluga.module.account.Account;
 import beluga.core.ResourceManager;
 import beluga.core.ResourceManager;
 
-class Print extends MttWidget<NotificationImpl> {
+class Print extends MttWidget<Notification> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/notification/view/tpl/print_notif.mtt");

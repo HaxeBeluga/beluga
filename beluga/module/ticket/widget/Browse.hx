@@ -15,7 +15,7 @@ import beluga.module.ticket.Ticket;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 
-class Browse extends MttWidget<TicketImpl> {
+class Browse extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/browse.mtt");

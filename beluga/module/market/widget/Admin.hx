@@ -14,7 +14,7 @@ import beluga.core.macro.ConfigLoader;
 import beluga.module.market.Market;
 import beluga.core.ResourceManager;
 
-class Admin extends MttWidget<MarketImpl> {
+class Admin extends MttWidget<Market> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/admin.mtt");

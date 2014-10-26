@@ -10,7 +10,7 @@ import beluga.core.ResourceManager;
 
 import haxe.ds.Option;
 
-class Print extends MttWidget<FaqImpl> {
+class Print extends MttWidget<Faq> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/faqs.mtt");

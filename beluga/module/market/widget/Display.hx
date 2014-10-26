@@ -18,7 +18,7 @@ import beluga.module.market.MarketErrorKind;
 import beluga.module.wallet.repository.CurrencyRepository;
 import beluga.core.ResourceManager;
 
-class Display extends MttWidget<MarketImpl> {
+class Display extends MttWidget<Market> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/display.mtt");

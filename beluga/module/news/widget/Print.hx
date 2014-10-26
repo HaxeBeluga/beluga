@@ -26,7 +26,7 @@ class NewsData {
     }
 }
 
-class Print extends MttWidget<NewsImpl> {
+class Print extends MttWidget<News> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/print.mtt");

@@ -10,7 +10,7 @@ import beluga.module.account.Account;
 import beluga.module.news.model.NewsModel;
 import beluga.core.ResourceManager;
 
-class Edit extends MttWidget<NewsImpl> {
+class Edit extends MttWidget<News> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/edit.mtt");

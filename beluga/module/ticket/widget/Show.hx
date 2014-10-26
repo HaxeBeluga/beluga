@@ -20,7 +20,7 @@ import beluga.module.account.model.User;
 import beluga.module.ticket.TicketErrorKind;
 import beluga.core.ResourceManager;
 
-class Show extends MttWidget<TicketImpl> {
+class Show extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/create.mtt");

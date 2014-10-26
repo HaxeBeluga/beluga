@@ -13,12 +13,12 @@ import haxe.Resource;
 import haxe.ds.Option;
 
 import beluga.core.Beluga;
-import beluga.core.module.ModuleImpl;
+import beluga.core.module.Module;
 import beluga.core.module.Module;
 import beluga.core.macro.ConfigLoader;
 import beluga.tool.DynamicTool;
 
-class MttWidget<ModuleType: ModuleImpl> implements Widget {
+class MttWidget<ModuleType: Module> implements Widget {
     public var mod: ModuleType;
     public var i18n : Dynamic;
 

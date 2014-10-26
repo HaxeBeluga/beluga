@@ -11,7 +11,7 @@ import beluga.module.survey.SurveyErrorKind;
 import beluga.module.survey.model.Choice;
 import beluga.core.ResourceManager;
 
-class Vote extends MttWidget<SurveyImpl> {
+class Vote extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/vote.mtt");
