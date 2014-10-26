@@ -14,7 +14,7 @@ class Default extends MttWidget<SurveyImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/surveys_list.mtt");
-        super(Survey, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/default/", mod.i18n);
     }
 

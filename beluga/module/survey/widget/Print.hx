@@ -14,7 +14,7 @@ class Print extends MttWidget<SurveyImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/print_survey.mtt");
-        super(Survey, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/print/", mod.i18n);
     }
 

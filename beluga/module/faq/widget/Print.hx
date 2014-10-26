@@ -14,7 +14,7 @@ class Print extends MttWidget<FaqImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/faqs.mtt");
-        super(Faq, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/print/", mod.i18n);
     }
 

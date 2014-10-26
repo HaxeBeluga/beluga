@@ -13,7 +13,7 @@ class Create extends MttWidget<NewsImpl> {
 
     public function new (?mttfile : String) {
         if (mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/create.mtt");
-        super(News, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/create/", mod.i18n);
     }
 

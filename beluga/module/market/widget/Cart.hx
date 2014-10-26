@@ -22,7 +22,7 @@ class Cart extends MttWidget<MarketImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/cart.mtt");
-        super(Market, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/market/view/locale/cart/", mod.i18n);
     }
 

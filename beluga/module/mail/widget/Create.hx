@@ -13,7 +13,7 @@ class Create extends MttWidget<MailImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/mail/view/tpl/sendMail.mtt");
-        super(Mail, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/mail/view/locale/create/", mod.i18n);
     }
 

@@ -25,7 +25,7 @@ class Admin extends MttWidget<WalletImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/admin.mtt");
-        super(Wallet, mttfile);
+        super(mttfile);
         this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }
 

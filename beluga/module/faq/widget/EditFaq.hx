@@ -11,7 +11,7 @@ class EditFaq extends MttWidget<FaqImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/edit_faq.mtt");
-        super(Faq, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/edit_faq/", mod.i18n);
     }
 

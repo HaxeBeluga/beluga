@@ -20,7 +20,7 @@ class SubscribeForm extends MttWidget<AccountImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/subscribe.mtt");
-        super(Account, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/subscribe/", mod.i18n);
     }
 

@@ -13,7 +13,7 @@ class Print extends MttWidget<MailImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/mail/view/tpl/print.mtt");
-        super(Mail, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/mail/view/locale/print/", mod.i18n);
     }
 

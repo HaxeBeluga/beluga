@@ -19,7 +19,7 @@ class Browse extends MttWidget<TicketImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/browse.mtt");
-        super(Ticket, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/browse/", mod.i18n);
     }
 

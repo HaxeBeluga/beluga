@@ -18,7 +18,7 @@ class Admin extends MttWidget<MarketImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/admin.mtt");
-        super(Market, mttfile);
+        super(mttfile);
     }
 
     override private function getContext(): Dynamic {

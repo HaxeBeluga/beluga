@@ -22,7 +22,7 @@ class Display extends MttWidget<MarketImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/display.mtt");
-        super(Market, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/market/view/locale/display/", mod.i18n);
     }
 

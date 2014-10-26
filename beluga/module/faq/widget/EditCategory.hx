@@ -11,7 +11,7 @@ class EditCategory extends MttWidget<FaqImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/edit_category.mtt");
-        super(Faq, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/edit_category/", mod.i18n);
     }
 

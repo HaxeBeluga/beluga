@@ -15,7 +15,7 @@ class Print extends MttWidget<NotificationImpl> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/notification/view/tpl/print_notif.mtt");
-        super(Notification, mttfile);
+        super(mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/notification/view/locale/print/", mod.i18n);
     }
 

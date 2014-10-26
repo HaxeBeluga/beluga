@@ -18,17 +18,18 @@ import beluga.core.module.Module;
 import beluga.core.macro.ConfigLoader;
 import beluga.tool.DynamicTool;
 
-class MttWidget<WImpl: ModuleImpl> implements Widget {
-    public var mod: WImpl;
+class MttWidget<ModuleType: ModuleImpl> implements Widget {
+    public var mod: ModuleType;
     public var i18n : Dynamic;
 
     private static var id = 0;
     private var template : Template;
 
-    public function new<T: Module>(clazz : Class<T>, templateFileContent : String) {
+    public function new(templateFileContent : String) {
         this.template = new haxe.Template(templateFileContent);
-        this.mod = cast Beluga.getInstance().getModuleInstance(clazz);
+        this.mod = cast Beluga.getInstance().getModuleInstance(Type.getClass(mod));
     }
+
 
     public function render() : String {
         return template.execute( getContextIntern(), getMacro());
