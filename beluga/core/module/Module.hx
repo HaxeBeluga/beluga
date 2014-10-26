@@ -10,5 +10,4 @@ package beluga.core.module;
 import beluga.core.Widget;
 
 interface Module {
-    public function getWidget(name : String) : Widget;
 }

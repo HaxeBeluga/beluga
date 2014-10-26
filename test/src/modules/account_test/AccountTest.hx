@@ -77,6 +77,7 @@ class AccountTest {
             Sys.print(html);
             return;
         }
+        /* TODO use new widget
         var subscribeWidget = acc.getWidget("info");
         if (!user.isAdmin)
             subscribeWidget.context = {user : user, path : "/accountTest/"};
@@ -89,5 +90,6 @@ class AccountTest {
             subscribeWidget: subscribeWidget.render()
         });
         Sys.print(html);
+        */
     }
 }

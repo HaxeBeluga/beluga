@@ -45,6 +45,7 @@ class ChannelTest
 
   public function doDisplayChannelPage()
   {
+      /*TODO use new widget
     var forumWidget = this.frm.getWidget("display_channel");
     forumWidget.context = this.frm.getChannelContext();
 
@@ -52,6 +53,7 @@ class ChannelTest
       forumWidget : forumWidget.render()
     });
     Sys.print(html);
+    */
   }
 
   @bTrigger("request_beluga_forum_add_channel_display")
@@ -62,6 +64,7 @@ class ChannelTest
 
   public function doDisplayAddChannelPage()
   {
+      /*TODO use new widget
     var forumWidget = this.frm.getWidget("add_channel");
     forumWidget.context = this.frm.getAddChannelContext();
 
@@ -69,6 +72,7 @@ class ChannelTest
       forumWidget : forumWidget.render()
     });
     Sys.print(html);
+    */
   }
 
   @bTrigger("request_beluga_forum_modify_channel_display")
@@ -79,6 +83,7 @@ class ChannelTest
 
   public function doDisplayModifyChannelPage()
   {
+      /*TODO use new widget
     var forumWidget = this.frm.getWidget("modify_channel");
     forumWidget.context = this.frm.getModifyChannelContext();
 
@@ -86,6 +91,7 @@ class ChannelTest
       forumWidget : forumWidget.render()
     });
     Sys.print(html);
+    */
   }
 
   @bTrigger("request_beluga_forum_delete_channel_display")
@@ -96,6 +102,7 @@ class ChannelTest
 
   public function doDisplayDeleteChannelPage()
   {
+      /*TODO use new widget
     var forumWidget = this.frm.getWidget("delete_channel");
     forumWidget.context = this.frm.getDeleteChannelContext();
 
@@ -103,6 +110,7 @@ class ChannelTest
       forumWidget : forumWidget.render()
     });
     Sys.print(html);
+    */
   }
 
   public function doDefault(d : Dispatch) {
