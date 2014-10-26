@@ -8,6 +8,7 @@
 
 package beluga.module.notification;
 
+import beluga.module.notification.api.NotificationApi;
 import haxe.xml.Fast;
 
 import beluga.core.module.ModuleImpl;
@@ -37,6 +38,7 @@ class NotificationImpl extends ModuleImpl implements NotificationInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new NotificationWidget();
+        beluga.api.register("notification", new NotificationApi(beluga, this));        
     }
 
     public function setActualNotificationId(notif_id : Int) : Void {

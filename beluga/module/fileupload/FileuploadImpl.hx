@@ -9,6 +9,7 @@
 package beluga.module.fileupload;
 
 // Haxe
+import beluga.module.fileupload.api.FileuploadApi;
 import haxe.xml.Fast;
 import sys.io.FileOutput;
 
@@ -39,6 +40,7 @@ class FileuploadImpl extends ModuleImpl implements FileuploadInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new FileuploadWidget();
+        beluga.api.register("fileupload", new FileuploadApi(beluga, this));
     }
 
     /// Return: {file_name: String, file_path: String, file_size: Int, file_id: Int}

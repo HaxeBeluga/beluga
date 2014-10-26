@@ -13,7 +13,10 @@ class ForumApi {
     public var beluga : Beluga;
     public var module : Forum;
 
-    public function new() {}
+    public function new(beluga : Beluga, module) {
+        this.beluga = beluga;
+        this.module = module;
+    }
 
     public function doDisplayChannel(args : {
         channel_key : String

@@ -20,7 +20,9 @@ class NewsApi {
     public var beluga : Beluga;
     public var module : News;
 
-    public function new() {
+    public function new(beluga : Beluga, module) {
+        this.beluga = beluga;
+        this.module = module;
     }
 
     public function doDefault() {

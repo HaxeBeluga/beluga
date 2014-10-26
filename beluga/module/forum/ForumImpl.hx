@@ -1,5 +1,6 @@
 package beluga.module.forum;
 
+import beluga.module.forum.api.ForumApi;
 import haxe.xml.Fast;
 
 import beluga.core.Beluga;
@@ -15,13 +16,13 @@ class ForumImpl extends ModuleImpl implements ForumInternal{
     private var key : Null<String> = null;
 
     public function new() {
-      super();
+        super();
     }
 
-	override public function initialize(beluga : Beluga) : Void {
-		
-	}
-	
+    override public function initialize(beluga : Beluga) : Void {
+        beluga.api.register("forum", new ForumApi(beluga, this));    
+    }
+
     // @bTrigger("beluga_forum_channel_display")
     public static function _displayChannel(args : {
         channel_key : String

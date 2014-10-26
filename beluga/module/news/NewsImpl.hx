@@ -8,6 +8,7 @@
 
 package beluga.module.news;
 
+import beluga.module.news.api.NewsApi;
 import haxe.xml.Fast;
 
 import sys.db.Manager;
@@ -45,9 +46,10 @@ class NewsImpl extends ModuleImpl implements NewsInternal {
         actual_news_id = -1;
     }
 
-	override public function initialize(beluga : Beluga) : Void {
+    override public function initialize(beluga : Beluga) : Void {
         this.widgets = new NewsWidget();
-	}
+        beluga.api.register("news", new NewsApi(beluga, this));
+    }
 
     public function setActualNewsId(news_id : Int) {
         this.actual_news_id = news_id;

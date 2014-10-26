@@ -8,6 +8,7 @@
 
 package beluga.module.survey;
 
+import beluga.module.survey.api.SurveyApi;
 import haxe.xml.Fast;
 
 import beluga.core.Beluga;
@@ -50,6 +51,7 @@ class SurveyImpl extends ModuleImpl implements SurveyInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new SurveyWidget();
+        beluga.api.register("survey", new SurveyApi(beluga, this));        
     }
 
     public function redirect() {

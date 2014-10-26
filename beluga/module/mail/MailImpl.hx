@@ -8,6 +8,7 @@
 
 package beluga.module.mail;
 
+import beluga.module.mail.api.MailApi;
 import haxe.xml.Fast;
 
 import beluga.core.Beluga;
@@ -42,11 +43,11 @@ class MailImpl extends ModuleImpl implements MailInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new MailWidget();
+        beluga.api.register("mail", new MailApi(beluga, this));        
     }
 
     public function createDefaultContext() : Void {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-
         if (user == null && error_id == None) {
             error_id = MissingLogin;
         }

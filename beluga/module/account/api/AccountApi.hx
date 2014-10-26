@@ -24,7 +24,9 @@ class AccountApi  {
     public var beluga : Beluga;
     public var module : Account;
 
-    public function new() {
+    public function new(beluga : Beluga, module : Account) {
+        this.beluga = beluga;
+        this.module = module;
     }
 
     public function doLogin(args : {

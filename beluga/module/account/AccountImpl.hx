@@ -9,6 +9,7 @@
 package beluga.module.account;
 
 import beluga.core.metadata.Session;
+import beluga.module.account.api.AccountApi;
 import haxe.xml.Fast;
 import sys.db.Types.SId;
 import sys.db.Types;
@@ -24,6 +25,7 @@ import beluga.module.account.Account;
 import beluga.core.form.Validator;
 import beluga.core.FlashData;
 import haxe.Session;
+import beluga.core.api.BelugaApi;
 
 class AccountImpl extends ModuleImpl implements AccountInternal {
 
@@ -51,6 +53,7 @@ class AccountImpl extends ModuleImpl implements AccountInternal {
 
     override public function initialize(beluga : Beluga) {
         this.widgets = new AccountWidget();
+        beluga.api.register("account", new AccountApi(beluga, this));
     }
 
     public function getLoggedUser() : User {

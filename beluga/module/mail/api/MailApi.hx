@@ -20,7 +20,10 @@ class MailApi {
     public var beluga : Beluga;
     public var module : Mail;
 
-    public function new() {}
+    public function new(beluga : Beluga, module) {
+        this.beluga = beluga;
+        this.module = module;
+    }
 
     public function doDefault() {
         this.module.triggers.defaultMail.dispatch();

@@ -26,7 +26,10 @@ class SurveyApi {
     public var beluga : Beluga;
     public var module : Survey;
 
-    public function new() {}
+    public function new(beluga : Beluga, module) {
+        this.beluga = beluga;
+        this.module = module;
+    }
 
     public function doCreate(args : {
         title : String,

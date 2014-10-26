@@ -20,7 +20,10 @@ class NotificationApi {
     public var beluga : Beluga;
     public var module : Notification;
 
-    public function new() { }
+    public function new(beluga : Beluga, module) {
+        this.beluga = beluga;
+        this.module = module;
+    }
 
     public function doDefault() {
         module.triggers.defaultNotification.dispatch();

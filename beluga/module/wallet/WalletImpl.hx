@@ -9,6 +9,7 @@
 package beluga.module.wallet;
 
 // Haxe
+import beluga.module.wallet.api.WalletApi;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
@@ -42,10 +43,13 @@ class WalletImpl extends ModuleImpl implements WalletInternal {
     // ID of the unique field of SiteCurrency
     public static var WEBSITE_ID = 1;
 
-    public function new() { super(); }
+    public function new() {
+        super();
+    }
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new WalletWidget();
+        beluga.api.register("wallet", new WalletApi(beluga, this));
     }
 
     // pages

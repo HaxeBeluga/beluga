@@ -9,6 +9,7 @@
 package beluga.module.ticket;
 
 // Haxe
+import beluga.module.ticket.api.TicketApi;
 import haxe.xml.Fast;
 
 // Beluga core
@@ -42,6 +43,7 @@ class TicketImpl extends ModuleImpl implements TicketInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new TicketWidget();
+        beluga.api.register("ticket", new TicketApi(beluga, this));        
     }
 
     /** Actions trigger **/

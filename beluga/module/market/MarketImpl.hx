@@ -12,6 +12,7 @@ package beluga.module.market;
 import beluga.core.module.ModuleImpl;
 import beluga.core.Beluga;
 import beluga.core.BelugaI18n;
+import beluga.module.market.api.MarketApi;
 
 // Beluga mods
 import beluga.module.wallet.Wallet;
@@ -33,10 +34,13 @@ class MarketImpl extends ModuleImpl implements MarketInternal {
     public var error: MarketErrorKind = MarketNone;
     public var info: MarketErrorKind = MarketNone;
 
-    public function new() { super(); }
+    public function new() {
+        super();
+    }
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new MarketWidget();
+        beluga.api.register("market", new MarketApi(beluga, this));        
     }
 
     // widget functions

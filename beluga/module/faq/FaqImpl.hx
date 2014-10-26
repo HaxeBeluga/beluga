@@ -8,6 +8,7 @@
 
 package beluga.module.faq;
 
+import beluga.module.faq.api.FaqApi;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
@@ -49,6 +50,7 @@ class FaqImpl extends ModuleImpl implements FaqInternal {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new FaqWidget();
+        beluga.api.register("faq", new FaqApi(beluga, this));
     }
 
     // change this function name or remove/replace it

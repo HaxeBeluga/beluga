@@ -23,7 +23,10 @@ class TicketApi {
     public var beluga : Beluga;
     public var module : Ticket;
 
-    public function new() {}
+    public function new(beluga : Beluga, module) {
+        this.beluga = beluga;
+        this.module = module;
+    }
 
     public function doBrowse(): Void {
         module.browse();

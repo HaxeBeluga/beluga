@@ -8,32 +8,34 @@
 
 package beluga.core.api;
 
+import haxe.macro.Expr;
 import haxe.web.Dispatch;
-import haxe.Session;
+import haxe.macro.Context;
 
-import beluga.core.macro.ModuleLoader;
+//import beluga.core.macro.ModuleLoader;
 
-class BelugaApi implements IAPI<String> {
-    public var beluga : Beluga;
-    public var module : String;
+class BelugaApi {
+    private var config = new Map<String, DispatchConfig>();
 
-    private function handleSessionPath() {}
 
-    public function new() {}
+    public function new() { }
 
     //Handle url like www.beluga.fr?trigger=login
-    public function doDefault(d : Dispatch) {
-        Sys.print("Welcome !");
+    public function doDefault(apiName : String, d : Dispatch) {
+        if (config.exists(apiName)) {
+            var cfg = config.get(apiName);
+            d.runtimeDispatch(cfg);
+        }
+        else
+            throw new BelugaException("Can't find " + apiName + " api.");
     }
 
-    public function doBeluga(d : Dispatch) {
-        d.dispatch(this);
+    macro public function register(ethis : Expr, apiKey : Expr, api : Expr) : Expr {
+        return macro ${ethis}.dynamicRegister(${apiKey}, haxe.web.Dispatch.make(${api}));
     }
-    
-    /*
-     * Modules API are generated like:
-         * public function doModule(d : Dispatch) {
-            * d.dispatch(new ModuleApi(beluga));
-         * }
-     */
+
+    public function dynamicRegister(apiKey : String, api : DispatchConfig) {
+        config.set(apiKey, api);
+    }
+
 }
