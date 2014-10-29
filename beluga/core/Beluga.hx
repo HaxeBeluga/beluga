@@ -8,6 +8,9 @@
 
 package beluga.core;
 
+import haxe.macro.Expr;
+import haxe.macro.Context;
+import haxe.PosInfos;
 import haxe.Resource;
 import haxe.Session;
 import haxe.web.Dispatch;
@@ -32,6 +35,7 @@ import neko.Web;
 using StringTools;
 
 class Beluga {
+    #if !macro
     // Keep an instance of beluga's database, read only
     public var db(default, null) : Database;
     //Instance of beluga API, read only
@@ -40,7 +44,6 @@ class Beluga {
     private static var instance = null;
     
     public static var remotingCtx;
-
     public static function getInstance(cnx: Connection = null) : Beluga {
         if (instance == null) {
             instance = new Beluga(cnx);
@@ -48,7 +51,6 @@ class Beluga {
         }
         return instance;
     }
-
     #if neko
     private function new(cnx: Connection  = null, createSessionDirectory : Bool = true)
     #else
@@ -73,7 +75,7 @@ class Beluga {
         beluga.core.macro.Css.compile();
     }
     
-    inline private function initDatabase(cnx) {
+    private function initDatabase(cnx) {
         db = null;
         //Connect to database
         if (cnx != null) {
@@ -82,7 +84,6 @@ class Beluga {
             db = Database.newFromFile(ConfigLoader.config.node.database.elements);
         }
     }
-    
     
     //For all initialization code that require beluga's instance
     // -> called once by getInstance
@@ -108,7 +109,7 @@ class Beluga {
         Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
-    public function getModuleInstance < T : Module > (clazz : Class<T>) : T {
+    public function getModuleInstance < T > (clazz : Class<T>, ?pos : haxe.PosInfos) : T {
         return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
     }
 
@@ -137,7 +138,8 @@ class Beluga {
                               d.dispatch(api);
                         }
                     } 
-                });   
+      
+                    });   
             },
             doDefault: function(d : Dispatch) {
                 //Let user do what he wants.
@@ -149,4 +151,6 @@ class Beluga {
     public static function redirect(url : String) {
         Web.redirect(url);
     }
+    #end
+
 }

@@ -20,6 +20,7 @@ import beluga.core.macro.ConfigLoader.ModuleConfig;
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
 class Module
 {
+#if !macro
     //Hold the instance of the Beluga object that created this module
     private var beluga : Beluga;
 
@@ -33,7 +34,7 @@ class Module
         for (table in module.tables) {
             //Initialize all module tables
             try {
-            beluga.db.initTable(module.name, table);
+                beluga.db.initTable(module.name, table);
             }
             catch (e : Dynamic) {
                 if (Std.is(e, BelugaException)) //Can't catch a BelugaException, forbidden by the compiler so we have to manually check for it
@@ -52,5 +53,5 @@ class Module
         var module = Type.getClassName(Type.getClass(this)).split(".")[2];
         return new Widget(module, name);
     }
-
+#end
 }

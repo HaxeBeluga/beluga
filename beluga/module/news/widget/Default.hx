@@ -36,7 +36,7 @@ class Default extends MttWidget<News> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/default.mtt");
-        super(mttfile);
+        super(News, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/default/", mod.i18n);
     }
 

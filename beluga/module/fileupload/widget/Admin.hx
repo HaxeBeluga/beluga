@@ -19,7 +19,7 @@ class Admin extends MttWidget<Fileupload> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/admin.mtt");
-        super(mttfile);
+        super(Fileupload, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/fileupload/view/locale/admin/", mod.i18n);
     }
 

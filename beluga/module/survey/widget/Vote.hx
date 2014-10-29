@@ -15,7 +15,7 @@ class Vote extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/vote.mtt");
-        super(mttfile);
+        super(Survey, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/vote/", mod.i18n);
     }
 

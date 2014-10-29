@@ -14,7 +14,7 @@ class Edit extends MttWidget<News> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/edit.mtt");
-        super(mttfile);
+        super(News, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/edit/", mod.i18n);
     }
 

@@ -14,7 +14,7 @@ class Default extends MttWidget<Notification> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/notification/view/tpl/notification.mtt");
-        super(mttfile);
+        super(Notification, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/notification/view/locale/default/", mod.i18n);
     }
 

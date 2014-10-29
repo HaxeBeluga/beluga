@@ -24,7 +24,7 @@ class Show extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/create.mtt");
-        super(mttfile);
+        super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }
 

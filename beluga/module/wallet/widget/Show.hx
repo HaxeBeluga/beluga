@@ -25,7 +25,7 @@ class Show extends MttWidget<Wallet> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/show.mtt");
-        super(mttfile);
+        super(Wallet, mttfile);
         this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
     }
 

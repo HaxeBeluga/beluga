@@ -25,11 +25,10 @@ class MttWidget<ModuleType: Module> implements Widget {
     private static var id = 0;
     private var template : Template;
 
-    public function new(templateFileContent : String) {
+    public function new(clazz : Class<ModuleType>, templateFileContent : String) {
         this.template = new haxe.Template(templateFileContent);
-        this.mod = cast Beluga.getInstance().getModuleInstance(Type.getClass(mod));
+        this.mod = cast Beluga.getInstance().getModuleInstance(clazz);
     }
-
 
     public function render() : String {
         return template.execute( getContextIntern(), getMacro());

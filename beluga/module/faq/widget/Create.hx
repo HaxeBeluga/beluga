@@ -11,7 +11,7 @@ class Create extends MttWidget<Faq> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/create_faq.mtt");
-        super(mttfile);
+        super(Faq, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/create/", mod.i18n);
     }
 

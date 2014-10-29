@@ -20,7 +20,7 @@ class Browse extends MttWidget<Fileupload> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/fileupload/view/tpl/browse.mtt");
-        super(mttfile);
+        super(Fileupload, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/fileupload/view/locale/browse/", mod.i18n);
     }
 

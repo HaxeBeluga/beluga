@@ -7,15 +7,17 @@
 // except according to those terms.
 
 package beluga.core;
+
 import beluga.core.BelugaException;
 import haxe.xml.Fast;
 import sys.db.Manager;
 import sys.db.Connection;
-import sys.db.TableCreate;
 import beluga.core.macro.ModuleLoader;
+import sys.db.TableCreate;
+
 
 class Database {
-
+    #if !macro
     public function new(cnx: Connection) {
         Manager.initialize();
         Manager.cnx = cnx;
@@ -35,6 +37,10 @@ class Database {
         }
     }
 
+    public function close() {
+        sys.db.Manager.cleanup();
+    }
+    
     public function initTable(module : String, table : String) {
         var tableClass = ModuleLoader.resolveModel(module, table);
 
@@ -45,9 +51,6 @@ class Database {
         }
         else
             throw new BelugaException(table + " is not a valid database object");
-    }
-
-    public function close() {
-        sys.db.Manager.cleanup();
-    }
+    }    
+    #end
 }

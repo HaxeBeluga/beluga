@@ -21,7 +21,7 @@ class LoginForm extends MttWidget<Account> {
 
     public function new (?mttfile : String) {
         if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/login.mtt");
-        super(mttfile);
+        super(Account, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/login/", mod.i18n);
     }
 
