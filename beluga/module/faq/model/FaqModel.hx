@@ -15,6 +15,7 @@ import beluga.module.faq.model.CategoryModel;
 
 @:table("beluga_faq_faq")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class FaqModel extends Object {
     public var id : SId;
     public var question : STinyText;

@@ -13,6 +13,7 @@ import sys.db.Types;
 
 @:table("beluga_acc_blacklist")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class BlackList extends Object {
     public var id : SId;
     public var user_id : SInt;

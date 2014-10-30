@@ -6,6 +6,7 @@ import sys.db.Types;
 // Post-it, question....
 @:table("beluga_frm_tag")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class Tag extends Object {
   public var id : SId;
   public var label : SString<255>;

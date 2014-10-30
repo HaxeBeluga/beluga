@@ -8,6 +8,7 @@ import beluga.module.account.model.User;
 @:table("beluga_frm_usergroup")
 @:id(id)
 @:index(user_id, group_id)
+@:build(beluga.core.Database.registerModel())
 class UserGroup extends Object {
   public var id : SId;
 

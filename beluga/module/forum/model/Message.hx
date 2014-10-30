@@ -8,6 +8,7 @@ import beluga.module.account.model.User;
 @:table("beluga_frm_message")
 @:id(id)
 @:index(user_id, status_id, tag_id, parent_id, channel_id)
+@:build(beluga.core.Database.registerModel())
 class Message extends Object {
   public var id : SId;
   public var key : SString<12>;

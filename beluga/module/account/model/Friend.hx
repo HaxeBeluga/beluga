@@ -13,6 +13,7 @@ import sys.db.Types;
 
 @:table("beluga_acc_friend")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class Friend extends Object {
     public var id : SId;
     public var user_id : SInt;

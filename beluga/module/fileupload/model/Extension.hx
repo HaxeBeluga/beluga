@@ -16,4 +16,4 @@ import sys.db.Types;
 class Extension extends Object {
     public var id: SId;
     public var name: SString<32>;
-}
+}@:build(beluga.core.Database.registerModel())

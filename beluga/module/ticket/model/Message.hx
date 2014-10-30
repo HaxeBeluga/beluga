@@ -18,6 +18,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_tic_message")
+@:build(beluga.core.Database.registerModel())
 class Message extends Object {
     public var id: SId;
     public var content: STinyText;

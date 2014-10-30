@@ -18,6 +18,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_mar_cart")
+@:build(beluga.core.Database.registerModel())
 class Cart extends Object {
     public var id: SId;
     public var user_id: SInt;

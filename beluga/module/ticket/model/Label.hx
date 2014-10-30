@@ -13,6 +13,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_tic_label")
+@:build(beluga.core.Database.registerModel())
 class Label extends Object {
     public var id: SId;
     public var name: SString<32>;

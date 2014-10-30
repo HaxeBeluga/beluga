@@ -18,6 +18,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_tic_ticketlabel")
+@:build(beluga.core.Database.registerModel())
 class TicketLabel extends Object {
     public var id: SId;
     public var label_id: SInt;

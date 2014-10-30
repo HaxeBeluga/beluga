@@ -13,6 +13,7 @@ import sys.db.Types;
 
 @:table("beluga_faq_category")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class CategoryModel extends Object {
     public var id : SId;
     public var name : STinyText;

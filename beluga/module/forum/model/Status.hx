@@ -6,6 +6,7 @@ import sys.db.Types;
 // Open, close...
 @:table("beluga_frm_status")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class Status extends Object {
   public var id : SId;
   public var label : SString<255>;

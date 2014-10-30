@@ -10,11 +10,14 @@ package beluga.module.account.model;
 
 import sys.db.Object;
 import sys.db.Types;
+import sys.db.TableCreate;
 
 @:table("beluga_acc_user")
 @:id(id)
 @:index(login, unique)
+@:build(beluga.core.Database.registerModel())
 class User extends Object {
+   
     public var id : SId;
     public var login : SString<32>;
     public var hashPassword : SString<32>;

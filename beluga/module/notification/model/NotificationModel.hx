@@ -15,6 +15,7 @@ import beluga.module.account.model.User;
 
 @:table("beluga_notif_notification")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class NotificationModel extends Object {
     public var id : SId;
     public var title : STinyText;

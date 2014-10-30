@@ -8,6 +8,7 @@ import beluga.module.account.model.User;
 @:table("beluga_frm_perm_user")
 @:id(id)
 @:index(user_id, channel_id)
+@:build(beluga.core.Database.registerModel())
 class UserPermission extends Object {
   public var id : SId;
 

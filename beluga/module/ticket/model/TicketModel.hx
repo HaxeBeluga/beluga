@@ -18,6 +18,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_tic_ticket")
+@:build(beluga.core.Database.registerModel())
 class TicketModel extends Object {
     public var id: SId;
     public var user_id: SInt;

@@ -15,6 +15,7 @@ import beluga.module.account.model.User;
 
 @:table("beluga_mail_mail")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class MailModel extends Object {
     public var id : SId;
     public var subject : STinyText;

@@ -15,6 +15,7 @@ import beluga.module.account.model.User;
 
 @:table("beluga_news_news")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class NewsModel extends Object {
     public var id : SId;
     public var title : STinyText;

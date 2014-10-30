@@ -13,6 +13,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_wal_currency")
+@:build(beluga.core.Database.registerModel())
 class Currency extends Object {
     public var id: SId;
     public var name: SString<32>;

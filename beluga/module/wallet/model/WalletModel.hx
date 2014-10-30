@@ -18,6 +18,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_wal_wallet")
+@:build(beluga.core.Database.registerModel())
 class WalletModel extends Object {
     public var id: SId;
     public var user_id: SInt;

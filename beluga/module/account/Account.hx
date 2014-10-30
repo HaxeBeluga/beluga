@@ -53,6 +53,7 @@ class Account extends Module {
 
     override public function initialize(beluga : Beluga) {
         this.widgets = new AccountWidget();
+        beluga.db.initTable(User);
         beluga.api.register("account", new AccountApi(beluga, this));
     }
 

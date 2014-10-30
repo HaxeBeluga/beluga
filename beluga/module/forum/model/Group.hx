@@ -5,6 +5,7 @@ import sys.db.Types;
 
 @:table("beluga_frm_group")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class Group extends Object {
   public var id : SId;
   public var label : SString<255>;

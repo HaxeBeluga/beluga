@@ -34,14 +34,6 @@ class ModuleLoader {
         modules.set(Type.getClassName(realClass), instance);
         return instance;
     }
-
-    public static function resolveModel(module : String, name : String) : Class<Dynamic> {
-        var realClass = Type.resolveClass("beluga.module." + module + ".model." + name);
-        if (realClass == null) {
-            throw new BelugaException("Model not found " + name);
-        }
-        return realClass;
-    }
 #end
 
     macro public static function init() : Expr {

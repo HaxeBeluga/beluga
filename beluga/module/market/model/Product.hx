@@ -13,6 +13,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_mar_product")
+@:build(beluga.core.Database.registerModel())
 class Product extends Object {
     public var id: SId;
     public var stock: SInt;

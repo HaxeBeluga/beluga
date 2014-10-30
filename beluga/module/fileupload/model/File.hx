@@ -17,6 +17,7 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_fil_file")
+@:build(beluga.core.Database.registerModel())
 class File extends Object {
     public var id: SId;
     public var owner_id: SInt;

@@ -8,6 +8,7 @@ import beluga.module.account.model.User;
 @:table("beluga_frm_fav_mess")
 @:id(id)
 @:index(user_id, message_id)
+@:build(beluga.core.Database.registerModel())
 class FavoriteMessage extends Object {
   public var id : SId;
 

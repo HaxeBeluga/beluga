@@ -6,6 +6,7 @@ import sys.db.Types;
 @:table("beluga_frm_perm_group")
 @:id(id)
 @:index(user_group_id, channel_id)
+@:build(beluga.core.Database.registerModel())
 class GroupPermission extends Object {
   public var id : SId;
 

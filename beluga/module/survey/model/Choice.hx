@@ -15,6 +15,7 @@ import beluga.module.survey.model.SurveyModel;
 
 @:table("beluga_sur_choice")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class Choice extends Object {
     public var id : SId;
     public var label : STinyText;

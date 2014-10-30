@@ -16,6 +16,7 @@ import beluga.module.news.model.NewsModel;
 
 @:table("beluga_news_comment")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class CommentModel extends Object {
     public var id : SId;
     public var news_id : SInt;

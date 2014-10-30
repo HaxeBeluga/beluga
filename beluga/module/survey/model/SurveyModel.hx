@@ -15,6 +15,7 @@ import beluga.module.account.model.User;
 
 @:table("beluga_sur_survey")
 @:id(id)
+@:build(beluga.core.Database.registerModel())
 class SurveyModel extends Object {
     public var id : SId;
     public var name : SString<128>;
