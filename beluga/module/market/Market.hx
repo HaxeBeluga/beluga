@@ -26,6 +26,7 @@ import beluga.module.market.MarketErrorKind;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
+@:Css("/module/market/view/css/")
 class Market extends Module {
     public var triggers = new MarketTrigger();
     public var widgets: MarketWidget;

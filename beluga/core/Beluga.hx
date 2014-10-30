@@ -72,7 +72,7 @@ class Beluga {
         //Compile JS assets
         beluga.core.macro.Javascript.compile();
         //Compile CSS assets
-        beluga.core.macro.Css.compile();
+        beluga.core.macro.CssBuilder.compile();
     }
     
     private function initDatabase(cnx) {

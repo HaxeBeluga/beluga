@@ -14,7 +14,7 @@ import haxe.Resource;
 import beluga.module.account.Account;
 import beluga.core.Beluga;
 import beluga.core.macro.Javascript;
-import beluga.core.macro.Css;
+import beluga.core.macro.CssBuilder;
 
 class Renderer {
 
@@ -44,7 +44,7 @@ class Renderer {
             content: templatelayout,
             title: title,
             js: Javascript.getHtmlInclude(),
-            css: Css.getHtmlInclude()
+            css: CssBuilder.getHtmlInclude()
         });
         return bodyhtml;
     }

@@ -11,6 +11,7 @@ package beluga.core.module;
 import beluga.core.Beluga;
 import beluga.core.BelugaException;
 import beluga.core.Widget;
+import beluga.core.macro.CssBuilder;
 import haxe.Resource;
 import haxe.xml.Fast;
 import sys.io.File;
@@ -18,6 +19,7 @@ import beluga.core.macro.ConfigLoader.ModuleConfig;
 
 @:autoBuild(beluga.core.metadata.Session.build())
 @:autoBuild(beluga.core.module.ModuleBuilder.build())
+@:autoBuild(beluga.core.macro.CssBuilder.readCssMetadata())
 class Module
 {
 #if !macro

@@ -28,6 +28,7 @@ import beluga.module.fileupload.FileUploadErrorKind;
 import php.Web;
 #end
 
+@:Css("/module/fileupload/view/css/")
 class Fileupload extends Module {
     public var triggers = new FileuploadTrigger();
     public var widgets : FileuploadWidget;

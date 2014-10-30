@@ -27,6 +27,7 @@ import beluga.core.FlashData;
 import haxe.Session;
 import beluga.core.api.BelugaApi;
 
+@:Css("/module/account/view/css/")
 class Account extends Module {
 
     public var triggers = new AccountTrigger();

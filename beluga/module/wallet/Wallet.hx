@@ -27,6 +27,7 @@ import beluga.module.wallet.WalletErrorKind;
 import beluga.module.wallet.repository.WalletRepository;
 import beluga.module.wallet.repository.CurrencyRepository;
 
+@:Css("/module/wallet/view/css/")
 class Wallet extends Module {
     public var triggers = new WalletTrigger();
     public var widgets: WalletWidget;
