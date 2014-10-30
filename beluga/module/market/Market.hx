@@ -26,11 +26,11 @@ import beluga.module.market.MarketErrorKind;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-@:Css("/module/market/view/css/")
+@:Css("/beluga/module/market/view/css/")
 class Market extends Module {
     public var triggers = new MarketTrigger();
     public var widgets: MarketWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/market/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/locale/");
 
     public var error: MarketErrorKind = MarketNone;
     public var info: MarketErrorKind = MarketNone;

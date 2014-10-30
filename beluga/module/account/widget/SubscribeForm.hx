@@ -19,9 +19,9 @@ import beluga.core.ResourceManager;
 class SubscribeForm extends MttWidget<Account> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/subscribe.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/account/view/tpl/subscribe.mtt");
         super(Account, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/subscribe/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/subscribe/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {

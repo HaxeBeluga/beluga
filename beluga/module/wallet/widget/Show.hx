@@ -24,9 +24,9 @@ import beluga.module.wallet.Wallet;
 class Show extends MttWidget<Wallet> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/wallet/view/tpl/show.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/wallet/view/tpl/show.mtt");
         super(Wallet, mttfile);
-        this.i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
+        this.i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }
 
     override private function getContext() {

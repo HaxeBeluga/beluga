@@ -27,11 +27,11 @@ import beluga.module.wallet.WalletErrorKind;
 import beluga.module.wallet.repository.WalletRepository;
 import beluga.module.wallet.repository.CurrencyRepository;
 
-@:Css("/module/wallet/view/css/")
+@:Css("/beluga/module/wallet/view/css/")
 class Wallet extends Module {
     public var triggers = new WalletTrigger();
     public var widgets: WalletWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/wallet/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/wallet/locale/");
 
     // repository
     public var wallet_repository = new WalletRepository();

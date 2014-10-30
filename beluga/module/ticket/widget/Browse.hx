@@ -18,9 +18,9 @@ import beluga.core.ResourceManager;
 class Browse extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/browse.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/browse.mtt");
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/browse/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/browse/", mod.i18n);
     }
 
     /// Set the context informations for the browse widget:

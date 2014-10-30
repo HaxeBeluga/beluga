@@ -17,7 +17,7 @@ import beluga.core.ResourceManager;
 class Admin extends MttWidget<Market> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/admin.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/market/view/tpl/admin.mtt");
         super(Market, mttfile);
     }
 

@@ -23,9 +23,9 @@ class MttObject {
 class Create extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/create.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/survey/view/tpl/create.mtt");
         super(Survey, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/create/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/survey/view/locale/create/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

@@ -32,7 +32,7 @@ class Survey extends Module {
     public var success_msg : String;
     public var actual_survey_id : Int;
 
-    public var i18n = BelugaI18n.loadI18nFolder("/module/survey/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/survey/locale/");
     public var widgets: SurveyWidget;
 
     // User to set back previous form values if it didn't work

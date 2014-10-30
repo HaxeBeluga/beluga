@@ -12,9 +12,9 @@ import beluga.core.ResourceManager;
 class Default extends MttWidget<Mail> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/mail/view/tpl/mail.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/mail/view/tpl/mail.mtt");
         super(Mail, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/mail/view/locale/create/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/mail/view/locale/create/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

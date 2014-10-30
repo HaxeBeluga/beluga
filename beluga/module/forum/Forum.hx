@@ -11,7 +11,7 @@ import beluga.module.forum.impl.channel.Logic;
 
 // TODO: create a system of action depending on right / user level. add channel == admin || post message == user, admin
 
-@:Css("/module/forum/view/css/")
+@:Css("/beluga/module/forum/view/css/")
 class Forum extends Module {
 
     private var key : Null<String> = null;

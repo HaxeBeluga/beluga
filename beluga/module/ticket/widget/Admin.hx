@@ -19,9 +19,9 @@ import beluga.core.ResourceManager;
 class Admin extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/admin.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/admin.mtt");
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/admin/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/admin/", mod.i18n);
     }
 
     /// Returns the context for the admin widget in the form of a List<Dynamic>

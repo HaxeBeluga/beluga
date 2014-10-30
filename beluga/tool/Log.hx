@@ -14,6 +14,7 @@ import haxe.macro.Context;
 import haxe.Template;
 import sys.io.File;
 import sys.io.Process;
+import beluga.core.ResourceManager;
 
 enum LogLevel {
     WARN;
@@ -54,18 +55,11 @@ class Log
 
     public static function flush()
     {
-        //Filter here
-        var file = getTemplate();
-        var tpl = new Template(file);
-        Sys.print(tpl.execute( {
+        var tpl = ResourceManager.getTpl("/beluga/tool/log.mtt");
+        var str = tpl.execute({
             debug: log
-        }));
-    }
-
-    //Get the template file
-    macro public static function getTemplate()
-    {
-        return Context.makeExpr(File.getContent(ConfigLoader.installPath + "/tool/log.mtt"), Context.currentPos());
+        });
+        Sys.print(str);
     }
 
 }

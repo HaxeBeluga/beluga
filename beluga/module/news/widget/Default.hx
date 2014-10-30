@@ -35,9 +35,9 @@ class NewsList {
 class Default extends MttWidget<News> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/default.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/news/view/tpl/default.mtt");
         super(News, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/default/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/news/view/locale/default/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

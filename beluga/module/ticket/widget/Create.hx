@@ -20,9 +20,9 @@ import beluga.core.ResourceManager;
 class Create extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/create.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/create.mtt");
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/create/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/create/", mod.i18n);
     }
 
     /// Returns the context for the view create ticket

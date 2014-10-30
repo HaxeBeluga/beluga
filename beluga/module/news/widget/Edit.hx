@@ -13,9 +13,9 @@ import beluga.core.ResourceManager;
 class Edit extends MttWidget<News> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/news/view/tpl/edit.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/news/view/tpl/edit.mtt");
         super(News, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/news/view/locale/edit/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/news/view/locale/edit/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

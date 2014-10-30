@@ -21,9 +21,9 @@ import beluga.core.ResourceManager;
 class Cart extends MttWidget<Market> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/market/view/tpl/cart.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/market/view/tpl/cart.mtt");
         super(Market, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/market/view/locale/cart/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/view/locale/cart/", mod.i18n);
     }
 
     override private function getContext(): Dynamic{

@@ -13,9 +13,9 @@ import beluga.core.ResourceManager;
 class Print extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/print_survey.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/survey/view/tpl/print_survey.mtt");
         super(Survey, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/print/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/survey/view/locale/print/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

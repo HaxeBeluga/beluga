@@ -57,20 +57,21 @@ class JavascriptBuilder
         fileContent += "js.JQuery.JQueryHelper.JTHIS.ready(function (_) for (i in o) { i.ready(); });";
 
         //Create a temporary file to compile our javascript
-        File.saveContent(ConfigLoader.installPath + "/../" + entryPoint + ".hx", fileContent + "    }\n}\n");
+        File.saveContent(Context.resolvePath("/beluga/") + entryPoint + ".hx", fileContent + "    }\n}\n");
 
         //Make sure the output dir exists for our js file
         FileSystem.createDirectory(realOutput + "/beluga/js");
 
         //Compile the actual javascript
         Sys.stderr().writeInput(new Process("haxe", [
-            "-cp", ConfigLoader.installPath + "/../",
+            "-lib", "beluga",
+            "-cp", Context.resolvePath("/beluga/"),
             "-main", entryPoint,
             "-js", realOutput + "/beluga/js/beluga.js"]).stderr);
 
 
         //Remove the temporary file
-        FileSystem.deleteFile(ConfigLoader.installPath + "/../" + entryPoint + ".hx");
+        FileSystem.deleteFile(Context.resolvePath("/beluga/" + entryPoint + ".hx"));
 
         return macro null;
     }

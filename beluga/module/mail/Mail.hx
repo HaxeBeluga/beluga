@@ -33,7 +33,7 @@ class Mail extends Module {
     private var actual_mail_id : Int;
 
     public var widgets: MailWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/mail/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/mail/locale/");
 
     public function new() {
         super();

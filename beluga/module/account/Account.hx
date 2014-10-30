@@ -29,7 +29,7 @@ import beluga.core.api.BelugaApi;
 
 import beluga.module.account.js.Javascript;
 
-@:Css("/module/account/view/css/")
+@:Css("/beluga/module/account/view/css/")
 class Account extends Module {
 
     public var triggers = new AccountTrigger();
@@ -43,7 +43,7 @@ class Account extends Module {
 
     public var isLogged(get, never) : Bool;
     
-    public var i18n = BelugaI18n.loadI18nFolder("/module/account/local/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/local/");
 
     @:FlashData
     public var lastSubscribeError(get, set) : Dynamic;

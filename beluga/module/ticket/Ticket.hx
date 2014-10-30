@@ -29,11 +29,11 @@ import beluga.module.ticket.TicketErrorKind;
 
 import sys.db.Manager;
 
-@:Css("/module/ticket/view/css/")
+@:Css("/beluga/module/ticket/view/css/")
 class Ticket extends Module {
     public var triggers = new TicketTrigger();
     public var widgets: TicketWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/ticket/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/locale/");
 
     public var show_id: Int = 0;
     public var error: TicketErrorKind = TicketErrorNone;

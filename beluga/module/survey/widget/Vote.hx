@@ -14,9 +14,9 @@ import beluga.core.ResourceManager;
 class Vote extends MttWidget<Survey> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/survey/view/tpl/vote.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/survey/view/tpl/vote.mtt");
         super(Survey, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/survey/view/locale/vote/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/survey/view/locale/vote/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

@@ -23,11 +23,11 @@ import beluga.module.news.model.NewsModel;
 import beluga.module.news.model.CommentModel;
 import beluga.module.news.NewsErrorKind;
 
-@:Css("/module/news/view/css/")
+@:Css("/beluga/module/news/view/css/")
 class News extends Module {
     public var triggers = new NewsTrigger();
     public var widgets: NewsWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/news/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/news/locale/");
 
     // Context variables
     public var error_id : NewsErrorKind;

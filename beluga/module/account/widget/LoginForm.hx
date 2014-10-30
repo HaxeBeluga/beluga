@@ -20,9 +20,9 @@ import beluga.core.ResourceManager;
 class LoginForm extends MttWidget<Account> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/account/view/tpl/login.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/account/view/tpl/login.mtt");
         super(Account, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/account/view/locale/login/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/login/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {

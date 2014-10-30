@@ -36,7 +36,7 @@ class Faq extends Module {
     public var answer : String;
 
     public var widgets: FaqWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/faq/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/faq/locale/");
 
     public function new() {
         super();

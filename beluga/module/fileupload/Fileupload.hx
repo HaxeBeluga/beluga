@@ -28,11 +28,11 @@ import beluga.module.fileupload.FileUploadErrorKind;
 import php.Web;
 #end
 
-@:Css("/module/fileupload/view/css/")
+@:Css("/beluga/module/fileupload/view/css/")
 class Fileupload extends Module {
     public var triggers = new FileuploadTrigger();
     public var widgets : FileuploadWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/fileupload/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/fileupload/locale/");
     public var error: FileUploadErrorKind = FileUploadNone;
 
     public function new() {

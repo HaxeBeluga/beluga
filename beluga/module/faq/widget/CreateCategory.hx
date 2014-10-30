@@ -10,9 +10,9 @@ import beluga.core.ResourceManager;
 class CreateCategory extends MttWidget<Faq> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/faq/view/tpl/create_category.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/faq/view/tpl/create_category.mtt");
         super(Faq, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/faq/view/locale/create_category/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/faq/view/locale/create_category/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

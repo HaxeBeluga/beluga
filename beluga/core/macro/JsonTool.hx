@@ -27,7 +27,7 @@ class JsonToolException {
 class JsonTool {
     #if macro
     public static function exprLoad(path : String) : Expr {
-        var json = Json.parse(File.getContent(ConfigLoader.installPath+path));
+        var json = Json.parse(File.getContent(Context.resolvePath(path)));
         return Context.makeExpr(json, Context.currentPos());
     }
 
@@ -36,7 +36,7 @@ class JsonTool {
         var json: Dynamic;
 
         try { // handle filesystem error, not critic, maybe we don't to fail for a non existing lang
-            content = File.getContent(ConfigLoader.installPath+path);
+            content = File.getContent(Context.resolvePath(path));
         } catch (e: Dynamic) {
             throw new JsonToolException(JTFileNotFoundException(e));
         }

@@ -14,9 +14,9 @@ import beluga.core.ResourceManager;
 class Print extends MttWidget<Notification> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/notification/view/tpl/print_notif.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/notification/view/tpl/print_notif.mtt");
         super(Notification, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/notification/view/locale/print/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/notification/view/locale/print/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {

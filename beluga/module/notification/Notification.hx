@@ -22,7 +22,7 @@ import beluga.module.notification.NotificationErrorKind;
 class Notification extends Module {
     public var triggers = new NotificationTrigger();
     public var widgets: NotificationWidget;
-    public var i18n = BelugaI18n.loadI18nFolder("/module/notification/locale/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/notification/locale/");
 
     // Interval variables for contexts
     public var error_id : NotificationErrorKind;

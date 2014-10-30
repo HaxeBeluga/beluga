@@ -23,9 +23,9 @@ import beluga.core.ResourceManager;
 class Show extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/module/ticket/view/tpl/create.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/create.mtt");
         super(Ticket, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/module/ticket/view/locale/show/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }
 
     /// Create the context for the Show view:

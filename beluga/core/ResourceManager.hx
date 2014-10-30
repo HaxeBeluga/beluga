@@ -61,7 +61,7 @@ class ResourceManager
         var relpath = expr_relpath.getCString();
         var resource_id = getId(relpath);
         if (!resourceLoaded(resource_id)) {
-            var fullpath = ConfigLoader.installPath + relpath;
+            var fullpath = Context.resolvePath(relpath);
             if (FileSystem.exists(fullpath) && !FileSystem.isDirectory(fullpath)) {
                 Context.addResource(resource_id, File.getBytes(fullpath));                
             } else {

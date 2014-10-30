@@ -24,7 +24,6 @@ class ConfigLoader {
     private static var builtConfigString = "";
 
     public static var config(default, default) : Fast;
-    public static var installPath(default, null) : String = getInstallPath();
 
     //Read only property to check if the macro has been executed or not. Useless outside of the macro context
     public static var isReady(get, never) : Bool;
@@ -140,20 +139,6 @@ class ConfigLoader {
         checkConfig();
 
         return macro null;
-    }
-
-    macro private static function getInstallPath() : Expr {
-        //Call "haxelib path beluga" to get the install path of beluga
-        var bytepath = new sys.io.Process("haxelib", ["path", "beluga"]).stdout.readAll();
-
-        var path = StringTools.trim(bytepath.readString(0, bytepath.length).split("\n")[0]);
-
-        //Check the install path of Beluga
-        if (path == "") {
-            throw new BelugaException("Can't locate haxe installation folder. Make sure haxe is installed through haxelib and haxelib itself is installed properly.");
-        }
-
-        return Context.makeExpr(path + "/beluga", Context.currentPos());
     }
 
     macro public static function getBaseUrl() :ExprOf<String> {
