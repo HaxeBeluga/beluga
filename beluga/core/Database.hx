@@ -12,7 +12,6 @@ import beluga.core.BelugaException;
 import haxe.xml.Fast;
 import sys.db.Manager;
 import sys.db.Connection;
-import beluga.core.macro.ModuleLoader;
 import sys.db.Object;
 import sys.db.TableCreate;
 import haxe.macro.Type;

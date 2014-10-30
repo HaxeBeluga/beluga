@@ -15,6 +15,7 @@ import haxe.Resource;
 import haxe.Session;
 import haxe.web.Dispatch;
 import haxe.xml.Fast;
+import haxe.ds.ObjectMap;
 import sys.io.File;
 import sys.FileSystem;
 import sys.db.Connection;
@@ -22,9 +23,9 @@ import sys.db.Connection;
 import beluga.core.Database;
 import beluga.core.api.BelugaApi;
 import beluga.core.macro.ConfigLoader;
-import beluga.core.macro.ModuleLoader;
 import beluga.core.FlashData;
 import beluga.core.module.Module;
+import beluga.core.module.ModuleBuilder;
 
 #if php
 import php.Web;
@@ -36,13 +37,11 @@ using StringTools;
 
 class Beluga {
     #if !macro
-    // Keep an instance of beluga's database, read only
     public var db(default, null) : Database;
-    //Instance of beluga API, read only
-    public var api : BelugaApi;
-
+    public var api(default, null) : BelugaApi;
+    private var modules = new ObjectMap<Dynamic, Module>();
     private static var instance = null;
-    
+
     public static var remotingCtx;
     public static function getInstance(cnx: Connection = null) : Beluga {
         if (instance == null) {
@@ -51,13 +50,13 @@ class Beluga {
         }
         return instance;
     }
+
     #if neko
     private function new(cnx: Connection  = null, createSessionDirectory : Bool = true)
     #else
     private function new(cnx: Connection = null)
     #end
     {
-        ModuleLoader.init();
         #if neko
         if (createSessionDirectory) {
             FileSystem.createDirectory(Web.getCwd() + "/temp");
@@ -74,7 +73,7 @@ class Beluga {
         //Compile CSS assets
         beluga.core.macro.CssBuilder.compile();
     }
-    
+
     private function initDatabase(cnx) {
         db = null;
         //Connect to database
@@ -87,16 +86,14 @@ class Beluga {
     
     //For all initialization code that require beluga's instance
     // -> called once by getInstance
-    private function initialize() {
-        //Init every modules
-        for (module in ConfigLoader.modules) {
-            var moduleInstance : Module = cast ModuleLoader.getModuleInstanceByName(module.name);
-            moduleInstance._loadConfig(this, module);
+     private function initialize() {
+     var modules = ModuleBuilder.createInstances();
+        for (module in modules) {
+            this.modules.set(Type.getClass(module), module);
         }
-         for (module in ConfigLoader.modules) {
-            var moduleInstance : Module = cast ModuleLoader.getModuleInstanceByName(module.name);
-            moduleInstance.initialize(this);
-         }
+        for (module in modules) {
+            module.initialize(this);
+        }
     }
 
     public function dispatch(defaultTrigger : String = "index") {
@@ -109,8 +106,8 @@ class Beluga {
         Session.close(); //Very important under neko, otherwise, session is not commit and modifications may be ignored
     }
 
-    public function getModuleInstance < T > (clazz : Class<T>, ?pos : haxe.PosInfos) : T {
-        return cast ModuleLoader.getModuleInstanceByName(Type.getClassName(clazz));
+    public function getModuleInstance < T > (clazz : Class<T>) : T {
+        return cast modules.get(cast clazz);
     }
 
     public function getDispatchUri() : String {

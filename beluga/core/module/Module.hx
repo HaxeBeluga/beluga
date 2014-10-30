@@ -15,10 +15,9 @@ import beluga.core.macro.CssBuilder;
 import haxe.Resource;
 import haxe.xml.Fast;
 import sys.io.File;
-import beluga.core.macro.ConfigLoader.ModuleConfig;
 
 @:autoBuild(beluga.core.metadata.Session.build())
-@:autoBuild(beluga.core.module.ModuleBuilder.build())
+@:autoBuild(beluga.core.module.ModuleBuilder.registerModule())
 @:autoBuild(beluga.core.macro.CssBuilder.readCssMetadata())
 class Module
 {
@@ -30,7 +29,7 @@ class Module
     {
     }
 
-    public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
+    public function _loadConfig(beluga : Beluga) : Void {
         this.beluga = beluga;
     }
 
