@@ -8,36 +8,47 @@
 
 package beluga.module.survey.js;
 
+#if js
 import js.JQuery;
+#end
 
-class Javascript {
+class Javascript implements beluga.core.macro.Javascript  {
 
-    public static function init() {
-    	var jq = JQueryHelper.get_JTHIS();
+    public function new() {
+        //Called when the script is loaded
+        #if js
+        js.Browser.window.console.log("Survey script started");
+        #end
+    }
 
-    	if (jq.find("#choice").children().size() < 2)
-    		addEntry();
-    	jq.find("#addEntry").click(function() {
-		  	addEntry();
-		});
+    public function ready() {
+        #if js
+        if (new JQuery("#choice").children().size() < 2)
+            addEntry();
+        new JQuery("#addEntry").click(function() {
+            trace("toto");
+            addEntry();
+        });
+        #end
     }
 
     public static function addEntry(){
-    	var jq = JQueryHelper.get_JTHIS();
-    	var nb = jq.find("#choice").children().size();
+        #if js
+        var nb = new JQuery("#choice").children().size();
 
-		if (nb == 0) {
-			var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + "\">";
+        if (nb == 0) {
+            var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + "\">";
 
-			tmp = "<div class=\"form-survey\">" + tmp + "</div>";
-    		jq.find("#choice").append(tmp);
-			nb = 1;
-		}
-		if (nb < 20) {
-			var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + nb + "\">";
+            tmp = "<div class=\"form-survey\">" + tmp + "</div>";
+            new JQuery("#choice").append(tmp);
+            nb = 1;
+        }
+        if (nb < 20) {
+            var tmp =  "<input type=\"text\" class=\"form-control\" id=\"choices\" placeholder=\"New choice\" name=\"choices" + nb + "\">";
 
-			tmp = "<div class=\"form-survey\">" + tmp + "</div>";
-			jq.find("#choice").append(tmp);
-		}
-	}
+            tmp = "<div class=\"form-survey\">" + tmp + "</div>";
+            new JQuery("#choice").append(tmp);
+        }
+        #end
+    }
 }

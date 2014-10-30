@@ -27,6 +27,8 @@ import beluga.core.FlashData;
 import haxe.Session;
 import beluga.core.api.BelugaApi;
 
+import beluga.module.account.js.Javascript;
+
 @:Css("/module/account/view/css/")
 class Account extends Module {
 

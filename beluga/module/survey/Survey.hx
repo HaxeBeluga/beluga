@@ -24,6 +24,8 @@ import beluga.module.survey.model.SurveyModel;
 import beluga.module.survey.SurveyWidget;
 import beluga.module.survey.SurveyErrorKind;
 
+import beluga.module.survey.js.Javascript;
+
 class Survey extends Module {
     public var triggers = new SurveyTrigger();
     public var error_id : SurveyErrorKind;

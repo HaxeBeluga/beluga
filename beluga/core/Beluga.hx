@@ -70,7 +70,7 @@ class Beluga {
         remotingCtx = new haxe.remoting.Context();
         
         //Compile JS assets
-        beluga.core.macro.Javascript.compile();
+        beluga.core.macro.JavascriptBuilder.compile();
         //Compile CSS assets
         beluga.core.macro.CssBuilder.compile();
     }
