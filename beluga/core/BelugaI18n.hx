@@ -8,7 +8,7 @@
 
 package beluga.core;
 
-import beluga.core.macro.JsonTool;
+import beluga.macro.JsonTool;
 import haxe.macro.Context;
 import beluga.tool.DynamicTool;
 import haxe.macro.Expr;

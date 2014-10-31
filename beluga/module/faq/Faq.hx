@@ -12,7 +12,7 @@ import beluga.module.faq.api.FaqApi;
 import haxe.xml.Fast;
 import haxe.ds.Option;
 
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.Beluga;
 import beluga.core.BelugaI18n;
 

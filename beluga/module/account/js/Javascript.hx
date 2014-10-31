@@ -8,7 +8,7 @@
 
 package beluga.module.account.js;
 
-class Javascript implements beluga.core.macro.Javascript {
+class Javascript implements beluga.macro.Javascript {
 
     
     public function new() {

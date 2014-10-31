@@ -13,7 +13,7 @@ import beluga.module.ticket.api.TicketApi;
 import haxe.xml.Fast;
 
 // Beluga core
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.Beluga;
 import beluga.core.BelugaI18n;
 

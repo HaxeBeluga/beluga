@@ -9,8 +9,8 @@
 package beluga.module.market.widget;
 
 import beluga.core.Beluga;
-import beluga.core.widget.MttWidget;
-import beluga.core.macro.ConfigLoader;
+import beluga.widget.MttWidget;
+import beluga.macro.ConfigLoader;
 import beluga.module.market.Market;
 import beluga.core.ResourceManager;
 

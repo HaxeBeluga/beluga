@@ -9,7 +9,7 @@
 package beluga.module.market;
 
 // Beluga core
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.Beluga;
 import beluga.core.BelugaI18n;
 import beluga.module.market.api.MarketApi;

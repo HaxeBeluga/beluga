@@ -21,11 +21,11 @@ import sys.FileSystem;
 import sys.db.Connection;
 
 import beluga.core.Database;
-import beluga.core.api.BelugaApi;
-import beluga.core.macro.ConfigLoader;
+import beluga.api.BelugaApi;
+import beluga.macro.ConfigLoader;
 import beluga.core.FlashData;
-import beluga.core.module.Module;
-import beluga.core.module.ModuleBuilder;
+import beluga.module.Module;
+import beluga.module.ModuleBuilder;
 
 #if php
 import php.Web;
@@ -69,9 +69,9 @@ class Beluga {
         remotingCtx = new haxe.remoting.Context();
         
         //Compile JS assets
-        beluga.core.macro.JavascriptBuilder.compile();
+        beluga.macro.JavascriptBuilder.compile();
         //Compile CSS assets
-        beluga.core.macro.CssBuilder.compile();
+        beluga.macro.CssBuilder.compile();
     }
 
     private function initDatabase(cnx) {

@@ -10,7 +10,6 @@ package modules.wallet_test;
 
 // Beluga
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.module.wallet.Wallet;
 import beluga.module.wallet.WalletErrorKind;
 import beluga.module.account.Account;

@@ -10,8 +10,8 @@ package beluga.module.survey;
 
 import sys.db.Types;
 
-import beluga.core.trigger.Trigger;
-import beluga.core.trigger.TriggerVoid;
+import beluga.trigger.Trigger;
+import beluga.trigger.TriggerVoid;
 
 import beluga.module.survey.SurveyErrorKind;
 

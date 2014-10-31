@@ -8,7 +8,7 @@
 
 package beluga.tool;
 
-import beluga.core.macro.ConfigLoader;
+import beluga.macro.ConfigLoader;
 import haxe.macro.Compiler;
 import haxe.macro.Context;
 import haxe.Template;

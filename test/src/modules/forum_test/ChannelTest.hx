@@ -17,7 +17,6 @@ import main_view.Renderer;
 
 // Beluga
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.module.forum.Forum;
 
 #if php

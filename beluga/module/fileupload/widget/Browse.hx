@@ -9,8 +9,8 @@
 package beluga.module.fileupload.widget;
 
 import beluga.core.Beluga;
-import beluga.core.widget.MttWidget;
-import beluga.core.macro.ConfigLoader;
+import beluga.widget.MttWidget;
+import beluga.macro.ConfigLoader;
 import beluga.module.fileupload.Fileupload;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;

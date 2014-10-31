@@ -9,10 +9,10 @@
 package beluga.module.account.widget;
 
 import beluga.core.Beluga;
-import beluga.core.widget.MttWidget;
-import beluga.core.macro.ConfigLoader;
+import beluga.widget.MttWidget;
+import beluga.macro.ConfigLoader;
 import beluga.module.account.Account;
-import beluga.core.form.Validator;
+import beluga.api.form.Validator;
 import beluga.core.BelugaI18n;
 import beluga.core.ResourceManager;
 

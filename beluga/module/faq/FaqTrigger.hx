@@ -8,8 +8,8 @@
 
 package beluga.module.faq;
 
-import beluga.core.trigger.Trigger;
-import beluga.core.trigger.TriggerVoid;
+import beluga.trigger.Trigger;
+import beluga.trigger.TriggerVoid;
 
 import beluga.module.faq.FaqErrorKind;
 

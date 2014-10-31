@@ -10,7 +10,6 @@ package modules.market_test;
 
 // Beluga
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.module.market.Market;
 import beluga.module.account.Account;
 import beluga.module.market.MarketErrorKind;

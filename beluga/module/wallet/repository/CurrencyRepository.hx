@@ -8,7 +8,7 @@
 
 package beluga.module.wallet.repository;
 
-import beluga.core.module.SpodRepository;
+import beluga.module.SpodRepository;
 
 // beluga mods
 import beluga.module.wallet.model.Currency;

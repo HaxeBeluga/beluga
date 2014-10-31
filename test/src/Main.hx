@@ -9,8 +9,7 @@
 package ;
 
 import beluga.core.Beluga;
-import beluga.core.api.BelugaApi;
-import beluga.core.Widget;
+import beluga.api.BelugaApi;
 import beluga.core.BelugaException;
 import beluga.tool.Log;
 import beluga.module.account.Account;

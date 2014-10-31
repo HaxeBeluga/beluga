@@ -8,17 +8,15 @@
 
 package beluga.module.account.api;
 
-import beluga.core.rest.REST;
+import beluga.rest.REST;
 import beluga.module.account.rest.UserRest;
 import beluga.module.faq.widget.Print;
 import haxe.web.Dispatch;
 
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.core.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
-import beluga.core.form.Object;
 
 class AccountApi  {
     public var beluga : Beluga;

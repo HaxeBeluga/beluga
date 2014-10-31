@@ -14,7 +14,7 @@ import haxe.xml.Fast;
 import sys.io.FileOutput;
 
 // Beluga core
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.Beluga;
 
 // Beluga mods

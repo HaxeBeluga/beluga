@@ -12,7 +12,7 @@ import beluga.module.survey.api.SurveyApi;
 import haxe.xml.Fast;
 
 import beluga.core.Beluga;
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.BelugaI18n;
 
 import beluga.module.account.model.User;

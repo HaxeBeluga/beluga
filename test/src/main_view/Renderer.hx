@@ -8,13 +8,13 @@
 
 package main_view;
 
-import beluga.core.macro.ConfigLoader;
+import beluga.macro.ConfigLoader;
 import haxe.macro.Context;
 import haxe.Resource;
 import beluga.module.account.Account;
 import beluga.core.Beluga;
-import beluga.core.macro.JavascriptBuilder;
-import beluga.core.macro.CssBuilder;
+import beluga.macro.JavascriptBuilder;
+import beluga.macro.CssBuilder;
 
 class Renderer {
 

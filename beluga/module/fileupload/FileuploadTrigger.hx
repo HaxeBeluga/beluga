@@ -8,8 +8,8 @@
 
 package beluga.module.fileupload;
 
-import beluga.core.trigger.Trigger;
-import beluga.core.trigger.TriggerVoid;
+import beluga.trigger.Trigger;
+import beluga.trigger.TriggerVoid;
 import beluga.module.fileupload.FileUploadErrorKind;
 
 import sys.db.Types;

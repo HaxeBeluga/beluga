@@ -12,7 +12,7 @@ package beluga.module.survey.js;
 import js.JQuery;
 #end
 
-class Javascript implements beluga.core.macro.Javascript  {
+class Javascript implements beluga.macro.Javascript  {
 
     public function new() {
         //Called when the script is loaded

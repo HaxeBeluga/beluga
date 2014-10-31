@@ -6,11 +6,11 @@ import haxe.macro.Context;
 import haxe.Template;
 import sys.io.File;
 import sys.FileSystem;
-import beluga.core.macro.ConfigLoader;
+import beluga.macro.ConfigLoader;
 import haxe.Resource;
 
 using StringTools;
-using beluga.core.macro_tool.ExprUtils;
+using beluga.macro_tool.ExprUtils;
 using Lambda;
 
 class ResourceManager

@@ -1,6 +1,6 @@
 package beluga.module.account.rest;
 
-import beluga.core.rest.Resource;
+import beluga.rest.Resource;
 
 /**
  * ...

@@ -8,8 +8,8 @@
 
 package beluga.module.market;
 
-import beluga.core.trigger.Trigger;
-import beluga.core.trigger.TriggerVoid;
+import beluga.trigger.Trigger;
+import beluga.trigger.TriggerVoid;
 import beluga.module.market.MarketErrorKind;
 import beluga.module.market.model.Product;
 

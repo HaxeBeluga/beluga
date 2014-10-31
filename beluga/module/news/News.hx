@@ -15,7 +15,7 @@ import sys.db.Manager;
 import sys.db.Types;
 
 import beluga.core.Beluga;
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.BelugaI18n;
 
 import beluga.module.account.Account;

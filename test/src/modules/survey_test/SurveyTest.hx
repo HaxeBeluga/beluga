@@ -13,8 +13,6 @@ import haxe.Resource;
 import main_view.Renderer;
 
 import beluga.core.Beluga;
-import beluga.core.Widget;
-
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import beluga.module.survey.Survey;

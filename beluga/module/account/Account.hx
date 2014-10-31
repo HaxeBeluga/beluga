@@ -8,7 +8,7 @@
 
 package beluga.module.account;
 
-import beluga.core.metadata.Session;
+import beluga.metadata.Session;
 import beluga.module.account.api.AccountApi;
 import haxe.xml.Fast;
 import sys.db.Types.SId;
@@ -16,16 +16,16 @@ import sys.db.Types;
 import sys.db.Manager;
 
 import beluga.core.Beluga;
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
 import beluga.core.BelugaI18n;
 import beluga.module.account.Account;
-import beluga.core.form.Validator;
+import beluga.api.form.Validator;
 import beluga.core.FlashData;
 import haxe.Session;
-import beluga.core.api.BelugaApi;
+import beluga.api.BelugaApi;
 
 import beluga.module.account.js.Javascript;
 

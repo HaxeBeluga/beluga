@@ -4,7 +4,7 @@ import beluga.module.forum.api.ForumApi;
 import haxe.xml.Fast;
 
 import beluga.core.Beluga;
-import beluga.core.module.Module;
+import beluga.module.Module;
 
 import beluga.module.forum.impl.channel.Display;
 import beluga.module.forum.impl.channel.Logic;

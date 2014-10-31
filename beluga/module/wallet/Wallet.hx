@@ -14,7 +14,7 @@ import haxe.xml.Fast;
 import haxe.ds.Option;
 
 // Beluga core
-import beluga.core.module.Module;
+import beluga.module.Module;
 import beluga.core.Beluga;
 import beluga.core.BelugaI18n;
 

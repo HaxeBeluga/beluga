@@ -13,7 +13,6 @@ import haxe.web.Dispatch;
 
 // Beluga core
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.core.BelugaException;
 
 // Beluga mods

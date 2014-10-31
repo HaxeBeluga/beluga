@@ -10,7 +10,6 @@ package modules.mail_test;
 
 // Beluga
 import beluga.core.Beluga;
-import beluga.core.Widget;
 import beluga.module.mail.Mail;
 import beluga.module.mail.MailErrorKind;
 import beluga.module.account.Account;
