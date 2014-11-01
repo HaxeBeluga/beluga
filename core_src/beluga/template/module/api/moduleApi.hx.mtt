@@ -1,0 +1,20 @@
+package beluga.module.::packageName::.api;
+
+import haxe.web.Dispatch;
+
+import beluga.core.Beluga;
+import beluga.core.Widget;
+import beluga.module.::packageName::.::className::;
+
+class ::className::Api {
+	public var beluga : Beluga;
+    public var module : ::className::;
+
+    public function new() {
+
+    }
+
+    public function doDefault() {
+        this.module.triggers.defaultPage.dispatch();
+    }
+}

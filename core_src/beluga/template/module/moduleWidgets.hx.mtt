@@ -1,0 +1,14 @@
+package beluga.module.::packageName::;
+
+import beluga.module.::packageName::.widget.::className::HelloWorld;
+
+class ::className::Widgets
+{
+	public var helloWorld = new ::className::HelloWorld();
+
+	public function new()
+	{
+
+	}
+
+}

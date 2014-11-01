@@ -1,0 +1,7 @@
+<div class="console">
+    <ul>
+        ::foreach debug::
+            <li class="::level::">::message::</li>
+        ::end::
+    </ul>
+</div>
