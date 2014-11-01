@@ -57,7 +57,7 @@ class ResourceManager
     
     #else
     
-    private static function register(expr_relpath : Expr) : String {
+    public static function register(expr_relpath : Expr) : String {
         var relpath = expr_relpath.getCString();
         var resource_id = getId(relpath);
         if (!resourceLoaded(resource_id)) {

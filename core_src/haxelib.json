@@ -8,6 +8,7 @@
   "version": "0.1.0",
   "url": "http://myproject.org",
   "dependencies": {
-    "session" : ""
+    "session" : "",
+    "tink_core" : ""
   }
 }

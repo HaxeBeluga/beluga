@@ -17,17 +17,18 @@ import beluga.tool.DynamicTool;
 class MttWidget<ModuleType: Module> implements Widget {
     public var mod: ModuleType;
     public var i18n : Dynamic;
+    public static var bootstrap = Layout.newFromPath("/beluga/widget/layout/bootstrap.mtt");
 
     private static var id = 0;
-    private var template : Template;
+    private var layout : Layout;
 
-    public function new(clazz : Class<ModuleType>, templateFileContent : String) {
-        this.template = new haxe.Template(templateFileContent);
+    public function new<T : Layout, Template>(clazz : Class<ModuleType>, layout : Layout) {
+        this.layout = layout;
         this.mod = cast Beluga.getInstance().getModuleInstance(clazz);
     }
 
     public function render() : String {
-        return template.execute( getContextIntern(), getMacro());
+        return layout.execute( getContextIntern(), getMacro());
     }
 
     inline private function getContextIntern() {

@@ -9,12 +9,13 @@ import beluga.module.news.News;
 import beluga.module.account.Account;
 import beluga.module.news.model.NewsModel;
 import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Edit extends MttWidget<News> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/news/view/tpl/edit.mtt");
-        super(News, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/news/view/tpl/edit.mtt");
+        super(News, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/news/view/locale/edit/", mod.i18n);
     }
 

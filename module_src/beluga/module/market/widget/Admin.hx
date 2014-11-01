@@ -12,13 +12,13 @@ import beluga.Beluga;
 import beluga.widget.MttWidget;
 import beluga.ConfigLoader;
 import beluga.module.market.Market;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Admin extends MttWidget<Market> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/market/view/tpl/admin.mtt");
-        super(Market, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/market/view/tpl/admin.mtt");
+        super(Market, layout);
     }
 
     override private function getContext(): Dynamic {
