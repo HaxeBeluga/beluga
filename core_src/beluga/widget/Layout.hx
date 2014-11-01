@@ -27,7 +27,7 @@ class Layout
         this.parent = parent;
     }
 
-    macro public function bind(ethis : Expr, tpl_path : ExprOf<String>) {
+    macro public function wrap(ethis : Expr, tpl_path : ExprOf<String>) {
         var tpl_id = ResourceManager.register(tpl_path);
         return macro new Layout(beluga.resource.ResourceManager.dynGetTplFromId($v{tpl_id}), ${ethis});
     }

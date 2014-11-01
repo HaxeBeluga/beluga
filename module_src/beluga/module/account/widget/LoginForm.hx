@@ -20,7 +20,7 @@ import beluga.widget.Layout;
 class LoginForm extends MttWidget<Account> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = MttWidget.bootstrap.bind("/beluga/module/account/view/tpl/login.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/account/view/tpl/login.mtt");
         super(Account, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/login/", mod.i18n);
     }
