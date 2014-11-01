@@ -9,7 +9,7 @@
 package modules.ticket_test;
 
 // Beluga
-import beluga.core.Beluga;
+import beluga.Beluga;
 import beluga.module.ticket.Ticket;
 import beluga.module.notification.Notification;
 import beluga.module.ticket.TicketErrorKind;

@@ -16,7 +16,7 @@ import haxe.Resource;
 import main_view.Renderer;
 
 // Beluga
-import beluga.core.Beluga;
+import beluga.Beluga;
 import beluga.module.forum.Forum;
 
 #if php
@@ -44,7 +44,7 @@ class ChannelTest
 
   public function doDisplayChannelPage()
   {
-      /*TODO use new widget
+    /*TODO use new widget
     var forumWidget = this.frm.getWidget("display_channel");
     forumWidget.context = this.frm.getChannelContext();
 

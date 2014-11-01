@@ -1,0 +1,4 @@
+-main Main
+-cp src
+-lib tink_macro
+-neko ../src/run.n

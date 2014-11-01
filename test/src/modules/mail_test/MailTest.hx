@@ -9,7 +9,7 @@
 package modules.mail_test;
 
 // Beluga
-import beluga.core.Beluga;
+import beluga.Beluga;
 import beluga.module.mail.Mail;
 import beluga.module.mail.MailErrorKind;
 import beluga.module.account.Account;

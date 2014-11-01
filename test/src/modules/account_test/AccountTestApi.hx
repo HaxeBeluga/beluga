@@ -10,7 +10,7 @@ package modules.account_test;
 
 import haxe.Resource;
 import haxe.web.Dispatch;
-import beluga.core.Beluga;
+import beluga.Beluga;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import modules.account_test.AccountTest;

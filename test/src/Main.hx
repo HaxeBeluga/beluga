@@ -8,10 +8,10 @@
 
 package ;
 
-import beluga.core.Beluga;
+import beluga.Beluga;
 import beluga.api.BelugaApi;
-import beluga.core.BelugaException;
-import beluga.tool.Log;
+import beluga.BelugaException;
+import beluga.log.Log;
 import beluga.module.account.Account;
 import haxe.web.Dispatch;
 import haxe.Resource;
