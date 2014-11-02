@@ -8,8 +8,7 @@
 
 package modules.account_test;
 
-import beluga.core.Beluga;
-import beluga.core.Widget;
+import beluga.Beluga;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import beluga.module.account.LoginFailCause;
@@ -22,7 +21,7 @@ import php.Web;
 import neko.Web;
 #end
 
-using beluga.core.trigger.TriggerRedirect;
+using beluga.trigger.TriggerRedirect;
 
 class AccountTest {
 
@@ -77,6 +76,7 @@ class AccountTest {
             Sys.print(html);
             return;
         }
+        /* TODO use new widget
         var subscribeWidget = acc.getWidget("info");
         if (!user.isAdmin)
             subscribeWidget.context = {user : user, path : "/accountTest/"};
@@ -89,5 +89,6 @@ class AccountTest {
             subscribeWidget: subscribeWidget.render()
         });
         Sys.print(html);
+        */
     }
 }

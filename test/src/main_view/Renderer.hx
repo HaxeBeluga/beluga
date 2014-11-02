@@ -8,13 +8,13 @@
 
 package main_view;
 
-import beluga.core.macro.ConfigLoader;
+import beluga.ConfigLoader;
 import haxe.macro.Context;
 import haxe.Resource;
 import beluga.module.account.Account;
-import beluga.core.Beluga;
-import beluga.core.macro.Javascript;
-import beluga.core.macro.Css;
+import beluga.Beluga;
+import beluga.resource.JavascriptBuilder;
+import beluga.resource.CssBuilder;
 
 class Renderer {
 
@@ -43,8 +43,8 @@ class Renderer {
             base_url: ctx.base_url,
             content: templatelayout,
             title: title,
-            js: Javascript.getHtmlInclude(),
-            css: Css.getHtmlInclude()
+            js: JavascriptBuilder.getHtmlInclude(),
+            css: CssBuilder.getHtmlInclude()
         });
         return bodyhtml;
     }

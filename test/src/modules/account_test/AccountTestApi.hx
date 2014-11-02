@@ -10,8 +10,7 @@ package modules.account_test;
 
 import haxe.Resource;
 import haxe.web.Dispatch;
-import beluga.core.Beluga;
-import beluga.core.Widget;
+import beluga.Beluga;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
 import modules.account_test.AccountTest;
@@ -82,6 +81,7 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
+        /*TODO use new widget
         var subscribeWidget = acc.getWidget("info");
         subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getDisconnectedUsers(), friends: this.acc.getFriends(user.id),
             not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
@@ -91,6 +91,7 @@ class AccountTestApi {
             subscribeWidget: tmp
         });
         Sys.print(html);
+        */
     }
 
     public function doLogout() {
@@ -115,6 +116,7 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
+        /*TODO use new widget
         var subscribeWidget = acc.getWidget("edit");
         subscribeWidget.context = {user : user, path : "/accountTest/"};
 
@@ -122,6 +124,7 @@ class AccountTestApi {
             subscribeWidget: subscribeWidget.render()
         });
         Sys.print(html);
+        */
     }
 
     public function doDelete(args : {id: Int}) {
@@ -136,6 +139,7 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
+        /*TODO use new widget
         var subscribeWidget = acc.getWidget("info");
         subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
 
@@ -143,6 +147,7 @@ class AccountTestApi {
             subscribeWidget: subscribeWidget.render()
         });
         Sys.print(html);
+        */
     }
 
     public function deleteUserSuccess() {
