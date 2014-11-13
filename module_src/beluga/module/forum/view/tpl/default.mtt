@@ -1,0 +1,45 @@
+<div>
+	<h1 class="center">$$i18n(forum_module)</h1><br/>
+	::if (error)::
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
+	::if (success)::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	::end::
+	::if (categories.length > 0)::
+	<div class="panel panel-default">
+		<div class="panel-heading">$$i18n(categories)</div>
+		<table class="table">
+			<tbody>
+				::foreach categories::
+				<tr>
+					<td>::title::</td>
+					<td>::number_of_topics::</td>
+					<td>::last_message::</td>
+				</tr>
+				::end::
+			</tbody>
+		</table>
+	</div>
+	::end::
+	::if (topics.length > 0)::
+	<div class="panel panel-default">
+		<div class="panel-heading">$$i18n(topics)</div>
+		<table class="table">
+			<tbody>
+			::foreach topics::
+			<tr>
+				<td>::title::</td>
+				<td>::number_of_messages::</td>
+				<td>::last_message::</td>
+			</tr>
+			::end::
+			</tbody>
+		</table>
+	</div>
+	::end::
+</div>

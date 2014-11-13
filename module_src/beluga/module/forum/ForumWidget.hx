@@ -6,14 +6,12 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
-package beluga.module.news;
+package beluga.module.forum;
 
-enum NewsErrorKind {
-    MissingLogin;
-    NewsNotFound;
-    CommentNotFound;
-    NotAllowed;
-    MissingMessage;
-    MissingTitle;
-    None;
+import beluga.module.forum.widget.Default;
+
+class ForumWidget {
+    public var forum = new Default();
+
+    public function new() {}
 }

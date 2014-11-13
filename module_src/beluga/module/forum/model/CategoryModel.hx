@@ -11,19 +11,18 @@ package beluga.module.forum.model;
 import sys.db.Object;
 import sys.db.Types;
 
-import beluga.module.forum.model.Topic;
 import beluga.module.account.model.User;
 
-@:table("beluga_for_message")
+@:table("beluga_for_category")
 @:id(id)
 @:build(beluga.Database.registerModel())
-class Message extends Object {
+class CategoryModel extends Object {
     public var id : SId;
-    public var author_id: SInt;
-    public var topic_id: SInt;
-    public var text : SText;
-    public var date: SDate;
+    public var parent_id: SInt;
+    public var name : STinyText;
+    public var description: SText;
+    public var creator_id: SInt;
 
-    @:relation(author_id) public var author : User;
-    @:relation(topic_id) public var topic : Topic;
+    @:relation(parent_id) public var parent : CategoryModel;
+    @:relation(creator_id) public var creator : User;
 }
