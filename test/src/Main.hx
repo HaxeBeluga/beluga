@@ -8,15 +8,20 @@
 
 package ;
 
+import main_view.Renderer;
+
 import beluga.Beluga;
 import beluga.api.BelugaApi;
 import beluga.BelugaException;
 import beluga.log.Log;
+
 import beluga.module.account.Account;
+import beluga.module.account.model.User;
+
 import haxe.web.Dispatch;
 import haxe.Resource;
 import haxe.crypto.Md5;
-import beluga.module.account.model.User;
+
 import modules.account_test.AccountTest;
 import modules.account_test.AccountTestApi;
 import modules.ticket_test.TicketTest;
@@ -25,8 +30,7 @@ import modules.fileupload_test.FileUploadTest;
 import modules.notification_test.NotificationTest;
 import modules.wallet_test.WalletTest;
 import modules.market_test.MarketTest;
-import main_view.Renderer;
-import modules.forum_test.ChannelTest;
+import modules.forum_test.ForumTest;
 import modules.news_test.NewsTest;
 import modules.mail_test.MailTest;
 import modules.faq_test.FaqTest;
@@ -56,6 +60,7 @@ class Main {
     public static var faq : FaqTest;
     public static var mail : MailTest;
     public static var notification: NotificationTest;
+    public static var forum : ForumTest;
 
     static function main()
     {
@@ -73,6 +78,7 @@ class Main {
             news = new NewsTest(beluga);
             mail = new MailTest(beluga);
             notification = new NotificationTest(beluga);
+            forum = new ForumTest(beluga);
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             }
@@ -116,7 +122,7 @@ class Main {
     }
 
     public function doForumTest(d : Dispatch) {
-        d.dispatch(new ChannelTest(beluga));
+        d.dispatch(new ForumTest(beluga));
     }
 
     public function doNewsTest(d : Dispatch) {
