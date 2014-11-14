@@ -50,35 +50,12 @@ import neko.Web;
 class Main {
     public static var beluga : Beluga;
 
-    public static var account : AccountTest;
-    public static var file_upload : FileUploadTest;
-    public static var ticket : TicketTest;
-    public static var survey : SurveyTest;
-    public static var market : MarketTest;
-    public static var wallet : WalletTest;
-    public static var news : NewsTest;
-    public static var faq : FaqTest;
-    public static var mail : MailTest;
-    public static var notification: NotificationTest;
-    public static var forum : ForumTest;
-
     static function main()
     {
         Assets.build();
 
         try {
             beluga = Beluga.getInstance();
-            account = new AccountTest(beluga);
-            file_upload = new FileUploadTest(beluga);
-            ticket = new TicketTest(beluga);
-            survey = new SurveyTest(beluga);
-            market = new MarketTest(beluga);
-            wallet = new WalletTest(beluga);
-            faq = new FaqTest(beluga);
-            news = new NewsTest(beluga);
-            mail = new MailTest(beluga);
-            notification = new NotificationTest(beluga);
-            forum = new ForumTest(beluga);
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             }
