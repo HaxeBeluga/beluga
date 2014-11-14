@@ -51,6 +51,7 @@ class Forum extends Module {
         description = "";
         topic_id = None;
         category_id = None;
+        error_id = None;
     }
 
     override public function initialize(beluga : Beluga) : Void {
@@ -240,7 +241,8 @@ class Forum extends Module {
         }
 
         //check if the category exists
-        if (getCategory(Some(args.category_id)) == null) {
+        var category = getCategory(Some(args.category_id));
+        if (category == null) {
             error_id = UnknownTopic;
             this.triggers.postMessageFail.dispatch({error: UnknownTopic});
             return;
@@ -267,6 +269,10 @@ class Forum extends Module {
         msg.author_id = user.id;
         msg.insert();
 
+        topic.last_message_id = msg.id;
+        topic.update();
+        category.last_message_id = msg.id;
+        category.update();
         success_msg = "message_post_success";
         this.triggers.postMessageSuccess.dispatch();
     }
