@@ -12,9 +12,10 @@ import sys.db.Object;
 import sys.db.Types;
 
 import beluga.module.forum.model.CategoryModel;
+import beluga.module.forum.model.Message;
 import beluga.module.account.model.User;
 
-@:table("beluga_for_topic")
+@:table("beluga_frm_topic")
 @:id(id)
 @:build(beluga.Database.registerModel())
 class Topic extends Object {
@@ -24,7 +25,9 @@ class Topic extends Object {
     public var creator_id: SInt;
     public var is_solved: SBool;
     public var date: SDate;
+    public var last_message_id: SInt;
 
     @:relation(category_id) public var category : CategoryModel;
     @:relation(creator_id) public var creator : User;
+    @:relation(last_message_id) public var last_message : Message;
 }

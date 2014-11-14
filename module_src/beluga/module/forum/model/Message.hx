@@ -14,7 +14,7 @@ import sys.db.Types;
 import beluga.module.forum.model.Topic;
 import beluga.module.account.model.User;
 
-@:table("beluga_for_message")
+@:table("beluga_frm_message")
 @:id(id)
 @:build(beluga.Database.registerModel())
 class Message extends Object {

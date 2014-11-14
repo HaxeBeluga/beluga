@@ -12,8 +12,9 @@ import sys.db.Object;
 import sys.db.Types;
 
 import beluga.module.account.model.User;
+import beluga.module.forum.model.Message;
 
-@:table("beluga_for_category")
+@:table("beluga_frm_category")
 @:id(id)
 @:build(beluga.Database.registerModel())
 class CategoryModel extends Object {
@@ -22,7 +23,9 @@ class CategoryModel extends Object {
     public var name : STinyText;
     public var description: SText;
     public var creator_id: SInt;
+    public var last_message_id: SInt;
 
     @:relation(parent_id) public var parent : CategoryModel;
     @:relation(creator_id) public var creator : User;
+    @:relation(last_message_id) public var last_message : Message;
 }
