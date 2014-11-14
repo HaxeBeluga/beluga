@@ -25,7 +25,7 @@
                         <h3>Module de Forum</h3>
                         <p>Accéder à la page de présentation du forum, ici vous pourrez créer de nouveaux sujets, répondre a des files de
                         discussion ou bien simplement consulter les messages existants. Un compte est requis afin de poster un message.</p>
-                        <p><a href="::base_url::/forumTest/displayChannelPage?parent_key=" class="btn btn-success" role="button">Essayer le forum !</a></p>
+                        <p><a href="::base_url::/forumTest" class="btn btn-success" role="button">Essayer le forum !</a></p>
                     </div>
                 </div>
             </div>

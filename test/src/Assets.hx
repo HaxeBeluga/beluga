@@ -107,7 +107,7 @@ class Assets {
         Context.addResource("page_notification", File.getBytes("src/modules/notification_test/tpl/notification_page.mtt"));
 
         //#----ForumTest Pages----#
-        Context.addResource("page_forum_widget", File.getBytes("src/modules/forum_test/tpl/forum_widget.mtt"));
+        Context.addResource("page_forum", File.getBytes("src/modules/forum_test/tpl/forum_page.mtt"));
 
         //#----NewsTest Pages----#
         Context.addResource("page_news", File.getBytes("src/modules/news_test/tpl/news_page.mtt"));
