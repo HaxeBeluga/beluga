@@ -42,4 +42,12 @@
 		</table>
 	</div>
 	::end::
+	::if (user)::
+	::if (user.isAdmin)::
+	<a href="::base_url::::path::redirectCreateCategory?category_id=::category_id::" class="btn btn-primary">$$i18n(create_category)</a>
+	::end::
+	::if (category_id >= 0)::
+	<a href="::base_url::::path::redirectCreateTopic?category_id=::category_id::" class="btn btn-primary">$$i18n(create_topic)</a>
+	::end::
+	::end::
 </div>

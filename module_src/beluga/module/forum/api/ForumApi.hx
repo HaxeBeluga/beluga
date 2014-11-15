@@ -27,4 +27,14 @@ class ForumApi {
     public function doDefault() {
         this.module.triggers.defaultForum.dispatch();
     }
+
+    public function doRedirectCreateTopic(args : {category_id : Int}) {
+        this.module.category_id = (args.category_id == -1 ? None : Some(args.category_id));
+        this.module.triggers.redirectCreateTopic.dispatch();
+    }
+
+    public function doRedirectCreateCategory(args : {category_id : Int}) {
+        this.module.category_id = (args.category_id == -1 ? None : Some(args.category_id));
+        this.module.triggers.redirectCreateCategory.dispatch();
+    }
 }

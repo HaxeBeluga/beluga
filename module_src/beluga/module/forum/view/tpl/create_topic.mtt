@@ -1,0 +1,19 @@
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+	<h2>$$i18n(topic_creation)</h2>
+	<form action="::base_url::::path::createTopic" class="form-horizontal" role="form" method="POST">
+		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
+		<div class="form-group">
+			<label for="title">$$i18n(title)</label>
+			<input class="form-control" id="title" name="title" placeholder="$$i18n(enter_title)">
+		</div>
+		<div class="form-group">
+			<textarea class="form-control" id="text" name="text" placeholder="$$i18n(enter_news)">::answer::</textarea>
+		</div>
+		<div class="form-group" style="display:none;">
+			<input class="form-control" id="parent" name="category_id" value="::parent::">
+		</div>
+		<input type="submit" class="btn btn-primary" value="$$i18n(create)"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::print?id=::parent::">$$i18n(go_back)</a>
+</div>
