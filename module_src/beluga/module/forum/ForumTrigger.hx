@@ -35,6 +35,8 @@ class ForumTrigger {
     public var moveTopicFail = new Trigger<{error: ForumErrorKind}>();
     public var moveTopicSuccess = new TriggerVoid();
     public var defaultForum = new TriggerVoid();
+    public var redirectCreateTopic = new TriggerVoid();
+    public var redirectCreateCategory = new TriggerVoid();
 
     public function new() {}
 }

@@ -166,7 +166,7 @@ class Forum extends Module {
         this.triggers.createCategorySuccess.dispatch();
     }
 
-    // can not be created in main category (the parent of off categories)
+    // can not be created in main category (the parent of all categories)
     public function createTopic(args : {title : String, text : String, category_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 

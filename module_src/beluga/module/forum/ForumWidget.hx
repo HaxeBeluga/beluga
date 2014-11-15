@@ -9,9 +9,13 @@
 package beluga.module.forum;
 
 import beluga.module.forum.widget.Default;
+import beluga.module.forum.widget.CreateCategory;
+import beluga.module.forum.widget.CreateTopic;
 
 class ForumWidget {
     public var forum = new Default();
+    public var create_category = new CreateCategory();
+    public var create_topic = new CreateTopic();
 
     public function new() {}
 }

@@ -46,11 +46,12 @@ class Default extends MttWidget<Forum> {
             topics_array.push({title: topic.title, number_of_messages: messages.length, last_message : "test"});
         }
         return {
+            category_id: switch (mod.category_id) { case Some(id) : id; case None : -1;},
             categories : categories_array,
             topics : topics_array,
             error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
-            path : "/beluga/news/",
+            path : "/beluga/forum/",
             user: user
         };
     }
