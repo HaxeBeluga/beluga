@@ -1,5 +1,6 @@
 -cp src
--lib beluga
+-lib beluga-core
+-lib beluga-module
 -lib session
 -lib tink_macro
 -php bin/php
