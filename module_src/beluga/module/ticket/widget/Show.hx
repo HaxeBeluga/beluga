@@ -23,7 +23,7 @@ import beluga.resource.ResourceManager;
 class Show extends MttWidget<Ticket> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/create.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/show.mtt");
         super(Ticket, mttfile);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }

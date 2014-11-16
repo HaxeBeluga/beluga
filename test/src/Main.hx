@@ -85,7 +85,7 @@ class Main {
 
     public function new() {
     }
-    
+
     public function doDefault(d : Dispatch) {
         doAccueil();
     }
