@@ -44,7 +44,7 @@ class Ticket extends Module {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new TicketWidget();
-        beluga.api.register("ticket", new TicketApi(beluga, this));        
+        beluga.api.register("ticket", new TicketApi(beluga, this));
     }
 
     /** Actions trigger **/

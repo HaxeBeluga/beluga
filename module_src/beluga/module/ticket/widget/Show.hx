@@ -23,7 +23,7 @@ import beluga.widget.Layout;
 class Show extends MttWidget<Ticket> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/ticket/view/tpl/create.mtt");
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/ticket/view/tpl/show.mtt");
         super(Ticket, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }

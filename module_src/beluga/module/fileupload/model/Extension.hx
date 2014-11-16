@@ -13,7 +13,8 @@ import sys.db.Types;
 
 @:id(id)
 @:table("beluga_fil_extension")
+@:build(beluga.Database.registerModel())
 class Extension extends Object {
     public var id: SId;
     public var name: SString<32>;
-}@:build(beluga.Database.registerModel())
+}

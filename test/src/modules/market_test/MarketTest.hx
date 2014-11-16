@@ -39,7 +39,7 @@ class MarketTest {
         this.market.triggers.addProductSuccess.add(this.doAddProductSuccess);
         this.market.triggers.addProductFail.add(this.doAddProductFail);
         this.market.triggers.removeProductSuccess.add(this.doCartPage);
-        this.market.triggers.removeProductSuccess.add(this.doCartPage);
+        // this.market.triggers.removeProductFail.add(this.doCartPage);
         this.market.triggers.checkoutCartSuccess.add(this.doCartPage);
         this.market.triggers.checkoutCartFail.add(this.doCheckoutCartFail);
     }

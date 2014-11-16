@@ -41,7 +41,7 @@ class Market extends Module {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new MarketWidget();
-        beluga.api.register("market", new MarketApi(beluga, this));        
+        beluga.api.register("market", new MarketApi(beluga, this));
     }
 
     // widget functions
@@ -54,10 +54,10 @@ class Market extends Module {
 
     public function addProductToCart(args: { id: Int }): Void {
         // Check if the user is connected
-        if (beluga.getModuleInstance(Account).isLogged) {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
             switch (this.getProductFromId(args.id)) {
                 case Some(p): { // Le produit existe on l'insert dans le cart
-                    var user_id = beluga.getModuleInstance(Account).loggedUser.id;
+                    var user_id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
                     switch (this.isProductInCart(p, user_id)) {
                         case Some(cart): {
                             cart.quantity += 1;
@@ -87,7 +87,7 @@ class Market extends Module {
     }
 
     public function removeProductInCart(args: { id: Int }): Void {
-        if (beluga.getModuleInstance(Account).isLogged) {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
             switch (this.getCartById(args.id)) {
                 case Some(cart): {
                     cart.delete();
@@ -111,8 +111,8 @@ class Market extends Module {
     // the given product}
     // on failure -> "beluga_market_checkout_cart_fail"
     public function checkoutCart(): Void {
-        if (beluga.getModuleInstance(Account).isLogged) {
-            var user = beluga.getModuleInstance(Account).loggedUser;
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
             var cart = Cart.manager.dynamicSearch( {} );
             var bought_items_list: List<Dynamic> = new List<Dynamic>();
             for (c in cart) {
@@ -132,7 +132,7 @@ class Market extends Module {
     }
 
     public function getProductList(): List<Product> {
-        var site_currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault();
+        var site_currency = Beluga.getInstance().getModuleInstance(Wallet).getSiteCurrencyOrDefault();
         var products = Product.manager.dynamicSearch({}).map(function(p) {
             var product = new Product();
             product.name = p.name;
@@ -168,7 +168,7 @@ class Market extends Module {
     // Get te complete cart of an User
     public function getUserCart(user: User): List<Dynamic> {
         var cart = new List<Dynamic>();
-        var site_currency = beluga.getModuleInstance(Wallet).getSiteCurrencyOrDefault();
+        var site_currency = Beluga.getInstance().getModuleInstance(Wallet).getSiteCurrencyOrDefault();
 
         for (c in Cart.manager.dynamicSearch( { user_id: user.id } )) {
             switch (this.getProductFromId(c.product_id)){

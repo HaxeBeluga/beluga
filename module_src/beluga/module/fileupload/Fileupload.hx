@@ -63,7 +63,7 @@ class Fileupload extends Module {
     public function getExtensionsList(): List<Dynamic> {
         var extensions: List<Dynamic> = new List<Dynamic>();
 
-        for (e in Extension.manager.search($id < 100)) {
+        for (e in Extension.manager.dynamicSearch({})) {
             extensions.push({
                 extension_name: e.name,
                 extension_id: e.id,
