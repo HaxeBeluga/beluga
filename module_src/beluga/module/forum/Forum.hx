@@ -148,7 +148,8 @@ class Forum extends Module {
         }
         category_id = Some(args.parent_id);
 
-        for (category in CategoryModel.manager.dynamicSearch( { category_id: args.parent_id } )) {
+        // check if another category has the same name
+        for (category in CategoryModel.manager.dynamicSearch( { id: args.parent_id } )) {
             if (category.name == args.name) {
                 error_id = CategoryAlreadyExist;
                 this.triggers.createCategoryFail.dispatch({error: CategoryAlreadyExist});

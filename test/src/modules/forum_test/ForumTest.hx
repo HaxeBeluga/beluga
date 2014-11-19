@@ -49,11 +49,10 @@ class ForumTest {
     }
 
     public function redirectCreateCategory() {
-        /*var html = Renderer.renderDefault("page_forum", "Forum", {
+        var html = Renderer.renderDefault("page_forum", "Forum", {
             forumWidget: forum.widgets.create_category.render()
         });
-        Sys.print(html);*/
-        Sys.print("pute !");
+        Sys.print(html);
     }
 
     public function createCategoryFail(args : {error : ForumErrorKind}) {

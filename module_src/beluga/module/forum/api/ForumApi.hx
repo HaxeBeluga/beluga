@@ -37,4 +37,8 @@ class ForumApi {
         this.module.category_id = (args.category_id == -1 ? None : Some(args.category_id));
         this.module.triggers.redirectCreateCategory.dispatch();
     }
+
+    public function doCreateCategory(args : {name : String, description : String, parent_id : Int}) {
+        this.module.createCategory(args);
+    }
 }
