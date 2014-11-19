@@ -8,6 +8,7 @@
 
 package ;
 
+import haxe.macro.Expr;
 import main_view.Renderer;
 
 import beluga.Beluga;
@@ -49,13 +50,25 @@ import neko.Web;
 
 class Main {
     public static var beluga : Beluga;
-
+    
     static function main()
     {
         Assets.build();
-
         try {
             beluga = Beluga.getInstance();
+            new AccountTest(beluga);
+            ModuleTestApi.addModule("accountTest", new AccountTestApi(beluga));
+            ModuleTestApi.addModule("ticketTest", new TicketTest(beluga));
+            ModuleTestApi.addModule("surveyTest", new SurveyTest(beluga));
+            ModuleTestApi.addModule("fileUploadTest", new FileUploadTest(beluga));
+            ModuleTestApi.addModule("notificationTest", new NotificationTest(beluga));
+            ModuleTestApi.addModule("forumTest", new ForumTest(beluga));
+            ModuleTestApi.addModule("newsTest", new NewsTest(beluga));
+            ModuleTestApi.addModule("walletTest", new WalletTest(beluga));
+            ModuleTestApi.addModule("mailTest", new MailTest(beluga));
+            ModuleTestApi.addModule("marketTest", new MarketTest(beluga));
+            ModuleTestApi.addModule("faqTest", new FaqTest(beluga));
+            
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             }
@@ -68,62 +81,27 @@ class Main {
 
     public function new() {
     }
-    
-    public function doDefault(d : Dispatch) {
-        doAccueil();
-    }
 
     public function doDebug(d : Dispatch) {
         Web.setHeader("Content-Type", "text/plain");
         trace(Web.getParamsString());
     }
 
-    public function doAccountTest(d : Dispatch) {
-        d.dispatch(new AccountTestApi(beluga));
-    }
-
-    public function doTicketTest(d : Dispatch) {
-        d.dispatch(new TicketTest(beluga));
-    }
-
-    public function doSurveyTest(d : Dispatch) {
-        d.dispatch(new SurveyTest(beluga));
-    }
-
-    public function doFileUploadTest(d : Dispatch) {
-        d.dispatch(new FileUploadTest(beluga));
-    }
-
-    public function doNotificationTest(d : Dispatch) {
-        d.dispatch(new NotificationTest(beluga));
-    }
-
-    public function doForumTest(d : Dispatch) {
-        d.dispatch(new ForumTest(beluga));
-    }
-
-    public function doNewsTest(d : Dispatch) {
-        d.dispatch(new NewsTest(beluga));
-    }
-
-    public function doWalletTest(d : Dispatch) {
-        d.dispatch(new WalletTest(beluga));
-    }
-
-    public function doMailTest(d : Dispatch) {
-        d.dispatch(new MailTest(beluga));
-    }
-
-    public function doMarketTest(d : Dispatch) {
-        d.dispatch(new MarketTest(beluga));
-    }
-
-    public function doFaqTest(d : Dispatch) {
-        d.dispatch(new FaqTest(beluga));
-    }
-
     public function doAccueil() {
         var html = Renderer.renderDefault("page_accueil", "Accueil",{});
         Sys.print(html);
     }
+
+    public function doDefault(module_test_name : String, d : Dispatch) {
+        if (module_test_name.length > 0) {
+            if (ModuleTestApi.module_test_map.exists(module_test_name)) {
+                d.runtimeDispatch(ModuleTestApi.module_test_map[module_test_name]);
+            } else {
+                trace("No module test found for " + module_test_name);
+            }
+        } else {
+            doAccueil();
+        }
+    }
+
 }
