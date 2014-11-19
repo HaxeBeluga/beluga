@@ -9,6 +9,7 @@
 package beluga.tool ;
 
 import sys.io.File;
+import sys.FileSystem;
 import haxe.Json;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -16,6 +17,8 @@ import haxe.macro.Expr;
 enum JsonToolExceptionKind {
     JTFileNotFoundException(error: String);
     JTParseError(error: String);
+    JTStringifyError(error : String);
+    JTReadOnlyException(error : String);
 }
 
 class JsonToolException {
@@ -30,13 +33,18 @@ class JsonTool {
         var json = Json.parse(File.getContent(Context.resolvePath(path)));
         return Context.makeExpr(json, Context.currentPos());
     }
+    #else
+    macro public static function staticLoad(path : String) : Expr {
+        return exprLoad(Context.resolvePath(path));
+    }
+    #end
 
     public static function load(path : String) : Dynamic {
         var content: String;
         var json: Dynamic;
 
         try { // handle filesystem error, not critic, maybe we don't to fail for a non existing lang
-            content = File.getContent(Context.resolvePath(path));
+            content = File.getContent(path);
         } catch (e: Dynamic) {
             throw new JsonToolException(JTFileNotFoundException(e));
         }
@@ -48,10 +56,20 @@ class JsonTool {
         }
         return json;
     }
-    #else
-    macro public static function staticLoad(path : String) : Expr {
-        return exprLoad(path);
-    }
-    #end
+    
+    public static function save(path : String, json : Dynamic) {
+        var content: String;
 
+        try { // here we try to parse the json file, this is more critic, we launch a different exception
+           content = Json.stringify(json);
+        } catch (e: Dynamic) {
+            throw new JsonToolException(JTStringifyError(e));
+        }
+
+        try { // handle filesystem error, not critic, maybe we don't to fail for a non existing lang
+            File.saveContent(path, content);
+        } catch (e: Dynamic) {
+            throw new JsonToolException(JTReadOnlyException(e));
+        }
+    }
 }

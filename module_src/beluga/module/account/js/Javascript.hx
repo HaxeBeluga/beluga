@@ -8,6 +8,9 @@
 
 package beluga.module.account.js;
 
+import beluga.Config;
+import beluga.module.account.AccountConfig;
+
 class Javascript implements beluga.resource.Javascript {
 
     
@@ -15,8 +18,14 @@ class Javascript implements beluga.resource.Javascript {
         #if js
         //Called when the script is loaded
         js.Browser.window.console.log("Account script started");
+        AccountConfig.get(onConf);
         #end
     }
+    
+    #if js
+    public function onConf(conf : Dynamic) {
+    }
+    #end
     
     public function ready()
     {
