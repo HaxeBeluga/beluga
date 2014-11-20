@@ -22,7 +22,7 @@ class MttWidget<ModuleType: Module> implements Widget {
     private static var id = 0;
     private var layout : Layout;
 
-    public function new<T : Layout, Template>(clazz : Class<ModuleType>, layout : Layout) {
+    public function new(clazz : Class<ModuleType>, layout : Layout) {
         this.layout = layout;
         this.mod = cast Beluga.getInstance().getModuleInstance(clazz);
     }

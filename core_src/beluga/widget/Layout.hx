@@ -40,10 +40,4 @@ class Layout
         return render;
     }
 
-    #if exemple_code
-        var base = Layout.newFromPath("base.mtt");
-        var bootstrap = Layout.newFromPath("bootstrap.mtt", base);
-        var bootstrap = base.bind("bootstrap.mtt");
-    #end
-
 }
