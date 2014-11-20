@@ -67,7 +67,8 @@ class JavascriptBuilder
             "-lib", "beluga",
             "-cp", Context.resolvePath("/beluga/"),
             "-main", entryPoint,
-            "-js", realOutput + "/beluga/js/beluga.js"]).stderr);
+            "-js", realOutput + "/beluga/js/beluga.js",
+            "-D", "no_conf"]).stderr);
 
 
         //Remove the temporary file

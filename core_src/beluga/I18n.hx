@@ -69,19 +69,29 @@ class BelugaI18n
         var i18n = { };
 
         for (lang in supportedLangList) {
-            try { // try to find the local
-                Reflect.setField(i18n, lang, JsonTool.load(folderPath + lang + ".json"));
-            } catch (e: JsonToolException) {
-                switch (e.error_kind) {
-                    case JTFileNotFoundException(_): {
-                        // nothing to do
-                        // Beluga accept the list BelugaI18n::supportedLangList of language
-                        // but the user don't need to provide each of them
+            try {
+                folderPath =  Context.resolvePath(folderPath + lang + ".json");
+                try { // try to find the local
+                    Reflect.setField(i18n, lang, JsonTool.load(folderPath));
+                } catch (e: JsonToolException) {
+                    switch (e.error_kind) {
+                        case JTFileNotFoundException(_): {
+                            // nothing to do
+                            // Beluga accept the list BelugaI18n::supportedLangList of language
+                            // but the user don't need to provide each of them
+                        }
+                        case JTParseError(s): {
+                            throw new Error("invalid json file: " + folderPath + lang + " " + s, Context.currentPos());
+                        }
+                        case _:
                     }
-                    case JTParseError(s): {
-                        throw new Error("invalid json file: " + folderPath + lang + " " + s, Context.currentPos());
-                    }
+                } catch (e : Dynamic) {
+                    Context.warning(e, Context.currentPos());
                 }
+            } catch (e : Dynamic) {
+                 // nothing to do
+                // Beluga accept the list BelugaI18n::supportedLangList of language
+                // but the user don't need to provide each of them
             }
         }
         var expr = Context.makeExpr(i18n, Context.currentPos());

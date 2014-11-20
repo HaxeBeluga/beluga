@@ -49,9 +49,12 @@ class Account extends Module {
     public var lastSubscribeError(get, set) : Dynamic;
     @:FlashData
     public var lastSubscribeValue(get, set) : Dynamic;
-
+    
+    var config : Dynamic;
+    
     public function new() {
         super();
+        config = AccountConfig.get();
     }
 
     override public function initialize(beluga : Beluga) {
