@@ -55,6 +55,7 @@ class ModuleFactory
 
     private static function cpDirectory(src : String, dst : String)
     {
+        trace(src);
         if (FileSystem.isDirectory(src))
         {
             for (file in FileSystem.readDirectory(src))
