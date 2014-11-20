@@ -58,6 +58,11 @@ class Account extends Module {
         this.widgets = new AccountWidget();
         beluga.db.initTable(User);
         beluga.api.register("account", new AccountApi(beluga, this));
+        beluga.remoting.addObject("Account", {
+            login : function (param1, param2) {
+                return "param receive " + param1 + " " + param2;
+            }
+        });
     }
 
     public function getLoggedUser() : User {
@@ -68,12 +73,11 @@ class Account extends Module {
         this.loggedUser = null;
         triggers.afterLogout.dispatch();
     }
-
+    
     public function login(args : {
         login : String,
         password : String
     }) {
-
         var user : List<User> = User.manager.dynamicSearch({login : args.login});
         if (user.length > 1) {
             //Somethings wrong in database

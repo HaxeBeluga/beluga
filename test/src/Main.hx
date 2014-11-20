@@ -75,9 +75,9 @@ class Main {
             notification = new NotificationTest(beluga);
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
+                Log.flush();
             }
             beluga.cleanup();
-            Log.flush();
         } catch (e: BelugaException) {
             trace(e);
         }
