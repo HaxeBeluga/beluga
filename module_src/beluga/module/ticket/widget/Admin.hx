@@ -14,13 +14,13 @@ import beluga.ConfigLoader;
 import beluga.module.ticket.Ticket;
 import beluga.I18n;
 import beluga.module.ticket.TicketErrorKind;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Admin extends MttWidget<Ticket> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/admin.mtt");
-        super(Ticket, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/ticket/view/tpl/admin.mtt");
+        super(Ticket, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/admin/", mod.i18n);
     }
 

@@ -16,13 +16,13 @@ import beluga.module.wallet.Wallet;
 import beluga.I18n;
 import beluga.module.account.Account;
 import beluga.module.wallet.repository.CurrencyRepository;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Cart extends MttWidget<Market> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/market/view/tpl/cart.mtt");
-        super(Market, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/market/view/tpl/cart.mtt");
+        super(Market, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/view/locale/cart/", mod.i18n);
     }
 

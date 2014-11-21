@@ -5,13 +5,13 @@ import beluga.widget.MttWidget;
 import beluga.ConfigLoader;
 import beluga.module.faq.Faq;
 import beluga.I18n;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class EditFaq extends MttWidget<Faq> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/faq/view/tpl/edit_faq.mtt");
-        super(Faq, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/faq/view/tpl/edit_faq.mtt");
+        super(Faq, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/faq/view/locale/edit_faq/", mod.i18n);
     }
 

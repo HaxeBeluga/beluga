@@ -10,7 +10,7 @@ import beluga.I18n;
 import beluga.module.news.News;
 import beluga.module.news.model.NewsModel;
 import beluga.module.account.Account;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class NewsList {
     public var title : String;
@@ -34,9 +34,9 @@ class NewsList {
 
 class Default extends MttWidget<News> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/news/view/tpl/default.mtt");
-        super(News, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/news/view/tpl/default.mtt");
+        super(News, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/news/view/locale/default/", mod.i18n);
     }
 

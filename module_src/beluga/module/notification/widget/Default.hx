@@ -8,13 +8,13 @@ import beluga.I18n;
 import beluga.module.notification.Notification;
 import beluga.module.notification.NotificationErrorKind;
 import beluga.module.account.Account;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Default extends MttWidget<Notification> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/notification/view/tpl/notification.mtt");
-        super(Notification, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/notification/view/tpl/notification.mtt");
+        super(Notification, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/notification/view/locale/default/", mod.i18n);
     }
 

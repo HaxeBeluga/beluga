@@ -13,13 +13,13 @@ import beluga.widget.MttWidget;
 import beluga.ConfigLoader;
 import beluga.module.fileupload.Fileupload;
 import beluga.I18n;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Send extends MttWidget<Fileupload> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/fileupload/view/tpl/send.mtt");
-        super(Fileupload, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/fileupload/view/tpl/send.mtt");
+        super(Fileupload, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/fileupload/view/locale/admin/", mod.i18n);
     }
 
