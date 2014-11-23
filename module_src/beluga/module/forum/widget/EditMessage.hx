@@ -20,12 +20,12 @@ import beluga.module.forum.CategoryData;
 import beluga.module.account.Account;
 import beluga.resource.ResourceManager;
 
-class PostMessage extends MttWidget<Forum> {
+class EditMessage extends MttWidget<Forum> {
 
     public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/forum/view/tpl/post_message.mtt");
+        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/forum/view/tpl/edit_message.mtt");
         super(Forum, mttfile);
-        i18n = BelugaI18n.loadI18nFolder("/beluga/module/forum/view/locale/post_message/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/forum/view/locale/edit_message/", mod.i18n);
     }
 
     override private function getContext() : Dynamic {
@@ -34,28 +34,29 @@ class PostMessage extends MttWidget<Forum> {
         var topic = switch (mod.topic_id) { case Some(id) : mod.getTopic(id); case None : null;};
         // if topic doesn't exist, we display default page
         if (topic == null) {
-            mod.error_id = UnknownTopic;
+            mod.error_id = UnknownMessage;
             var ret = mod.widgets.forum.getContext();
 
             ret.other = mod.widgets.forum.render();
             return ret;
         }
-        if (topic.can_post_message == false && user.isAdmin == false) {
-            mod.error_id = NotAllowed;
-            var ret = mod.widgets.topic.getContext();
+        var message = switch (mod.message_id) { case Some(id) : mod.getMessage(id); case None : null;};
+        
+        // if message doesn't exist or isn't in topic, we display default page
+        if (message == null || message.topic_id != topic.id) {
+            mod.error_id = UnknownMessage;
+            var ret = mod.widgets.forum.getContext();
 
-            ret.other = mod.widgets.topic.render();
+            ret.other = mod.widgets.forum.render();
             return ret;
         }
-        
         return {
-            category_id: topic.category_id,
             topic: topic,
+            message: message,
             error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             path : "/beluga/forum/",
-            user: user,
-            answer: mod.answer
+            user: user
         };
     }
 }

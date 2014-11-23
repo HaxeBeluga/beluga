@@ -64,4 +64,35 @@ class ForumApi {
     public function doPostMessage(args : {text : String, topic_id : Int, category_id : Int}) {
         this.module.postMessage(args);
     }
+
+    public function doRedirectEditMessage(args : {message_id: Int, topic_id : Int}) {
+        this.module.topic_id = Some(args.topic_id);
+        this.module.message_id = Some(args.message_id);
+        this.module.triggers.redirectEditMessage.dispatch();
+    }
+
+    public function doEditMessage(args : {text : String, topic_id : Int, message_id : Int}) {
+        this.module.editMessage(args);
+    }
+
+    public function doRedirectEditCategory(args : {category_id: Int}) {
+        this.module.category_id = Some(args.category_id);
+        this.module.triggers.redirectEditCategory.dispatch();
+    }
+
+    public function doEditCategory(args : {name : String, description : String, category_id : Int}) {
+        this.module.editCategory(args);
+    }
+
+    public function doDeleteCategory(args : {category_id : Int, parent_id : Int}) {
+        this.module.deleteCategory(args);
+    }
+
+    public function doDeleteTopic(args : {topic_id : Int, category_id : Int}) {
+        this.module.deleteTopic(args);
+    }
+
+    public function doSolveTopic(args : {topic_id : Int, category_id : Int}) {
+        this.module.solveTopic(args);
+    }
 }

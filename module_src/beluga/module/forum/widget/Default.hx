@@ -49,7 +49,7 @@ class Default extends MttWidget<Forum> {
             var category_data = mod.getAllFromCategory(Some(category.id));
 
             categories_array.push({title: category.name, number_of_topics: category_data.topics.length, last_message : "test",
-                id: category.id});
+                id: category.id, description: category.description});
         }
         for (topic in categories.topics) {
             var messages = mod.getAllFromTopic(topic.id);

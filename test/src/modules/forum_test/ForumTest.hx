@@ -43,6 +43,18 @@ class ForumTest {
         this.forum.triggers.redirectPostMessage.add(this.printPostMessage);
         this.forum.triggers.postMessageSuccess.add(this.printTopic);
         this.forum.triggers.postMessageFail.add(this.postMessageFail);
+        this.forum.triggers.redirectEditMessage.add(this.printEditMessage);
+        this.forum.triggers.editMessageSuccess.add(this.printTopic);
+        this.forum.triggers.editMessageFail.add(this.editMessageFail);
+        this.forum.triggers.redirectEditCategory.add(this.printEditCategory);
+        this.forum.triggers.editCategorySuccess.add(this.doDefault);
+        this.forum.triggers.editCategoryFail.add(this.editCategoryFail);
+        this.forum.triggers.deleteCategorySuccess.add(this.doDefault);
+        this.forum.triggers.deleteCategoryFail.add(this.failFunction);
+        this.forum.triggers.deleteTopicSuccess.add(this.doDefault);
+        this.forum.triggers.deleteTopicFail.add(this.failFunction);
+        this.forum.triggers.solveTopicSuccess.add(this.printTopic);
+        this.forum.triggers.solveTopicFail.add(this.failFunction);
     }
 
     public function doDefault() {
@@ -89,6 +101,32 @@ class ForumTest {
     }
 
     public function postMessageFail(args : {error : ForumErrorKind}) {
+        return doDefault();
+    }
+
+    public function printEditMessage() {
+        var html = Renderer.renderDefault("page_forum", "Forum", {
+            forumWidget: forum.widgets.edit_message.render()
+        });
+        Sys.print(html);
+    }
+
+    public function editMessageFail(args : {error : ForumErrorKind}) {
+        return doDefault();
+    }
+
+    public function printEditCategory() {
+        var html = Renderer.renderDefault("page_forum", "Forum", {
+            forumWidget: forum.widgets.edit_category.render()
+        });
+        Sys.print(html);
+    }
+
+    public function editCategoryFail(args : {error : ForumErrorKind}) {
+        return printEditCategory();
+    }
+
+    public function failFunction(args : {error : ForumErrorKind}) {
         return doDefault();
     }
 }
