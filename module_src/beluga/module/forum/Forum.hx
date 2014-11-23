@@ -108,11 +108,15 @@ class Forum extends Module {
     // returns all messages for a given topic
     public function getAllFromTopic(topic_id: Int) : Array<Message> {
         var msg_array = new Array<Message>();
-        var msgs = Manager.cnx.request("SELECT * from beluga_for_message ORDER BY date");
+        var msgs = Manager.cnx.request("SELECT * from beluga_frm_message ORDER BY date");
 
         for (msg in msgs) {
             // this "loop" fills news structs
             for (filled_message in Message.manager.dynamicSearch({id : msg.id})) {
+                for (user in User.manager.dynamicSearch({id: filled_message.author_id})) {
+                    filled_message.author = user;
+                    break;
+                }
                 msg_array.push(filled_message);
                 break;
             }
@@ -120,8 +124,8 @@ class Forum extends Module {
         return msg_array;
     }
 
-    // only admin users can do that
-    public function createCategory(args : {name : String, description : String, parent_id : Int}) {
+    // only admin users can do that for the moment
+    public function createCategory(args : {name : String, description : String, can_create_topic: Bool, parent_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null || !user.isAdmin) {
@@ -162,45 +166,45 @@ class Forum extends Module {
         entry.description = args.description;
         entry.parent_id = args.parent_id;
         entry.creator_id = user.id;
+        entry.can_create_topic = args.can_create_topic;
         entry.insert();
         success_msg = "entry_create_success";
         this.triggers.createCategorySuccess.dispatch();
     }
 
     // can not be created in main category (the parent of all categories)
-    public function createTopic(args : {title : String, text : String, category_id : Int}) {
+    public function createTopic(args : {title : String, text : String, can_post_message: Bool, category_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             error_id = MissingLogin;
-            this.triggers.createTopicFail.dispatch({error : MissingLogin});
+            this.triggers.createTopicFail.dispatch({error : error_id});
             return ;
         }
         category_id = Some(args.category_id);
         title = args.title;
         answer = args.text;
 
-        // if the category id is the parent of all categories
-        if (args.category_id == -1) {
+        // check if the category exist
+        var cat = getCategory(Some(args.category_id));
+        if (cat == null) {
             error_id = UnknownCategory;
-            this.triggers.createTopicFail.dispatch({error: UnknownCategory});
+            this.triggers.createTopicFail.dispatch({error: error_id});
             return;
+        }
+        if (cat.can_create_topic == false && user.isAdmin == false) {
+            error_id = NotAllowed;
+            this.triggers.createTopicFail.dispatch({error : error_id});
+            return ;
         }
         if (args.title == "") {
             error_id = MissingTitle;
-            this.triggers.createTopicFail.dispatch({error: MissingTitle});
+            this.triggers.createTopicFail.dispatch({error: error_id});
             return;
         }
         if (args.text == "") {
             error_id = MissingMessage;
-            this.triggers.createTopicFail.dispatch({error: MissingMessage});
-            return;
-        }
-
-        // check if the category exist
-        if (getCategory(Some(args.category_id)) == null) {
-            error_id = UnknownCategory;
-            this.triggers.createTopicFail.dispatch({error: UnknownCategory});
+            this.triggers.createTopicFail.dispatch({error: error_id});
             return;
         }
 
@@ -211,6 +215,7 @@ class Forum extends Module {
         entry.creator_id = user.id;
         entry.is_solved = false;
         entry.date = Date.now();
+        entry.can_post_message = args.can_post_message;
         entry.insert();
 
         var first_msg = new Message();
@@ -226,26 +231,21 @@ class Forum extends Module {
     }
 
     // the category's id is just used as a security in here
-    public function postMessage(args : {topic_id : Int, category_id : Int, text : String}) {
+    public function postMessage(args : {text : String, topic_id : Int, category_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             error_id = MissingLogin;
-            this.triggers.postMessageFail.dispatch({error : MissingLogin});
+            this.triggers.postMessageFail.dispatch({error : error_id});
             return ;
         }
         answer = args.text;
-        if (args.text == "") {
-            error_id = MissingMessage;
-            this.triggers.postMessageFail.dispatch({error: MissingMessage});
-            return;
-        }
 
         //check if the category exists
         var category = getCategory(Some(args.category_id));
         if (category == null) {
             error_id = UnknownTopic;
-            this.triggers.postMessageFail.dispatch({error: UnknownTopic});
+            this.triggers.postMessageFail.dispatch({error: error_id});
             return;
         }
         // check if the topic exists in the category
@@ -253,12 +253,23 @@ class Forum extends Module {
 
         if (topic == null) {
             error_id = UnknownTopic;
-            this.triggers.postMessageFail.dispatch({error: UnknownTopic});
+            this.triggers.postMessageFail.dispatch({error: error_id});
             return;
         }
         if (topic.category_id != args.category_id) {
             error_id = UnknownTopic;
-            this.triggers.postMessageFail.dispatch({error: UnknownTopic});
+            this.triggers.postMessageFail.dispatch({error: error_id});
+            return;
+        }
+        if (topic.can_post_message == false && user.isAdmin == false) {
+            error_id = NotAllowed;
+            this.triggers.postMessageFail.dispatch({error: error_id});
+            return;
+        }
+        this.topic_id = Some(args.topic_id);
+        if (args.text == "") {
+            error_id = MissingMessage;
+            this.triggers.postMessageFail.dispatch({error: error_id});
             return;
         }
 
@@ -491,7 +502,7 @@ class Forum extends Module {
             this.triggers.moveTopicFail.dispatch({error : NotAllowed});
             return ;
         }
-        // check if topic exist
+        // check if topic exists
         var topic = getTopic(args.topic_id);
 
         if (topic == null) {

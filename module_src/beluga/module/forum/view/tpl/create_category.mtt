@@ -9,11 +9,17 @@
 		<div class="form-group">
 			<textarea class="form-control" id="description" name="description" placeholder="$$i18n(enter_description)">::description::</textarea>
 		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="can_create_topic" id="can_create_topic" value="" checked>
+				$$i18n(allow_create_topic)
+			</label>
+		</div>
 		<div class="form-group" style="display:none;">
 			<input class="form-control" id="parent" name="parent_id" value="::parent::">
 		</div>
 		<input type="submit" class="btn btn-primary" value="$$i18n(create)"/>
 	</form>
 	<br/>
-	<a class="btn btn-primary" href="::base_url::::path::print?id=::parent::">$$i18n(go_back)</a>
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::parent::">$$i18n(go_back)</a>
 </div>

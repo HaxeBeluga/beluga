@@ -24,6 +24,7 @@ class CategoryModel extends Object {
     public var description: SText;
     public var creator_id: SInt;
     public var last_message_id: SInt;
+    public var can_create_topic: SBool;
 
     @:relation(parent_id) public var parent : CategoryModel;
     @:relation(creator_id) public var creator : User;

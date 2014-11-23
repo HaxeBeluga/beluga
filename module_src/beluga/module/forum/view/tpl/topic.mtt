@@ -1,0 +1,21 @@
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<h1>::to_delete::</h1>
+	<h1>::topic.title::</h1>
+	<div>
+	::foreach answers::
+	<div>
+		<h3>::__current__.author_login::</h3>
+		<p>::text::</p>
+		<p>::date::</p>
+	</div>
+	::end::
+	</div>
+	::if (user)::
+		::if (topic.can_post_message)::
+		<a class="btn btn-primary" href="::base_url::::path::redirectPost?topic_id=::topic.id::">$$i18n(post_message)</a>
+		::elseif (user.isAdmin)::
+		<a class="btn btn-primary" href="::base_url::::path::redirectPost?topic_id=::topic.id::">$$i18n(post_message)</a>
+		::end::
+	::end::
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::parent::">$$i18n(go_back)</a>
+</div>

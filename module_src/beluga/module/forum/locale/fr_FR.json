@@ -8,7 +8,7 @@
     "not_supported": "Ne fonctionne qu'avec PHP (pour le moment...)",
     "mails_list_for": "Liste des mails de <b>::user.login::</b>",
     "send_mail": "Envoyer nouveau mail",
-    "go_back": "Revenir à la liste des mails",
+    "go_back": "Revenir à la liste des sujets",
     "to": "A : ::receiver::",
     "subject": "Objet : ::subject::",
     "sent": "Date d'envoi : ::date::",

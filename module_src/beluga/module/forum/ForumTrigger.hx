@@ -37,6 +37,8 @@ class ForumTrigger {
     public var defaultForum = new TriggerVoid();
     public var redirectCreateTopic = new TriggerVoid();
     public var redirectCreateCategory = new TriggerVoid();
+    public var printTopic = new TriggerVoid();
+    public var redirectPostMessage = new TriggerVoid();
 
     public function new() {}
 }
