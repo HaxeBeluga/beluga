@@ -26,6 +26,7 @@ class Topic extends Object {
     public var is_solved: SBool;
     public var date: SDate;
     public var last_message_id: SInt;
+    public var can_post_message: SBool;
 
     @:relation(category_id) public var category : CategoryModel;
     @:relation(creator_id) public var creator : User;

@@ -39,11 +39,22 @@ class ForumTest {
         this.forum.triggers.createTopicSuccess.add(this.doDefault);
         this.forum.triggers.createCategoryFail.add(this.createCategoryFail);
         this.forum.triggers.createCategorySuccess.add(this.doDefault);
+        this.forum.triggers.printTopic.add(this.printTopic);
+        this.forum.triggers.redirectPostMessage.add(this.printPostMessage);
+        this.forum.triggers.postMessageSuccess.add(this.printTopic);
+        this.forum.triggers.postMessageFail.add(this.postMessageFail);
     }
 
     public function doDefault() {
         var html = Renderer.renderDefault("page_forum", "Forum", {
             forumWidget: forum.widgets.forum.render()
+        });
+        Sys.print(html);
+    }
+
+    public function printTopic() {
+        var html = Renderer.renderDefault("page_forum", "Forum", {
+            forumWidget: forum.widgets.topic.render()
         });
         Sys.print(html);
     }
@@ -68,5 +79,16 @@ class ForumTest {
 
     public function createTopicFail(args : {error : ForumErrorKind}) {
         return redirectCreateTopic();
+    }
+
+    public function printPostMessage() {
+        var html = Renderer.renderDefault("page_forum", "Forum", {
+            forumWidget: forum.widgets.post_message.render()
+        });
+        Sys.print(html);
+    }
+
+    public function postMessageFail(args : {error : ForumErrorKind}) {
+        return doDefault();
     }
 }

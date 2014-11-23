@@ -29,24 +29,37 @@ class Default extends MttWidget<Forum> {
     }
 
     override private function getContext() : Dynamic {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+        var topic = switch (mod.topic_id) { case Some(id) : mod.getTopic(id); case None : null;};
 
+        if (topic != null) {
+            // here is a trick to replace the Default widget by the Topic widget
+            var ret = mod.widgets.topic.getContext();
+
+            ret.other = mod.widgets.topic.render();
+            return ret;
+        }
+        // print category part
+        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var categories = mod.getAllFromCategory(mod.category_id);
+        var cat = mod.getCategory(mod.category_id);
         var categories_array = new Array<Dynamic>();
         var topics_array = new Array<Dynamic>();
 
         for (category in categories.categories) {
             var category_data = mod.getAllFromCategory(Some(category.id));
 
-            categories_array.push({title: category.name, number_of_topics: category_data.topics.length, last_message : "test"});
+            categories_array.push({title: category.name, number_of_topics: category_data.topics.length, last_message : "test",
+                id: category.id});
         }
         for (topic in categories.topics) {
             var messages = mod.getAllFromTopic(topic.id);
 
-            topics_array.push({title: topic.title, number_of_messages: messages.length, last_message : "test"});
+            topics_array.push({title: topic.title, number_of_messages: messages.length, last_message : "test", id: topic.id});
         }
         return {
+            category_name: cat != null ? cat.name : "",
             category_id: switch (mod.category_id) { case Some(id) : id; case None : -1;},
+            category: cat,
             categories : categories_array,
             topics : topics_array,
             error : mod.getErrorString(mod.error_id),
