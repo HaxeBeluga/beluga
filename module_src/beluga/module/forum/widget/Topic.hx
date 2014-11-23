@@ -29,10 +29,10 @@ class Topic extends MttWidget<Forum> {
         var messages = mod.getAllFromTopic(topic.id);
         var infos = new Array<Dynamic>();
 
-        var author = "";
+        var author = null;
         for (message in messages) {
-            author = message.author.login;
-            infos.push({author_login: author, text: message.text, date: message.date});
+            author = message.author;
+            infos.push({author: message.author, text: message.text, date: message.date, id: message.id});
         }
         return {
             to_delete: author,

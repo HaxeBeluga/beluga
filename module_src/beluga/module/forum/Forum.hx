@@ -32,6 +32,7 @@ class Forum extends Module {
     // Intern variables for contexts
     public var success_msg : String;
     public var error_id : ForumErrorKind;
+    public var message_id : Option<Int>;
     public var topic_id : Option<Int>;
     public var category_id : Option<Int>;
 
@@ -316,6 +317,7 @@ class Forum extends Module {
             this.triggers.solveTopicFail.dispatch({error: UnknownTopic});
             return;
         }
+        this.topic_id = Some(args.topic_id);
         topic.is_solved = true;
         topic.update();
         success_msg = "solve_topic_success";
@@ -331,6 +333,7 @@ class Forum extends Module {
         if (getCategory(Some(category_id)) == null) {
             return UnknownCategory;
         }
+        this.category_id = Some(category_id);
         // check if the topic exists in the category
         var topic = getTopic(topic_id);
 
@@ -352,15 +355,21 @@ class Forum extends Module {
 
     // call this function only from inside this class code ! Very dangerous !
     private function internDeleteCategory(category_id: Int, user: User) {
+        var category = getCategory(Some(category_id));
+
+        if (category == null) {
+            return;
+        }
         // delete recursively all inside categories
-        for (category in CategoryModel.manager.dynamicSearch({id: category_id})) {
+        for (category in CategoryModel.manager.dynamicSearch({parent_id: category.id})) {
             internDeleteCategory(category.id, user);
         }
         // now remove all inside topics
-        for (topic in Topic.manager.dynamicSearch({category_id: category_id})) {
+        for (topic in Topic.manager.dynamicSearch({category_id: category.id})) {
             //ignore all internal errors
             internDeleteTopic(topic.id, category_id, user, true);
         }
+        category.delete();
     }
 
     public function deleteTopic(args : {topic_id : Int, category_id : Int}) {
@@ -386,7 +395,7 @@ class Forum extends Module {
             return ;
         }
         // check if parent exists
-        if (getCategory(Some(args.parent_id)) == null) {
+        if (args.parent_id != -1 && getCategory(Some(args.parent_id)) == null) {
             error_id = UnknownCategory;
             this.triggers.deleteCategoryFail.dispatch({error: UnknownCategory});
             return;
@@ -417,11 +426,12 @@ class Forum extends Module {
             return;
         }
         internDeleteCategory(args.category_id, user);
+        this.category_id = Some(args.parent_id);
         success_msg = "delete_category_success";
         this.triggers.deleteCategorySuccess.dispatch();
     }
 
-    public function editCategory(args : {category_id : Int, name : String}) {
+    public function editCategory(args : {name : String, description : String, category_id : Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
@@ -443,13 +453,14 @@ class Forum extends Module {
             return;
         }
         category.name = args.name;
+        category.description = args.description;
         category.update();
         success_msg = "edit_category_success";
         this.triggers.editCategorySuccess.dispatch();
     }
 
     // topic_id parameter is just a security
-    public function editMessage(args : {topic_id: Int, msg_id: Int, text : String}) {
+    public function editMessage(args : {text : String, topic_id: Int, message_id: Int}) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
@@ -463,8 +474,9 @@ class Forum extends Module {
             this.triggers.editMessageFail.dispatch({error: UnknownTopic});
             return;
         }
+        this.topic_id = Some(args.topic_id);
         // check if message exists
-        var msg = getMessage(args.msg_id);
+        var msg = getMessage(args.message_id);
 
         if (msg == null) {
             error_id = UnknownMessage;

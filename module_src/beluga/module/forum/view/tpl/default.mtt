@@ -23,8 +23,15 @@
 				::foreach categories::
 				<tr>
 					<td><a href="::base_url::::path::print?category_id=::id::">::title::</a></td>
+					<td>::description::</td>
 					<td>::number_of_topics::</td>
 					<td>::last_message::</td>
+					::if (user)::
+					::if (user.isAdmin)::
+					<td><a class="btn btn-primary" href="::base_url::::path::redirectEditCategory?category_id=::id::">$$i18n(edit_category)</a></td>
+					<td><a class="btn btn-primary" href="::base_url::::path::deleteCategory?category_id=::id::&parent_id=::category_id::">$$i18n(delete_category)</a></td>
+					::end::
+					::end::
 				</tr>
 				::end::
 			</tbody>
@@ -41,6 +48,11 @@
 				<td><a href="::base_url::::path::printTopic?topic_id=::id::">::title::</a></td>
 				<td>::number_of_messages::</td>
 				<td>::last_message::</td>
+				::if (user)::
+				::if (user.isAdmin)::
+				<td><a class="btn btn-primary" href="::base_url::::path::deleteTopic?topic_id=::id::&category_id=::category_id::">$$i18n(delete_topic)</a></td>
+				::end::
+				::end::
 			</tr>
 			::end::
 			</tbody>
@@ -58,5 +70,8 @@
 			<a href="::base_url::::path::redirectCreateTopic?category_id=::category_id::" class="btn btn-primary">$$i18n(create_topic)</a>
 			::end::
 		::end::
+	::end::
+	::if (category)::
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::category.parent_id::">$$i18n(go_up)</a>
 	::end::
 </div>

@@ -13,6 +13,8 @@ import beluga.module.forum.widget.CreateCategory;
 import beluga.module.forum.widget.CreateTopic;
 import beluga.module.forum.widget.Topic;
 import beluga.module.forum.widget.PostMessage;
+import beluga.module.forum.widget.EditMessage;
+import beluga.module.forum.widget.EditCategory;
 
 class ForumWidget {
     public var forum = new Default();
@@ -20,6 +22,8 @@ class ForumWidget {
     public var create_topic = new CreateTopic();
     public var topic = new Topic();
     public var post_message = new PostMessage();
+    public var edit_message = new EditMessage();
+    public var edit_category = new EditCategory();
 
     public function new() {}
 }
