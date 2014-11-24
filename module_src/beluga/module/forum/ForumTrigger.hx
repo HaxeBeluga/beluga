@@ -24,6 +24,8 @@ class ForumTrigger {
     public var postMessageSuccess = new TriggerVoid();
     public var solveTopicFail = new Trigger<{error: ForumErrorKind}>();
     public var solveTopicSuccess = new TriggerVoid();
+    public var unsolveTopicFail = new Trigger<{error: ForumErrorKind}>();
+    public var unsolveTopicSuccess = new TriggerVoid();
     public var deleteTopicFail = new Trigger<{error: ForumErrorKind}>();
     public var deleteTopicSuccess = new TriggerVoid();
     public var deleteCategoryFail = new Trigger<{error: ForumErrorKind}>();

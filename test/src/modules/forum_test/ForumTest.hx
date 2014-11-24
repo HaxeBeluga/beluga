@@ -55,6 +55,8 @@ class ForumTest {
         this.forum.triggers.deleteTopicFail.add(this.failFunction);
         this.forum.triggers.solveTopicSuccess.add(this.printTopic);
         this.forum.triggers.solveTopicFail.add(this.failFunction);
+        this.forum.triggers.unsolveTopicSuccess.add(this.printTopic);
+        this.forum.triggers.unsolveTopicFail.add(this.failFunction);
     }
 
     public function doDefault() {
