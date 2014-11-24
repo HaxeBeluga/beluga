@@ -131,7 +131,7 @@ class Forum extends Module {
 
         if (user == null || !user.isAdmin) {
             error_id = NotAllowed;
-            this.triggers.createCategoryFail.dispatch({error : NotAllowed});
+            this.triggers.createCategoryFail.dispatch({error : error_id});
             return ;
         }
         //  Let's save values in case something goes wrong
@@ -140,14 +140,14 @@ class Forum extends Module {
 
         if (args.name == "") {
             error_id = MissingName;
-            this.triggers.createCategoryFail.dispatch({error: MissingName});
+            this.triggers.createCategoryFail.dispatch({error: error_id});
             return;
         }
         // check if the parent category exists
         if (args.parent_id != -1) {
             if (getCategory(Some(args.parent_id)) == null) {
                 error_id = UnknownCategory;
-                this.triggers.createCategoryFail.dispatch({error: UnknownCategory});
+                this.triggers.createCategoryFail.dispatch({error: error_id});
                 return;
             }
         }
@@ -157,7 +157,7 @@ class Forum extends Module {
         for (category in CategoryModel.manager.dynamicSearch( { id: args.parent_id } )) {
             if (category.name == args.name) {
                 error_id = CategoryAlreadyExist;
-                this.triggers.createCategoryFail.dispatch({error: CategoryAlreadyExist});
+                this.triggers.createCategoryFail.dispatch({error: error_id});
                 return;
             }
         }
@@ -290,18 +290,16 @@ class Forum extends Module {
         this.triggers.postMessageSuccess.dispatch();
     }
 
-    public function solveTopic(args : {topic_id : Int, category_id : Int}) {
+    public function internChangeTopicStatus(args : {topic_id : Int, category_id : Int}, new_status : Bool) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         if (user == null) {
             error_id = NotAllowed;
-            this.triggers.solveTopicFail.dispatch({error : NotAllowed});
             return ;
         }
         //check if the category exists
         if (getCategory(Some(args.category_id)) == null) {
             error_id = UnknownTopic;
-            this.triggers.solveTopicFail.dispatch({error: UnknownTopic});
             return;
         }
         // check if the topic exists in the category
@@ -309,19 +307,34 @@ class Forum extends Module {
 
         if (topic == null) {
             error_id = UnknownTopic;
-            this.triggers.solveTopicFail.dispatch({error: UnknownTopic});
             return;
         }
         if (topic.category_id != args.category_id) {
             error_id = UnknownTopic;
-            this.triggers.solveTopicFail.dispatch({error: UnknownTopic});
             return;
         }
         this.topic_id = Some(args.topic_id);
-        topic.is_solved = true;
+        topic.is_solved = new_status;
         topic.update();
         success_msg = "solve_topic_success";
-        this.triggers.solveTopicSuccess.dispatch();
+    }
+
+    public function solveTopic(args : {topic_id : Int, category_id : Int}) {
+        internChangeTopicStatus(args, true);
+        if (error_id != None) {
+            this.triggers.solveTopicFail.dispatch({error: error_id});
+        } else {
+            this.triggers.solveTopicSuccess.dispatch();
+        }
+    }
+
+    public function unsolveTopic(args : {topic_id : Int, category_id : Int}) {
+        internChangeTopicStatus(args, false);
+        if (error_id != None) {
+            this.triggers.unsolveTopicFail.dispatch({error: error_id});
+        } else {
+            this.triggers.unsolveTopicSuccess.dispatch();
+        }
     }
 
     // never set force to true unless you know what you do !
@@ -391,13 +404,13 @@ class Forum extends Module {
 
         if (user == null) {
             error_id = MissingLogin;
-            this.triggers.deleteCategoryFail.dispatch({error : MissingLogin});
+            this.triggers.deleteCategoryFail.dispatch({error : error_id});
             return ;
         }
         // check if parent exists
         if (args.parent_id != -1 && getCategory(Some(args.parent_id)) == null) {
             error_id = UnknownCategory;
-            this.triggers.deleteCategoryFail.dispatch({error: UnknownCategory});
+            this.triggers.deleteCategoryFail.dispatch({error: error_id});
             return;
         }
         // check if category exists
@@ -405,24 +418,24 @@ class Forum extends Module {
 
         if (category == null) {
             error_id = UnknownCategory;
-            this.triggers.deleteCategoryFail.dispatch({error: UnknownCategory});
+            this.triggers.deleteCategoryFail.dispatch({error: error_id});
             return;
         }
         if (category.parent_id != args.parent_id) {
             error_id = UnknownCategory;
-            this.triggers.deleteCategoryFail.dispatch({error: UnknownCategory});
+            this.triggers.deleteCategoryFail.dispatch({error: error_id});
             return;
         }
         // check if it is its parent category
         if (args.category_id == -1) {
             error_id = UnknownCategory;
-            this.triggers.deleteCategoryFail.dispatch({error: UnknownCategory});
+            this.triggers.deleteCategoryFail.dispatch({error: error_id});
             return;
         }
         // check if the user can delete it
         if (category.creator_id != user.id && !user.isAdmin) {
             error_id = NotAllowed;
-            this.triggers.deleteCategoryFail.dispatch({error: NotAllowed});
+            this.triggers.deleteCategoryFail.dispatch({error: error_id});
             return;
         }
         internDeleteCategory(args.category_id, user);
@@ -436,7 +449,7 @@ class Forum extends Module {
 
         if (user == null) {
             error_id = MissingLogin;
-            this.triggers.editCategoryFail.dispatch({error : MissingLogin});
+            this.triggers.editCategoryFail.dispatch({error : error_id});
             return ;
         }
         // check if category exists
@@ -444,12 +457,12 @@ class Forum extends Module {
 
         if (category == null) {
             error_id = UnknownCategory;
-            this.triggers.editCategoryFail.dispatch({error: UnknownCategory});
+            this.triggers.editCategoryFail.dispatch({error: error_id});
             return;
         }
         if (user.id != category.creator_id && !user.isAdmin) {
             error_id = NotAllowed;
-            this.triggers.editCategoryFail.dispatch({error: NotAllowed});
+            this.triggers.editCategoryFail.dispatch({error: error_id});
             return;
         }
         category.name = args.name;
@@ -471,7 +484,7 @@ class Forum extends Module {
         // check if topic exists
         if (getTopic(args.topic_id) == null) {
             error_id = UnknownTopic;
-            this.triggers.editMessageFail.dispatch({error: UnknownTopic});
+            this.triggers.editMessageFail.dispatch({error: error_id});
             return;
         }
         this.topic_id = Some(args.topic_id);
@@ -480,18 +493,18 @@ class Forum extends Module {
 
         if (msg == null) {
             error_id = UnknownMessage;
-            this.triggers.editMessageFail.dispatch({error: UnknownMessage});
+            this.triggers.editMessageFail.dispatch({error: error_id});
             return;
         }
         if (msg.topic_id != args.topic_id) {
             error_id = UnknownMessage;
-            this.triggers.editMessageFail.dispatch({error: UnknownMessage});
+            this.triggers.editMessageFail.dispatch({error: error_id});
             return;
         }
 
         if (user.id != msg.author_id && !user.isAdmin) {
             error_id = NotAllowed;
-            this.triggers.editMessageFail.dispatch({error: NotAllowed});
+            this.triggers.editMessageFail.dispatch({error: error_id});
             return;
         }
         msg.text = args.text;
@@ -506,12 +519,12 @@ class Forum extends Module {
 
         if (user == null) {
             error_id = MissingLogin;
-            this.triggers.moveTopicFail.dispatch({error : MissingLogin});
+            this.triggers.moveTopicFail.dispatch({error : error_id});
             return ;
         }
         if (args.to_category_id == -1) {
             error_id = NotAllowed;
-            this.triggers.moveTopicFail.dispatch({error : NotAllowed});
+            this.triggers.moveTopicFail.dispatch({error : error_id});
             return ;
         }
         // check if topic exists
@@ -519,7 +532,7 @@ class Forum extends Module {
 
         if (topic == null) {
             error_id = UnknownTopic;
-            this.triggers.moveTopicFail.dispatch({error : UnknownTopic});
+            this.triggers.moveTopicFail.dispatch({error : error_id});
             return ;
         }
         // chef if categories exist
@@ -527,17 +540,17 @@ class Forum extends Module {
 
         if (category == null || getCategory(Some(args.to_category_id)) == null) {
             error_id = UnknownCategory;
-            this.triggers.moveTopicFail.dispatch({error : UnknownCategory});
+            this.triggers.moveTopicFail.dispatch({error : error_id});
             return ;
         }
         if (category.creator_id != user.id && !user.isAdmin) {
             error_id = NotAllowed;
-            this.triggers.moveTopicFail.dispatch({error : NotAllowed});
+            this.triggers.moveTopicFail.dispatch({error : error_id});
             return ;
         }
         if (topic.category_id != args.from_category_id) {
             error_id = UnknownTopic;
-            this.triggers.moveTopicFail.dispatch({error : UnknownTopic});
+            this.triggers.moveTopicFail.dispatch({error : error_id});
             return ;
         }
         topic.category_id = args.to_category_id;

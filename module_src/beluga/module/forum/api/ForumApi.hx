@@ -95,4 +95,8 @@ class ForumApi {
     public function doSolveTopic(args : {topic_id : Int, category_id : Int}) {
         this.module.solveTopic(args);
     }
+
+    public function doUnsolveTopic(args : {topic_id : Int, category_id : Int}) {
+        this.module.unsolveTopic(args);
+    }
 }
