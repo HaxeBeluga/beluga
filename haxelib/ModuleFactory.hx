@@ -14,7 +14,7 @@ import sys.io.File;
 class ModuleFactory
 {
     private static var USAGE : String = "Setup usage: create_module module_name [-path module_path] [-force] [-package packageName]";
-    private static var MODULE_TEMPLATE_DIR : String = "moduleTemplate";
+    private static var MODULE_TEMPLATE_DIR : String = "../core_src/beluga/template/module/";
 
     private static var moduleName : String;
     private static var packageName : String;
