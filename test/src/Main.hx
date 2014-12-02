@@ -93,6 +93,7 @@ class Main {
     public function doDebug(d : Dispatch) {
         Web.setHeader("Content-Type", "text/plain");
         trace(Web.getParamsString());
+        d.dispatch(this);
     }
 
     public function doAccountTest(d : Dispatch) {

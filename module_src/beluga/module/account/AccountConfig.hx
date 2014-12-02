@@ -1,5 +1,7 @@
 package beluga.module.account;
 
+import beluga.Config;
+
 class AccountConfig
 {
 

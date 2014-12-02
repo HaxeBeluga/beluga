@@ -28,7 +28,7 @@ class ConfigWidget extends MttWidget<Account> {
     override private function getContext(): Dynamic {
         var context = {
             error: null,
-            generated_field: TypeGenerator.parse( {
+            generated_field: TypeGenerator.parse({
                 nom : "Alexis Brissard",
                 homme: true,
                 adresse: {

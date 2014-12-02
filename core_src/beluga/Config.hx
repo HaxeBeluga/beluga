@@ -1,4 +1,4 @@
-package beluga;
+package beluga ;
 
 import beluga.tool.DynamicTool;
 using StringTools;

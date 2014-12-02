@@ -18,6 +18,14 @@ import beluga.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
 
+import beluga.tool.DynamicTool;
+
+#if php
+import php.Web;
+#elseif neko
+import neko.Web;
+#end
+
 class AccountApi  {
     public var beluga : Beluga;
     public var module : Account;
@@ -66,6 +74,16 @@ class AccountApi  {
     }
 
     public function doSaveConfig() {
-        param.parse(
+        var filled = DynamicTool.fill({
+            nom : "Alexis Brissard",
+            homme: true,
+            surnom: "Philosochieur",
+            adresse: {
+                ligne1: "86 rue de wattignies",
+                code_postal: "75012",
+                ville: "Paris"
+            }
+        }, Web.getParams());
+        trace(filled);
     }
 }
