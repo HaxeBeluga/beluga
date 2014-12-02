@@ -1,9 +1,5 @@
 package beluga.module.account;
 
-/**
- * ...
- * @author Alexis Brissard
- */
 class AccountConfig
 {
 
@@ -12,5 +8,8 @@ class AccountConfig
     public static var get = Config.get.bind(path, {
         emailIsLogin: false
     });
-
+    
+    #if !js
+    public static var save = Config.save.bind(path);
+    #end
 }

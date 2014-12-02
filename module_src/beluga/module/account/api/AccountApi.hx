@@ -65,4 +65,7 @@ class AccountApi  {
         REST.resolve(new UserRest(), id);
     }
 
+    public function doSaveConfig() {
+        param.parse(
+    }
 }

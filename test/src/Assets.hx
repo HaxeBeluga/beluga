@@ -91,6 +91,7 @@ class Assets {
 
         //#----AccountTest Pages----#
         Context.addResource("page_accueil", File.getBytes("src/modules/account_test/tpl/accueil.mtt"));
+        Context.addResource("page_config", File.getBytes("src/modules/account_test/tpl/config.mtt"));
         Context.addResource("page_subscribe", File.getBytes("src/modules/account_test/tpl/subscribe.mtt"));
         Context.addResource("page_login", File.getBytes("src/modules/account_test/tpl/login.mtt"));
 

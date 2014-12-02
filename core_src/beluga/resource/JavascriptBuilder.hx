@@ -6,7 +6,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 import haxe.macro.Context;
-import beluga.tool.Html;
+import beluga.html.Tag;
 
 using StringTools;
 
@@ -86,7 +86,7 @@ class JavascriptBuilder
     public static function getHtmlInclude() : String {
         var html = "";
         for (js in JavascriptBuilder.jsList) { 
-            html += Html.tag("script", ["src" => js], "");
+            html += new Tag("script", ["src" => js], "");
         }
         return html;
     }	

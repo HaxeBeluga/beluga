@@ -8,6 +8,9 @@
 package beluga.tool;
 
 import haxe.ds.Option;
+import Type;
+
+typedef Generator = List<String> -> Dynamic -> Void;
 
 class DynamicTool {
     public static function concatArray(i : Array<Dynamic>) {

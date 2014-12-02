@@ -130,6 +130,14 @@ class AccountTestApi {
     public function doDelete(args : {id: Int}) {
         this.acc.deleteUser(args);
     }
+    
+    public function doConfig() {
+        var configWidget = acc.widgets.configWidget.render();
+        var html = Renderer.renderDefault("page_config", "Configuration", {
+            configWidget: configWidget
+        });
+        Sys.print(html);
+    }
 
     public function deleteUserFail(args : {err: String}) {
         var user = this.acc.getLoggedUser();

@@ -1,0 +1,5 @@
+<div class="beluga account config" id="beluga_::_id::">
+<form action="::base_url::/beluga/account/config" class="form-horizontal" role="form" method="POST">
+    ::generated_field::
+</form>
+</div>
