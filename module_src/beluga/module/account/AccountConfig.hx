@@ -11,7 +11,12 @@ class AccountConfig
         emailIsLogin: false,
         testInt: 42,
         testFloat: 4.2,
-        testString: "42"
+        testString: "42",
+        testObj: {
+            testInt: 42,
+            testFloat: 4.2,
+            testString: "42"
+        }
     });
 
     #if !js
