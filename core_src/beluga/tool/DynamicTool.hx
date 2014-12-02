@@ -132,7 +132,8 @@ class DynamicTool {
         var param_value = getValue(names, params);
         var casted_value : Dynamic = switch(Type.typeof(value))
         {
-            case TInt: cast(param_value, Int);
+            case TInt: Std.parseInt(param_value);
+            case TFloat: Std.parseFloat(param_value);
             case TBool: param_value != null;
             case TClass(String): param_value;
             case TObject: get_obj(value, names, params);

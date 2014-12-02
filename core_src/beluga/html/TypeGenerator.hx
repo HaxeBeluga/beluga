@@ -39,6 +39,7 @@ class TypeGenerator
         html += switch(Type.typeof(value))
         {
             case TInt: type(ResourceManager.getTpl("/beluga/html/type_template/Int.mtt"));
+            case TFloat: type(ResourceManager.getTpl("/beluga/html/type_template/Float.mtt"));
             case TBool: type(ResourceManager.getTpl("/beluga/html/type_template/Boolean.mtt"));
             case TClass(String): type(ResourceManager.getTpl("/beluga/html/type_template/String.mtt"));
             case TClass(_): obj();

@@ -17,6 +17,7 @@ import beluga.Beluga;
 import beluga.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
+import beluga.module.config.Config;
 
 import beluga.tool.DynamicTool;
 
@@ -74,8 +75,6 @@ class AccountApi  {
     }
 
     public function doSaveConfig() {
-        var filled = DynamicTool.fill(AccountConfig.get(), Web.getParams());
-        AccountConfig.save(filled);
-        trace(filled);
+        beluga.getModuleInstance(Config).saveConfig(AccountConfig.get, AccountConfig.save);
     }
 }

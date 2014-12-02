@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="col-sm-2 control-label" for="login">::name::</label>
+    <label class="col-sm-2 control-label" for="::name::">::name::</label>
     <div class="col-sm-6">
         <input type="checkbox" name="::name::" ::if value::checked::end::>
     </div>

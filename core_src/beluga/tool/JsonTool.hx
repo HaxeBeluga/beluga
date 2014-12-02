@@ -61,13 +61,12 @@ class JsonTool {
         var content: String;
 
         try { // here we try to parse the json file, this is more critic, we launch a different exception
-           content = Json.stringify(json);
+           content = Json.stringify(json, null, "   ");
         } catch (e: Dynamic) {
             throw new JsonToolException(JTStringifyError(e));
         }
 
         try { // handle filesystem error, not critic, maybe we don't to fail for a non existing lang
-            trace("Saved " + path + ":" + content);
             File.saveContent(path, content);
         } catch (e: Dynamic) {
             throw new JsonToolException(JTReadOnlyException(e));
