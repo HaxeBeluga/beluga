@@ -24,7 +24,7 @@ class ConfigWidget extends MttWidget<Config> {
         super(Config, layout);
         this.get = get;
         this.save_url = save_url;
-        i18n = BelugaI18n.loadI18nFolder("/beluga/module/config/view/locale/config");
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/config/view/locale/config/");
     }
 
     override private function getContext(): Dynamic {
