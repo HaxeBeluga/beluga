@@ -15,7 +15,7 @@ extern class JQuery extends js.JQuery {
 }
 #end
 class Config
-{
+{ 
    
     macro public static function autoCreateFile(path : String) {
         if (Compiler.getDefine("no_conf") == null) {
@@ -23,9 +23,12 @@ class Config
             if (realOutput.endsWith(".n")) { //Trick for neko output
                 realOutput = realOutput.substr(0, realOutput.lastIndexOf("/"));
             }
-            var dir = path.substr(0, path.lastIndexOf("/"));
-            FileSystem.createDirectory(realOutput + dir);
-            File.saveContent(realOutput + path, "{}");
+            if (!FileSystem.exists(realOutput + "/" + path)) {
+                Sys.println(realOutput + "/" + path + " config file missing. Generating it.");
+                var dir = path.substr(0, path.lastIndexOf("/"));
+                FileSystem.createDirectory(realOutput + "/" + dir);
+                File.saveContent(realOutput + "/" + path, "{}");
+            }
         }
         return macro $v { path };
     }

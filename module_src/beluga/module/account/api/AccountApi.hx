@@ -74,16 +74,8 @@ class AccountApi  {
     }
 
     public function doSaveConfig() {
-        var filled = DynamicTool.fill({
-            nom : "Alexis Brissard",
-            homme: true,
-            surnom: "Philosochieur",
-            adresse: {
-                ligne1: "86 rue de wattignies",
-                code_postal: "75012",
-                ville: "Paris"
-            }
-        }, Web.getParams());
+        var filled = DynamicTool.fill(AccountConfig.get(), Web.getParams());
+        AccountConfig.save(filled);
         trace(filled);
     }
 }

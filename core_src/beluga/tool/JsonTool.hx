@@ -67,6 +67,7 @@ class JsonTool {
         }
 
         try { // handle filesystem error, not critic, maybe we don't to fail for a non existing lang
+            trace("Saved " + path + ":" + content);
             File.saveContent(path, content);
         } catch (e: Dynamic) {
             throw new JsonToolException(JTReadOnlyException(e));
