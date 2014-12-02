@@ -18,8 +18,7 @@ class ConfigWidget extends MttWidget<Config> {
 
     var get : Void -> Dynamic;
     var save_url : String;
-    
-    
+
     public function new (?layout : Layout, get : Void->Dynamic, save_url : String ) {
         if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/config/view/tpl/config.mtt");
         super(Config, layout);

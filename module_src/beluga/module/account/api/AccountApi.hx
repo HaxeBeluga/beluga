@@ -75,6 +75,11 @@ class AccountApi  {
     }
 
     public function doSaveConfig() {
-        beluga.getModuleInstance(Config).saveConfig(AccountConfig.get, AccountConfig.save);
+        try {
+            beluga.getModuleInstance(Config).saveConfig(AccountConfig.get, AccountConfig.save);
+            module.triggers.configSaveSuccess.dispatch();
+        } catch (e : Dynamic) {
+            module.triggers.configSaveFail.dispatch();            
+        }
     }
 }
