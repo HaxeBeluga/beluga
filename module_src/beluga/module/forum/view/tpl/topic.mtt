@@ -1,0 +1,40 @@
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+	<h1>::to_delete::</h1>
+	<h1>::topic.title::</h1>
+	::if (topic.is_solved)::
+	<h2>$$i18n(topic_solved)</h2>
+	::else::
+	<h2>$$i18n(topic_not_solved)</h2>
+	::end::
+	<div>
+	::foreach answers::
+	<div>
+		<h3>::author.login::</h3>
+		::if (user)::
+			::if (user.id == author.id)::
+			<a class="btn btn-primary" href="::base_url::::path::redirectEditMessage?message_id=::__current__.id::&topic_id=::topic.id::">$$i18n(edit_message)</a>
+			::elseif (user.isAdmin)::
+			<a class="btn btn-primary" href="::base_url::::path::redirectEditMessage?message_id=::__current__.id::&topic_id=::topic.id::">$$i18n(edit_message)</a>
+			::end::
+		::end::
+		<p>::text::</p>
+		<p>::date::</p>
+	</div>
+	::end::
+	</div>
+	::if (user)::
+		::if (topic.can_post_message)::
+		<a class="btn btn-primary" href="::base_url::::path::redirectPost?topic_id=::topic.id::">$$i18n(post_message)</a>
+		::elseif (user.isAdmin)::
+		<a class="btn btn-primary" href="::base_url::::path::redirectPost?topic_id=::topic.id::">$$i18n(post_message)</a>
+		::end::
+		::if (topic.creator_id == user.id)::
+			::if (topic.is_solved)::
+			<a class="btn btn-primary" href="::base_url::::path::unsolveTopic?topic_id=::topic.id::&category_id=::topic.category_id::">$$i18n(unsolve_topic)</a>
+			::else::
+			<a class="btn btn-primary" href="::base_url::::path::solveTopic?topic_id=::topic.id::&category_id=::topic.category_id::">$$i18n(solve_topic)</a>
+			::end::
+		::end::
+	::end::
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::parent::">$$i18n(go_back)</a>
+</div>

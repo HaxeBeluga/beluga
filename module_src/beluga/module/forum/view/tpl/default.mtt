@@ -1,0 +1,77 @@
+<div>
+	<h1 class="center">$$i18n(forum_module)</h1><br/>
+	::if (error)::
+	::if (error != "")::
+	<div class="alert alert-danger">::error::</div>
+	::end::
+	::end::
+	::if (success)::
+	::if (success != "")::
+	<div class="alert alert-success">::success::</div>
+	::end::
+	::end::
+	::if (category_name)::
+	::if (category_name != "")::
+	<h2 class="center">::category_name::</h2>
+	::end::
+	::end::
+	::if (categories.length > 0)::
+	<div class="panel panel-default">
+		<div class="panel-heading">$$i18n(categories)</div>
+		<table class="table">
+			<tbody>
+				::foreach categories::
+				<tr>
+					<td><a href="::base_url::::path::print?category_id=::id::">::title::</a></td>
+					<td>::description::</td>
+					<td>::number_of_topics::</td>
+					<td>::last_message::</td>
+					::if (user)::
+					::if (user.isAdmin)::
+					<td><a class="btn btn-primary" href="::base_url::::path::redirectEditCategory?category_id=::id::">$$i18n(edit_category)</a></td>
+					<td><a class="btn btn-primary" href="::base_url::::path::deleteCategory?category_id=::id::&parent_id=::category_id::">$$i18n(delete_category)</a></td>
+					::end::
+					::end::
+				</tr>
+				::end::
+			</tbody>
+		</table>
+	</div>
+	::end::
+	::if (topics.length > 0)::
+	<div class="panel panel-default">
+		<div class="panel-heading">$$i18n(topics)</div>
+		<table class="table">
+			<tbody>
+			::foreach topics::
+			<tr>
+				<td><a href="::base_url::::path::printTopic?topic_id=::id::">::title::</a></td>
+				<td>::number_of_messages::</td>
+				<td>::last_message::</td>
+				::if (user)::
+				::if (user.isAdmin)::
+				<td><a class="btn btn-primary" href="::base_url::::path::deleteTopic?topic_id=::id::&category_id=::category_id::">$$i18n(delete_topic)</a></td>
+				::end::
+				::end::
+			</tr>
+			::end::
+			</tbody>
+		</table>
+	</div>
+	::end::
+	::if (user)::
+		::if (user.isAdmin)::
+		<a href="::base_url::::path::redirectCreateCategory?category_id=::category_id::" class="btn btn-primary">$$i18n(create_category)</a>
+		::end::
+		::if (category)::
+			::if (category.can_create_topic)::
+			<a href="::base_url::::path::redirectCreateTopic?category_id=::category_id::" class="btn btn-primary">$$i18n(create_topic)</a>
+			::elseif (user.isAdmin)::
+			<a href="::base_url::::path::redirectCreateTopic?category_id=::category_id::" class="btn btn-primary">$$i18n(create_topic)</a>
+			::end::
+		::end::
+	::end::
+	::if (category)::
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::category.parent_id::">$$i18n(go_up)</a>
+	::end::
+</div>
