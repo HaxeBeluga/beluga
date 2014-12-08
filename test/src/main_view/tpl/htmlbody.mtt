@@ -1,26 +1,265 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <title>BelugaTest - ::title::</title>
+        <title>beluga demo !</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width"/>
-
+        <!-- <link rel="stylesheet" href="./style.css"/> -->
+        <!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+        <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
         ::css::
+        <style>
+        * {
+  border-radius: 0 !important;
+}
+
+body {
+    color: #676a6c;
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: whitesmoke;
+}
+
+.blgwidget {
+    border-color: #e7eaec;
+    /*min-height: 400px;*/
+    /*padding: 10px;*/
+    overflow:hidden;
+    background-color: white;
+}
+
+.blgwidget-header {
+    margin-left:-15px;
+    margin-right:-15px;
+    padding: 14px 15px 7px;
+    overflow: hidden;
+    background-color: white;
+    border-top: 5px solid #e7eaec;
+    border-bottom: 1px solid #e7eaec;
+    height: 50px;
+}
+
+.blgwidget-error {
+    margin-left:-15px;
+    margin-right:-15px;
+    padding: 10px 15px 7px;
+    overflow: hidden;
+    height: 40px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1
+}
+
+.blgwidget-info {
+    margin-left:-15px;
+    margin-right:-15px;
+    padding: 10px 15px 7px;
+    overflow: hidden;
+    height: 40px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.blgwidget-info p,
+.blgwidget-error p {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 7px;
+    padding: 0;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.blgwidget-header-tools {
+    display: inline-block;
+    float: right;
+    margin-top: 0;
+    position: relative;
+    padding: 0;
+}
+
+.blgwidget-header-tools a {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #c4c4c4;
+}
+
+.blgwidget-header h5 {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 7px;
+    padding: 0;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.blgwidget-content {
+    border-color: #e7eaec;
+    border-width: 1px 0px;
+    background-color: white;
+    /*min-height: 350px;*/
+    /*max-height: 600px;*/
+    padding: 10px;
+    padding-top: 15px;
+    overflow: auto;
+    border-bottom: 1px solid #e7eaec;
+}
+
+
+/* custom page */
+
+.logo {
+    height: 20px;
+    float: right;
+    margin-top:20px;
+    margin-right:20px
+}
+
+.page-wrapp {
+    margin-left: 250px;
+}
+
+.blglogo-container img{
+    height: 60px;
+    margin-left:35px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+ul.sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 45px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-indent: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  ul.sidebar li a {
+    color: #fff;
+    display: block;
+    float: left;
+    text-decoration: none;
+    width: 250px;
+  }
+  ul.sidebar .sidebar-main {
+    height: 65px;
+  }
+  ul.sidebar .sidebar-main a {
+    font-size: 18px;
+    line-height: 60px;
+  }
+  ul.sidebar .sidebar-main .menu-icon {
+    float: right;
+    font-size: 18px;
+    padding-right: 28px;
+    line-height: 60px;
+  }
+  ul.sidebar .sidebar-title {
+    font-size: 12px;
+    height: 35px;
+    line-height: 40px;
+    text-transform: uppercase;
+  }
+
+  ul.sidebar .sidebar-list {
+    height: 40px;
+  }
+  ul.sidebar .sidebar-list a {
+    text-indent: 25px;
+    font-size: 15px;
+    color: #b2bfdc;
+    line-height: 40px;
+  }
+  ul.sidebar .sidebar-list a:hover {
+    color: #fff;
+    border-left: 3px solid #e99d1a;
+    text-indent: 22px;
+  }
+  #page-wrapper:not(.active) ul.sidebar .sidebar-list a:hover span {
+    border-left: 3px solid #e99d1a;
+    text-indent: 22px;
+  }
+  ul.sidebar .sidebar-list .menu-icon {
+    float: right;
+    padding-right: 29px;
+    line-height: 40px;
+    width: 70px;
+  }
+  ul.sidebar .sidebar-list a:hover .menu-icon {
+    text-indent: 25px;
+  }
+  .sidebar-footer {
+    position: absolute;
+    height: 40px;
+    bottom: 0;
+    width: 250px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  .sidebar-footer div a {
+    color: #b2bfdc;
+    font-size: 12px;
+    line-height: 43px;
+  }
+  .sidebar-footer div a:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+ul.sidebar .sidebar-main a,
+.sidebar-footer,
+ul.sidebar .sidebar-list a:hover,
+#page-wrapper:not(.active) ul.sidebar .sidebar-title.separator {
+    /* Sidebar header and footer color */
+    background: #273759;
+}
+#sidebar-wrapper {
+    font-family: "Montserrat";
+    /* Sidebar background color */
+    background: #30426a;
+    position:fixed;
+    height:100%;
+}
+ul.sidebar .sidebar-title {
+    /* Sidebar title text colour */
+    color: #627cb7;
+}
+
+.sidebar {
+    background-color: rgb(49, 67, 105);
+    height: 100%;
+    position: fixed;
+}
+
+        </style>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome-ie7.min.css" rel="stylesheet">
-          <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
 
-        <!-- Add your site or application content here -->
-        ::content::
+        <!-- Sidebar -->
+
+        ::header::
+
+        <!-- page content -->
+        <div class="container-fluid page-wrapp">
+            <div class="row" style="margin-top:10px;">
+
+                ::content::
+
+            </div>
+
+        </div>
 
         ::js::
+
+      <!--   <a href="https://github.com/haxebeluga/beluga"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a> -->
     </body>
 </html>

@@ -1,23 +1,16 @@
-::if (error != "")::
-  <div class="alert alert-danger alert-dismissable ticket-alert-error">
-    <strong>Error!</strong> ::error::
+  <div class="container-fluid">
+      <h4>$$i18n(title_add_label)</h4>
+      <form action="::base_url::/beluga/ticket/addlabel" method="post"><br>
+          <input type="text" name="name" class=" form-control">
+          <input type="submit" value="$$i18n(submit_new_label)" class="btn btn-warning pull-right ticket-label-submit">
+      </form>
   </div>
-::end::
-<div class="container ticket-label-widget">
-    <div class="container-fluid">
-        <h4>$$i18n(title_add_label)</h4>
-        <form action="::base_url::/beluga/ticket/addlabel" method="post"><br>
-            <input type="text" name="name" class=" form-control">
-            <input type="submit" value="$$i18n(submit_new_label)" class="btn btn-warning pull-right ticket-label-submit">
-        </form>
-    </div>
-    <div class="container-fluid">
-        <h4>$$i18n(labels_list_label)</h4>
-        <ul class="list-group">
-          ::foreach labels::
-          <li class="list-group-item">::name::
-          <a href="::base_url::/beluga/ticket/deletelabel?id=::id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
-          ::end::
-        </ul>
-    </div>
-</div>
+  <div class="container-fluid">
+      <h4>$$i18n(labels_list_label)</h4>
+      <ul class="list-group">
+        ::foreach labels::
+        <li class="list-group-item">::name::
+        <a href="::base_url::/beluga/ticket/deletelabel?id=::id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
+        ::end::
+      </ul>
+  </div>

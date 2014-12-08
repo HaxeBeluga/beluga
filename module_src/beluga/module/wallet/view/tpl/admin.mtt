@@ -3,12 +3,6 @@
         <strong>Error!</strong> $$i18n(authenticated_error)
     </div>
 ::else::
-::if (wallet_admin_error != "")::
-    <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::wallet_admin_error::
-    </div>
-::end::
-<div class="container wallet-add-currency-widget">
     <div class="container-fluid">
         <h4>$$i18n(create_currency_title)</h4>
         <form action="::base_url::/beluga/wallet/createCurrency" method="post"><br>
@@ -35,5 +29,4 @@
           ::end::
         </ul>
     </div>
-</div>
 ::end::

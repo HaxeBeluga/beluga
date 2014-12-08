@@ -35,12 +35,12 @@ class Renderer {
         });
         var templatelayout = (new haxe.Template(Resource.getString("template_default_layout"))).execute( {
             base_url: ctx.base_url,
-            header: templateheader,
             footer: templatefooter,
             content: body
         });
         var bodyhtml = (new haxe.Template(Resource.getString("html_body"))).execute({
             base_url: ctx.base_url,
+            header: templateheader,
             content: templatelayout,
             title: title,
             js: JavascriptBuilder.getHtmlInclude(),

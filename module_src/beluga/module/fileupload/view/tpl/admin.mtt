@@ -1,23 +1,16 @@
-::if (admin_error != "")::
-  <div class="alert alert-danger alert-dismissable ticket-alert-error">
-    <strong>Error!</strong> ::admin_error::
+  <div class="container-fluid">
+      <h4>$$i18n(add_extension_title)</h4>
+      <form action="::base_url::/beluga/fileupload/addextension" method="post"><br>
+          <input type="text" name="name" class=" form-control">
+          <input type="submit" value="$$i18n(submit_extension)" class="btn btn-warning pull-right fileupload-upload-submit">
+      </form>
   </div>
-::end::
-<div class="container fileupload-upload-widget">
-    <div class="container-fluid">
-        <h4>$$i18n(add_extension_title)</h4>
-        <form action="::base_url::/beluga/fileupload/addextension" method="post"><br>
-            <input type="text" name="name" class=" form-control">
-            <input type="submit" value="$$i18n(submit_extension)" class="btn btn-warning pull-right fileupload-upload-submit">
-        </form>
-    </div>
-    <div class="container-fluid">
-        <h4>$$i18n(extension_list)</h4>
-        <ul class="list-group">
-          ::foreach extensions_list::
-          <li class="list-group-item">::extension_name::
-          <a href="::base_url::/beluga/fileupload/deleteextension?id=::extension_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
-          ::end::
-        </ul>
-    </div>
-</div>
+  <div class="container-fluid">
+      <h4>$$i18n(extension_list)</h4>
+      <ul class="list-group">
+        ::foreach extensions_list::
+        <li class="list-group-item">::extension_name::
+        <a href="::base_url::/beluga/fileupload/deleteextension?id=::extension_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
+        ::end::
+      </ul>
+  </div>

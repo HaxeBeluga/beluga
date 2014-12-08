@@ -8,17 +8,7 @@
 	::else::
 	<h1 class="center">$$i18n(category_entries)</h1><br/>
 	::end::
-	::if (error)::
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
-	::if (success)::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
-	::end::
-	::end::
-	<div class="container">
+	<div class="">
 		::if (faqs.categories.length > 0)::
 		<ul class="list-group">
 			::foreach faqs.categories::

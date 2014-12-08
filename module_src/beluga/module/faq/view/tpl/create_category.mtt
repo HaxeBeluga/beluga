@@ -1,8 +1,7 @@
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<div >
 	<h2>$$i18n(category_creation)</h2>
 	<form action="::base_url::::path::createCategory" class="form-horizontal" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
-		<div class="form-group">
+		<div style="margin-bottom:10px;">
 			<label for="name">$$i18n(name)</label>
 			<input class="form-control" id="name" name="name" placeholder="$$i18n(enter_name)">
 		</div>

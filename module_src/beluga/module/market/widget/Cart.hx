@@ -21,7 +21,7 @@ import beluga.widget.Layout;
 class Cart extends MttWidget<Market> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/market/view/tpl/cart.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/market/view/tpl/cart.mtt");
         super(Market, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/view/locale/cart/", mod.i18n);
     }
@@ -51,11 +51,12 @@ class Cart extends MttWidget<Market> {
         }
 
         return {
-            market_cart_error: if (cart_error == "") { this.getErrorString(mod.error); } else { cart_error; },
-            market_cart_info: cart_info,
+            error: if (cart_error == "") { this.getErrorString(mod.error); } else { cart_error; },
+            success: cart_info,
             products_list: user_cart,
             currency: currency,
-            total_price: total_cart_price
+            total_price: total_cart_price,
+            module_name: "User Cart"
         };
     }
 
@@ -65,7 +66,7 @@ class Cart extends MttWidget<Market> {
             case MarketNewProductToCart(_): BelugaI18n.getKey(this.i18n, "product_add_to_cart");
             case MarketUserNotLogged: BelugaI18n.getKey(this.i18n, "user_not_logged");
             case MarketUnknownProduct(_): BelugaI18n.getKey(this.i18n, "unknown_product");
-            case MarketNone: "";
+            case MarketNone: null;
         };
     }
 }

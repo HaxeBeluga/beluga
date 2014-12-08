@@ -1,8 +1,7 @@
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<div>
 	<h2>$$i18n(creation_faq)</h2>
 	<form action="::base_url::::path::createFAQ" class="form-horizontal" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
-		<div class="form-group">
+		<div style="margin-bottom:10px;">
 			<label for="name">$$i18n(question)</label>
 			::if (question)::
     		::if (question != "")::
@@ -14,7 +13,7 @@
 			<input class="form-control" id="question" name="question" placeholder="$$i18n(enter_question)">
 			::end::
 		</div>
-		<div class="form-group">
+		<div style="margin-bottom:10px;">
 			<label for="name">$$i18n(answer)</label>
 			<textarea class="form-control" id="answer" name="answer" placeholder="$$i18n(enter_answer)">::if (answer)::::if (answer != "")::::answer::::end::::end::</textarea>
 		</div>

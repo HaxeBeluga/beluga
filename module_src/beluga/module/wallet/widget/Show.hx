@@ -24,7 +24,7 @@ import beluga.module.wallet.Wallet;
 class Show extends MttWidget<Wallet> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/wallet/view/tpl/show.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/wallet/view/tpl/show.mtt");
         super(Wallet, layout);
         this.i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }
@@ -67,7 +67,8 @@ class Show extends MttWidget<Wallet> {
             has_wallet: has_wallet,
             user: user,
             founds: user_founds,
-            currency_name: currency_name
+            currency_name: currency_name,
+            module_name: "User wallet"
         };
     }
 }

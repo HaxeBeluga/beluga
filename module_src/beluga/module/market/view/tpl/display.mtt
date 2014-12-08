@@ -1,8 +1,3 @@
-::if (market_error != "")::
-    <div class="alert alert-danger alert-dismissable ticket-alert-error">
-        <strong>Error!</strong> ::market_error::
-    </div>
-::end::
 ::if (market_info != "")::
     <div class="alert alert-info alert-dismissable ticket-alert-error">
         <strong>Information !</strong> ::market_info::

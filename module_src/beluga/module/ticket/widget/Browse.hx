@@ -14,10 +14,11 @@ import beluga.ConfigLoader;
 import beluga.module.ticket.Ticket;
 import beluga.I18n;
 import beluga.widget.Layout;
+
 class Browse extends MttWidget<Ticket> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/ticket/view/tpl/browse.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/ticket/view/tpl/browse.mtt");
         super(Ticket, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/browse/", mod.i18n);
     }
@@ -35,7 +36,8 @@ class Browse extends MttWidget<Ticket> {
             tickets_list: tickets.list,
             labels_list: labels,
             open_tickets: tickets.open,
-            closed_tickets: tickets.closed
+            closed_tickets: tickets.closed,
+            module_name: "Ticket browse"
         };
     }
 }

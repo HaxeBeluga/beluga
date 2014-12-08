@@ -19,7 +19,7 @@ import beluga.widget.Layout;
 class Browse extends MttWidget<Fileupload> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/fileupload/view/tpl/browse.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/fileupload/view/tpl/browse.mtt");
         super(Fileupload, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/fileupload/view/locale/browse/", mod.i18n);
     }
@@ -34,8 +34,9 @@ class Browse extends MttWidget<Fileupload> {
         }
 
         return {
-            file_error: this.getErrorString(mod.error),
+            error: this.getErrorString(mod.error),
             files_list: files,
+            module_name: "Browse personal files"
         };
     }
 
@@ -47,7 +48,7 @@ class Browse extends MttWidget<Fileupload> {
             case FileUploadEmptyField: BelugaI18n.getKey(this.i18n, "empty_field");
             case FileUploadExtensionExist: BelugaI18n.getKey(this.i18n, "extension_already_exist");
             case FileUploadExtensionDontExist: BelugaI18n.getKey(this.i18n, "ext_dont_exist");
-            case FileUploadNone: "";
+            case FileUploadNone: null;
         };
     }
 }

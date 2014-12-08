@@ -100,7 +100,7 @@ class CssBuilder
         for (file in FileSystem.readDirectory(dir)) {
             if (file.endsWith(".css")) {
                 writer.writeString("/*\n");
-                writer.writeString("**" + dir + "/" + file +"\n");
+                writer.writeString("** " + dir + "/" + file +"\n");
                 writer.writeString("*/\n");
                 writer.writeString(File.getContent(dir + "/" + file));
             }

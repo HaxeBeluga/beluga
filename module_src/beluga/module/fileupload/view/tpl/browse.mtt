@@ -1,17 +1,10 @@
-<div class="container fileupload-uploaded-files">
-    ::if (file_error != "")::
-        <div class="alert alert-danger alert-dismissable ticket-alert-error">
-          <strong>Error!</strong> ::file_error::
-        </div>
-      ::end::
-    <div class="container-fluid">
-        <ul class="list-group">
-          ::foreach files_list::
-          <li class="list-group-item">::file_name::
-          <a href="::base_url::/beluga/fileupload/delete?id=::file_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
-          <a href="::base_url::/::file_path::" class="btn btn-success btn-xs pull-right fileupload-btn-download">$$i18n(download)</a>
-          <button class="btn btn-info btn-xs disabled pull-right fileupload-btn-download">::file_size::ko</button></li>
-          ::end::
-        </ul>
-    </div>
-</div>
+  <div class="container-fluid">
+      <ul class="list-group">
+        ::foreach files_list::
+        <li class="list-group-item">::file_name::
+        <a href="::base_url::/beluga/fileupload/delete?id=::file_id::" class="btn btn-danger btn-xs pull-right">$$i18n(delete)</a>
+        <a href="::base_url::/::file_path::" class="btn btn-success btn-xs pull-right fileupload-btn-download">$$i18n(download)</a>
+        <button class="btn btn-info btn-xs disabled pull-right fileupload-btn-download">::file_size::ko</button></li>
+        ::end::
+      </ul>
+  </div>

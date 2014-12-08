@@ -23,7 +23,7 @@ import beluga.widget.Layout;
 class Show extends MttWidget<Ticket> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/ticket/view/tpl/show.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/ticket/view/tpl/show.mtt");
         super(Ticket, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }
@@ -59,9 +59,10 @@ class Show extends MttWidget<Ticket> {
             messages_list: messages,
             labels_list: labels,
             ticket_status: ticket.status,
-            ticket_error: this.getErrorString(mod.error),
+            error: this.getErrorString(mod.error),
             ticket_assignee: assignee,
-            ticket_owner_id: User.manager.get(ticket.user_id).id
+            ticket_owner_id: User.manager.get(ticket.user_id).id,
+            module_name: "Ticket show"
         };
     }
 
@@ -73,7 +74,7 @@ class Show extends MttWidget<Ticket> {
             case TicketUndefinedLabelId: BelugaI18n.getKey(i18n, "undefined_label_id");
             case TicketLabelEmpty: BelugaI18n.getKey(i18n, "ticket_label_empty");
             case TicketLabelAlreadyExist: BelugaI18n.getKey(i18n, "ticket_label_exist");
-            case TicketErrorNone: "";
+            case TicketErrorNone: null;
         };
     }
 }
