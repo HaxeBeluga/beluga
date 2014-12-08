@@ -4,13 +4,7 @@ import haxe.Template;
 import beluga.resource.ResourceManager;
 import haxe.macro.Expr;
 
-/**
- * ...
- * @author Alexis Brissard
- */
-class Layout
-{
-    
+class Layout {
     public var parent : Layout;
     public var tpl : Template;
 

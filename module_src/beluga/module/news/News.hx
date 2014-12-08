@@ -276,7 +276,7 @@ class News extends Module {
             case NewsNotFound: BelugaI18n.getKey(this.i18n, "id_not_found");
             case CommentNotFound: BelugaI18n.getKey(this.i18n, "comment_id_not_found");
             case NotAllowed: BelugaI18n.getKey(this.i18n, "not_allowed");
-            case None: "";
+            case None: null;
         };
     }
 }

@@ -139,7 +139,7 @@ class Notification extends Module {
             case MissingMessage: BelugaI18n.getKey(this.i18n, "missing_message");
             case MissingTitle: BelugaI18n.getKey(this.i18n, "missing_title");
             case IdNotFound: BelugaI18n.getKey(this.i18n, "id_not_found");
-            case None: "";
+            case None: null;
         };
     }
 }

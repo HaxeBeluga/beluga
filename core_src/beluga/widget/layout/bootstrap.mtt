@@ -1,3 +1,24 @@
-<div class="beluga bootstrap">
-    ::__content__::
+
+<div class="blgwidget col-md-12">
+    <div class="blgwidget-header">
+        <h5>::module_name::</h5>
+        <div class="blgwidget-header-tools">
+            <a><i class="fa fa-chevron-up"></i></a>
+            <a><i class="fa fa-wrench"></i></a>
+            <a><i class="fa fa-times"></i></a>
+        </div>
+    </div>
+    ::if error::
+    ::if (error != "")::
+    <div class="blgwidget-error"><p><b>Error ! </b>::error::</p></div>
+    ::end::
+    ::end::
+    ::if success::
+    ::if (success != "")::
+    <div class="blgwidget-info"><b>Info ! </b>::success::</div>
+    ::end::
+    ::end::
+    <div class="blgwidget-content">
+        ::__content__::
+    </div>
 </div>

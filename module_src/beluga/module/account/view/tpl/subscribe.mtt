@@ -1,10 +1,5 @@
 ﻿<div class="beluga account subscribe container" id="::_id::">
 	<h1>Inscrivez vous</h1>
-	::if (error)::
-	::if (error != "")::
-		<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
 	<br/>
 	<form action="::base_url::/beluga/account/subscribe" class="form-horizontal" role="form" method="POST">
         ::if (loginErr.length > 0)::

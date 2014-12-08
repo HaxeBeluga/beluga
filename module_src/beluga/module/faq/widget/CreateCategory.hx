@@ -10,8 +10,8 @@ import beluga.widget.Layout;
 class CreateCategory extends MttWidget<Faq> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/faq/view/tpl/create_category.mtt");
-        super(Faq, layout); 
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/faq/view/tpl/create_category.mtt");
+        super(Faq, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/faq/view/locale/create_category/", mod.i18n);
     }
 
@@ -21,7 +21,8 @@ class CreateCategory extends MttWidget<Faq> {
             error : (mod.error_msg != "" ? BelugaI18n.getKey(this.i18n, mod.error_msg) : mod.error_msg),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             parent : switch (mod.category_id) { case Some(id) : id; case None : -1;},
-            base_url : ConfigLoader.getBaseUrl()
+            base_url : ConfigLoader.getBaseUrl(),
+            module_name: "Create new FAQ category"
         };
     }
 }

@@ -1,11 +1,10 @@
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<div id="mainDiv"">
 	<h2>$$i18n(edit)</h2>
 	<form action="::base_url::::path::editCategory" class="form-horizontal" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group" style="display:none;">
 			<input class="form-control" id="category_id" name="category_id" value="::category_id::">
 		</div>
-		<div class="form-group">
+		<div style="margin-bottom:10px;">
 			<label for="name">$$i18n(name)</label>
 			<input class="form-control" id="name" name="name" placeholder="$$i18n(enter_name)" value="::name::">
 		</div>

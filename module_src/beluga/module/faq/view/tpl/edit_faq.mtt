@@ -1,15 +1,14 @@
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<div id="mainDiv"">
 	<h2>$$i18n(edit)</h2>
 	<form action="::base_url::::path::editFAQ" class="form-horizontal" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group" style="display:none;">
 			<input class="form-control" id="faq_id" name="faq_id" value="::id::">
 		</div>
-		<div class="form-group">
+		<div style="margin-bottom:10px;">
 			<label for="name">$$i18n(question)</label>
 			<input class="form-control" id="question" name="question" placeholder="$$i18n(enter_question)" value="::name::">
 		</div>
-		<div class="form-group">
+		<div style="margin-bottom:10px;">
 			<label for="name">$$i18n(answer)</label>
 			<textarea class="form-control" id="answer" name="answer" placeholder="$$i18n(enter_answer)">::answer::</textarea>
 		</div>

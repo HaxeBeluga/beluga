@@ -17,11 +17,13 @@ import beluga.widget.Layout;
 class Admin extends MttWidget<Market> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/market/view/tpl/admin.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/market/view/tpl/admin.mtt");
         super(Market, layout);
     }
 
     override private function getContext(): Dynamic {
-        return {};
+        return {
+            module_name: "Market admin"
+        };
     }
 }

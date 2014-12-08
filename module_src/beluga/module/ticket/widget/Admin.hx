@@ -19,7 +19,7 @@ import beluga.widget.Layout;
 class Admin extends MttWidget<Ticket> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/ticket/view/tpl/admin.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/ticket/view/tpl/admin.mtt");
         super(Ticket, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/admin/", mod.i18n);
     }
@@ -29,7 +29,8 @@ class Admin extends MttWidget<Ticket> {
     override private function getContext() {
       return {
             error: this.getErrorString(mod.error),
-            labels: mod.getLabelsList()
+            labels: mod.getLabelsList(),
+            module_name: "Ticket admin"
         };
     }
 

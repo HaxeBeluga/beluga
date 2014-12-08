@@ -18,12 +18,14 @@ import beluga.widget.Layout;
 class Send extends MttWidget<Fileupload> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/fileupload/view/tpl/send.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/fileupload/view/tpl/send.mtt");
         super(Fileupload, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/fileupload/view/locale/admin/", mod.i18n);
     }
 
     override private function getContext() {
-        return {};
+        return {
+            module_name: "Send a File"
+        };
     }
 }

@@ -1,21 +1,15 @@
 ::if other::
 ::other::
 ::else::
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
-    ::if (error)::
-    ::if (error != "")::
-    <div class="alert alert-danger">::error::</div>
-    ::end::
-    ::end::
+<div id="mainDiv">
 	<h2>$$i18n(edit)</h2>
 	<form action="::base_url::::path::edit" class="" role="form" method="POST">
 		<input name="news_id" value="::news.id::" type="hidden"/>
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="">
 			<label for="title">$$i18n(title)</label>
 			<input class="form-control" id="title" name="title" placeholder="$$i18n(enter_title)" value="::news.title::">
 		</div>
-		<div class="form-group">
+		<div class="form-group" style="margin-top:10px;">
 			<label for="text">$$i18n(news)</label>
 			<textarea class="form-control" id="text" name="text" placeholder="$$i18n(enter_news)">::news.text::</textarea>
 		</div>
