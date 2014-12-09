@@ -1,4 +1,4 @@
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<div id="mainDiv"">
 	<h1>::to_delete::</h1>
 	<h1>::topic.title::</h1>
 	::if (topic.is_solved)::

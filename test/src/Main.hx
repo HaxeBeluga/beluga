@@ -82,9 +82,9 @@ class Main {
     public function new() {
     }
 
-    public function doDefault(d : Dispatch) {
-        doAccueil();
-    }
+    // public function doDefault(d : Dispatch) {
+    //     doAccueil();
+    // }
 
     public function doDebug(d : Dispatch) {
         Web.setHeader("Content-Type", "text/plain");

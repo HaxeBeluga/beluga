@@ -1,18 +1,7 @@
 <div>
-	<h1 class="center">$$i18n(forum_module)</h1><br/>
-	::if (error)::
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
-	::if (success)::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
-	::end::
-	::end::
 	::if (category_name)::
 	::if (category_name != "")::
-	<h2 class="center">::category_name::</h2>
+	<h2>::category_name::</h2>
 	::end::
 	::end::
 	::if (categories.length > 0)::
