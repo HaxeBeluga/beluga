@@ -1,7 +1,6 @@
 <div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
 	<h2>$$i18n(edit_answer)</h2>
 	<form action="::base_url::::path::editMessage" class="form-horizontal" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="form-group">
 			<textarea class="form-control" id="text" name="text">::message.text::</textarea>
 		</div>

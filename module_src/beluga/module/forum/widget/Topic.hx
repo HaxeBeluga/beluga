@@ -15,11 +15,13 @@ import beluga.module.forum.Forum;
 import beluga.I18n;
 import beluga.resource.ResourceManager;
 import beluga.module.account.Account;
+import beluga.widget.Layout;
 
 class Topic extends MttWidget<Forum> {
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/forum/view/tpl/topic.mtt");
-        super(Forum, mttfile);
+
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/forum/view/tpl/topic.mtt");
+        super(Forum, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/forum/view/locale/topic/", mod.i18n);
     }
 
@@ -42,7 +44,8 @@ class Topic extends MttWidget<Forum> {
             error: mod.getErrorString(mod.error_id),
             success: (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             path : "/beluga/forum/",
-            parent: topic.category_id
+            parent: topic.category_id,
+            module_name: "Forum topic"
         };
     }
 }

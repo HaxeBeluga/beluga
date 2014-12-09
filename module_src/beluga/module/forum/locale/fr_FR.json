@@ -41,5 +41,6 @@
     "category_not_found": "La catégorie n'a pas été trouvée",
     "topic_not_found": "Le sujet n'a pas été trouvé",
     "not_allowed": "Vous ne pouvez pas effectuer cette action",
-    "category_already_exist": "Cette catégorie existe déjà"
+    "category_already_exist": "Cette catégorie existe déjà",
+    "entry_create_success": "Categorie cree avec succes"
 }

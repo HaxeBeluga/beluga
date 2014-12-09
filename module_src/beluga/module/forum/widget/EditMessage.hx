@@ -19,12 +19,13 @@ import beluga.module.forum.Forum;
 import beluga.module.forum.CategoryData;
 import beluga.module.account.Account;
 import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class EditMessage extends MttWidget<Forum> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/forum/view/tpl/edit_message.mtt");
-        super(Forum, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/forum/view/tpl/edit_message.mtt");
+        super(Forum, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/forum/view/locale/edit_message/", mod.i18n);
     }
 
@@ -41,7 +42,7 @@ class EditMessage extends MttWidget<Forum> {
             return ret;
         }
         var message = switch (mod.message_id) { case Some(id) : mod.getMessage(id); case None : null;};
-        
+
         // if message doesn't exist or isn't in topic, we display default page
         if (message == null || message.topic_id != topic.id) {
             mod.error_id = UnknownMessage;
@@ -56,7 +57,8 @@ class EditMessage extends MttWidget<Forum> {
             error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             path : "/beluga/forum/",
-            user: user
+            user: user,
+            module_name: "Forume edit message"
         };
     }
 }

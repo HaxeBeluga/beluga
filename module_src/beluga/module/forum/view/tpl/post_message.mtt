@@ -1,14 +1,12 @@
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
-	<h2>$$i18n(topic_answer)</h2>
+<div id="mainDiv"">
 	<form action="::base_url::::path::postMessage" class="form-horizontal" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
-		<div class="form-group">
-			<textarea class="form-control" id="text" name="text">::answer::</textarea>
+		<div>
+			<textarea style="margin-bottom:10px;" class="form-control" id="text" name="text">::answer::</textarea>
 		</div>
-		<div class="form-group" style="display:none;">
+		<div style="display:none;">
 			<input class="form-control" id="topic_id" name="topic_id" value="::topic.id::">
 		</div>
-		<div class="form-group" style="display:none;">
+		<div style="display:none;">
 			<input class="form-control" id="category_id" name="category_id" value="::category_id::">
 		</div>
 		<input type="submit" class="btn btn-primary" value="$$i18n(post)"/>
