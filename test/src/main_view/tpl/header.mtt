@@ -45,6 +45,6 @@
 </div>
 <div style="width:100%; background-color:white; border-bottom:1px solid #e7eaec; height:50px;">
   ::if user::
-    <div style="margin-left:280px;padding-top:14px;">Vous etes connecté en tant que <a href="::base_url::/accountTest/printInfo">::user.login::</a></div>
+    <div style="margin-left:280px;padding-top:14px;">Vous êtes connecté en tant que <a href="::base_url::/accountTest/printInfo">::user.login::</a></div>
   ::end::
 </div>
