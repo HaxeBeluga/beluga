@@ -17,6 +17,20 @@ import beluga.resource.ResourceManager;
 import beluga.module.account.Account;
 import beluga.widget.Layout;
 
+class MessageData {
+    public var author_login: String;
+    public var message: String;
+    public var id: Int;
+    public var date: Date;
+
+    public function new(login: String, message: String, id: Int, date: Date) {
+        this.author_login = login;
+        this.message = message;
+        this.id = id;
+        this.date = date;
+    }
+}
+
 class Topic extends MttWidget<Forum> {
 
     public function new (?layout : Layout) {
@@ -29,15 +43,13 @@ class Topic extends MttWidget<Forum> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var topic = switch (mod.topic_id) { case Some(id) : mod.getTopic(id); case None : null;};
         var messages = mod.getAllFromTopic(topic.id);
-        var infos = new Array<Dynamic>();
+        var infos = new Array<MessageData>();
 
-        var author = null;
         for (message in messages) {
-            author = message.author;
-            infos.push({author: message.author, text: message.text, date: message.date, id: message.id});
+            infos.push(new MessageData((message.author == null || message.author.login == null) ? "Account deleted" : message.author.login,
+                message.text, message.id, message.date));
         }
         return {
-            to_delete: author,
             topic: topic,
             answers: messages,
             user: user,

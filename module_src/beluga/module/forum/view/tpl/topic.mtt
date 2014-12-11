@@ -1,5 +1,4 @@
-<div id="mainDiv"">
-	<h1>::to_delete::</h1>
+<div id="mainDiv">
 	<h1>::topic.title::</h1>
 	::if (topic.is_solved)::
 	<h2>$$i18n(topic_solved)</h2>
@@ -8,18 +7,19 @@
 	::end::
 	<div>
 	::foreach answers::
-	<div>
-		<h3>::author.login::</h3>
-		::if (user)::
-			::if (user.id == author.id)::
-			<a class="btn btn-primary" href="::base_url::::path::redirectEditMessage?message_id=::__current__.id::&topic_id=::topic.id::">$$i18n(edit_message)</a>
-			::elseif (user.isAdmin)::
-			<a class="btn btn-primary" href="::base_url::::path::redirectEditMessage?message_id=::__current__.id::&topic_id=::topic.id::">$$i18n(edit_message)</a>
-			::end::
-		::end::
-		<p>::text::</p>
-		<p>::date::</p>
-	</div>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<td rowspan="2" style="width:120px;">::author_login::</td>
+				<td>
+					<p style="min-height:80px;">::text::</p>
+				</td>
+			</tr>
+			<tr>
+				<td>::date::::if (user)::::if (user.id == topic.creator_id)::<a class="btn btn-primary" href="::base_url::::path::redirectEditMessage?message_id=::__current__.id::&topic_id=::topic.id::" style="float:right;">$$i18n(edit_message)</a>::elseif (user.isAdmin)::<a class="btn btn-primary" href="::base_url::::path::redirectEditMessage?message_id=::__current__.id::&topic_id=::topic.id::" style="float:right;">$$i18n(edit_message)</a>::end::::end::</td>
+			</tr>
+		</tbody>
+	</table>
 	::end::
 	</div>
 	::if (user)::
