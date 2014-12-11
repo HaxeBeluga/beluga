@@ -189,10 +189,21 @@ class Account extends Module {
     }
 
     // FIXME(Someone who wrote getUsers)
-    // I don't understant the meaning of the function getUsers so i wrote this
+    // I don't understand the meaning of the function getUsers so i wrote this
     // one for the moment as i just want all the list of the user in the website.
     public function getUsers2(): List<User> {
         return User.manager.dynamicSearch({});
+    }
+
+    public function getUsersExcept(except: User): Array<User> {
+        var users = new Array<User>();
+        var id = except == null ? -1 : except.id;
+
+        for (user in User.manager.dynamicSearch({})) {
+            if (user.id != id)
+                users.push(user);
+        }
+        return users;
     }
 
     public function getFriends(user_id: Int) : Array<User> {

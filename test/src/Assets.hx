@@ -94,6 +94,7 @@ class Assets {
         Context.addResource("page_config", File.getBytes("src/modules/account_test/tpl/config.mtt"));
         Context.addResource("page_subscribe", File.getBytes("src/modules/account_test/tpl/subscribe.mtt"));
         Context.addResource("page_login", File.getBytes("src/modules/account_test/tpl/login.mtt"));
+        Context.addResource("page_info", File.getBytes("src/modules/account_test/tpl/info.mtt"));
 
         //#----TicketTest Pages----#
         Context.addResource("page_ticket_widget", File.getBytes("src/modules/ticket_test/tpl/ticket_widget.mtt"));

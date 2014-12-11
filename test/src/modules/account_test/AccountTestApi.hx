@@ -81,17 +81,11 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
-        /*TODO use new widget
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getDisconnectedUsers(), friends: this.acc.getFriends(user.id),
-            not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
-        var tmp = subscribeWidget.render();
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: tmp
+        var infoWidget = acc.widgets.info.render();
+        var html = Renderer.renderDefault("page_info", "Information", {
+            infoWidget: infoWidget
         });
         Sys.print(html);
-        */
     }
 
     public function doLogout() {
