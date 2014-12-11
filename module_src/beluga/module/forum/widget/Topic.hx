@@ -17,20 +17,6 @@ import beluga.resource.ResourceManager;
 import beluga.module.account.Account;
 import beluga.widget.Layout;
 
-class MessageData {
-    public var author_login: String;
-    public var message: String;
-    public var id: Int;
-    public var date: Date;
-
-    public function new(login: String, message: String, id: Int, date: Date) {
-        this.author_login = login;
-        this.message = message;
-        this.id = id;
-        this.date = date;
-    }
-}
-
 class Topic extends MttWidget<Forum> {
 
     public function new (?layout : Layout) {
@@ -43,15 +29,19 @@ class Topic extends MttWidget<Forum> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
         var topic = switch (mod.topic_id) { case Some(id) : mod.getTopic(id); case None : null;};
         var messages = mod.getAllFromTopic(topic.id);
-        var infos = new Array<MessageData>();
+        var infos = new Array<Dynamic>();
 
         for (message in messages) {
-            infos.push(new MessageData((message.author == null || message.author.login == null) ? "Account deleted" : message.author.login,
-                message.text, message.id, message.date));
+            infos.push({
+                author_login: (message.author == null || message.author.login == null) ? "Account deleted" : message.author.login,
+                text: message.text,
+                id: message.id,
+                date: message.date
+            });
         }
         return {
             topic: topic,
-            answers: messages,
+            answers: infos,
             user: user,
             error: mod.getErrorString(mod.error_id),
             success: (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
