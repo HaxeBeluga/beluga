@@ -1,11 +1,5 @@
 <div>
 	<h1>$$i18n(surveys_list)</h1><br/>
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
-	::end::
 	<div>
 		<ul class="list-group">
 		::foreach surveys::

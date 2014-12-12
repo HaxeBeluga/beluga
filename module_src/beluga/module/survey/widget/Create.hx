@@ -23,7 +23,7 @@ class MttObject {
 class Create extends MttWidget<Survey> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/survey/view/tpl/create.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/survey/view/tpl/create.mtt");
         super(Survey, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/survey/view/locale/create/", mod.i18n);
     }
@@ -55,7 +55,8 @@ class Create extends MttWidget<Survey> {
             choices: names_and_choices,
             path : "/beluga/survey/",
             error : mod.getErrorString(mod.error_id),
-            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg)
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
+            module_name: "Create survey"
         };
     }
 }

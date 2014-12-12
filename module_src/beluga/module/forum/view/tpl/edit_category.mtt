@@ -1,0 +1,17 @@
+<div id="mainDiv"">
+	<form action="::base_url::::path::editCategory" class="form-horizontal" role="form" method="POST">
+		<div>
+			<label for="name">$$i18n(name)</label>
+			<input style="margin-bottom:10px;"  class="form-control" id="name" name="name" value="::category.name::">
+		</div>
+		<div>
+			<textarea class="form-control" id="description" name="description">::category.description::</textarea>
+		</div>
+		<div style="display:none;">
+			<input class="form-control" id="message_id" name="category_id" value="::category.id::">
+		</div>
+		<input type="submit" class="btn btn-primary" value="$$i18n(save)"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::category.id::">$$i18n(go_back_category)</a>
+</div>

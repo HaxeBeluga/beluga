@@ -1,0 +1,16 @@
+<div id="mainDiv"">
+	<form action="::base_url::::path::postMessage" class="form-horizontal" role="form" method="POST">
+		<div>
+			<textarea style="margin-bottom:10px;" class="form-control" id="text" name="text">::answer::</textarea>
+		</div>
+		<div style="display:none;">
+			<input class="form-control" id="topic_id" name="topic_id" value="::topic.id::">
+		</div>
+		<div style="display:none;">
+			<input class="form-control" id="category_id" name="category_id" value="::category_id::">
+		</div>
+		<input type="submit" class="btn btn-primary" value="$$i18n(post)"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::printTopic?topic_id=::topic.id::">$$i18n(go_back_topic)</a>
+</div>

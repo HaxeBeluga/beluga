@@ -29,7 +29,7 @@ class NewsData {
 class Print extends MttWidget<News> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/news/view/tpl/print.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/news/view/tpl/print.mtt");
         super(News, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/news/view/locale/print/", mod.i18n);
     }
@@ -57,7 +57,8 @@ class Print extends MttWidget<News> {
             path : "/beluga/news/",
             user : user,
             error : mod.getErrorString(mod.error_id),
-            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg)
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
+            module_name: "News"
         };
     }
 }

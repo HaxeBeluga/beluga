@@ -2,12 +2,6 @@
 ::other::
 ::else::
 <div id="mainDiv">
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
-	::end::
 	<h2>$$i18n(creation_of_survey)</h2>
 	<form action="::base_url::::path::create" class="form-horizontal" role="form" method="POST">
 		<div class="field title form-survey">
@@ -40,7 +34,7 @@
 			::foreach choices::
 			::if (__current__)::
 			<div class="form-survey">
-				<input type="text" class="form-control" id="choices" placeholder="$$i18n(new_choice)" name="::name::" value="::choice::">
+				<input type="text" class="form-control"  id="choices" placeholder="$$i18n(new_choice)" name="::name::" value="::choice::">
 			</div>
 			::end::
 			::end::

@@ -18,7 +18,7 @@ import beluga.widget.Layout;
 class Admin extends MttWidget<Fileupload> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/fileupload/view/tpl/admin.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/fileupload/view/tpl/admin.mtt");
         super(Fileupload, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/fileupload/view/locale/admin/", mod.i18n);
     }
@@ -27,7 +27,8 @@ class Admin extends MttWidget<Fileupload> {
         var extensions = mod.getExtensionsList();
         return {
             extensions_list: extensions,
-            admin_error: this.getErrorString(mod.error)
+            error: this.getErrorString(mod.error),
+            module_name: "File upload admin"
         };
     }
 
@@ -39,7 +40,7 @@ class Admin extends MttWidget<Fileupload> {
             case FileUploadEmptyField: BelugaI18n.getKey(this.i18n, "empty_field");
             case FileUploadExtensionExist: BelugaI18n.getKey(this.i18n, "extension_already_exist");
             case FileUploadExtensionDontExist: BelugaI18n.getKey(this.i18n, "ext_dont_exist");
-            case FileUploadNone: "";
+            case FileUploadNone: null;
         };
     }
 }

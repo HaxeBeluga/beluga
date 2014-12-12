@@ -19,7 +19,7 @@ import beluga.widget.Layout;
 class SubscribeForm extends MttWidget<Account> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/account/view/tpl/subscribe.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/account/view/tpl/subscribe.mtt");
         super(Account, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/subscribe/", mod.i18n);
     }
@@ -29,7 +29,8 @@ class SubscribeForm extends MttWidget<Account> {
             loginErr: new Array<String>(),
             passwordErr: new Array<String>(),
             emailErr: new Array<String>(),
-            value: mod.lastSubscribeValue
+            value: mod.lastSubscribeValue,
+            module_name: "Subscribe Form"
         };
         if (mod.lastSubscribeError != null) {
             //login

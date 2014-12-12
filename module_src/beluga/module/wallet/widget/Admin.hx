@@ -24,7 +24,7 @@ import beluga.widget.Layout;
 class Admin extends MttWidget<Wallet> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/wallet/view/tpl/admin.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/wallet/view/tpl/admin.mtt");
         super(Wallet, layout);
         this.i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }
@@ -49,9 +49,10 @@ class Admin extends MttWidget<Wallet> {
         };
         return {
             user_authenticated: user_authenticated,
-            wallet_admin_error: this.realAdminError(mod.getAdminError()),
+            error: this.realAdminError(mod.getAdminError()),
             currency_list: currency_list,
-            site_currency: site_currency
+            site_currency: site_currency,
+            module_name: "Wallet admin"
         };
     }
 
@@ -60,7 +61,7 @@ class Admin extends MttWidget<Wallet> {
             case CurrencyDontExist: BelugaI18n.getKey(this.i18n, "currency_dont_exist");
             case CurrencyAlreadyExist: BelugaI18n.getKey(this.i18n, "currency_already_exist");
             case FieldEmpty: BelugaI18n.getKey(this.i18n, "field_empty");
-            case _: "";
+            case _: null;
         };
     }
 }

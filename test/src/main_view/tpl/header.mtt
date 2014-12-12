@@ -1,74 +1,50 @@
-<nav class="navbar navbar-default" style="margin-top:30px;" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="::base_url::/">Beluga</a>
+<div id="sidebar-wrapper">
+  <ul class="sidebar">
+    <li class="sidebar-main">
+      <a href="::base_url::/">
+        Beluga
+        <span ><img class="logo nenu-icon" src="::base_url::/img/beluga_logo_notitle.png"></span>
+      </a>
+    </li>
+    <li class="sidebar-title"><span>NAVIGATION</span></li>
+    <li class="sidebar-list">
+      <a href="::base_url::/">Dashboard <span class="menu-icon fa fa-tachometer"></span></a>
+    </li>
+    <li class="sidebar-list">
+    ::if user::
+      <a href="::base_url::/accountTest/logout">Deconnection <span class="menu-icon fa fa-tasks"></span></a>
+    ::else::
+      <a href="::base_url::/accountTest/loginPage">Authentification <span class="menu-icon fa fa-tasks"></span></a>
+    ::end::
+    </li>
+    <li class="sidebar-list">
+      <a href="#">Admin <span class="menu-icon fa fa-cogs"></span></a>
+    </li>
+    <li class="sidebar-title separator"><span>QUICK LINKS</span></li>
+    <li class="sidebar-list">
+      <a href="#" target="_blank">Forums <span class="menu-icon fa fa-external-link"></span></a>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <div class="col-xs-4">
+      <a href="https://github.com/haxebeluga/beluga" target="_blank">
+        Github
+      </a>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-
-		<!-- Account -->
-		<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="::base_url::/accountTest/subscribePage">Inscription</a></li>
-            ::if user::
-				<li><a href="::base_url::/accountTest/logout">Déconnexion</a></li>
-            ::else::
-				<li><a href="::base_url::/accountTest/loginPage">Authentification</a></li>
-            ::end::
-          </ul>
-        </li>
-
-		<!-- Ticket -->
-		<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ticket<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="::base_url::/ticketTest/browsePage">Browse</a></li>
-            <li><a href="::base_url::/ticketTest/createPage">Create</a></li>
-            <li><a href="::base_url::/ticketTest/showPage">Show</a></li>
-          </ul>
-        </li>
-
-		<!-- Survey -->
-		<li class="dropdown">
-        <a href="::base_url::/surveyTest" class="dropdown-toggle" data-toggle="dropdown">Survey<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            <li><a href="::base_url::/surveyTest/">Main</a></li>
-        </ul>
-    </li>
-
-    <!-- Notificiation -->
-    <li class="dropdown">
-        <a href="::base_url::/notificationTest" class="dropdown-toggle" data-toggle="dropdown">Notifications<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            <li><a href="::base_url::/notificationTest/">Notifications center</a></li>
-        </ul>
-    </li>
-
-
-	</ul>
-      <ul class="nav navbar-nav">
-		::if user::
-        <li>
-          <a href="::base_url::/accountTest/printInfo">You are logged as ::user.login::</a>
-        </li>
-		::end::
-      </ul>
-      <form class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+    <div class="col-xs-4">
+      <a href="https://haxebeluga.github.io/en/about.html" target="_blank">
+        About
+      </a>
+    </div>
+    <div class="col-xs-4">
+      <a href="https://haxebeluga.github.io/en/home.html">
+        Support
+      </a>
+    </div>
+  </div>
+</div>
+<div style="width:100%; background-color:white; border-bottom:1px solid #e7eaec; height:50px;">
+  ::if user::
+    <div style="margin-left:280px;padding-top:14px;">Vous etes connecté en tant que <a href="::base_url::/accountTest/printInfo">::user.login::</a></div>
+  ::end::
+</div>

@@ -37,21 +37,21 @@ class Account extends Module {
 
     @:FlashData
     public var lastLoginError(get, set) : Null<LoginFailCause>;
-    
+
     @:Session
     public var loggedUser(get, set) : User;
 
     public var isLogged(get, never) : Bool;
-    
+
     public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/local/");
 
     @:FlashData
     public var lastSubscribeError(get, set) : Dynamic;
     @:FlashData
     public var lastSubscribeValue(get, set) : Dynamic;
-    
+
     var config : Dynamic;
-    
+
     public function new() {
         super();
         config = AccountConfig.get();
@@ -133,7 +133,7 @@ class Account extends Module {
                 maxLength: Validator.maxLength(args.password, 255)
             }
         }
-        
+
         lastSubscribeValue = args;
         if (Validator.validate(validations)) {
             //Save user in db

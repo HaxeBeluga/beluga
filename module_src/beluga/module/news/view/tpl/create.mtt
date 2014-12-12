@@ -1,10 +1,9 @@
 ::if other::
 ::other::
 ::else::
-<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+<div id="mainDiv">
 	<h2>$$i18n(news_creation)</h2>
 	<form action="::base_url::::path::create" class="" role="form" method="POST">
-		::if (error)::::if (error != "")::<div class="alert alert-danger">::error::</div>::end::::end::
 		<div class="">
 			<label for="title">$$i18n(title)</label>
 			::if (title)::
