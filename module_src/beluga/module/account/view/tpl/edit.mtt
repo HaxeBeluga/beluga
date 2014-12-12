@@ -1,4 +1,4 @@
-<div class="container">
+<div>
 	<h3>Change email</h3><br/>
 	<form action="::base_url::::path::save" class="form" role="form" method="POST">
 		<input class="form-control" id="id" name="id" value="::user.id::" type="hidden">

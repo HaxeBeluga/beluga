@@ -47,7 +47,7 @@ class Topic extends MttWidget<Forum> {
             success: (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             path : "/beluga/forum/",
             parent: topic.category_id,
-            module_name: "Forum topic"
+            module_name: "Forum topic",
         };
     }
 }

@@ -60,6 +60,7 @@ class AccountTrigger {
 
     public var showUser = new Trigger<{ id: Int}>();
     public var defaultPage = new TriggerVoid();
+    public var doEdit = new TriggerVoid();
 
     //Conf
     public var configSaveSuccess = new TriggerVoid();

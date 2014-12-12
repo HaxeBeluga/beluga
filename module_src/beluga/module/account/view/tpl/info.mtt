@@ -1,14 +1,4 @@
 <div style="margin-top:20px;width:800px;">
-	::if (error)::
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
-	::if (success)::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
-	::end::
-	::end::
 	<div class="form-horizontal">
 		<div class="form-group">
 			<label class="col-sm-4">Identifiant</label>
