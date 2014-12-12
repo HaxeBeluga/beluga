@@ -30,7 +30,7 @@ class LoginForm extends MttWidget<Account> {
             isLogged : mod.isLogged,
             loggedUser : mod.loggedUser,
             error: null,
-            module_name: "Account",
+            module_name: "Account"
         };
         if (mod.lastLoginError != null) {
             context.error =  BelugaI18n.getKey(i18n, "err_" + Std.string(mod.lastLoginError));
