@@ -35,6 +35,7 @@ class AccountTest {
         acc.triggers.loginSuccess.redirect("/"); //Equivalent to acc.triggers.loginSuccess.add(Beluga.redirect.bind("/"));
         acc.triggers.subscribeFail.add(this.subscribeFail);
         acc.triggers.subscribeSuccess.add(this.subscribeSuccess);
+        acc.triggers.configSaveSuccess.redirect("/accountTest/config");
 
         acc.triggers.afterLogout.add(this.logout);
     }

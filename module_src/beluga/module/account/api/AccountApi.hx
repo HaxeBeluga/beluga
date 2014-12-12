@@ -17,6 +17,15 @@ import beluga.Beluga;
 import beluga.BelugaException;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
+import beluga.module.config.Config;
+
+import beluga.tool.DynamicTool;
+
+#if php
+import php.Web;
+#elseif neko
+import neko.Web;
+#end
 
 class AccountApi  {
     public var beluga : Beluga;
@@ -65,4 +74,12 @@ class AccountApi  {
         REST.resolve(new UserRest(), id);
     }
 
+    public function doSaveConfig() {
+        try {
+            beluga.getModuleInstance(Config).saveConfig(AccountConfig.get, AccountConfig.save);
+            module.triggers.configSaveSuccess.dispatch();
+        } catch (e : Dynamic) {
+            module.triggers.configSaveFail.dispatch();            
+        }
+    }
 }

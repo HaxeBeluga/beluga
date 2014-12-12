@@ -61,7 +61,7 @@ class JsonTool {
         var content: String;
 
         try { // here we try to parse the json file, this is more critic, we launch a different exception
-           content = Json.stringify(json);
+           content = Json.stringify(json, null, "   ");
         } catch (e: Dynamic) {
             throw new JsonToolException(JTStringifyError(e));
         }
