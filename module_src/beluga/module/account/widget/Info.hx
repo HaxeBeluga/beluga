@@ -28,6 +28,7 @@ class Info extends MttWidget<Account> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         return {
+            module_name: "Account",
             path : "/beluga/account/",
             user: user,
             users: Beluga.getInstance().getModuleInstance(Account).getUsersExcept(user),

@@ -28,6 +28,7 @@ class Edit extends MttWidget<Account> {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
 
         return {
+            module_name: "Account",
             path : "/beluga/account/",
             user: user,
             error: Beluga.getInstance().getModuleInstance(Account).error_msg,

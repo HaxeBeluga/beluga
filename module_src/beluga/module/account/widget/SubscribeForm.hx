@@ -30,7 +30,7 @@ class SubscribeForm extends MttWidget<Account> {
             passwordErr: new Array<String>(),
             emailErr: new Array<String>(),
             value: mod.lastSubscribeValue,
-            module_name: "Subscribe Form"
+            module_name: "Account",
         };
         if (mod.lastSubscribeError != null) {
             //login
