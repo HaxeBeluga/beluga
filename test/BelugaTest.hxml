@@ -9,11 +9,9 @@
 
 --next
 -cp src
--lib beluga_core
 -lib beluga
 -lib session
 -lib tink_macro
--lib beluga-core
 -neko bin/neko/index.n
 -main Main
 -D target=neko
