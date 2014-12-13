@@ -14,7 +14,7 @@ import sys.io.File;
 class ModuleFactory
 {
     private static var USAGE : String = "Setup usage: create_module module_name [-path module_path] [-force] [-package packageName]";
-    private static var MODULE_TEMPLATE_DIR : String = "moduleTemplate";
+    private static var MODULE_TEMPLATE_DIR : String = "../core_src/beluga/template/module/";
 
     private static var moduleName : String;
     private static var packageName : String;
@@ -77,7 +77,7 @@ class ModuleFactory
         var output = template.execute({
             className: moduleName,
             packageName: packageName,
-            helloWorldMsg: "::helloWorldMsg::"
+            i18n_hello_world: "$$i18n(hello_world)"
         });
         FileSystem.deleteFile(path);
         //rename mtt file to corresponding hx file. +7 is to skip "module" word.
@@ -102,6 +102,7 @@ class ModuleFactory
 
     public static function run(libDir : String, userArgs : Array<String>) : String
     {
+        trace(libDir);
         if (checkArgs(userArgs)) {
             packageName = packageName != null ? packageName : moduleName.toLowerCase();
             var fullModulePath = modulePath + packageName;

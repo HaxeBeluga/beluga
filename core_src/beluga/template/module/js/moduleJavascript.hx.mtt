@@ -1,5 +1,9 @@
 package beluga.module.::packageName::.js;
 
+#if js
+import js.JQuery;
+#end
+
 class Javascript
 {
 
@@ -7,6 +11,11 @@ class Javascript
     public static function init()
     {
         //Insert your js here
+    }
+
+    public function ready()
+    {
+        //Insert your JQuery initialisation here
     }
 
 }

@@ -1,22 +1,23 @@
 package beluga.module.::packageName::.widget;
 
-import beluga.core.Beluga;
-import beluga.core.widget.MttWidget;
-import beluga.core.macro.ConfigLoader;
+import beluga.Beluga;
+import beluga.I18n;
+import beluga.widget.MttWidget;
+import beluga.widget.Layout;
 import beluga.module.::packageName::.::className::;
 
-class ::className::HelloWorld extends MttWidget {
+class ::className::HelloWorld extends MttWidget<::className::> {
     var module: ::className::;
 
-    public function new (mttfile = "beluga_::packageName::_::className::HelloWorld.mtt") {
-        super(mttfile);
-        module = Beluga.getInstance().getModuleInstance(::className::);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("beluga/module/::packageName::/view/tpl/::className::HelloWorld.mtt");
+        super(::className::, layout);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/::packageName::/view/locale/default/", mod.i18n);
     }
 
     override private function getContext() {
-        var context = module.get::className::HelloWorldContext();
-        context.base_url = ConfigLoader.getBaseUrl();
-        context.id = MttWidget.id++;
+        var context = {
+        }
         return context;
     }
 }
