@@ -8,8 +8,8 @@ before_script:
   - sudo apt-get install haxe -y
   - mkdir ~/haxelib
   - haxelib setup ~/haxelib
-  - haxelib dev beluga .
-  - haxelib run beluga setup templateTest
+  - haxelib dev beluga-core core_src
+  - haxelib dev beluga module_src
   - haxelib install session
   - haxelib install tink_macro
   - sudo chmod 774 run-tests.sh
