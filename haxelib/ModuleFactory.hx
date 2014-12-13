@@ -55,7 +55,6 @@ class ModuleFactory
 
     private static function cpDirectory(src : String, dst : String)
     {
-        trace(src);
         if (FileSystem.isDirectory(src))
         {
             for (file in FileSystem.readDirectory(src))
@@ -103,6 +102,7 @@ class ModuleFactory
 
     public static function run(libDir : String, userArgs : Array<String>) : String
     {
+        trace(libDir);
         if (checkArgs(userArgs)) {
             packageName = packageName != null ? packageName : moduleName.toLowerCase();
             var fullModulePath = modulePath + packageName;
