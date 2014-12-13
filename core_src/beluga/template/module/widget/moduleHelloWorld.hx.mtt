@@ -1,11 +1,12 @@
 package beluga.module.::packageName::.widget;
 
-import beluga.core.Beluga;
-import beluga.core.widget.MttWidget;
-import beluga.core.macro.ConfigLoader;
+import beluga.Beluga;
+import beluga.I18n;
+import beluga.widget.MttWidget;
+import beluga.widget.Layout;
 import beluga.module.::packageName::.::className::;
 
-class ::className::HelloWorld extends MttWidget {
+class ::className::HelloWorld extends MttWidget<::className::> {
     var module: ::className::;
 
     public function new (?layout : Layout) {

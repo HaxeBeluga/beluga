@@ -1,14 +1,16 @@
 package beluga.module.::packageName::;
 
 // beluga core
-import beluga.core.module.Module;
+import beluga.module.Module;
+import beluga.I18n;
 
 // beluga mods
 import beluga.module.::packageName::.::className::Widgets;
 import beluga.module.::packageName::.::className::Triggers;
+import beluga.module.::packageName::.api.::className::Api;
 
-interface ::className:: extends Module {
-    public var triggers: = new ::className::Triggers();
+class ::className:: extends Module {
+    public var triggers = new ::className::Triggers();
     public var widgets: ::className::Widgets;
 
 	public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/::packageName::/locale/");
