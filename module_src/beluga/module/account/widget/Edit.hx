@@ -15,6 +15,7 @@ import beluga.module.account.Account;
 import beluga.api.form.Validator;
 import beluga.I18n;
 import beluga.widget.Layout;
+import beluga.module.account.AccountErrorKind;
 
 class Edit extends MttWidget<Account> {
 
@@ -25,14 +26,15 @@ class Edit extends MttWidget<Account> {
     }
 
     override private function getContext(): Dynamic {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+        var mod = Beluga.getInstance().getModuleInstance(Account);
+        var user = mod.loggedUser;
 
         return {
             module_name: "Account",
             path : "/beluga/account/",
             user: user,
-            error: Beluga.getInstance().getModuleInstance(Account).error_msg,
-            success: Beluga.getInstance().getModuleInstance(Account).success_msg
+            error : mod.getErrorString(mod.error_id),
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
         };
     }
 

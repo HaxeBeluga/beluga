@@ -6,16 +6,23 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
-package beluga.module.faq;
+package beluga.module.account;
 
-enum FaqErrorKind {
-    UnknownCategory;
-    MissingQuestion;
-    MissingAnswer;
-    MissingName;
+enum AccountErrorKind {
+    UnknownUser;
+    UserBannished;
     MissingLogin;
-    EntryAlreadyExists;
-    CategoryAlreadyExists;
-    IdNotFound;
+    NotAllowed;
+    NeedAdmin;
+    BanYourself;
+    UnbanYourself;
+    AlreadyBanished;
+    NotBannished;
+    FriendYourself;
+    AlreadyFriend;
+    NotFriend;
+    BlacklistYourself;
+    AlreadyBlacklisted;
+    NotBlacklisted;
     None;
 }

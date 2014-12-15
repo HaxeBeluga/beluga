@@ -570,7 +570,7 @@ class Forum extends Module {
             case UnknownTopic: BelugaI18n.getKey(this.i18n, "topic_not_found");
             case NotAllowed: BelugaI18n.getKey(this.i18n, "not_allowed");
             case CategoryAlreadyExist: BelugaI18n.getKey(this.i18n, "category_already_exist");
-            case None: null;
+            case None: "";
         };
     }
 }

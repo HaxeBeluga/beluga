@@ -25,18 +25,19 @@ class Info extends MttWidget<Account> {
     }
 
     override private function getContext(): Dynamic {
-        var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
+        var mod = Beluga.getInstance().getModuleInstance(Account);
+        var user = mod.loggedUser;
 
         return {
             module_name: "Account",
             path : "/beluga/account/",
             user: user,
-            users: Beluga.getInstance().getModuleInstance(Account).getUsersExcept(user),
-            friends: Beluga.getInstance().getModuleInstance(Account).getFriends(user.id),
-            not_friends: Beluga.getInstance().getModuleInstance(Account).getNotFriends(user.id),
-            blacklisted: Beluga.getInstance().getModuleInstance(Account).getBlackListed(user.id),
-            error: Beluga.getInstance().getModuleInstance(Account).error_msg,
-            success: Beluga.getInstance().getModuleInstance(Account).success_msg
+            users: mod.getUsersExcept(user),
+            friends: mod.getFriends(user.id),
+            not_friends: mod.getNotFriends(user.id),
+            blacklisted: mod.getBlackListed(user.id),
+            error : mod.getErrorString(mod.error_id),
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
         };
     }
 

@@ -20,6 +20,7 @@ import beluga.module.Module;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
+import beluga.module.account.AccountErrorKind;
 import beluga.I18n;
 import beluga.module.account.Account;
 import beluga.api.form.Validator;
@@ -43,14 +44,14 @@ class Account extends Module {
 
     public var isLogged(get, never) : Bool;
 
-    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/local/");
+    public var i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/locale/");
 
     @:FlashData
     public var lastSubscribeError(get, set) : Dynamic;
     @:FlashData
     public var lastSubscribeValue(get, set) : Dynamic;
 
-    public var error_msg : String;
+    public var error_id : String;
     public var success_msg : String;
 
     var config : Dynamic;
@@ -72,7 +73,7 @@ class Account extends Module {
 
     public function logout() : Void {
         this.loggedUser = null;
-        success_msg = "You have been successfully disconnected";
+        success_msg = "disconnect_success";
         triggers.afterLogout.dispatch();
     }
 
@@ -84,22 +85,23 @@ class Account extends Module {
         var user : List<User> = User.manager.dynamicSearch({login : args.login});
         if (user.length > 1) {
             //Somethings wrong in database
-            lastLoginError = InternalError;
-            triggers.loginFail.dispatch({err: InternalError});
+            lastLoginError = LoginInternalError;
+            triggers.loginFail.dispatch({err: lastLoginError});
         } else if (user.length == 0) {
             //login wrong
-            lastLoginError = UnknowUser;
-            triggers.loginFail.dispatch({err: UnknowUser});
+            lastLoginError = UnknownUser;
+            triggers.loginFail.dispatch({err: lastLoginError});
         } else {
             var tmp = user.first();
             if (tmp.hashPassword != haxe.crypto.Md5.encode(args.password)) {
                 lastLoginError = WrongPassword;
-                triggers.loginFail.dispatch({err: WrongPassword});
+                triggers.loginFail.dispatch({err: lastLoginError});
             } else {
                 // you cannot compare like this : tmp.isBan == true, it will always return false !
                 if (tmp.isBan) {
                     lastLoginError = UserBanned;
-                    triggers.loginFail.dispatch({err: UserBanned});
+                    error_id = UserBannished;
+                    triggers.loginFail.dispatch({err: lastLoginError});
                 } else {
                     loggedUser = tmp;
                     triggers.loginSuccess.dispatch();
@@ -144,7 +146,7 @@ class Account extends Module {
             var user = new User();
             user.login = args.login;
             user.setPassword(args.password);
-            user.emailVerified = true;//TODO AB Change when activation mail sended.
+            user.emailVerified = true;//TODO AB Change when activation mail sent.
             user.subscribeDateTime = Date.now();
             user.email = args.email;
             user.isAdmin = false;
@@ -278,21 +280,21 @@ class Account extends Module {
         var user = this.loggedUser;
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.deleteFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.deleteFail.dispatch({err : error_id});
         } else if (user.id != args.id && user.isAdmin == false) {
-            error_msg = "You can't delete this account";
-            triggers.deleteFail.dispatch({err : error_msg});
+            error_id = NotAllowed;
+            triggers.deleteFail.dispatch({err : error_id});
         } else {
             for (tmp in User.manager.dynamicSearch({id : args.id })) {
                 tmp.delete();
                 logout();
-                success_msg = "The account has been successfully deleted";
+                success_msg = "delete_success";
                 triggers.deleteSuccess.dispatch();
                 return;
             }
-            error_msg = "Unknown user";
-            triggers.deleteFail.dispatch({err : error_msg});
+            error_id = UnknownUser;
+            triggers.deleteFail.dispatch({err : error_id});
         }
     }
 
@@ -300,16 +302,16 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "Please log in";
-            triggers.editFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.editFail.dispatch({err : error_id});
         } else {
             if (user.id != user_id && user.isAdmin == false) {
-                error_msg = "You can't do that";
-                triggers.editFail.dispatch({err : error_msg});
+                error_id = NotAllowed;
+                triggers.editFail.dispatch({err : error_id});
             } else {
                 user.email = email;
                 user.update();
-                success_msg = "edit success";
+                success_msg = "edit_success";
                 triggers.editSuccess.dispatch();
             }
         }
@@ -319,30 +321,30 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.banFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.banFail.dispatch({err : error_id});
         } else {
             if (!user.isAdmin) {
-                error_msg = "You need admin rights to do that";
-                triggers.banFail.dispatch({err : error_msg});
+                error_id = NeedAdmin;
+                triggers.banFail.dispatch({err : error_id});
             } else if (user_id == user.id) {
-                error_msg = "You can't ban yourself !";
-                triggers.banFail.dispatch({err : error_msg});
+                error_id = BanYourself;
+                triggers.banFail.dispatch({err : error_id});
             } else {
                 for (tmp in User.manager.dynamicSearch({id : user_id })) {
                     if (tmp.isBan == true) {
-                        error_msg = "This user is already bannished";
-                        triggers.banFail.dispatch({err : error_msg});
+                        error_id = AlreadyBannished;
+                        triggers.banFail.dispatch({err : error_id});
                         return;
                     }
                     tmp.isBan = true;
                     tmp.update();
-                    success_msg = "The user has been successfully banned";
+                    success_msg = "ban_success";
                     triggers.banSuccess.dispatch();
                     return;
                 }
-                error_msg = "Unknown user";
-                triggers.banFail.dispatch({err : error_msg});
+                error_id = UnknownUser;
+                triggers.banFail.dispatch({err : error_id});
             }
         }
     }
@@ -351,30 +353,30 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.unbanFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.unbanFail.dispatch({err : error_id});
         } else {
             if (!user.isAdmin) {
-                error_msg = "You need admin rights to do that";
-                triggers.unbanFail.dispatch({err : error_msg});
+                error_id = NeedAdmin;
+                triggers.unbanFail.dispatch({err : error_id});
             } else if (user_id == user.id) {
-                error_msg = "You can't unban yourself !";
-                triggers.unbanFail.dispatch({err : error_msg});
+                error_id = UnbanYourself;
+                triggers.unbanFail.dispatch({err : error_id});
             } else {
                 for (tmp in User.manager.dynamicSearch({id : user_id })) {
                     if (user.isBan == false) {
-                        error_msg = "This user is not bannished";
-                        triggers.unbanFail.dispatch({err : error_msg});
+                        error_id = NotBannished;
+                        triggers.unbanFail.dispatch({err : error_id});
                         return;
                     }
                     tmp.isBan = false;
                     tmp.update();
-                    success_msg = "The user is not bannished anymore";
+                    success_msg = "unban_success";
                     triggers.unbanSuccess.dispatch();
                     return;
                 }
-                error_msg = "Unknown user";
-                triggers.unbanFail.dispatch({err : error_msg});
+                error_id = UnknownUser;
+                triggers.unbanFail.dispatch({err : error_id});
             }
         }
     }
@@ -383,24 +385,24 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.friendFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.friendFail.dispatch({err : error_id});
         } else {
             var friend = this.getUser(friend_id);
 
             if (friend == null) {
-                error_msg = "Unknown user";
-                triggers.friendFail.dispatch({err : error_msg});
+                error_id = UnknownUser;
+                triggers.friendFail.dispatch({err : error_id});
                 return;
             }
             if (user_id == friend_id) {
-                error_msg = "You can't be friend with yourself !";
-                triggers.friendFail.dispatch({err : error_msg});
+                error_id = FriendYourself;
+                triggers.friendFail.dispatch({err : error_id});
                 return;
             }
             for (tmp in Friend.manager.dynamicSearch({user_id : user_id, friend_id: friend_id })) {
-                error_msg = "You're already friend with this user";
-                triggers.friendFail.dispatch({err : error_msg});
+                error_id = AlreadyFriend;
+                triggers.friendFail.dispatch({err : error_id});
                 return;
             }
             var f = new Friend();
@@ -408,7 +410,7 @@ class Account extends Module {
             f.user_id = user_id;
             f.friend_id = friend_id;
             f.insert();
-            success_msg = "You're now friend with the user";
+            success_msg = "friend_success";
             triggers.friendSuccess.dispatch();
         }
     }
@@ -417,29 +419,29 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.unfriendFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.unfriendFail.dispatch({err : error_id});
         } else {
             var friend = this.getUser(friend_id);
 
             if (friend == null) {
-                error_msg = "Unknown user";
-                triggers.unfriendFail.dispatch({err : error_msg});
+                error_id = UnknownUser;
+                triggers.unfriendFail.dispatch({err : error_id});
                 return;
             }
             if (user_id == friend_id) {
-                error_msg = "You can't be friend with yourself !";
-                triggers.unfriendFail.dispatch({err : error_msg});
+                error_id = FriendYourself;
+                triggers.unfriendFail.dispatch({err : error_id});
                 return;
             }
             for (tmp in Friend.manager.dynamicSearch({user_id : user_id, friend_id: friend_id })) {
                 tmp.delete();
-                success_msg = "You're not friend with this user anymore";
+                success_msg = "unfriend_success";
                 triggers.unfriendSuccess.dispatch();
                 return;
             }
-            error_msg = "You're not friend with this person";
-            triggers.unfriendFail.dispatch({err : error_msg});
+            error_id = NotFriend;
+            triggers.unfriendFail.dispatch({err : error_id});
         }
     }
 
@@ -447,24 +449,24 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.blacklistFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.blacklistFail.dispatch({err : error_id});
         } else {
             var to_blacklist = this.getUser(to_blacklist_id);
 
             if (to_blacklist == null) {
-                error_msg = "Unknown user";
-                triggers.blacklistFail.dispatch({err : error_msg});
+                error_id = UnknwownUser;
+                triggers.blacklistFail.dispatch({err : error_id});
                 return;
             }
             if (user_id == to_blacklist_id) {
-                error_msg = "You can't blacklist yourself !";
-                triggers.blacklistFail.dispatch({err : error_msg});
+                error_id = BlacklistYourself;
+                triggers.blacklistFail.dispatch({err : error_id});
                 return;
             }
             for (tmp in BlackList.manager.dynamicSearch({user_id : user_id, blacklisted_id: to_blacklist_id })) {
-                error_msg = "This user is already blacklisted";
-                triggers.blacklistFail.dispatch({err : error_msg});
+                error_id = AlreadyBlacklisted;
+                triggers.blacklistFail.dispatch({err : error_id});
                 return;
             }
             var f = new BlackList();
@@ -472,7 +474,7 @@ class Account extends Module {
             f.user_id = user_id;
             f.blacklisted_id = to_blacklist_id;
             f.insert();
-            success_msg = "This user is now in your blacklist";
+            success_msg = "blacklist_success";
             triggers.blacklistSuccess.dispatch();
         }
     }
@@ -481,30 +483,50 @@ class Account extends Module {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
         if (user == null) {
-            error_msg = "You have to be logged";
-            triggers.unblacklistFail.dispatch({err : error_msg});
+            error_id = MissingLogin;
+            triggers.unblacklistFail.dispatch({err : error_id});
         } else {
             var to_unblacklist = this.getUser(to_unblacklist_id);
 
             if (to_unblacklist == null) {
-                error_msg = "Unknown user";
-                triggers.unblacklistFail.dispatch({err : error_msg});
+                error_id = UnknownUser;
+                triggers.unblacklistFail.dispatch({err : error_id});
                 return;
             }
             if (user_id == to_unblacklist_id) {
-                error_msg = "You can't blacklist yourself !";
-                triggers.unblacklistFail.dispatch({err : error_msg});
+                error_id = BlacklistYourself;
+                triggers.unblacklistFail.dispatch({err : error_id});
                 return;
             }
             for (tmp in BlackList.manager.dynamicSearch({user_id : user_id, blacklisted_id: to_unblacklist_id })) {
                 tmp.delete();
-                success_msg = "This user is not in your blacklist anymore";
+                success_msg = "unblacklist_success";
                 triggers.unblacklistSuccess.dispatch();
                 return;
             }
-            error_msg = "You've not blacklisted this person !";
-            triggers.unblacklistFail.dispatch({err : error_msg});
+            error_id = NotBlacklisted;
+            triggers.unblacklistFail.dispatch({err : error_id});
         }
     }
 
+    public function getErrorString(error: AccountErrorKind) {
+        return switch(error) {
+            case MissingLogin: BelugaI18n.getKey(this.i18n, "missing_login");
+            case NotAllowed: BelugaI18n.getKey(this.i18n, "not_allowed");
+            case UnknownUser: BelugaI18n.getKey(this.i18n, "unknown_user");
+            case UserBannished: BelugaI18n.getKey(this.i18n, "user_bannished");
+            case NeedAdmin: BelugaI18n.getKey(this.i18n, "need_admin_rights");
+            case BanYourself: BelugaI18n.getKey(this.i18n, "ban_yourself");
+            case UnbanYourself: BelugaI18n.getKey(this.i18n, "unban_yourself");
+            case AlreadyBanished: BelugaI18n.getKey(this.i18n, "already_bannished");
+            case NotBannished; BelugaI18n.getKey(this.i18n, "not_bannished");
+            case FriendYourself: BelugaI18n.getKey(this.i18n, "friend_yourself");
+            case AlreadyFriend: BelugaI18n.getKey(this.i18n, "already_friend");
+            case NotFriend: BelugaI18n.getKey(this.i18n, "not_friend");
+            case BlacklistYourself: BelugaI18n.getKey(this.i18n, "blacklist_yourself");
+            case AlreadyBlacklisted: BelugaI18n.getKey(this.i18n, "already_blacklisted");
+            case NotBlacklisted; BelugaI18n.getKey(this.i18n, "not_blacklisted");
+            case None: "";
+        };
+    }
 }
