@@ -22,7 +22,7 @@ class Edit extends MttWidget<Account> {
     public function new (?layout : Layout) {
         if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/account/view/tpl/edit.mtt");
         super(Account, layout);
-        i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/edit/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {

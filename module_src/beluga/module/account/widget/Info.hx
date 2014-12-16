@@ -21,7 +21,7 @@ class Info extends MttWidget<Account> {
     public function new (?layout : Layout) {
         if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/account/view/tpl/info.mtt");
         super(Account, layout);
-        i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/info/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {

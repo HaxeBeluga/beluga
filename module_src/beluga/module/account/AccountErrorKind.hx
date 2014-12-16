@@ -16,7 +16,7 @@ enum AccountErrorKind {
     NeedAdmin;
     BanYourself;
     UnbanYourself;
-    AlreadyBanished;
+    AlreadyBannished;
     NotBannished;
     FriendYourself;
     AlreadyFriend;

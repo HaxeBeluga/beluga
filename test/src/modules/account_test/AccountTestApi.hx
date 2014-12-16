@@ -13,6 +13,7 @@ import haxe.web.Dispatch;
 import beluga.Beluga;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
+import beluga.module.account.AccountErrorKind;
 import modules.account_test.AccountTest;
 import main_view.Renderer;
 
@@ -125,7 +126,7 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    public function deleteUserFail(args : {err: String}) {
+    public function deleteUserFail(args : {err: AccountErrorKind}) {
         var user = this.acc.getLoggedUser();
 
         if (user == null) {
@@ -141,23 +142,23 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    public function banFail(args : {err: String}) {
-        error_msg = args.err;
+    public function banFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function banSuccess() {
-        success_msg = "The user has been bannished";
+        //success_msg = "The user has been bannished";
         doPrintInfo();
     }
 
-    public function unbanFail(args : {err: String}) {
-        error_msg = args.err;
+    public function unbanFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function unbanSuccess() {
-        success_msg = "The user is not bannished anymore";
+        //success_msg = "The user is not bannished anymore";
         doPrintInfo();
     }
 
@@ -166,48 +167,48 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    public function doEditFail(args : {err : String}) {
+    public function doEditFail(args : {err : AccountErrorKind}) {
         var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : args.err});
         Sys.print(html);
     }
 
-    public function blacklistFail(args : {err: String}) {
-        error_msg = args.err;
+    public function blacklistFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function blacklistSuccess() {
-        success_msg = "The user has been blacklisted";
+        //success_msg = "The user has been blacklisted";
         doPrintInfo();
     }
 
-    public function unblacklistFail(args : {err: String}) {
-        error_msg = args.err;
+    public function unblacklistFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function unblacklistSuccess() {
-        success_msg = "The user is not blacklisted anymore";
+        //success_msg = "The user is not blacklisted anymore";
         doPrintInfo();
     }
 
-    public function friendFail(args : {err: String}) {
-        error_msg = args.err;
+    public function friendFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function friendSuccess() {
-        success_msg = "The user is now your friend";
+        //success_msg = "The user is now your friend";
         doPrintInfo();
     }
 
-    public function unfriendFail(args : {err: String}) {
-        error_msg = args.err;
+    public function unfriendFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function unfriendSuccess() {
-        success_msg = "The user is not your friend anymore";
+        //success_msg = "The user is not your friend anymore";
         doPrintInfo();
     }
 }

@@ -51,7 +51,7 @@ class Account extends Module {
     @:FlashData
     public var lastSubscribeValue(get, set) : Dynamic;
 
-    public var error_id : String;
+    public var error_id : AccountErrorKind;
     public var success_msg : String;
 
     var config : Dynamic;
@@ -59,6 +59,8 @@ class Account extends Module {
     public function new() {
         super();
         config = AccountConfig.get();
+        error_id = None;
+        success_msg = "";
     }
 
     override public function initialize(beluga : Beluga) {
@@ -85,11 +87,11 @@ class Account extends Module {
         var user : List<User> = User.manager.dynamicSearch({login : args.login});
         if (user.length > 1) {
             //Somethings wrong in database
-            lastLoginError = LoginInternalError;
+            lastLoginError = InternalError;
             triggers.loginFail.dispatch({err: lastLoginError});
         } else if (user.length == 0) {
             //login wrong
-            lastLoginError = UnknownUser;
+            lastLoginError = UnknowUser;
             triggers.loginFail.dispatch({err: lastLoginError});
         } else {
             var tmp = user.first();
@@ -455,7 +457,7 @@ class Account extends Module {
             var to_blacklist = this.getUser(to_blacklist_id);
 
             if (to_blacklist == null) {
-                error_id = UnknwownUser;
+                error_id = UnknownUser;
                 triggers.blacklistFail.dispatch({err : error_id});
                 return;
             }
@@ -518,7 +520,7 @@ class Account extends Module {
             case NeedAdmin: BelugaI18n.getKey(this.i18n, "need_admin_rights");
             case BanYourself: BelugaI18n.getKey(this.i18n, "ban_yourself");
             case UnbanYourself: BelugaI18n.getKey(this.i18n, "unban_yourself");
-            case AlreadyBanished: BelugaI18n.getKey(this.i18n, "already_bannished");
+            case AlreadyBannished: BelugaI18n.getKey(this.i18n, "already_bannished");
             case NotBannished: BelugaI18n.getKey(this.i18n, "not_bannished");
             case FriendYourself: BelugaI18n.getKey(this.i18n, "friend_yourself");
             case AlreadyFriend: BelugaI18n.getKey(this.i18n, "already_friend");

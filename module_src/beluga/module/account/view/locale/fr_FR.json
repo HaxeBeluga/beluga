@@ -44,6 +44,7 @@
     "no_blacklisted": "Votre liste noire est vide.",
     "sponsor": "Parrain",
     "no_sponsor": "Vous n'avez pas de parrain",
+    "not_friends_list": "Liste des utilisateurs qui ne sont pas dans votre liste d'amis",
     "blacklist": "Ajouter à la liste noire",
     "add_friend": "Ajouter à votre liste d'amis",
     "friend_with_everyone": "Vous êtes ami avec tout le monde (félicitations je suppose ?)"
