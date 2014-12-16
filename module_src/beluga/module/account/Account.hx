@@ -519,13 +519,13 @@ class Account extends Module {
             case BanYourself: BelugaI18n.getKey(this.i18n, "ban_yourself");
             case UnbanYourself: BelugaI18n.getKey(this.i18n, "unban_yourself");
             case AlreadyBanished: BelugaI18n.getKey(this.i18n, "already_bannished");
-            case NotBannished; BelugaI18n.getKey(this.i18n, "not_bannished");
+            case NotBannished: BelugaI18n.getKey(this.i18n, "not_bannished");
             case FriendYourself: BelugaI18n.getKey(this.i18n, "friend_yourself");
             case AlreadyFriend: BelugaI18n.getKey(this.i18n, "already_friend");
             case NotFriend: BelugaI18n.getKey(this.i18n, "not_friend");
             case BlacklistYourself: BelugaI18n.getKey(this.i18n, "blacklist_yourself");
             case AlreadyBlacklisted: BelugaI18n.getKey(this.i18n, "already_blacklisted");
-            case NotBlacklisted; BelugaI18n.getKey(this.i18n, "not_blacklisted");
+            case NotBlacklisted: BelugaI18n.getKey(this.i18n, "not_blacklisted");
             case None: "";
         };
     }
