@@ -12,7 +12,7 @@ class ::className::HelloWorld extends MttWidget<::className::> {
     public function new (?layout : Layout) {
         if(layout == null) layout = Layout.newFromPath("beluga/module/::packageName::/view/tpl/::className::HelloWorld.mtt");
         super(::className::, layout);
-        i18n = BelugaI18n.loadI18nFolder("/beluga/module/::packageName::/view/locale/default/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/::packageName::/view/locale/", mod.i18n);
     }
 
     override private function getContext() {
