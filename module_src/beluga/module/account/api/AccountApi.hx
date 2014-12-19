@@ -10,7 +10,6 @@ package beluga.module.account.api;
 
 import beluga.rest.REST;
 import beluga.module.account.rest.UserRest;
-import beluga.module.faq.widget.Print;
 import haxe.web.Dispatch;
 
 import beluga.Beluga;
