@@ -17,6 +17,8 @@ import beluga.I18n;
 import beluga.tool.DynamicTool;
 import beluga.widget.Layout;
 
+import beluga.module.account.view.js.LoginFormJs;
+
 class LoginForm extends MttWidget<Account> {
 
     public function new (?layout : Layout) {

@@ -41,8 +41,8 @@ class Beluga {
     public var api(default, null) : BelugaApi;
     private var modules = new ObjectMap<Dynamic, Module>();
     private static var instance = null;
+    public var remoting = new haxe.remoting.Context();
 
-    public static var remotingCtx;
     public static function getInstance(cnx: Connection = null) : Beluga {
         if (instance == null) {
             instance = new Beluga(cnx);
@@ -66,7 +66,6 @@ class Beluga {
         initDatabase(cnx);
         //Create beluga API
         api = new BelugaApi();
-        remotingCtx = new haxe.remoting.Context();
         
         //Compile JS assets
         beluga.resource.JavascriptBuilder.compile();
@@ -131,8 +130,8 @@ class Beluga {
                         throw new BelugaException("Beluga Rest Api not yet supported");
                     },
                     doDefault: function(d : Dispatch) {
-                        if (!haxe.remoting.HttpConnection.handleRequest(remotingCtx)) {
-                              d.dispatch(api);
+                        if (!haxe.remoting.HttpConnection.handleRequest(remoting)) {
+                            d.dispatch(api);
                         }
                     } 
       
