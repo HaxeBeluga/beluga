@@ -58,7 +58,7 @@ class EditMessage extends MttWidget<Forum> {
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
             path : "/beluga/forum/",
             user: user,
-            module_name: "Forume edit message"
+            module_name: "Forum edit message"
         };
     }
 }

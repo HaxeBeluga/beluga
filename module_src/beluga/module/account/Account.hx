@@ -205,6 +205,7 @@ class Account extends Module {
 
     public function getUsersExcept(except: User): Array<User> {
         var users = new Array<User>();
+        // The -1 id doesn't exist. So if except argument is null, all the users will be returned.
         var id = except == null ? -1 : except.id;
 
         for (user in User.manager.dynamicSearch({})) {

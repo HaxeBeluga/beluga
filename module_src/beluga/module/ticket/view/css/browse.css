@@ -19,18 +19,6 @@ a:hover {
 }
 
 /* ticket custom styles */
-/*
-#ticket {
-    width: 900px;
-    margin-bottom: 100px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 2px;
-    border: 1px solid #ccc;
-    -webkit-box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
-    -moz-box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
-    box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
-}*/
 
 .ticket-new-button {
     float: right;
