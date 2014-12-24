@@ -1,43 +1,26 @@
 <div class="news_div" onload="change_style();">
 	<h1 class="center">$$i18n(news_list)</h1><br/>
-	::if (error)::
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
-	::if (success)::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
-	::end::
-	::end::
 	::if (news.length > 0)::
 	<div class="container">
-		<ul class="timeline">
+		<table class="table">
+		    <thead>
+		        <tr>
+		            <th>Title</th>
+		            <th>News</th>
+		            <th>Creation date</th>
+		        </tr>
+		    </thead>
+			<tbody>
 			::foreach news::
-	       	::if (pos == 0)::
-	        <li>
-	        ::else::
-	        <li class="timeline-inverted">
-	        ::end::
-	          	<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="::title::" id=""></i></a></div>
-	          	<div class="timeline-panel">
-	            	<div class="timeline-heading">
-	            		<a href="::base_url::::path::print?news_id=::id::"><h3 class="center">::title::</h3></a>
-	            		<p>::creationDate::</p>
-	            	</div>
-		            <div class="timeline-body">
-		              <p>::text::</p>
-		            </div>
-		            <div class="timeline-footer">
-		                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-		                <a><i class="glyphicon glyphicon-share"></i></a>
-		                <a class="pull-right" href="::base_url::::path::print?news_id=::id::">$$i18n(read)</a>
-		            </div>
-	          </div>
-	        </li>
-	    ::end::
-		    <li class="clearfix" style="float: none;"></li>
-	    </ul>
+				<tr>
+					<td><a href="::base_url::::path::print?news_id=::id::">::title::</a></td>
+					<td>::text::</td>
+					<td>::creationDate::</td>
+				</tr>
+			::end::
+			</tbody>
+		</table>
+
 	</div>
 	::end::
 	<a href="::base_url::::path::redirect" class="btn btn-primary">$$i18n(create_news)</a>

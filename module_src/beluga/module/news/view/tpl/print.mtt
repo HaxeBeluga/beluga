@@ -2,32 +2,22 @@
 ::other::
 ::else::
 <div>
-	::if (success)::
-    ::if (success != "")::
-        <div class="alert alert-success">::success::</div>
-    ::end::
-    ::end::
-	::if (error)::
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::end::
 	<div>
 		::if (user)::
 		::if (news.user_id == user.id)::
 		<a href="::base_url::::path::delete?news_id=::news.id::" style="float:right;cursor:pointer;">
 			<span class="glyphicon glyphicon-remove"></span>
 		</a>
-		<a href="::base_url::::path::redirectEdit?news_id=::news.id::" style="float:right;cursor:pointer;margin-right:5px;">
+		<a href="::base_url::::path::redirectEdit?news_id=::news.id::">
 			<span class="glyphicon glyphicon-pencil"></span>
 		</a>
 		::end::
 		::end::
-		<div style="text-align:center;">
+		<div>
 			<h1>::news.title::</h1>
 		</div>
 	</div>
-	<div style="text-align:justify;margin-left:auto;margin-right:auto;border-style:solid;border-radius:2px;border-width:2px;padding:10px;">::news.text::</div>
+	<div style="text-align:justify;border:1px solid whitesmoke;padding:10px;">::news.text::</div>
 	<div>
 		<div style="text-align:center;padding-top: 20px;">
 			<h1>$$i18n(comments)</h1><br/>

@@ -63,10 +63,8 @@ class AccountApi  {
         this.module.triggers.defaultPage.dispatch();
     }
 
-    public function doEdit(args : {?email : String}) {
-        if (args.email != null) {
-            module.edit(module.loggedUser.id, args.email);
-        }
+    public function doEdit() {
+        this.module.triggers.doEdit.dispatch();
     }
     
     public function doUser(d : Dispatch, ?id : Int) {
@@ -80,5 +78,53 @@ class AccountApi  {
         } catch (e : Dynamic) {
             module.triggers.configSaveFail.dispatch();            
         }
+    }
+
+    public function doBan(args : {id: Int}) {
+        this.module.ban(args.id);
+    }
+
+    public function doUnban(args : {id: Int}) {
+        this.module.unban(args.id);
+    }
+
+    public function doSave(args : {id: Int, email : String}) {
+        this.module.edit(args.id, args.email);
+    }
+
+    public function doBlacklist(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.module.blacklist(user.id, args.id);
+        else
+            this.module.blacklist(-1, args.id);
+    }
+
+    public function doUnblacklist(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.module.unblacklist(user.id, args.id);
+        else
+            this.module.unblacklist(-1, args.id);
+    }
+
+    public function doFriend(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.module.friend(user.id, args.id);
+        else
+            this.module.friend(-1, args.id);
+    }
+
+    public function doUnfriend(args : {id: Int}) {
+        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
+
+        if (user != null)
+            this.module.unfriend(user.id, args.id);
+        else
+            this.module.unfriend(-1, args.id);
     }
 }

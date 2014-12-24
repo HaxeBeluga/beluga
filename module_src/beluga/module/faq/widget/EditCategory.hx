@@ -10,7 +10,7 @@ import beluga.widget.Layout;
 class EditCategory extends MttWidget<Faq> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/faq/view/tpl/edit_category.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/faq/view/tpl/edit_category.mtt");
         super(Faq, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/faq/view/locale/edit_category/", mod.i18n);
     }
@@ -25,7 +25,8 @@ class EditCategory extends MttWidget<Faq> {
             category_id : switch (mod.category_id) { case Some(id) : id; case None : -1;},
             name: cat.name,
             parent: if (cat != null) { cat.parent_id; } else { -1; },
-            base_url : ConfigLoader.getBaseUrl()
+            base_url : ConfigLoader.getBaseUrl(),
+            module_name: "Edit FAQ category"
         };
     }
 }

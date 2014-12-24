@@ -20,7 +20,7 @@ a:hover {
 
 /* ticket custom styles */
 
-#ticket {
+/*#ticket {
     width: 900px;
     margin-bottom: 100px;
     padding-left: 10px;
@@ -30,7 +30,7 @@ a:hover {
     -webkit-box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
     -moz-box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
     box-shadow: 1px 1px 1px 0px rgba(224,224,224,1);
-}
+}*/
 
 .ticket-new-button {
     float: right;
@@ -39,12 +39,12 @@ a:hover {
 .ticket-area {
     margin-bottom: 10px;
     margin-top: 10px;
-    max-width: 713px;
+    /*max-width: 713px;*/
     background-color: whitesmoke;
 }
 
 .ticket-comment {
-    max-width: 713px;
+    /*max-width: 713px;*/
     background-color: white;
 }
 
@@ -53,7 +53,7 @@ a:hover {
 }
 
 .ticket-comment-head {
-    max-width: 713px;
+    /*max-width: 713px;*/
     background-color: whitesmoke;
 }
 

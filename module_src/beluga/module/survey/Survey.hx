@@ -313,7 +313,7 @@ class Survey extends Module {
             case NotFound: BelugaI18n.getKey(this.i18n, "not_found");
             case AlreadyVoted: BelugaI18n.getKey(this.i18n, "already_voted");
             case NotAllowed: BelugaI18n.getKey(this.i18n, "not_allowed");
-            case None: "";
+            case None: null;
         };
     }
 }

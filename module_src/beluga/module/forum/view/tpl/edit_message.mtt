@@ -1,0 +1,17 @@
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;width:800px;">
+	<h2>$$i18n(edit_answer)</h2>
+	<form action="::base_url::::path::editMessage" class="form-horizontal" role="form" method="POST">
+		<div class="form-group">
+			<textarea class="form-control" id="text" name="text">::message.text::</textarea>
+		</div>
+		<div class="form-group" style="display:none;">
+			<input class="form-control" id="topic_id" name="topic_id" value="::topic.id::">
+		</div>
+		<div class="form-group" style="display:none;">
+			<input class="form-control" id="message_id" name="message_id" value="::message.id::">
+		</div>
+		<input type="submit" class="btn btn-primary" value="$$i18n(save)"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::printTopic?topic_id=::topic.id::">$$i18n(go_back_topic)</a>
+</div>

@@ -21,7 +21,7 @@ import beluga.widget.Layout;
 class Display extends MttWidget<Market> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/market/view/tpl/display.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/market/view/tpl/display.mtt");
         super(Market, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/view/locale/display/", mod.i18n);
     }
@@ -35,10 +35,11 @@ class Display extends MttWidget<Market> {
         };
 
         return {
-            market_error: this.getErrorString(mod.error),
-            market_info: this.getErrorString(mod.info),
+            error: this.getErrorString(mod.error),
+            success: this.getErrorString(mod.info),
             products: product_list,
-            currency: currency
+            currency: currency,
+            module_name: "Market"
         };
     }
 
@@ -48,7 +49,7 @@ class Display extends MttWidget<Market> {
             case MarketNewProductToCart(_): BelugaI18n.getKey(this.i18n, "product_add_to_cart");
             case MarketUserNotLogged: BelugaI18n.getKey(this.i18n, "user_not_logged");
             case MarketUnknownProduct(_): BelugaI18n.getKey(this.i18n, "unknown_product");
-            case MarketNone: "";
+            case MarketNone: null;
         };
     }
 }

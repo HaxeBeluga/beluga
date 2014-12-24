@@ -13,6 +13,7 @@ import haxe.web.Dispatch;
 import beluga.Beluga;
 import beluga.module.account.model.User;
 import beluga.module.account.Account;
+import beluga.module.account.AccountErrorKind;
 import modules.account_test.AccountTest;
 import main_view.Renderer;
 
@@ -55,6 +56,7 @@ class AccountTestApi {
         acc.triggers.unfriendSuccess.add(this.unfriendSuccess);
 
         acc.triggers.defaultPage.add(this.doDefault);
+        acc.triggers.doEdit.add(this.doEdit);
     }
 
     public function doLoginPage() {
@@ -81,17 +83,11 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
-        /*TODO use new widget
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user: user, path : "/accountTest/", users: this.acc.getDisconnectedUsers(), friends: this.acc.getFriends(user.id),
-            not_friends: this.acc.getNotFriends(user.id), blacklisted: this.acc.getBlackListed(user.id), error: error_msg, success: success_msg};
-        var tmp = subscribeWidget.render();
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: tmp
+        var infoWidget = acc.widgets.info.render();
+        var html = Renderer.renderDefault("page_info", "Information", {
+            infoWidget: infoWidget
         });
         Sys.print(html);
-        */
     }
 
     public function doLogout() {
@@ -103,11 +99,6 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    /*@bTrigger("beluga_account_edit")
-    public static function _doEdit() {
-        new AccountTestApi(Beluga.getInstance()).doEdit();
-    }*/
-
     public function doEdit() {
         var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
 
@@ -116,15 +107,11 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
-        /*TODO use new widget
-        var subscribeWidget = acc.getWidget("edit");
-        subscribeWidget.context = {user : user, path : "/accountTest/"};
-
-        var html = Renderer.renderDefault("page_subscribe", "Edit", {
-            subscribeWidget: subscribeWidget.render()
+        var infoWidget = acc.widgets.edit.render();
+        var html = Renderer.renderDefault("page_info", "Edit", {
+            infoWidget: infoWidget
         });
         Sys.print(html);
-        */
     }
 
     public function doDelete(args : {id: Int}) {
@@ -139,7 +126,7 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    public function deleteUserFail(args : {err: String}) {
+    public function deleteUserFail(args : {err: AccountErrorKind}) {
         var user = this.acc.getLoggedUser();
 
         if (user == null) {
@@ -147,15 +134,7 @@ class AccountTestApi {
             Sys.print(html);
             return;
         }
-        /*TODO use new widget
-        var subscribeWidget = acc.getWidget("info");
-        subscribeWidget.context = {user : user, path : "/accountTest/", error: args.err};
-
-        var html = Renderer.renderDefault("page_subscribe", "Information", {
-            subscribeWidget: subscribeWidget.render()
-        });
-        Sys.print(html);
-        */
+        doPrintInfo();
     }
 
     public function deleteUserSuccess() {
@@ -163,41 +142,24 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    public function doBan(args : {id: Int}) {
-        this.acc.ban(args.id);
-    }
-
-    public function banFail(args : {err: String}) {
-        error_msg = args.err;
+    public function banFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function banSuccess() {
-        success_msg = "The user has been bannished";
+        //success_msg = "The user has been bannished";
         doPrintInfo();
     }
 
-    public function doUnban(args : {id: Int}) {
-        this.acc.unban(args.id);
-    }
-
-    public function unbanFail(args : {err: String}) {
-        error_msg = args.err;
+    public function unbanFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function unbanSuccess() {
-        success_msg = "The user is not bannished anymore";
+        //success_msg = "The user is not bannished anymore";
         doPrintInfo();
-    }
-
-    /*@bTrigger("beluga_account_save")
-    public static function _doSave(args : {id: Int, email : String}) {
-        new AccountTestApi(Beluga.getInstance()).doSave(args);
-    }*/
-
-    public function doSave(args : {id: Int, email : String}) {
-        this.acc.edit(args.id, args.email);
     }
 
     public function doEditSuccess() {
@@ -205,84 +167,48 @@ class AccountTestApi {
         Sys.print(html);
     }
 
-    public function doEditFail(args : {err : String}) {
+    public function doEditFail(args : {err : AccountErrorKind}) {
         var html = Renderer.renderDefault("page_accueil", "Accueil", {success : "", error : args.err});
         Sys.print(html);
     }
 
-    public function doBlacklist(args : {id: Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-        if (user != null)
-            this.acc.blacklist(user.id, args.id);
-        else
-            doPrintInfo();
-    }
-
-    public function blacklistFail(args : {err: String}) {
-        error_msg = args.err;
+    public function blacklistFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function blacklistSuccess() {
-        success_msg = "The user has been blacklisted";
+        //success_msg = "The user has been blacklisted";
         doPrintInfo();
     }
 
-    public function doUnblacklist(args : {id: Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-        if (user != null)
-            this.acc.unblacklist(user.id, args.id);
-        else
-            doPrintInfo();
-    }
-
-    public function unblacklistFail(args : {err: String}) {
-        error_msg = args.err;
+    public function unblacklistFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function unblacklistSuccess() {
-        success_msg = "The user is not blacklisted anymore";
+        //success_msg = "The user is not blacklisted anymore";
         doPrintInfo();
     }
 
-    public function doFriend(args : {id: Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-        if (user != null)
-            this.acc.friend(user.id, args.id);
-        else
-            doPrintInfo();
-    }
-
-    public function friendFail(args : {err: String}) {
-        error_msg = args.err;
+    public function friendFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function friendSuccess() {
-        success_msg = "The user is now your friend";
+        //success_msg = "The user is now your friend";
         doPrintInfo();
     }
 
-    public function doUnfriend(args : {id: Int}) {
-        var user = Beluga.getInstance().getModuleInstance(Account).getLoggedUser();
-
-        if (user != null)
-            this.acc.unfriend(user.id, args.id);
-        else
-            doPrintInfo();
-    }
-
-    public function unfriendFail(args : {err: String}) {
-        error_msg = args.err;
+    public function unfriendFail(args : {err: AccountErrorKind}) {
+        error_msg = acc.getErrorString(args.err);
         this.doPrintInfo();
     }
 
     public function unfriendSuccess() {
-        success_msg = "The user is not your friend anymore";
+        //success_msg = "The user is not your friend anymore";
         doPrintInfo();
     }
 }

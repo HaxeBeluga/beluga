@@ -1,9 +1,4 @@
     <div id="ticket" class="container-fluid  container-fluid-ticket">
-        ::if (ticket_error != "")::
-        <div class="alert alert-danger alert-dismissable ticket-alert-error">
-          <strong>Error!</strong> ::ticket_error::
-        </div>
-        ::end::
         <div class="col-md12 ticket-button-nav">
             <a href="::base_url::/beluga/ticket/browse" type="button" class="btn btn-primary btn-sm">$$i18n(browse_button)</a>
             <a href="::base_url::/beluga/ticket/create" type="button" class="btn btn-success btn-sm ticket-new-button">$$i18n(new_ticket_button)</a>

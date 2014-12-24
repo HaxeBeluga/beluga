@@ -49,7 +49,7 @@ class MttWidget<ModuleType: Module> implements Widget {
         };
         return m;
     }
-    
+
     private static function safeGetStr(resolve : String -> Dynamic, str : String) {
         var attrList = str.split(".");
         var o = resolve(attrList.shift());

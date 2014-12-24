@@ -13,7 +13,7 @@ import beluga.widget.Layout;
 class Default extends MttWidget<Notification> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = Layout.newFromPath("/beluga/module/notification/view/tpl/notification.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/notification/view/tpl/notification.mtt");
         super(Notification, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/notification/view/locale/default/", mod.i18n);
     }
@@ -29,7 +29,8 @@ class Default extends MttWidget<Notification> {
             user : user,
             error : mod.getErrorString(mod.error_id),
             success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
-            path : "/beluga/notification/"
+            path : "/beluga/notification/",
+            module_name: "Notifications"
         };
     }
 }
