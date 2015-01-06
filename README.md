@@ -7,7 +7,7 @@ Acting as a toolbox, Beluga provides different services such as account system, 
 
 Beluga is also open-source and communal, contributors are encouraged to participate to its development. Then, thanks to its powerful architecture, developers have the opportunity to contributes without removing the compatibility with previous versions of the project.
 
-[![Build Status](https://travis-ci.org/HaxeBeluga/Beluga.png?branch=master)](https://travis-ci.org/HaxeBeluga/Beluga)
+[![Build Status](https://travis-ci.org/HaxeBeluga/beluga.svg?branch=master)](https://travis-ci.org/HaxeBeluga/beluga)
 [![Stories in progress](https://badge.waffle.io/HaxeBeluga/Beluga.svg?label=in progress&title=In Progress)](http://waffle.io/HaxeBeluga/Beluga)
 
 ## Projects using it
