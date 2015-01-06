@@ -2,26 +2,19 @@ package beluga.module.paypal;
 
 import haxe.http.Url;
 import haxe.http.HttpRequest;
-#if php
-import php.Web;
-#elseif neko
-import neko.Web;
-#end
+
+import beluga.metadata.SessionFlashData;
 
 using beluga.module.paypal.RestHttp;
-
-typedef PaypalRequestCallback = {
-    ?onError : String -> ?String -> Void,
-    ?onData : Connection -> Void,
-    ?onStatus : Int -> Void
-}
 
 class Paypal extends Module
 {
     public var trigger(default, null) : PaypalTrigger;
     public var config(default, null) : Dynamic;
-    public var connection : Dynamic;
     
+    @:Var
+    public var connection(get, null) : Dynamic;
+
     private function new()
     {
         super();
@@ -30,69 +23,53 @@ class Paypal extends Module
     override public function initialize(beluga : Beluga) : Void {
         config = PaypalConfig.get();
         trigger = new PaypalTrigger();
-        beluga.api.register("paypal", {
-            doBuySuccess: function (?args : { paymentId : String, PayerID : String, token : String } ) {
-                trigger.paymentApproved.dispatch();
-            },
-            doBuyFail: function () {
-                trigger.paymentApproved.dispatch();
-            }
-        });
     }
     
-    public function connect(callback) {
+    public function get_connection() {
         if (connection != null) {
-            callback();
+            return connection;
         } else {
-            var http = HttpRequest.createPostRequest(url + "/v1/oauth2/token",
+            var http = HttpRequest.createPostRequest(config.url + "/v1/oauth2/token",
             [
                 {name: "grant_type", value: "client_credentials"}
             ]);
             http.headers.set("Accept", "application/json");
             http.headers.set("Accept-Language", "en_US");
-            http.addBasicAuth(client_auth);
+            http.addBasicAuth(config.client_auth);
             http.getJson({
                 onData: function (obj : Dynamic) {
-                    var connection = obj;
-                    callback();
+                    connection = obj;
                 },
                 onError: function (error : String, ?data : String) {
-                    trigger.buyFail.dispatch();
+                    trigger.connectionFail.dispatch();
                 },
                 onStatus: function (code : Int) { }
             });
         }
-        return obj;
+        return connection;
     }
 
-    +public function send(uri : String, data : Dynamic, callback) {
+    public function makePaypalRequest(uri : String, data : Dynamic) {
+        return if (get_connection() != null) {
         var http = new HttpRequest();
         http.method = "POST";
-        http.url = new Url(url + uri);
+        http.url = new Url(config.url + uri);
         http.headers.set("Content-Type", "application/json");
         http.headers.set("Accept", "application/json");
         http.headers.set("Accept-Language", "en_US");
-        http.headers.set("Authorization", "Bearer " + response.access_token);
+        http.headers.set("Authorization", "Bearer " + get_connection().access_token);
         if (data != null) http.setJsonData(data); 
-        http.getJson(callback);
+        http;
+        } else {
+            null;
+        }
     }
-
-    public function createApprovedPayment(description : String, price : Float, id : String, currency = "EUR") {
-        connect(quickPaypalSale.bind(description, price, id));
-    }
-
-    public function executePayment(paymentId) {
-        connect(executePayment(description, price, id));
-    }
-
-    public function createApprovedPayment(description : String, price : Float, id : String, currency = "EUR") {
-        var url = "http://" + Web.getHostName() + ConfigLoader.getBaseUrl() + "/beluga/paypal";
-        send("/v1/payments/payment", {
+    
+    public function makeCreatePayment(description : String, price : Float, currency = "EUR", redirect_urls: {return_url : String, cancel_url : String}) {
+        var url = "/v1/payments/payment";
+        var data = {
             intent: "sale",
-            redirect_urls: {
-                return_url: url + "/buySuccess",
-                cancel_url: url + "/buyFail"
-            },
+            redirect_urls:  redirect_urls,
             payer: {
                 payment_method: "paypal"
             },
@@ -102,28 +79,30 @@ class Paypal extends Module
                         total: Std.string(price),
                         currency: currency
                     },
-                    custom: id,
                     description: description
                 }
             ]
-        },{
-            onData: function (response : Dynamic) {
-                var approveLink = Lambda.find(response.links, function (link : Dynamic) {
-                    return link.rel == "approval_url";
-                });
-                Web.redirect(approveLink.href);
-            },
-            onError: function (error : String, ?data : String) { paypal.trigger.buyFail.dispatch(); },
-            onStatus: function (code : Int) { }
-        });
+        };
+        return makePaypalRequest(url, data);
     }
-    
-    public function executePayment(?args : { paymentId : String, PayerID : String, token : String }, id : String) {
-        var url = paypal.config.url + "/v1/payments/payment/" + paymentId + "/execute/"
-        send(url, null, {
-            onData: paypal.trigger.paymentExecuted.dispatch(id);,
-            onError: function (error : String, ?data : String) { paypal.trigger.paymentNotExecuted.dispatch(id); },
-            onStatus: function (code : Int) { }
-        });
+
+    public static function getApproveUrl(response : Dynamic) {
+        return if (Reflect.field(response, "links") != null) {
+            var approveLink = Lambda.find(response.links, function (link : Dynamic) {
+                return link.rel == "approval_url";
+            });
+            approveLink.href;
+        } else {
+            throw "Paypal: request link not found";
+            null;
+        };
+    }
+
+    public function makeExecutePayment(?args : {paymentId : String, PayerID : String}) {
+        var url = config.url + "/v1/payments/payment/" + args.paymentId + "/execute/";
+        var data = {
+            payer_id: args.PayerID
+        }
+        return makePaypalRequest(url, data); 
     }
 }
