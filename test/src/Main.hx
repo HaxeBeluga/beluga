@@ -69,7 +69,7 @@ class Main {
             ModuleTestApi.addModule("mailTest", new MailTest(beluga));
             ModuleTestApi.addModule("marketTest", new MarketTest(beluga));
             ModuleTestApi.addModule("faqTest", new FaqTest(beluga));
-            ModuleTestApi.addModule("faqTest", new PaypalTest(beluga));
+            ModuleTestApi.addModule("paypalTest", new PaypalTest(beluga));
             
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
