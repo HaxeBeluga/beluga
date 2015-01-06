@@ -29,8 +29,10 @@ class PaypalTest
 
     public function doApproveSuccess(args : { paymentId : String, PayerID : String, token : String }) {
         //counter --;
+        Web.setHeader("Content-type", "text/plain");
         trace("Payment " + args.paymentId + " Approved !");
         var r = paypal.makeExecutePayment(args);
+        trace(r);
         r.getJson({
             onData: function (response : Dynamic) {
                 trace("Payment " + args.paymentId + "/" + response.id + " Executed !");

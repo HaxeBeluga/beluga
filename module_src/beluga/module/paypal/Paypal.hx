@@ -98,8 +98,8 @@ class Paypal extends Module
         };
     }
 
-    public function makeExecutePayment(?args : {paymentId : String, PayerID : String}) {
-        var url = config.url + "/v1/payments/payment/" + args.paymentId + "/execute/";
+    public function makeExecutePayment(?args : { paymentId : String, PayerID : String } ) {
+        var url = "/v1/payments/payment/" + args.paymentId + "/execute/";
         var data = {
             payer_id: args.PayerID
         }
