@@ -12,6 +12,7 @@ before_script:
   - haxelib dev beluga module_src
   - haxelib install session
   - haxelib install tink_macro
+  - haxelib install http-client
   - sudo chmod 774 run-tests.sh
 
 script:
