@@ -32,5 +32,7 @@
     "undefined_label_id": "There is no existing label with the given id !",
     "ticket_label_empty": "Label cannot be empty",
     "ticket_label_exist": "Label already exist",
-    "ticket_title_empty": "Label title cannot be empty"
+    "ticket_title_empty": "Label title cannot be empty",
+    "labels": "Labels",
+    "none": "None"
 }
