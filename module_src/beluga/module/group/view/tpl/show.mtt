@@ -1,0 +1,12 @@
+::if (!user_authenticated)::
+        <p>Error ! $$i18n(authenticated_error)</p>
+::else::
+::foreach groups::
+<h1>::group.name::</h1>
+<ul>
+    ::foreach __current__.users::
+    <li>::login:: (::id::)</li>
+    ::end::
+</ul>
+::end::
+::end::

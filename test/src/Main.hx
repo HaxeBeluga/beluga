@@ -50,12 +50,13 @@ import neko.Web;
 
 class Main {
     public static var beluga : Beluga;
-    
+
     static function main()
     {
         Assets.build();
         try {
             beluga = Beluga.getInstance();
+
             new AccountTest(beluga);
             ModuleTestApi.addModule("accountTest", new AccountTestApi(beluga));
             ModuleTestApi.addModule("ticketTest", new TicketTest(beluga));
@@ -68,7 +69,7 @@ class Main {
             ModuleTestApi.addModule("mailTest", new MailTest(beluga));
             ModuleTestApi.addModule("marketTest", new MarketTest(beluga));
             ModuleTestApi.addModule("faqTest", new FaqTest(beluga));
-            
+
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             }
@@ -87,6 +88,10 @@ class Main {
         Web.setHeader("Content-Type", "text/plain");
         trace(Web.getParamsString());
         d.dispatch(this);
+    }
+
+    public function doGroupTest(d : Dispatch) {
+        d.dispatch(new GroupTest(beluga));
     }
 
     public function doAccueil() {

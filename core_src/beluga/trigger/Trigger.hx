@@ -6,7 +6,7 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
-package beluga.trigger ;
+package beluga.trigger;
 
 /**
  * WARNING: Passing a Void argument as ArgType raise compilation Error see: TriggerVoid

@@ -39,7 +39,6 @@ class WalletApi {
         module.admin();
     }
 
-
     public function doCreateCurrency(args: { name: String, rate: String }): Void {
         module.createCurrency(args);
     }
