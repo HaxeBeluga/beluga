@@ -1,8 +1,4 @@
-::if (market_cart_info != "")::
-    <div class="alert alert-info alert-dismissable ticket-alert-error">
-        <strong>Information !</strong> ::market_cart_info::
-    </div>
-::else::
+::if (success == null)::
     <div class="row">
         <div class="col-sm-12 col-md-11">
             <table class="table table-hover">
