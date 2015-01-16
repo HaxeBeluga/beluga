@@ -1,10 +1,5 @@
 <div class="beluga account login" id="beluga_::_id::">
     <h1>Connectez vous</h1>
-    ::if (error)::
-    ::if (error != "")::
-        <div class="alert alert-danger">::error::</div>
-    ::end::
-    ::end::
     <br/>
     ::if (!isLogged)::
     <form action="::base_url::/beluga/account/login" class="form-horizontal" role="form" method="POST">

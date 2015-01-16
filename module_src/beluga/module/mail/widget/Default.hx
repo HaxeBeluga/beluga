@@ -8,12 +8,13 @@ import beluga.I18n;
 import beluga.module.mail.Mail;
 import beluga.module.account.Account;
 import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Default extends MttWidget<Mail> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/mail/view/tpl/mail.mtt");
-        super(Mail, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = Layout.newFromPath("/beluga/module/mail/view/tpl/mail.mtt");
+        super(Mail, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/mail/view/locale/create/", mod.i18n);
     }
 

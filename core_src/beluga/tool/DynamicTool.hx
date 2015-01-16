@@ -8,6 +8,9 @@
 package beluga.tool;
 
 import haxe.ds.Option;
+import Type;
+
+typedef Generator = List<String> -> Dynamic -> Void;
 
 class DynamicTool {
     public static function concatArray(i : Array<Dynamic>) {
@@ -57,8 +60,8 @@ class DynamicTool {
      * print(getField(o, "attr1.attr2"); //Print "Value !"
      * 
      */
-    public static function getField(o : Dynamic, s : String, delimiter = ".") : Option<Dynamic> {
-        return getFieldArray(o, s.split(delimiter));
+    public static function getField(o : Dynamic, s : String) : Option<Dynamic> {
+        return getFieldArray(o, fromDottedName(s));
     }
 
     /*
@@ -79,5 +82,69 @@ class DynamicTool {
         }
         return Some(o);
     }
+    
+    /*
+     *  Tool to convert array to string like ["level1", "level2", "level3"] to "level1.level2.level3"
+     */
+    public static var delimiter = ".";
 
+    public static function toDottedName(names : Array<String>) : String {
+        var name = "";
+        for (n in names) {
+            if (n == names[0]) {
+                name = n;
+            } else {
+                name = name + delimiter + n;
+            }
+        }
+        return name;
+    }
+
+    public static function fromDottedName(name : String) : Array<String> {
+        return name.split(delimiter);
+    }
+
+    /*
+     * Parser for Web.params();
+     */
+    private static function getValue(names : Array<String>, params : Map<String, String>) {
+        #if php
+        delimiter = "_";
+        #end
+        var name = toDottedName(names);
+        #if php
+        delimiter = ".";
+        #end
+        return params.get(name);
+    }
+
+    private static function get_obj(value : Dynamic, names : Array<String>, params) {
+        var obj = { };
+        for (field_name in Reflect.fields(value)) {            
+            var field_value = Reflect.field(value, field_name);
+            Reflect.setField(obj,field_name, rec_fill(field_value, field_name, names, params));
+        }
+        return obj;
+    }
+
+    private static function rec_fill (value : Dynamic, ?name : String, names : Array<String>, params) : Dynamic {
+        if (name != null) names.push(name);
+        var param_value = getValue(names, params);
+        var casted_value : Dynamic = switch(Type.typeof(value))
+        {
+            case TInt: Std.parseInt(param_value);
+            case TFloat: Std.parseFloat(param_value);
+            case TBool: param_value != null;
+            case TClass(String): param_value;
+            case TObject: get_obj(value, names, params);
+            case _: null;
+        }
+        names.pop();
+        return casted_value;
+    }
+
+    public static function fill(value : Dynamic, params : Map<String, String>)
+    {
+        return rec_fill(value, [], params);
+    }
 }

@@ -1,0 +1,12 @@
+<div class="beluga config" id="beluga_::_id::">
+<form action="::base_url::::save_url::" class="form-horizontal" role="form" method="POST">
+    ::generated_field::
+    <div class="form-group">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-6">
+            <input type="submit" class="btn btn-primary form-control" value="$$i18n(save)" />
+        </div>
+    </div>
+</form>
+</div>

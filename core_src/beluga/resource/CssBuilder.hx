@@ -12,7 +12,7 @@ import sys.io.File;
 import haxe.macro.Expr;
 import haxe.macro.Compiler;
 import sys.FileSystem;
-import beluga.tool.Html;
+import beluga.html.Tag;
 import haxe.macro.Context;
 #if macro
 import tink.MacroApi.ExprTools;
@@ -100,7 +100,7 @@ class CssBuilder
         for (file in FileSystem.readDirectory(dir)) {
             if (file.endsWith(".css")) {
                 writer.writeString("/*\n");
-                writer.writeString("**" + dir + "/" + file +"\n");
+                writer.writeString("** " + dir + "/" + file +"\n");
                 writer.writeString("*/\n");
                 writer.writeString(File.getContent(dir + "/" + file));
             }
@@ -124,7 +124,7 @@ class CssBuilder
     public static function getHtmlInclude() : String {
         var html = "";
         for (css in CssBuilder.cssList) {
-            html += Html.tag("link", ["rel" => "stylesheet", "href" => css]);
+            html += new Tag("link", ["rel" => "stylesheet", "href" => css]);
         }
         return html;
     }

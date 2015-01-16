@@ -1,0 +1,23 @@
+<div id="mainDiv"">
+	<form action="::base_url::::path::createTopic" class="form-horizontal" role="form" method="POST">
+		<div>
+			<label for="title">$$i18n(title)</label>
+			<input  style="margin-bottom:10px;" class="form-control" id="title" name="title" placeholder="$$i18n(enter_title)">
+		</div>
+		<div>
+			<textarea class="form-control" id="text" name="text" placeholder="$$i18n(message)">::answer::</textarea>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="can_post_message" id="can_post_message" value="" checked>
+				$$i18n(allow_post_message)
+			</label>
+		</div>
+		<div style="display:none;">
+			<input class="form-control" id="parent" name="category_id" value="::parent::">
+		</div>
+		<input type="submit" class="btn btn-primary" value="$$i18n(create)"/>
+	</form>
+	<br/>
+	<a class="btn btn-primary" href="::base_url::::path::print?category_id=::parent::">$$i18n(go_back)</a>
+</div>

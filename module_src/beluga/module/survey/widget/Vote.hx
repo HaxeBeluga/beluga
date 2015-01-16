@@ -9,13 +9,13 @@ import beluga.module.account.Account;
 import beluga.module.survey.Survey;
 import beluga.module.survey.SurveyErrorKind;
 import beluga.module.survey.model.Choice;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Vote extends MttWidget<Survey> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/survey/view/tpl/vote.mtt");
-        super(Survey, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/survey/view/tpl/vote.mtt");
+        super(Survey, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/survey/view/locale/vote/", mod.i18n);
     }
 
@@ -44,7 +44,8 @@ class Vote extends MttWidget<Survey> {
             first : first,
             path : "/beluga/survey/",
             error : mod.getErrorString(mod.error_id),
-            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg)
+            success : (mod.success_msg != "" ? BelugaI18n.getKey(this.i18n, mod.success_msg) : mod.success_msg),
+            module_name: "Survey vote"
         };
     }
 }

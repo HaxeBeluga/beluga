@@ -9,7 +9,6 @@
 package ;
 
 import beluga.Beluga;
-import haxe.web.Dispatch;
 import php.Web;
 import beluga.module.account.Account;
 
@@ -18,7 +17,7 @@ class Main {
 
     static function main() {
         var beluga = Beluga.getInstance();
-        Dispatch.run(beluga.getDispatchUri(), Web.getParams(), beluga.api);
+        beluga.handleRequest();
         Sys.print(beluga.getModuleInstance(Account).widgets.loginForm.render());
         beluga.cleanup();
     }

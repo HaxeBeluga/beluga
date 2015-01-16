@@ -6,15 +6,15 @@ import beluga.ConfigLoader;
 import beluga.module.faq.Faq;
 import beluga.I18n;
 import beluga.module.account.Account;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 import haxe.ds.Option;
 
 class Print extends MttWidget<Faq> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/faq/view/tpl/faqs.mtt");
-        super(Faq, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/faq/view/tpl/faqs.mtt");
+        super(Faq, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/faq/view/locale/print/", mod.i18n);
     }
 
@@ -40,7 +40,8 @@ class Print extends MttWidget<Faq> {
                 success : success_msg,
                 actual_id : category_id,
                 user : user,
-                base_url : ConfigLoader.getBaseUrl()
+                base_url : ConfigLoader.getBaseUrl(),
+                module_name: "FAQ"
             };
         } else {
             var cat = mod.getCategory(category_id);
@@ -55,7 +56,8 @@ class Print extends MttWidget<Faq> {
                     success : success_msg,
                     actual_id : category_id,
                     user : user,
-                    base_url : ConfigLoader.getBaseUrl()
+                    base_url : ConfigLoader.getBaseUrl(),
+                    module_name: "FAQ"
                 };
             } else {
                 return {
@@ -68,7 +70,8 @@ class Print extends MttWidget<Faq> {
                     success : success_msg,
                     actual_id : category_id,
                     category_name: cat.name,
-                    base_url : ConfigLoader.getBaseUrl()
+                    base_url : ConfigLoader.getBaseUrl(),
+                    module_name: "FAQ"
                 };
             }
         }

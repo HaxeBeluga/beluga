@@ -15,13 +15,13 @@ import beluga.I18n;
 import beluga.module.ticket.Ticket;
 import beluga.module.account.Account;
 import beluga.module.ticket.TicketErrorKind;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class Create extends MttWidget<Ticket> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/ticket/view/tpl/create.mtt");
-        super(Ticket, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/ticket/view/tpl/create.mtt");
+        super(Ticket, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/create/", mod.i18n);
     }
 
@@ -34,8 +34,9 @@ class Create extends MttWidget<Ticket> {
 
         return {
             labels: labels,
-            ticket_error: this.getErrorString(mod.error),
-            users: users
+            error: this.getErrorString(mod.error),
+            users: users,
+            module_name: "Ticket create"
         };
     }
 
@@ -47,7 +48,7 @@ class Create extends MttWidget<Ticket> {
             case TicketUndefinedLabelId: BelugaI18n.getKey(i18n, "undefined_label_id");
             case TicketLabelEmpty: BelugaI18n.getKey(i18n, "ticket_label_empty");
             case TicketLabelAlreadyExist: BelugaI18n.getKey(i18n, "ticket_label_exist");
-            case TicketErrorNone: "";
+            case TicketErrorNone: null;
         };
     }
 }

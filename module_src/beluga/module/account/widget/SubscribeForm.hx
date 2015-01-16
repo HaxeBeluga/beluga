@@ -14,13 +14,13 @@ import beluga.ConfigLoader;
 import beluga.module.account.Account;
 import beluga.api.form.Validator;
 import beluga.I18n;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 class SubscribeForm extends MttWidget<Account> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/account/view/tpl/subscribe.mtt");
-        super(Account, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/account/view/tpl/subscribe.mtt");
+        super(Account, layout);
         i18n = BelugaI18n.loadI18nFolder("/beluga/module/account/view/locale/subscribe/", mod.i18n);
     }
 
@@ -29,7 +29,8 @@ class SubscribeForm extends MttWidget<Account> {
             loginErr: new Array<String>(),
             passwordErr: new Array<String>(),
             emailErr: new Array<String>(),
-            value: mod.lastSubscribeValue
+            value: mod.lastSubscribeValue,
+            module_name: "Account"
         };
         if (mod.lastSubscribeError != null) {
             //login

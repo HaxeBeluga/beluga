@@ -91,8 +91,10 @@ class Assets {
 
         //#----AccountTest Pages----#
         Context.addResource("page_accueil", File.getBytes("src/modules/account_test/tpl/accueil.mtt"));
+        Context.addResource("page_config", File.getBytes("src/modules/account_test/tpl/config.mtt"));
         Context.addResource("page_subscribe", File.getBytes("src/modules/account_test/tpl/subscribe.mtt"));
         Context.addResource("page_login", File.getBytes("src/modules/account_test/tpl/login.mtt"));
+        Context.addResource("page_info", File.getBytes("src/modules/account_test/tpl/info.mtt"));
 
         //#----TicketTest Pages----#
         Context.addResource("page_ticket_widget", File.getBytes("src/modules/ticket_test/tpl/ticket_widget.mtt"));
@@ -107,7 +109,7 @@ class Assets {
         Context.addResource("page_notification", File.getBytes("src/modules/notification_test/tpl/notification_page.mtt"));
 
         //#----ForumTest Pages----#
-        Context.addResource("page_forum_widget", File.getBytes("src/modules/forum_test/tpl/forum_widget.mtt"));
+        Context.addResource("page_forum", File.getBytes("src/modules/forum_test/tpl/forum_page.mtt"));
 
         //#----NewsTest Pages----#
         Context.addResource("page_news", File.getBytes("src/modules/news_test/tpl/news_page.mtt"));

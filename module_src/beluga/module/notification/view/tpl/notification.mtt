@@ -1,12 +1,6 @@
-<div style="width:800px;" class="container">
+<div >
 	::if (user)::
 	<h1>$$i18n(notifications_list)</h1><br/>
-	::end::
-	::if (error != "")::
-	<div class="alert alert-danger">::error::</div>
-	::end::
-	::if (success != "")::
-	<div class="alert alert-success">::success::</div>
 	::end::
 	<div>
 		<ul class="list-group">

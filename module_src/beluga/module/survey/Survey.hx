@@ -1,3 +1,4 @@
+
 // Copyright 2014 The Beluga Project Developers. See the LICENCE.md
 // file at the top-level directory of this distribution and at
 // http://haxebeluga.github.io/licence.html.
@@ -52,7 +53,7 @@ class Survey extends Module {
 
     override public function initialize(beluga : Beluga) : Void {
         this.widgets = new SurveyWidget();
-        beluga.api.register("survey", new SurveyApi(beluga, this));        
+        beluga.api.register("survey", new SurveyApi(beluga, this));
     }
 
     public function redirect() {
@@ -216,7 +217,7 @@ class Survey extends Module {
         option : Int
     }) {
         var user = Beluga.getInstance().getModuleInstance(Account).loggedUser;
-        
+
         this.actual_survey_id = args.survey_id;
         if (user == null) {
             error_id = MissingLogin;
@@ -312,7 +313,7 @@ class Survey extends Module {
             case NotFound: BelugaI18n.getKey(this.i18n, "not_found");
             case AlreadyVoted: BelugaI18n.getKey(this.i18n, "already_voted");
             case NotAllowed: BelugaI18n.getKey(this.i18n, "not_allowed");
-            case None: "";
+            case None: null;
         };
     }
 }

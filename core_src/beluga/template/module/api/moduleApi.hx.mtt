@@ -2,16 +2,18 @@ package beluga.module.::packageName::.api;
 
 import haxe.web.Dispatch;
 
-import beluga.core.Beluga;
-import beluga.core.Widget;
+import beluga.Beluga;
+import beluga.widget.Widget;
+
 import beluga.module.::packageName::.::className::;
 
 class ::className::Api {
 	public var beluga : Beluga;
     public var module : ::className::;
 
-    public function new() {
-
+    public function new(beluga: Beluga, module: ::className::) {
+        this.beluga = beluga;
+        this.module = module;
     }
 
     public function doDefault() {

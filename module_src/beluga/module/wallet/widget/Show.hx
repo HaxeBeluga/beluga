@@ -17,15 +17,15 @@ import beluga.module.account.Account;
 import beluga.module.wallet.model.Currency;
 import beluga.module.wallet.repository.CurrencyRepository;
 import beluga.module.wallet.repository.WalletRepository;
-import beluga.resource.ResourceManager;
+import beluga.widget.Layout;
 
 import beluga.module.wallet.Wallet;
 
 class Show extends MttWidget<Wallet> {
 
-    public function new (?mttfile : String) {
-        if(mttfile == null) mttfile = ResourceManager.getString("/beluga/module/wallet/view/tpl/show.mtt");
-        super(Wallet, mttfile);
+    public function new (?layout : Layout) {
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/wallet/view/tpl/show.mtt");
+        super(Wallet, layout);
         this.i18n = BelugaI18n.loadI18nFolder("/beluga/module/ticket/view/locale/show/", mod.i18n);
     }
 
@@ -67,7 +67,8 @@ class Show extends MttWidget<Wallet> {
             has_wallet: has_wallet,
             user: user,
             founds: user_founds,
-            currency_name: currency_name
+            currency_name: currency_name,
+            module_name: "User wallet"
         };
     }
 }

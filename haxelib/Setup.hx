@@ -59,7 +59,7 @@ class Setup {
             FileSystem.createDirectory(libDir + projectName);
 
             //Copy the whole template directory
-            cpDirectory("template", libDir + projectName);
+            cpDirectory("../core_src/beluga/template/project", libDir + projectName);
 
             //Rename the config file
             FileSystem.rename(libDir + projectName + "/template.hxml", libDir + projectName + "/" + projectName + ".hxml");
