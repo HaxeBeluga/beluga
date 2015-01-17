@@ -12,7 +12,9 @@ package modules.group_test;
 import beluga.Beluga;
 import beluga.module.group.Group;
 import beluga.module.group.GroupErrorKind;
+import beluga.module.group.GroupSuccessKind;
 import beluga.module.account.Account;
+import beluga.I18n;
 
 // BelugaTest
 import main_view.Renderer;
@@ -32,10 +34,24 @@ class GroupTest {
     public var beluga(default, null) : Beluga;
     public var group(default, null) : Group;
 
+    public var error : String;
+    public var success : String;
+
     public function new(beluga : Beluga) {
         this.beluga = beluga;
+        this.error = null;
+        this.success = null;
         this.group = beluga.getModuleInstance(Group);
-        this.group.triggers.groupCreationSuccess.add(this.doDefault);
+        this.group.triggers.groupCreationSuccess.add(this.doSuccess);
+        this.group.triggers.groupCreationFail.add(this.doFail);
+        this.group.triggers.groupDeletionSuccess.add(this.doSuccess);
+        this.group.triggers.groupDeletionFail.add(this.doFail);
+        this.group.triggers.groupModificationSuccess.add(this.doSuccess);
+        this.group.triggers.groupModificationFail.add(this.doFail);
+        this.group.triggers.memberAdditionSuccess.add(this.doSuccess);
+        this.group.triggers.memberAdditionFail.add(this.doFail);
+        this.group.triggers.memberRemovalSuccess.add(this.doSuccess);
+        this.group.triggers.memberRemovalFail.add(this.doFail);
     }
 
     public function doDefault() {
@@ -43,5 +59,13 @@ class GroupTest {
             groupWidget: this.group.widgets.show.render()
         });
         Sys.print(html);
+    }
+
+    public function doSuccess(args : {success : GroupSuccessKind}) {
+        this.doDefault();
+    }
+
+    public function doFail(args: {error : GroupErrorKind}) {
+        this.doDefault();
     }
 }

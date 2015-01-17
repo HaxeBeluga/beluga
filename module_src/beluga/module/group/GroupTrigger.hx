@@ -12,19 +12,20 @@ import beluga.trigger.Trigger;
 import beluga.trigger.TriggerVoid;
 
 import beluga.module.group.GroupErrorKind;
+import beluga.module.group.GroupSuccessKind;
 
 import sys.db.Types;
 
 class GroupTrigger {
-    public var groupCreationSuccess = new TriggerVoid();
+    public var groupCreationSuccess = new Trigger<{success: GroupSuccessKind}>();
     public var groupCreationFail = new Trigger<{error: GroupErrorKind}>();
-    public var groupDeletionSuccess = new TriggerVoid();
+    public var groupDeletionSuccess = new Trigger<{success: GroupSuccessKind}>();
     public var groupDeletionFail = new Trigger<{error: GroupErrorKind}>();
-    public var groupModificationSuccess = new TriggerVoid();
+    public var groupModificationSuccess = new Trigger<{success: GroupSuccessKind}>();
     public var groupModificationFail = new Trigger<{error: GroupErrorKind}>();
-    public var memberAdditionSuccess = new TriggerVoid();
+    public var memberAdditionSuccess = new Trigger<{success: GroupSuccessKind}>();
     public var memberAdditionFail = new Trigger<{error: GroupErrorKind}>();
-    public var memberRemovalSuccess = new TriggerVoid();
+    public var memberRemovalSuccess = new Trigger<{success: GroupSuccessKind}>();
     public var memberRemovalFail = new Trigger<{error: GroupErrorKind}>();
 
     public function new() {}

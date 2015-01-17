@@ -1,3 +1,24 @@
 {
-    "authenticated_error": "You must be authenticated to do this action"
+    "sucess_message": "Success",
+    "error_message": "Error",
+	"group_module_name": "User groups administration",
+    "authenticated_error": "You must be authenticated to do this action",
+    "create_group_title": "Create a group",
+    "submit_group": "Create",
+    "group_name_placeholder": "Enter the group name",
+    "err_GroupAlreadyExists": "This group already exists",
+    "err_GroupDoesntExist": "This group doesn't exist",
+    "err_MemberAlreadyExists": "This member already belongs in this group",
+    "err_MemberDoesntExist": "This member doesn't belong in this group",
+    "err_UserDoesntExist": "This user doesn't exist",
+    "err_FieldEmpty": "The field is empty",
+    "err_UserNotAuthenticate": "The user must be authenticated",
+    "err_BadFormat": "The field isn't well formated",
+   	"err_Unexpected": "An unexpected error occured. Sorry!",
+    "err_None": "No error has been detected",
+    "suc_GroupCreated":"The group has been successfully created",
+    "suc_GroupModified":"The group has been successfully modified",
+    "suc_GroupDeleted":"The group has been successfully  deleted",
+    "suc_MemberAdded":"The member has been successfully added to the group",
+    "suc_MemberRemoved":"The group has been successfully removed from the group"
 }

@@ -1,12 +1,21 @@
-::if (!user_authenticated)::
-        <p>Error ! $$i18n(authenticated_error)</p>
-::else::
-::foreach groups::
-<h1>::group.name::</h1>
-<ul>
+::if (error == "")::
+<div class="container-fluid">
+    <h4>$$i18n(create_group_title)</h4>
+    <form action="::base_url::/beluga/group/createGroup" method="post"><br>
+        <input type="text" name="name" class=" form-control" placeholder="$$i18n(group_name_placeholder)">
+        <input type="submit" value="$$i18n(submit_group)" class="btn btn-warning pull-right">
+    </form>
+</div>
+<div class="container-fluid">
+::module_name::
+::userGroups::
+::foreach userGroups::
+<h1>::name::</h1>
+<!-- <ul>
     ::foreach __current__.users::
     <li>::login:: (::id::)</li>
     ::end::
-</ul>
+</ul> -->
 ::end::
 ::end::
+</div>

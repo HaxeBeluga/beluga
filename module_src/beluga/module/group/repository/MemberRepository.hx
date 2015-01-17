@@ -34,6 +34,7 @@ class MemberRepository extends SpodRepository<MemberModel> {
 
     public function getUsersSortedByGroup() : List<{group: GroupModel, users: List<User>}> {
         var members = MemberModel.manager.search(true, {orderBy: group_id});
+        
         var sortedMembers = new List<{group: GroupModel, users: List<User>}>();
         var currentGroup : {group: GroupModel, users: List<User>} = {group: null, users: null};
 

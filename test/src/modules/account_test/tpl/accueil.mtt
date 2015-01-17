@@ -199,6 +199,20 @@
                     </div>
                 </div>
             </div>
+             <div class="row">
+
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/350x150" >
+                        <div class="caption">
+                            <h3>Module de groupe</h3>
+                            <p>Cette page expose le module de groupe. Vous pouvez ajouter de nouveaux groupe d'utilisateur, les editer ou encore les supprimer depuis cette page!</p>
+                            <p><a href="::base_url::/groupTest" class="btn btn-success" role="button">Essayer ce widget !</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     <!-- </div> -->
 </section>

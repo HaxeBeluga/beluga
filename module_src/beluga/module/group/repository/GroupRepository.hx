@@ -27,10 +27,10 @@ class GroupRepository extends SpodRepository<GroupModel> {
 
     public function isGroupExists(name: String) : Bool {
         var group = GroupModel.manager.search($name == name);
-        return group != null;
+        return group.length > 0 ? true : false;
     }
 
-    public function getFromId(id: Int): Option<GroupModel> {
+    public function getFromId(id: Int) : Option<GroupModel> {
         if (id < 0) {
             return None;
         }
@@ -38,6 +38,10 @@ class GroupRepository extends SpodRepository<GroupModel> {
         if (group == null) {
             return None;
         }
-        return (group != null ? Some(group) : None);
+        return group != null ? Some(group) : None;
+    }
+
+    public function getAllGroups() : List<GroupModel> {
+        return GroupModel.manager.search(true, {orderBy: id});
     }
 }

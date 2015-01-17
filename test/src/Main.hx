@@ -35,6 +35,7 @@ import modules.forum_test.ForumTest;
 import modules.news_test.NewsTest;
 import modules.mail_test.MailTest;
 import modules.faq_test.FaqTest;
+import modules.group_test.GroupTest;
 
 #if php
 import php.Web;
@@ -69,6 +70,7 @@ class Main {
             ModuleTestApi.addModule("mailTest", new MailTest(beluga));
             ModuleTestApi.addModule("marketTest", new MarketTest(beluga));
             ModuleTestApi.addModule("faqTest", new FaqTest(beluga));
+            ModuleTestApi.addModule("groupTest", new GroupTest(beluga));
 
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
@@ -88,10 +90,6 @@ class Main {
         Web.setHeader("Content-Type", "text/plain");
         trace(Web.getParamsString());
         d.dispatch(this);
-    }
-
-    public function doGroupTest(d : Dispatch) {
-        d.dispatch(new GroupTest(beluga));
     }
 
     public function doAccueil() {

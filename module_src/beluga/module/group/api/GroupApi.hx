@@ -48,6 +48,6 @@ class GroupApi {
     }
 
     public function doDefault(): Void {
-        trace("Group default page");
+        
     }
 }
