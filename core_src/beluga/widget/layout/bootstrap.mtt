@@ -8,6 +8,7 @@
             <a><i class="fa fa-times"></i></a>
         </div>
     </div>
+    <div id="bootstrap-widget-info" >
     ::if error::
     ::if (error != "")::
     <div class="blgwidget-error"><p><b>Error ! </b>::error::</p></div>
@@ -18,6 +19,7 @@
     <div class="blgwidget-info"><b>Info ! </b>::success::</div>
     ::end::
     ::end::
+    </div>
     <div class="blgwidget-content">
         ::__content__::
     </div>

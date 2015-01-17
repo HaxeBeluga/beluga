@@ -1,1 +1,46 @@
-ADMIN
+<script>
+// yes this is an awesome part of Haxe !
+function validateForm() {
+    var name = document.getElementById("name").value;
+    var price = document.getElementById("price").value;
+    var stock = document.getElementById("stock").value;
+
+    if (isNaN(price) || isNaN(stock) || name == "") {
+      var error = document.createElement('div');
+      error.setAttribute('class','blgwidget-error');
+      error.innerHTML = '<p><b>Error ! </b>invalid data</p>';
+      document.getElementById('bootstrap-widget-info').appendChild(error);
+      return false;
+    }
+    return true;
+}
+</script>
+
+  <div class="container-fluid">
+      <h4>$$i18n(add_product_title)</h4>
+      <form action="::base_url::/beluga/market/addProduct" method="post" onsubmit="return validateForm()"><br>
+          <label for="name">$$i18n(product_name)</label><input type="text" id="name" name="name" class="form-control" required>
+          <label for="price">$$i18n(product_price)</label><input type="text" id="price" name="price" class="form-control" required>
+          <label for="stock">$$i18n(product_stock)</label><input type="text" id="stock" name="stock" class="form-control" required>
+          <label for="desc">$$i18n(product_desc)</label><input type="text" name="desc" class="form-control">
+          <label for="image">$$i18n(product_image)</label>
+          <select class="form-control" name="image">
+              <option>None</option>
+              ::foreach image_list::
+              <option>::file_name::</option>
+              ::end::
+          </select>
+          <input type="submit" value="$$i18n(submit_product)" id="submit_product" class="btn btn-warning pull-right market-add-submit">
+      </form>
+  </div>
+  <div class="container-fluid">
+      <h4>$$i18n(product_list)</h4>
+      <ul class="list-group">
+        ::foreach products_list::
+        <li class="list-group-item">::product.name::
+        <a href="::base_url::/beluga/market/deleteProduct?id=::product.id::" class="btn btn-danger btn-xs pull-right">$$i18n(remove)</a>
+        <a href="::base_url::/beluga/market/showUpdateProduct?id=::product.id::" class="btn btn-danger btn-xs pull-right">$$i18n(update)</a>
+        <button class="btn btn-info btn-xs disabled pull-right fileupload-btn-download">::product.stock:: in stock</button></li>
+        ::end::
+      </ul>
+  </div>

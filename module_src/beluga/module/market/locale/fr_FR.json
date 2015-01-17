@@ -11,5 +11,17 @@
     "one_more_product": "Un produit de plus a ete ajoute au panier",
     "unknown_product": "Ce produit n'est plus disponible",
     "user_not_logged": "Voud devez etre connecté pour effectuer cette action",
-    "no_product": "Vous n'avez ni panier, ni produit pour le moment"
+    "no_product": "Vous n'avez ni panier, ni produit pour le moment",
+    "add_product_title": "Ajouter un produit",
+    "product_list": "Liste des produits",
+    "submit_product": "Ajouter le produit",
+    "product_name": "Nom du produit",
+    "product_price": "Prix du produit",
+    "product_stock": "Quantité",
+    "product_desc": "Description du produit",
+    "product_image": "Image associée",
+    "new_prod": "Nouveau produit ajouté avec success",
+    "product_already_exist": "Ce produit exist deja",
+    "product_deleted": "Produit supprimé avec succes",
+    "update": "Modifier"
 }

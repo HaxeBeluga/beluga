@@ -1,4 +1,3 @@
-::if (success == null)::
     <div class="row">
         <div class="col-sm-12 col-md-11">
             <table class="table table-hover">
@@ -55,4 +54,3 @@
             </table>
     </div>
 </div>
-::end::

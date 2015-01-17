@@ -10,5 +10,5 @@
     "invalid_access": "Vous ne pouvez pas acceder a ce fichier",
     "empty_field": "Ce champ est vide",
     "ext_dont_exist": "Cette extension n'existe pas!",
-    "extension_already_exist": "Cette extension existe deja"
+    "extension_already_exist": "Cette extension existe deja",
 }

@@ -11,5 +11,17 @@
     "one_more_product": "Add one more into the cart",
     "unknown_product": "This product is not available",
     "user_not_logged": "You must be logged to do this action",
-    "no_product": "You have no cart and no products at this time !"
+    "no_product": "You have no cart and no products at this time !",
+    "add_product_title": "Add new product",
+    "product_list": "Products list",
+    "submit_product": "Add product",
+    "product_name": "Product name",
+    "product_price": "Product price",
+    "product_stock": "Product stock",
+    "product_desc": "Product description",
+    "Product_image": "Product image",
+    "new_prod": "New Product added",
+    "product_already_exist": "Product already exist",
+    "product_deleted": "Product deleted",
+    "update": "Update"
 }

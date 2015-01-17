@@ -21,7 +21,9 @@ import beluga.module.market.model.Cart;
 import beluga.module.account.Account;
 import beluga.module.account.model.User;
 import beluga.module.market.MarketErrorKind;
-
+import beluga.module.market.repository.ProductRepository;
+import beluga.module.fileupload.repository.FileRepository;
+import beluga.module.fileupload.model.File;
 // Haxe
 import haxe.xml.Fast;
 import haxe.ds.Option;
@@ -34,6 +36,9 @@ class Market extends Module {
 
     public var error: MarketErrorKind = MarketNone;
     public var info: MarketErrorKind = MarketNone;
+
+    public var product_repository = new ProductRepository();
+    public var file_repository = new FileRepository();
 
     public function new() {
         super();
@@ -49,6 +54,100 @@ class Market extends Module {
     public function display(): Void {}
 
     public function admin(): Void {}
+
+    public function addProduct(args: { name: String, price: Int, stock: Int, desc: String, image: String }): Void {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            switch (product_repository.getProductFromName(args.name)) {
+                case Some(p): {
+                    this.error = MarketProductAlreadyExist(p);
+                    this.triggers.addNewProductFail.dispatch({error: this.error});
+                };
+                case None: {
+                    var prod = new Product();
+                    prod.name = args.name;
+                    prod.price = args.price;
+                    prod.stock = args.stock;
+                    prod.desc = args.desc;
+                    var file = file_repository.getFileByName(args.image);
+                    switch (file) {
+                        case Some(f): prod.image_id = f.id;
+                        case None: prod.image_id = null;
+                    };
+                    prod.insert();
+                    this.info = MarketNewProductAdded(prod);
+                    this.triggers.addNewProductSuccess.dispatch({product: prod});
+                };
+            }
+        } else { // User is not connected, we throw an error by trigger
+            this.error = MarketUserNotLogged;
+            this.triggers.addNewProductFail.dispatch({error: this.error});
+        }
+    }
+
+    public function updateProduct(args: { name: String, price: Int, stock: Int, desc: String, image: String, id: Int }): Void {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            switch (product_repository.getProductFromName(args.name)) {
+                case Some(p): {
+                    p.name = args.name;
+                    p.price = args.price;
+                    p.stock = args.stock;
+                    p.desc = args.desc;
+                    var file = file_repository.getFileByName(args.image);
+                    switch (file) {
+                        case Some(f): p.image_id = f.id;
+                        case None: p.image_id = null;
+                    };
+                    p.update();
+                    this.info = MarketProductToShow(p);
+                    this.triggers.updateProductSuccess.dispatch({product: p});
+                };
+                case None: {
+                    this.error = MarketUnknownProduct(args.id);
+                    this.triggers.updateProductFail.dispatch({error: this.error});
+                };
+            }
+        } else { // User is not connected, we throw an error by trigger
+            this.error = MarketUserNotLogged;
+            this.triggers.addNewProductFail.dispatch({error: this.error});
+        }
+    }
+
+    public function showUpdateProduct(args: { id: Int }): Void {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            switch (product_repository.getProductFromId(args.id)) {
+                case Some(p): {
+                    this.info = MarketProductToShow(p);
+                    this.triggers.showUpdateProductSuccess.dispatch({product: p});
+                };
+                case None: {
+                    this.error = MarketUnknownProduct(args.id);
+                    this.triggers.showUpdateProductFail.dispatch({error: this.error});
+                };
+            }
+        } else { // User is not connected, we throw an error by trigger
+            this.error = MarketUserNotLogged;
+            this.triggers.addNewProductFail.dispatch({error: this.error});
+        }
+    }
+
+    public function deleteProduct(args: { id: Int }): Void {
+        if (Beluga.getInstance().getModuleInstance(Account).isLogged) {
+            switch (product_repository.getProductFromId(args.id)) {
+                case Some(p): {
+                    p.delete();
+                    this.info = MarketProductDeleted(p);
+                    this.triggers.deleteProductSuccess.dispatch({product: p});
+                };
+                case None: {
+                    this.error = MarketUnknownProduct(args.id);
+                    this.triggers.deleteProductFail.dispatch({error: this.error});
+                };
+            }
+        } else { // User is not connected, we throw an error by trigger
+            this.error = MarketUserNotLogged;
+            this.triggers.addNewProductFail.dispatch({error: this.error});
+        }
+    }
 
     public function cart(): Void {}
 
@@ -131,16 +230,20 @@ class Market extends Module {
         }
     }
 
-    public function getProductList(): List<Product> {
+    public function getProductList(): List<{ product: Product, image_path: String }> {
         var site_currency = Beluga.getInstance().getModuleInstance(Wallet).getSiteCurrencyOrDefault();
         var products = Product.manager.dynamicSearch({}).map(function(p) {
             var product = new Product();
+            var s: String = "";
             product.name = p.name;
             product.price = site_currency.convertToCurrency(p.price);
             product.id = p.id;
             product.desc = p.desc;
             product.stock = p.stock;
-            return product;
+            if (p.image != null) {
+                s = p.image.path;
+            }
+            return {product: product, image_path: s};
         });
 
         return products;

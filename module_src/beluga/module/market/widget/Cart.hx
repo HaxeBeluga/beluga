@@ -66,6 +66,10 @@ class Cart extends MttWidget<Market> {
             case MarketNewProductToCart(_): BelugaI18n.getKey(this.i18n, "product_add_to_cart");
             case MarketUserNotLogged: BelugaI18n.getKey(this.i18n, "user_not_logged");
             case MarketUnknownProduct(_): BelugaI18n.getKey(this.i18n, "unknown_product");
+            case MarketProductAlreadyExist(_): BelugaI18n.getKey(this.i18n, "unknown_product");
+            case MarketNewProductAdded(_): BelugaI18n.getKey(this.i18n, "new_prod");
+            case MarketProductDeleted(_): BelugaI18n.getKey(this.i18n, "product_deleted");
+            case MarketProductToShow(_): BelugaI18n.getKey(this.i18n, "product_deleted");
             case MarketNone: null;
         };
     }

@@ -15,37 +15,50 @@ import beluga.module.market.Market;
 import beluga.widget.Layout;
 import beluga.I18n;
 import beluga.module.fileupload.Fileupload;
+import beluga.module.market.model.Product;
 import beluga.module.account.Account;
 
-class Admin extends MttWidget<Market> {
+class Update extends MttWidget<Market> {
 
     public function new (?layout : Layout) {
-        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/market/view/tpl/admin.mtt");
+        if(layout == null) layout = MttWidget.bootstrap.wrap("/beluga/module/market/view/tpl/update.mtt");
         super(Market, layout);
-        i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/view/locale/admin/", mod.i18n);
+        i18n = BelugaI18n.loadI18nFolder("/beluga/module/market/view/locale/update/", mod.i18n);
     }
 
     override private function getContext(): Dynamic {
         var beluga = Beluga.getInstance();
         var images = new List<Dynamic>();
-        var product_list = new List<Dynamic>();
         var error = "";
         var success = "";
+        var product: Product = new Product();
+        var image_name: String = "";
 
         if (!beluga.getModuleInstance(Account).isLogged) {
             error = BelugaI18n.getKey(this.i18n, "user_not_logged");
         } else {
-            error = this.getErrorString(this.mod.error);
-            product_list = mod.getProductList();
             images = beluga.getModuleInstance(Fileupload).getUserFileList(beluga.getModuleInstance(Account).loggedUser.id);
         }
 
+        switch (this.mod.info) {
+            case MarketProductToShow(p): {
+                product = p;
+                if (p.image != null) {
+                    image_name = p.image.name;
+                } else {
+                    image_name = "None";
+                }
+            };
+            case _: product = null;
+        };
+
         return {
-            error: error,
-            success: this.getErrorString(this.mod.info),
+            error: this.getErrorString(this.mod.error),
+            success: "",
+            product: product,
+            image_name: image_name,
             image_list: images,
-            products_list: product_list,
-            module_name: "Market admin"
+            module_name: "Market update"
         };
     }
 
