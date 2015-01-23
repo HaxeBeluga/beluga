@@ -9,9 +9,13 @@
 package beluga.module.group;
 
 import beluga.module.group.widget.Show;
+import beluga.module.group.widget.Edit;
+import beluga.module.group.widget.Error;
 
 class GroupWidget {
     public var show = new Show();
+    public var edit = new Edit();
+    public var error = new Error();
 
     public function new() {}
 }

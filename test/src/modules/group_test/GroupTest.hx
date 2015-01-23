@@ -42,23 +42,56 @@ class GroupTest {
         this.error = null;
         this.success = null;
         this.group = beluga.getModuleInstance(Group);
+
+        // Actions
         this.group.triggers.groupCreationSuccess.add(this.doSuccess);
         this.group.triggers.groupCreationFail.add(this.doFail);
         this.group.triggers.groupDeletionSuccess.add(this.doSuccess);
         this.group.triggers.groupDeletionFail.add(this.doFail);
-        this.group.triggers.groupModificationSuccess.add(this.doSuccess);
-        this.group.triggers.groupModificationFail.add(this.doFail);
-        this.group.triggers.memberAdditionSuccess.add(this.doSuccess);
-        this.group.triggers.memberAdditionFail.add(this.doFail);
-        this.group.triggers.memberRemovalSuccess.add(this.doSuccess);
-        this.group.triggers.memberRemovalFail.add(this.doFail);
+        this.group.triggers.groupModificationSuccess.add(this.doSuccessFromEditPage);
+        this.group.triggers.groupModificationFail.add(this.doFailFromEditPage);
+        this.group.triggers.memberAdditionSuccess.add(this.doSuccessFromEditPage);
+        this.group.triggers.memberAdditionFail.add(this.doFailFromEditPage);
+        this.group.triggers.memberRemovalSuccess.add(this.doSuccessFromEditPage);
+        this.group.triggers.memberRemovalFail.add(this.doFailFromEditPage);
+        // Pages
+        this.group.triggers.groupShowPageSuccess.add(this.doShowPage);
+        this.group.triggers.groupShowPageFail.add(this.doErrorPage);
+        this.group.triggers.groupEditionPageSuccess.add(this.doEditPage);
+        this.group.triggers.groupEditionPageFail.add(this.doErrorPage);
     }
 
     public function doDefault() {
+        this.group.showGroupPage();
+    }
+
+    public function doShowPage(args : {success : GroupSuccessKind}) {
         var html = Renderer.renderDefault("page_group_widget", "Group", {
             groupWidget: this.group.widgets.show.render()
         });
         Sys.print(html);
+    }
+
+    public function doEditPage(args : {success : GroupSuccessKind}) {
+        var html = Renderer.renderDefault("page_group_widget", "Group", {
+            groupWidget: this.group.widgets.edit.render()
+        });
+        Sys.print(html);
+    }
+
+    public function doErrorPage(args: {error : GroupErrorKind}) {
+        var html = Renderer.renderDefault("page_group_widget", "Group", {
+            groupWidget: this.group.widgets.error.render()
+        });
+        Sys.print(html);
+    }
+
+    public function doSuccessFromEditPage(args : {success : GroupSuccessKind}) {
+        this.group.editGroupPage({group_id : this.group.contextData.groupId});
+    }
+
+    public function doFailFromEditPage(args : {error : GroupErrorKind}) {
+        this.group.editGroupPage({group_id : this.group.contextData.groupId});
     }
 
     public function doSuccess(args : {success : GroupSuccessKind}) {

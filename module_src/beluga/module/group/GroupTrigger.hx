@@ -27,6 +27,10 @@ class GroupTrigger {
     public var memberAdditionFail = new Trigger<{error: GroupErrorKind}>();
     public var memberRemovalSuccess = new Trigger<{success: GroupSuccessKind}>();
     public var memberRemovalFail = new Trigger<{error: GroupErrorKind}>();
+    public var groupShowPageSuccess = new Trigger<{success: GroupSuccessKind}>();
+    public var groupShowPageFail = new Trigger<{error: GroupErrorKind}>();
+    public var groupEditionPageSuccess = new Trigger<{success: GroupSuccessKind}>();
+    public var groupEditionPageFail = new Trigger<{error: GroupErrorKind}>();
 
     public function new() {}
 }

@@ -28,25 +28,19 @@ class MemberRepository extends SpodRepository<MemberModel> {
     }
 
     public function isMemberInGroup(id: Int) : Bool {
-        var member = MemberModel.manager.search($user_id == id);
-        return member != null;
+        return MemberModel.manager.search($user_id == id) != null;
     }
 
-    public function getUsersSortedByGroup() : List<{group: GroupModel, users: List<User>}> {
-        var members = MemberModel.manager.search(true, {orderBy: group_id});
-        
-        var sortedMembers = new List<{group: GroupModel, users: List<User>}>();
-        var currentGroup : {group: GroupModel, users: List<User>} = {group: null, users: null};
+    public function getMembersByGroupId(groupId : Int) : List<MemberModel> {
+        return MemberModel.manager.search($group_id == groupId);
+    }
 
-        for (member in members) {
-            if (currentGroup.group != member.group) {
-                sortedMembers.add(currentGroup);
-                currentGroup.group = member.group;
-                currentGroup.users = new List<User>();
-            }
-            currentGroup.users.add(member.user);
+    public function getUsersByGroupId(groupId : Int) : List<User> {
+        var users = new List<User>();
+        for (member in this.getMembersByGroupId(groupId)) {
+            users.push(member.user);
         }
-        return sortedMembers;
+        return users;
     }
 
     public function getFromId(id: Int): Option<User> {
@@ -54,9 +48,6 @@ class MemberRepository extends SpodRepository<MemberModel> {
             return None;
         }
         var user = User.manager.get(id);
-        if (user == null) {
-            return None;
-        }
         return (user != null ? Some(user) : None);
     }
 
@@ -65,6 +56,12 @@ class MemberRepository extends SpodRepository<MemberModel> {
         if (member == null) {
             return None;
         }
-        return Some(member);
+        return (member != null ? Some(member) : None);
+    }
+
+    public function removeMembersInGroup(groupId : Int) : Void {
+        for (user in this.getMembersByGroupId(groupId)) {
+            this.delete(user);
+        }
     }
 }

@@ -6,7 +6,7 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
-package beluga ;
+package beluga;
 
 import beluga.BelugaException;
 import haxe.xml.Fast;

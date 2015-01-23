@@ -15,4 +15,5 @@ enum GroupSuccessKind {
 	MemberAdded;
 	MemberRemoved;
 	None;
+	PageRequested;
 }

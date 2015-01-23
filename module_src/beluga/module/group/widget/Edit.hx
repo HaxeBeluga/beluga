@@ -21,30 +21,22 @@ import beluga.module.group.repository.GroupRepository;
 import beluga.module.group.repository.MemberRepository;
 import beluga.widget.Layout;
 
-class Show extends MttWidget<Group> {
+class Edit extends MttWidget<Group> {
 
     public function new (?layout: Layout) {
         if(layout == null) {
-            layout = MttWidget.bootstrap.wrap("/beluga/module/group/view/tpl/show.mtt");
+            layout = MttWidget.bootstrap.wrap("/beluga/module/group/view/tpl/edit.mtt");
         }
         super(Group, layout);
-        this.i18n = BelugaI18n.loadI18nFolder("/beluga/module/group/view/locale/show/", mod.i18n);
+        this.i18n = BelugaI18n.loadI18nFolder("/beluga/module/group/view/locale/edit/", mod.i18n);
     }
 
-    override private function getContext() : Dynamic {
-        var groupRepository = new GroupRepository();
+    override private function getContext() {
         var memberRepository = new MemberRepository();
-        var groupsOnly = groupRepository.getAllGroups();
-        var groups = new List<Dynamic>();
-        for (group in groupsOnly) {
-            groups.push({
-                group: group,
-                users: memberRepository.getUsersByGroupId(group.id)
-            });
-        }
 
         return {
-            groups: groups,
+            group: this.mod.contextData.group,
+            users: memberRepository.getUsersByGroupId(this.mod.contextData.group.id),
             module_name: BelugaI18n.getKey(this.i18n, "group_module_name"),
             error: this.mod.getFailMsg(this.mod.error),
             success: this.mod.getSuccessMsg(this.mod.success)

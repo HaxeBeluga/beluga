@@ -27,27 +27,35 @@ class GroupApi {
         this.module = module;
     }
 
-    public function doCreateGroup(args: {name: String}): Void {
-        module.createGroup(args);
+    public function doCreateGroup(args: {name: String}) : Void {
+        this.module.createGroup(args);
     }
 
-    public function doModifyGroup(args: {id: Int, new_name: String}): Void {
-        module.modifyGroup(args);
+    public function doModifyGroup(args: {id: Int, new_name: String}) : Void {
+        this.module.modifyGroup(args);
     }
 
-    public function doDeleteGroup(args: {id: Int}): Void {
-        module.deleteGroup(args);
+    public function doDeleteGroup(args: {id: Int}) : Void {
+        this.module.deleteGroup(args);
     }
 
-    public function doAddMember(args: {user_id: Int, group_id: Int}) : Void {
-        module.addMember(args);
+    public function doAddMember(args: {user_name: String, group_id: Int}) : Void {
+        this.module.addMember(args);
     }
 
     public function doRemoveMember(args: {user_id: Int, group_id: Int}) : Void {
-        module.removeMember(args);
+        this.module.removeMember(args);
     }
 
-    public function doDefault(): Void {
-        
+    public function doEditGroup(args: {group_id : Int}) : Void {
+        this.module.editGroupPage(args);
+    }
+
+    public function doShowGroup() : Void {
+        this.module.showGroupPage();  
+    }
+
+    public function doDefault() : Void {
+        this.doShowGroup();
     }
 }

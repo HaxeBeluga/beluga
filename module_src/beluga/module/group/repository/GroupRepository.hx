@@ -31,14 +31,8 @@ class GroupRepository extends SpodRepository<GroupModel> {
     }
 
     public function getFromId(id: Int) : Option<GroupModel> {
-        if (id < 0) {
-            return None;
-        }
-        var group = GroupModel.manager.get(id);
-        if (group == null) {
-            return None;
-        }
-        return group != null ? Some(group) : None;
+        var group = GroupModel.manager.search($id == id).first();
+        return (group != null ? Some(group) : None);
     }
 
     public function getAllGroups() : List<GroupModel> {

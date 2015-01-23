@@ -1,11 +1,22 @@
 {
     "sucess_message": "Success",
     "error_message": "Error",
+    "sorry_message":"We are sorry for the inconvenience",
 	"group_module_name": "User groups administration",
     "authenticated_error": "You must be authenticated to do this action",
     "create_group_title": "Create a group",
-    "submit_group": "Create",
+    "edit_group_title": "Edit the group",
+    "delete_group_title": "Delete the group",
+    "list_group_title": "List of groups",
+    "list_members_group_title" : "List of members",
+    "add_member_group_title": "Add a member",
+    "create_submit_group": "Create",
+    "edit_submit_group": "Edit",
+    "delete_submit_group": "Delete",
+    "add_submit_member": "Add",
+    "remove_submit_member": "Remove",
     "group_name_placeholder": "Enter the group name",
+    "user_name_placeholder": "Enter the user name",
     "err_GroupAlreadyExists": "This group already exists",
     "err_GroupDoesntExist": "This group doesn't exist",
     "err_MemberAlreadyExists": "This member already belongs in this group",
@@ -20,5 +31,6 @@
     "suc_GroupModified":"The group has been successfully modified",
     "suc_GroupDeleted":"The group has been successfully  deleted",
     "suc_MemberAdded":"The member has been successfully added to the group",
-    "suc_MemberRemoved":"The group has been successfully removed from the group"
+    "suc_MemberRemoved":"The group has been successfully removed from the group",
+    "suc_PageRequested":"The page has been requested"
 }
