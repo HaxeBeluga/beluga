@@ -32,7 +32,7 @@ You can get more tool's commands with `haxelib run beluga help`
 
 ## Supported platforms
 
-The following targets are currently supported
+The following targets are currently supported:
 
 * Php
 * Neko
@@ -43,4 +43,4 @@ Thanks to [Jonathan Pellen](http://fr.viadeo.com/fr/profile/jonathan.pellen) for
 ## License
 
 Beluga is distributed under the MIT license.
-More information [here](LICENSE.md)
+More information [here](LICENSE.md).
