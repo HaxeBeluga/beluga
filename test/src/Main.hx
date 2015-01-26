@@ -25,6 +25,7 @@ import haxe.crypto.Md5;
 
 import modules.account_test.AccountTest;
 import modules.account_test.AccountTestApi;
+import modules.paypal_test.PaypalTest;
 import modules.ticket_test.TicketTest;
 import modules.survey_test.SurveyTest;
 import modules.fileupload_test.FileUploadTest;
@@ -68,6 +69,7 @@ class Main {
             ModuleTestApi.addModule("mailTest", new MailTest(beluga));
             ModuleTestApi.addModule("marketTest", new MarketTest(beluga));
             ModuleTestApi.addModule("faqTest", new FaqTest(beluga));
+            ModuleTestApi.addModule("paypalTest", new PaypalTest(beluga));
             
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
