@@ -1,15 +1,15 @@
 {
-    "missing_currency": "Aucune monnaie selectionnee pour ce site",
+    "missing_currency": "Aucune monnaie selectionnée pour ce site",
     "add_product": "Ajouter",
     "product": "Article",
-    "quantity": "Quantite",
+    "quantity": "Quantité",
     "price": "Prix",
     "total": "Total",
     "remove": "Supprimer",
     "checkout": "Acheter",
-    "product_add_to_cart": "Le produit a ete ajoute au panier",
-    "one_more_product": "Un produit de plus a ete ajoute au panier",
+    "product_add_to_cart": "Le produit a été ajouté au panier",
+    "one_more_product": "Un produit de plus a été ajouté au panier",
     "unknown_product": "Ce produit n'est plus disponible",
-    "user_not_logged": "Voud devez etre connecté pour effectuer cette action",
+    "user_not_logged": "Vous devez être connecté pour effectuer cette action",
     "no_product": "Vous n'avez ni panier, ni produit pour le moment"
 }

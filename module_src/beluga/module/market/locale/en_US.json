@@ -1,5 +1,5 @@
 {
-    "missing_currency": "No currency set for this site !",
+    "missing_currency": "No currency set for this website !",
     "add_product": "Add",
     "product": "Product",
     "quantity": "Quantity",
@@ -7,9 +7,9 @@
     "total": "Total",
     "remove": "Remove",
     "checkout": "Checkout",
-    "product_add_to_cart": "The product is add to the cart",
+    "product_add_to_cart": "The product has been added to the cart",
     "one_more_product": "Add one more into the cart",
     "unknown_product": "This product is not available",
     "user_not_logged": "You must be logged to do this action",
-    "no_product": "You have no cart and no products at this time !"
+    "no_product": "You have no cart and no product at this time !"
 }

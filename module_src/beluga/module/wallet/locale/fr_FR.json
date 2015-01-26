@@ -1,13 +1,13 @@
 {
-    "wallet_owner": "Porte feuille de ::user.login::",
-    "no_wallet": "Vous n'avez pas de porte feuille pour le moment !",
-    "create_wallet": "Creer un nouveau porte feuille !",
-    "missing_currency": "Aucune monnaie selectionnée pour ce site !",
-    "authenticated_error": "Vous devez etre authentifé pour effectuer cette action",
-    "list_currency_title": "Voici une liste des differente devises disponibles",
+    "wallet_owner": "Portefeuille de ::user.login::",
+    "no_wallet": "Vous n'avez pas de portefeuille pour le moment !",
+    "create_wallet": "Creer un nouveau portefeuille !",
+    "missing_currency": "Aucune monnaie sélectionnée pour ce site !",
+    "authenticated_error": "Vous devez être authentifié pour effectuer cette action",
+    "list_currency_title": "Voici une liste des différentes devises disponibles",
     "site_currency_rate": "taux: ::site_currency.rate::",
     "currency_rate": "taux: ",
-    "create_currency_title": "Creer une nouvelle devise",
+    "create_currency_title": "Créer une nouvelle devise",
     "submit_currency": "Soumettre une nouvelle devise",
     "choose_website_currency": "Choisir cette devise pour le site",
     "website_currency_title": "Devise du site web",
@@ -15,6 +15,6 @@
     "currency_name_placeholder": "Nom de la devise",
     "currency_rate_placeholder": "Taux de la devise",
     "field_empty": "Vous devez remplir les deux champs !",
-    "currency_already_exist": "Cette monnaie existe deja !",
+    "currency_already_exist": "Cette monnaie existe déjà !",
     "currency_dont_exist": "Cette monnaie n'existe pas"
 }

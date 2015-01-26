@@ -2,8 +2,8 @@
     "wallet_owner": "::user.login::'s wallet !",
     "no_wallet": "You have no wallet for now !",
     "create_wallet": "Create a new wallet !",
-    "missing_currency": "No currency set for this site !",
-    "authenticated_error": "You must be authenticated to do this action",
+    "missing_currency": "No currency set for this website !",
+    "authenticated_error": "You must be logged in to do this action",
     "list_currency_title": "Here is a list of the existing currency",
     "site_currency_rate": "rate: ::site_currency.rate::",
     "currency_rate": "rate: ",
@@ -15,6 +15,6 @@
     "currency_name_placeholder": "Currency's name",
     "currency_rate_placeholder": "Currency's rate",
     "field_empty": "You must fill both field",
-    "currency_already_exist": "This currency exist already !",
+    "currency_already_exist": "This currency already exists !",
     "currency_dont_exist": "This currency doesn't exist"
 }
