@@ -36,6 +36,7 @@ import modules.forum_test.ForumTest;
 import modules.news_test.NewsTest;
 import modules.mail_test.MailTest;
 import modules.faq_test.FaqTest;
+import modules.group_test.GroupTest;
 
 #if php
 import php.Web;
@@ -51,12 +52,13 @@ import neko.Web;
 
 class Main {
     public static var beluga : Beluga;
-    
+
     static function main()
     {
         Assets.build();
         try {
             beluga = Beluga.getInstance();
+
             new AccountTest(beluga);
             ModuleTestApi.addModule("accountTest", new AccountTestApi(beluga));
             ModuleTestApi.addModule("ticketTest", new TicketTest(beluga));
@@ -70,7 +72,8 @@ class Main {
             ModuleTestApi.addModule("marketTest", new MarketTest(beluga));
             ModuleTestApi.addModule("faqTest", new FaqTest(beluga));
             ModuleTestApi.addModule("paypalTest", new PaypalTest(beluga));
-            
+            ModuleTestApi.addModule("groupTest", new GroupTest(beluga));
+
             if (!beluga.handleRequest()) {
                 Dispatch.run(beluga.getDispatchUri(), Web.getParams(), new Main());
             }

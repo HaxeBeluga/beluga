@@ -1,0 +1,3 @@
+<div class="container-fluid">
+    <p class="lead text-center">$$i18n(sorry_message)</p>
+</div>

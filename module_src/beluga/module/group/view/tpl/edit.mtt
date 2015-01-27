@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <a href="::base_url::/beluga/group/showGroup">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
+    </a>
+</div>
+
+::if (error == "")::
+<div class="container-fluid">
+    <h4>$$i18n(edit_group_title)</h4>
+    <form action="::base_url::/beluga/group/modifyGroup" method="post"><br>
+        <input type="hidden" name="id" class="form-control" value="::group.id::">
+        <input type="text" name="new_name" class="form-control" placeholder="$$i18n(group_name_placeholder)" value="::group.name::">
+        <input type="submit" value="$$i18n(edit_submit_group)" class="btn btn-warning pull-right">
+    </form>
+</div>
+<div class="container-fluid">
+    <h4>$$i18n(delete_group_title)</h4>
+    <form action="::base_url::/beluga/group/deleteGroup" method="post"><br>
+        <input type="hidden" name="id" class="form-control" value="::group.id::">
+        <input type="submit" value="$$i18n(delete_submit_group)" class="btn btn-danger btn-block btn-lg">
+    </form>
+</div>
+<div class="container-fluid">
+    <h4>$$i18n(add_member_group_title)</h4>
+    <form action="::base_url::/beluga/group/addMember" method="post"><br>
+        <input type="hidden" name="group_id" class="form-control" value="::group.id::">
+        <input type="text" name="user_name" class=" form-control" placeholder="$$i18n(user_name_placeholder)">
+        <input type="submit" value="$$i18n(add_submit_member)" class="btn btn-warning pull-right">
+    </form>
+</div>
+<div class="container-fluid">
+    <h4>$$i18n(list_members_group_title)</h4>
+    <ul>
+        ::foreach users::
+        <li>
+            ::login::
+            <form action="::base_url::/beluga/group/removeMember" method="post"><br>
+                <input type="hidden" name="user_id" class="form-control" value="::id::">
+                <input type="hidden" name="group_id" class="form-control" value="::group.id::">
+                <input type="submit" value="$$i18n(remove_submit_member)" class="btn btn-danger btn-sm">
+            </form>
+        </li>
+        ::end::
+    </ul>
+</div>
+::end::

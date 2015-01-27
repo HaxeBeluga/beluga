@@ -7,11 +7,11 @@
 -main Main
 -D target=php
 
---next
--cp src
--lib beluga
--lib session
--lib tink_macro
--neko bin/neko/index.n
--main Main
--D target=neko
+# --next
+# -cp src
+# -lib beluga
+# -lib session
+# -lib tink_macro
+# -neko bin/neko/index.n
+# -main Main
+# -D target=neko

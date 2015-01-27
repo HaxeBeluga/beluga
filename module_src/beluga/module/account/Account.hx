@@ -8,27 +8,29 @@
 
 package beluga.module.account;
 
-import beluga.metadata.SessionFlashData;
-import beluga.module.account.api.AccountApi;
 import haxe.xml.Fast;
+import haxe.Session;
 import sys.db.Types.SId;
 import sys.db.Types;
 import sys.db.Manager;
 
 import beluga.Beluga;
+import beluga.I18n;
+import beluga.api.BelugaApi;
+import beluga.api.form.Validator;
+import beluga.FlashData;
+import beluga.metadata.SessionFlashData;
+
 import beluga.module.Module;
+import beluga.module.account.Account;
+import beluga.module.account.AccountErrorKind;
+import beluga.module.account.api.AccountApi;
 import beluga.module.account.model.User;
 import beluga.module.account.model.Friend;
 import beluga.module.account.model.BlackList;
-import beluga.module.account.AccountErrorKind;
-import beluga.I18n;
-import beluga.module.account.Account;
-import beluga.api.form.Validator;
-import beluga.FlashData;
-import haxe.Session;
-import beluga.api.BelugaApi;
-
+import beluga.module.account.repository.UserRepository;
 import beluga.module.account.js.Javascript;
+
 
 @:Css("/beluga/module/account/view/css/")
 class Account extends Module {
@@ -50,6 +52,8 @@ class Account extends Module {
     public var lastSubscribeError(get, set) : Dynamic;
     @:FlashData
     public var lastSubscribeValue(get, set) : Dynamic;
+
+    public var userRepository = new UserRepository();
 
     public var error_id : AccountErrorKind;
     public var success_msg : String;

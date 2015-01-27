@@ -1,0 +1,30 @@
+::if (error == "")::
+<div class="container-fluid">
+    <h4>$$i18n(create_group_title)</h4>
+    <form action="::base_url::/beluga/group/createGroup" method="post"><br>
+        <input type="text" name="name" class=" form-control" placeholder="$$i18n(group_name_placeholder)">
+        <input type="submit" value="$$i18n(create_submit_group)" class="btn btn-warning pull-right">
+    </form>
+</div>
+<div class="container-fluid">
+    <h4>$$i18n(list_group_title)</h4>
+    ::foreach groups::
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a href="::base_url::/beluga/group/editGroup?group_id=::group.id::">::group.name::</a>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                ::foreach users::
+                <li>
+                    ::login::
+                </li>
+                ::end::
+            </ul>
+        </div>
+    </div>
+    ::end::
+</div>
+::end::
