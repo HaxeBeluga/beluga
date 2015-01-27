@@ -22,6 +22,14 @@ class MarketTrigger {
     public var removeProductFail = new Trigger<{error: MarketErrorKind}>();
     public var checkoutCartSuccess = new TriggerVoid();
     public var checkoutCartFail = new Trigger<{error: MarketErrorKind}>();
+    public var addNewProductFail = new Trigger<{error: MarketErrorKind}>();
+    public var addNewProductSuccess = new Trigger<{product: Product}>();
+    public var deleteProductFail = new Trigger<{error: MarketErrorKind}>();
+    public var deleteProductSuccess = new Trigger<{product: Product}>();
+    public var updateProductFail = new Trigger<{error: MarketErrorKind}>();
+    public var updateProductSuccess = new Trigger<{product: Product}>();
+    public var showUpdateProductFail = new Trigger<{error: MarketErrorKind}>();
+    public var showUpdateProductSuccess = new Trigger<{product: Product}>();
 
     public function new() {}
 }

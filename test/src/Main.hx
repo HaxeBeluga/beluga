@@ -82,7 +82,6 @@ class Main {
     }
 
     public function new() {
-
     }
 
     public function doDebug(d : Dispatch) {

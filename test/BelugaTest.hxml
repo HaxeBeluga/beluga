@@ -1,4 +1,5 @@
 -cp src
+-lib beluga-core
 -lib beluga
 -lib session
 -lib tink_macro

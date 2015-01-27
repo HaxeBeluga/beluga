@@ -1,0 +1,37 @@
+<script>
+// yes this is an awesome part of Haxe !
+function validateForm() {
+    var name = document.getElementById("name").value;
+    var price = document.getElementById("price").value;
+    var stock = document.getElementById("stock").value;
+
+    if (isNaN(price) || isNaN(stock) || name == "") {
+      var error = document.createElement('div');
+      error.setAttribute('class','blgwidget-error');
+      error.innerHTML = '<p><b>Error ! </b>invalid data</p>';
+      document.getElementById('bootstrap-widget-info').appendChild(error);
+      return false;
+    }
+    return true;
+}
+</script>
+
+  <div class="container-fluid">
+      <h4>$$i18n(add_product_title)</h4>
+      <form action="::base_url::/beluga/market/updateProduct" method="post" onsubmit="return validateForm()"><br>
+          <label for="name">$$i18n(product_name)</label><input type="text" id="name" name="name" class="form-control" value="::product.name::" required>
+          <label for="price">$$i18n(product_price)</label><input type="text" id="price" name="price" class="form-control" value="::product.price::" required>
+          <label for="stock">$$i18n(product_stock)</label><input type="text" id="stock" name="stock" class="form-control" value="::product.stock::"required>
+          <label for="desc">$$i18n(product_desc)</label><input type="text" name="desc"  value="::product.desc::" class="form-control">
+          <label for="image">$$i18n(product_image)</label>
+          <select class="form-control" name="image">
+              <option>::image_name::</option>
+              ::foreach image_list::
+              <option>::file_name::</option>
+              ::end::
+              <option>"None"</option>
+          </select>
+          <input type="hidden" id="id" name="id" class="form-control" value="::product.id::" required>
+          <input type="submit" value="$$i18n(update)" id="submit_product" class="btn btn-warning pull-right market-add-submit">
+      </form>
+  </div>

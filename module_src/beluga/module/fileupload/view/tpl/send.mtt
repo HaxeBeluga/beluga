@@ -2,6 +2,15 @@
     <h4>$$i18n(send_file_title)</h4>
     <form action="::base_url::/beluga/fileupload/send" method="POST" enctype="multipart/form-data"><br>
         <input type="file" name="fileupload_filename" id="fileupload_filename" class="btn btn-default">
-        <input type="submit" name="submit" class="btn btn-warning pull-right fileupload-upload-submit">
+        <input type="hidden" name="dont_care" id="name">
+        <input type="submit" onClick="submitMe()" name="submit" id="submit_file_to_upload" class="btn btn-warning pull-right fileupload-upload-submit">
     </form>
 </div>
+
+<script>
+function submitMe() {
+    var name = document.getElementById("fileupload_filename").value;
+    document.getElementById("name").value = name;
+    document.getElementById("submit_file_to_upload").submit();
+}
+</script>

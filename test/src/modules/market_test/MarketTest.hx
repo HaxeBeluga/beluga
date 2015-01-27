@@ -38,7 +38,15 @@ class MarketTest {
         this.market = beluga.getModuleInstance(Market);
         this.market.triggers.addProductSuccess.add(this.doAddProductSuccess);
         this.market.triggers.addProductFail.add(this.doAddProductFail);
+        this.market.triggers.addNewProductFail.add(this.doAddNewProductFail);
+        this.market.triggers.addNewProductSuccess.add(this.doAddNewProductSuccess);
         this.market.triggers.removeProductSuccess.add(this.doCartPage);
+        this.market.triggers.deleteProductFail.add(this.doAddNewProductFail);
+        this.market.triggers.deleteProductSuccess.add(this.doAddNewProductSuccess);
+        this.market.triggers.showUpdateProductFail.add(this.doAddNewProductFail);
+        this.market.triggers.showUpdateProductSuccess.add(this.doUpdatePage);
+        this.market.triggers.updateProductFail.add(this.doAddNewProductFail);
+        this.market.triggers.updateProductSuccess.add(this.doUpdatePage);
         // this.market.triggers.removeProductFail.add(this.doCartPage);
         this.market.triggers.checkoutCartSuccess.add(this.doCartPage);
         this.market.triggers.checkoutCartFail.add(this.doCheckoutCartFail);
@@ -51,12 +59,27 @@ class MarketTest {
         Sys.print(html);
     }
 
+    public function doUpdatePage(args: {product: Product}) {
+        var html = Renderer.renderDefault("page_market_widget", "Product update", {
+            marketWidget: market.widgets.update.render()
+        });
+        Sys.print(html);
+    }
+
     public function doAddProductSuccess(args: {product: Product}) {
         this.doTestPage();
     }
 
     public function doAddProductFail(args: {error: MarketErrorKind}) {
         this.doTestPage();
+    }
+
+    public function doAddNewProductSuccess(args: {product: Product}) {
+        this.doAdminPage();
+    }
+
+    public function doAddNewProductFail(args: {error: MarketErrorKind}) {
+        this.doAdminPage();
     }
 
     public function doCheckoutCartFail(args: {error: MarketErrorKind}) {

@@ -15,5 +15,9 @@ enum MarketErrorKind {
     MarketNewProductToCart(product: Product);
     MarketUserNotLogged;
     MarketUnknownProduct(id: Int);
+    MarketProductAlreadyExist(product: Product);
+    MarketNewProductAdded(product: Product);
+    MarketProductDeleted(product: Product);
+    MarketProductToShow(product: Product);
     MarketNone;
 }

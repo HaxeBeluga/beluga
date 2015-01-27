@@ -10,6 +10,7 @@ package beluga.module.market.model;
 
 import sys.db.Object;
 import sys.db.Types;
+import beluga.module.fileupload.model.File;
 
 @:id(id)
 @:table("beluga_mar_product")
@@ -20,4 +21,6 @@ class Product extends Object {
     public var name: STinyText;
     public var price: SFloat;
     public var desc : SText;
+    public var image_id: Null<SInt>;
+    @:relation(image_id) public var image : Null<File>;
 }

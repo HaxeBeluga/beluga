@@ -1,20 +1,23 @@
-::if (market_info != "")::
-    <div class="alert alert-info alert-dismissable ticket-alert-error">
-        <strong>Information !</strong> ::market_info::
-    </div>
-::end::
 <div class="row">
   <ul class="media-list">
       ::foreach products::
         <li class="media">
             <a class="pull-left" href="#">
+                ::if (image_path != null)::
+                ::if (image_path != "")::
+                <img class="media-object" src="::base_url::/::image_path::" height="65" width="65" alt="">
+                ::else::
                 <img class="media-object" src="http://placehold.it/65x65" alt="">
+                ::end::
+                ::else::
+                <img class="media-object" src="http://placehold.it/65x65" alt="">
+                ::end::
             </a>
               <div class="media-body">
-                  <h4 class="media-heading">::name::</h4>
-                  <span class="label label-warning pull-right">::price:: ::currency::</span>
-                  <p>::desc::</p>
-                  <p><a href="::base_url::/beluga/market/addProductToCart?id=::id::" class="btn btn-info btn-xs pull-right" role="button">$$i18n(add_product)</a></p>
+                  <h4 class="media-heading">::product.name::</h4>
+                  <span class="label label-warning pull-right">::product.price:: ::currency::</span>
+                  <p>::product.desc::</p>
+                  <p><a href="::base_url::/beluga/market/addProductToCart?id=::product.id::" class="btn btn-info btn-xs pull-right" role="button">$$i18n(add_product)</a></p>
               </div>
         </li>
       ::end::

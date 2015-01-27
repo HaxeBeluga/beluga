@@ -24,9 +24,16 @@ import beluga.module.fileupload.model.Extension;
 import beluga.I18n;
 import beluga.module.fileupload.FileUploadErrorKind;
 
-#if php
+#if neko
+import neko.Lib;
+import neko.Web;
+#elseif php
+import php.Lib;
 import php.Web;
 #end
+
+// import sys.io.File;
+
 
 @:Css("/beluga/module/fileupload/view/css/")
 class Fileupload extends Module {
@@ -49,12 +56,16 @@ class Fileupload extends Module {
         var files: List<Dynamic> = new List<Dynamic>();
 
         for (f in File.manager.search($owner_id == user_id)) {
+            try {
             files.push({
                 file_name: f.name,
                 file_path: f.path,
                 file_size: sys.FileSystem.stat(f.path).size,
                 file_id: f.id
             });
+            } catch (e: Dynamic) {
+                return files;
+            }
         }
         return files;
     }
@@ -73,20 +84,63 @@ class Fileupload extends Module {
         return extensions;
     }
 
+    public function isValidFileExtension(filename: String): Bool {
+        var splitString = filename.split(".");
+        if (Extension.manager.search($name == splitString[splitString.length - 1]).length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function insertDataInDb(user: String, filename: String, id: Int) {
+        var file = new beluga.module.fileupload.model.File();
+        file.path = "upload/" + user + "/" + filename;
+        file.size = 0;
+        file.name = filename;
+        file.owner_id = id;
+        file.insert();
+    }
+
+    public function ensureUserFolderExist(user: String): Bool {
+        var exist: Bool = false;
+        var path = "upload/" + user;
+        if (sys.FileSystem.exists(path) && sys.FileSystem.isDirectory(path)) {
+            exist = true;
+        } else { // create it
+            try {
+                sys.FileSystem.createDirectory(path);
+                exist = true;
+            } catch (e : Dynamic) {
+                Sys.print(e);
+                exist = false;
+            }
+        }
+
+        return exist;
+    }
+
     public function send(): Void{
         if (!Beluga.getInstance().getModuleInstance(Account).isLogged) {
             this.error = FileUploadUserNotLogged;
             this.triggers.deleteFail.dispatch({error: this.error});
             return;
         }
-
         var id = Beluga.getInstance().getModuleInstance(Account).loggedUser.id;
         var login = Beluga.getInstance().getModuleInstance(Account).loggedUser.login;
-        var up = new Uploader(login, id);
-        if (up.is_valid == false) {
-            this.triggers.uploadFail.dispatch({error: FileUploadInvalidFileExtension});
-        } else {
+        try {
+            // yes this is magic
+            // call nicolas cannasse if you want some help, thanks
+            this.ensureUserFolderExist(login);
+            var file = Web.getMultipart(10 * 1024 * 1024);
+            var filename = file.get("dont_care").split("\\");
+            var out = sys.io.File.write("upload/" + login + "/" + filename[filename.length - 1], true);
+            out.writeString(file.get("fileupload_filename").toString());
+            out.close();
+            this.insertDataInDb(login, filename[filename.length - 1], id);
             this.triggers.uploadSuccess.dispatch();
+        } catch (e: Dynamic) {
+            this.triggers.uploadFail.dispatch({error: FileUploadInvalidFileExtension});
         }
     }
 

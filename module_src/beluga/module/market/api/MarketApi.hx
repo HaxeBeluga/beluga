@@ -39,6 +39,22 @@ class MarketApi {
         module.cart();
     }
 
+    public function doShowUpdateProduct(args: {id: Int}): Void {
+        module.showUpdateProduct(args);
+    }
+
+    public function doDeleteProduct(args: { id: Int }): Void {
+        module.deleteProduct(args);
+    }
+
+    public function doUpdateProduct(args: { name: String, price: Int, stock: Int, desc: String, image: String, id: Int }): Void {
+        module.updateProduct(args);
+    }
+
+    public function doAddProduct(args: { name: String, price: Int, stock: Int, desc: String, image: String }): Void {
+        module.addProduct(args);
+    }
+
     public function doAddProductToCart(args: { id: Int }): Void {
         module.addProductToCart(args);
     }
