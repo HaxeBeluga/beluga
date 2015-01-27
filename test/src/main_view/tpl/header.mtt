@@ -22,7 +22,7 @@
     </li>
     <li class="sidebar-title separator"><span>QUICK LINKS</span></li>
     <li class="sidebar-list">
-      <a href="#" target="_blank">Forums <span class="menu-icon fa fa-external-link"></span></a>
+      <a href="::base_url::/forumTest" target="_blank">Forums <span class="menu-icon fa fa-external-link"></span></a>
     </li>
   </ul>
   <div class="sidebar-footer">
