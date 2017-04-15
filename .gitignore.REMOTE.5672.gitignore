@@ -1,0 +1,6 @@
+#FlashDeveloppFiles
+*.hxproj
+
+#munit files
+build/
+report/
