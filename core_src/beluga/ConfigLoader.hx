@@ -125,7 +125,7 @@ class ConfigLoader {
 
     macro private static function loadConfig() : Expr {
         //Load configuration
-        builtConfigString = File.getContent(configFilePath);
+        builtConfigString = File.getContent(Context.resolvePath(configFilePath));
         var xml = Xml.parse(builtConfigString);
         clearForTarget(xml, getCompilationTarget());
 
